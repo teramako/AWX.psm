@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>AnsibleTower</AssemblyName>
+    <RootNamespace>AnsibleTower</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Management.Automation">
+      <HintPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">C:\Program Files\PowerShell\7\System.Management.Automation.dll</HintPath>
+      <HintPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">/opt/microsoft/powershell/7/System.Management.Automation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
