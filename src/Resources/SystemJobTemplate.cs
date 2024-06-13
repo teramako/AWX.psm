@@ -18,16 +18,18 @@ namespace AnsibleTower.Resources
                                    JobTemplateStatus status,
                                    ulong? executionEnvironment,
                                    string jobType)
-        : IUnifiedJobTemplate, IResource<SystemJobTemplate.Summary>
+        : UnifiedJobTemplate(id, type, url, created, modified, name, description, lastJobRun,
+                             lastJobFailed, nextJobRun, status),
+          IUnifiedJobTemplate, IResource<SystemJobTemplate.Summary>
     {
-        public const string PATH = "/api/v2/system_job_templates/";
+        public new const string PATH = "/api/v2/system_job_templates/";
 
         public static async Task<SystemJobTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<SystemJobTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<SystemJobTemplate> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<SystemJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<SystemJobTemplate>(PATH, query, getAll))
             {
@@ -43,20 +45,9 @@ namespace AnsibleTower.Resources
             [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment);
 
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
 
-        public string Name { get; } = name;
-        public string Description { get; } = description;
-        public DateTime? LastJobRun { get; } = lastJobRun;
-        public bool LastJobFailed { get; } = lastJobFailed;
-        public DateTime? NextJobRun { get; } = nextJobRun;
-        public JobTemplateStatus Status { get; } = status;
         [JsonPropertyName("execution_environment")]
         public ulong? ExecutionEnvironment { get; } = executionEnvironment;
         [JsonPropertyName("job_type")]

@@ -172,16 +172,18 @@ namespace AnsibleTower.Resources
                                  JobTemplateStatus status, ulong? executionEnvironment, ulong inventory,
                                  bool updateOnLaunch, int updateCacheTimeout, ulong? sourceProject,
                                  bool lastUpdateFailed, DateTime? lastUpdated)
-        : IInventorySource, IUnifiedJobTemplate, IResource<InventorySource.Summary>
+        : UnifiedJobTemplate(id, type, url, created, modified, name, description, lastJobRun,
+                             lastJobFailed, nextJobRun, status),
+          IInventorySource, IUnifiedJobTemplate, IResource<InventorySource.Summary>
     {
-        public const string PATH = "/api/v2/inventory_sources/";
+        public new const string PATH = "/api/v2/inventory_sources/";
 
         public static async Task<InventorySource> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<InventorySource>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<InventorySource> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<InventorySource> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(PATH, query, getAll))
             {
@@ -204,16 +206,9 @@ namespace AnsibleTower.Resources
             CredentialSummary[] Credentials);
 
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
         public InventorySourceSource Source { get; } = source;
         public string SourcePath { get; } = sourcePath;
         public string SourceVars { get; } = sourceVars;
@@ -229,10 +224,6 @@ namespace AnsibleTower.Resources
         public int Timeout { get; } = timeout;
         public int Verbosity { get; } = verbosity;
         public string Limit { get; } = limit;
-        public DateTime? LastJobRun { get; } = lastJobRun;
-        public bool LastJobFailed { get; } = lastJobFailed;
-        public DateTime? NextJobRun { get; } = nextJobRun;
-        public JobTemplateStatus Status { get; } = status;
         public ulong? ExecutionEnvironment { get; } = executionEnvironment;
         public ulong Inventory { get; } = inventory;
         public bool UpdateOnLaunch { get; } = updateOnLaunch;

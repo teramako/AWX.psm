@@ -45,7 +45,7 @@ namespace AnsibleTower
                             var fieldInfo = typeof(ResourceType).GetField(key);
                             if (fieldInfo != null)
                             {
-                                var attr = fieldInfo.GetCustomAttribute<ResourcePathAttribute>(false);
+                                var attr = fieldInfo.GetCustomAttributes<ResourcePathAttribute>(false).First();
                                 if (attr != null && attr.Type != null)
                                 {
                                     var obj = val.Deserialize(attr.Type, DeserializeOptions);

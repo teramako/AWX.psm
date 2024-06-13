@@ -99,9 +99,11 @@ namespace AnsibleTower.Resources
                          int scmUpdateCacheTimeout, bool allowOverride, string? customVirtualenv,
                          ulong? defaultEnvironment, ulong? signatureValidationCredential, bool lastUpdateFailed,
                          DateTime? lastUpdated)
-        : IProject, IUnifiedJobTemplate, IResource<Project.Summary>
+        : UnifiedJobTemplate(id, type, url, created, modified, name, description, lastJobRun,
+                             lastJobFailed, nextJobRun, status),
+          IProject, IUnifiedJobTemplate, IResource<Project.Summary>
     {
-        public const string PATH = "/api/v2/projects/";
+        public new const string PATH = "/api/v2/projects/";
 
 
         public static async Task<Project> Get(ulong id)
@@ -109,7 +111,7 @@ namespace AnsibleTower.Resources
             var apiResult = await RestAPI.GetAsync<Project>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<Project> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<Project> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Project>(PATH, query, getAll))
             {
@@ -131,15 +133,8 @@ namespace AnsibleTower.Resources
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
         public string LocalPath { get; } = localPath;
         public string ScmType { get; } = scmType;
         public string ScmUrl { get; } = scmUrl;
@@ -152,13 +147,6 @@ namespace AnsibleTower.Resources
         public int Timeout { get; } = timeout;
         [JsonPropertyName("scm_revision")]
         public string ScmRevision { get; } = scmRevision;
-        [JsonPropertyName("last_job_run")]
-        public DateTime? LastJobRun { get; } = lastJobRun;
-        [JsonPropertyName("last_job_failed")]
-        public bool LastJobFailed { get; } = lastJobFailed;
-        [JsonPropertyName("next_job_run")]
-        public DateTime? NextJobRun { get; } = nextJobRun;
-        public JobTemplateStatus Status { get; } = status;
         public ulong Organization { get; } = organization;
         public bool ScmUpdateOnLaunch { get; } = scmUpdateOnLaunch;
         public int ScmUpdateCacheTimeout { get; } = scmUpdateCacheTimeout;

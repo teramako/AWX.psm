@@ -70,9 +70,33 @@ namespace AnsibleTower.Resources
         JobTemplateStatus Status { get; }
     }
 
-    public abstract class UnifiedJobTemplate 
+    public abstract class UnifiedJobTemplate(ulong id,
+                                             ResourceType type,
+                                             string url,
+                                             DateTime created,
+                                             DateTime? modified,
+                                             string name,
+                                             string description,
+                                             DateTime? lastJobRun,
+                                             bool lastJobFailed,
+                                             DateTime? nextJobRun,
+                                             JobTemplateStatus status)
+        : IUnifiedJobTemplate
     {
         public const string PATH = "/api/v2/unified_job_templates/";
+
+        public ulong Id { get; } = id;
+        public ResourceType Type { get; } = type;
+        public string Url { get; } = url;
+        public DateTime Created { get; } = created;
+        public DateTime? Modified { get; } = modified;
+        public string Name { get; } = name;
+        public string Description { get; } = description;
+        public DateTime? LastJobRun { get; } = lastJobRun;
+        public bool LastJobFailed { get; } = lastJobFailed;
+        public DateTime? NextJobRun { get; } = nextJobRun;
+        public JobTemplateStatus Status { get; } = status;
+
         /// <summary>
         /// Retrieve a job template.
         /// 

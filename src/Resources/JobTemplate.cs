@@ -140,16 +140,18 @@ namespace AnsibleTower.Resources
                              bool askInstanceGroupsOnLaunch, bool surveyEnabled, bool becomeEnabled, bool diffMode,
                              bool allowSimultaneous, string? customVirtualenv, int jobSliceCount, string webhookService,
                              ulong? webhookCredential, bool preventInstanceGroupFallback)
-        : IJobTemplate, IUnifiedJobTemplate, IResource<JobTemplate.Summary>
+        : UnifiedJobTemplate(id, type, url, created, modified, name, description, lastJobRun,
+                             lastJobFailed, nextJobRun, status),
+          IJobTemplate, IUnifiedJobTemplate, IResource<JobTemplate.Summary>
     {
-        public const string PATH = "/api/v2/job_templates/";
+        public new const string PATH = "/api/v2/job_templates/";
 
         public static async Task<JobTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<JobTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<JobTemplate> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<JobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<JobTemplate>(PATH, query, getAll))
             {
@@ -175,15 +177,8 @@ namespace AnsibleTower.Resources
         JobTemplateCredentialSummary[] Credentials);
 
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
         public JobType JobType { get; } = jobType;
         public ulong Inventory { get; } = inventory;
         public ulong Project { get; } = project;
@@ -200,10 +195,6 @@ namespace AnsibleTower.Resources
         public int Timeout { get; } = timeout;
         public bool UseFactCache { get; } = useFactCache;
         public ulong Organization { get; } = organization;
-        public DateTime? LastJobRun { get; } = lastJobRun;
-        public bool LastJobFailed { get; } = lastJobFailed;
-        public DateTime? NextJobRun { get; } = nextJobRun;
-        public JobTemplateStatus Status { get; } = status;
         public ulong? ExecutionEnvironment { get; } = executionEnvironment;
         public string HostConfigKey { get; } = hostConfigKey;
         public bool AskScmBranchOnLaunch { get; } = askScmBranchOnLaunch;

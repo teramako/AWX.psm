@@ -60,46 +60,26 @@ namespace AnsibleTower.Resources
         string? JobTags { get; }
     }
 
-    public class WorkflowJobTemplate(ulong id,
-                                     ResourceType type,
-                                     string url,
-                                     RelatedDictionary related,
-                                     WorkflowJobTemplate.Summary summaryFields,
-                                     DateTime created,
-                                     DateTime? modified,
-                                     string name,
-                                     string description,
-                                     DateTime? lastJobRun,
-                                     bool lastJobFailed,
-                                     DateTime? nextJobRun,
-                                     JobTemplateStatus status,
-                                     string extraVars,
-                                     ulong? organization,
-                                     bool surveyEnabled,
-                                     bool allowSimultaneous,
-                                     bool askVariablesOnLaunch,
-                                     ulong? inventory,
-                                     string? limit,
-                                     string? scmBranch,
-                                     bool askInventoryOnLaunch,
-                                     bool askScmBranchOnLaunch,
-                                     bool askLimitOnLaunch,
-                                     string webhookService,
-                                     ulong? webhookCredential,
-                                     bool askLabelsOnLaunch,
-                                     bool askSkipTagsOnLaunch,
-                                     bool askTagsOnLaunch,
-                                     string? skipTags,
-                                     string? jobTags)
-                : IWorkflowJobTemplate, IUnifiedJobTemplate, IResource<WorkflowJobTemplate.Summary>
+    public class WorkflowJobTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,
+                                     WorkflowJobTemplate.Summary summaryFields, DateTime created, DateTime? modified,
+                                     string name, string description, DateTime? lastJobRun, bool lastJobFailed,
+                                     DateTime? nextJobRun, JobTemplateStatus status, string extraVars,
+                                     ulong? organization, bool surveyEnabled, bool allowSimultaneous,
+                                     bool askVariablesOnLaunch, ulong? inventory, string? limit, string? scmBranch,
+                                     bool askInventoryOnLaunch, bool askScmBranchOnLaunch, bool askLimitOnLaunch,
+                                     string webhookService, ulong? webhookCredential, bool askLabelsOnLaunch,
+                                     bool askSkipTagsOnLaunch, bool askTagsOnLaunch, string? skipTags, string? jobTags)
+        : UnifiedJobTemplate(id, type, url, created, modified, name, description, lastJobRun,
+                             lastJobFailed, nextJobRun, status),
+          IWorkflowJobTemplate, IUnifiedJobTemplate, IResource<WorkflowJobTemplate.Summary>
     {
-        public const string PATH = "/api/v2/workflow_job_templates/";
+        public new const string PATH = "/api/v2/workflow_job_templates/";
         public static async Task<WorkflowJobTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJobTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<WorkflowJobTemplate> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<WorkflowJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(PATH, query, getAll))
             {
@@ -120,21 +100,9 @@ namespace AnsibleTower.Resources
             [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs);
 
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
-
-        public DateTime? LastJobRun { get; } = lastJobRun;
-        public bool LastJobFailed { get; } = lastJobFailed;
-        public DateTime? NextJobRun { get; } = nextJobRun;
-        public JobTemplateStatus Status { get; } = status;
 
         public string ExtraVars { get; } = extraVars;
         public ulong? Organization { get; } = organization;
