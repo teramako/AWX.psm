@@ -75,15 +75,18 @@ namespace AnsibleTower.Resources
                                 string[] passwordsNeededToStart, bool allowSimultaneous, OrderedDictionary artifacts,
                                 string scmRevision, ulong? instanceGroup, bool diffMode, int jobSliceNumber,
                                 int jobSliceCount, string webhookService, uint? webhookCredential, string webhookGuid)
-        : IJobTemplateJob, IResource<JobTemplateJob.Summary>
+        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
+                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
+                     launchedBy, workUnitId),
+          IJobTemplateJob, IResource<JobTemplateJob.Summary>
     {
-        public const string PATH = "/api/v2/jobs/";
+        public new const string PATH = "/api/v2/jobs/";
         public static async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<JobTemplateJob> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<JobTemplateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<JobTemplateJob>(PATH, query, getAll))
             {
@@ -108,34 +111,11 @@ namespace AnsibleTower.Resources
             JobTemplateCredentialSummary[] Credentials);
 
 
-        #region IResource
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
-        #endregion
 
-        #region UnifiedJob Properties
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        public JobLaunchType LaunchType { get; } = launchType;
-        public JobStatus Status { get; } = status;
-        public ulong? ExecutionEnvironment { get; } = executionEnvironment;
-        public bool Failed { get; } = failed;
-        public DateTime? Started { get; } = started;
-        public DateTime? Finished { get; } = finished;
-        public DateTime? CanceledOn { get; } = canceledOn;
-        public double Elapsed { get; } = elapsed;
-        public string JobExplanation { get; } = jobExplanation;
         public string ExecutionNode { get; } = executionNode;
         public string ControllerNode { get; } = controllerNode;
-        public LaunchedBy LaunchedBy { get; } = launchedBy;
-        public string? WorkUnitId { get; } = workUnitId;
-        #endregion
 
         #region JobTemplateJob Properties
         public JobType JobType { get; } = jobType;
@@ -184,68 +164,23 @@ namespace AnsibleTower.Resources
                             string webhookService, uint? webhookCredential, string webhookGuid,
                             Dictionary<string, int> hostStatusCounts, Dictionary<string, int> playbookCounts,
                             string customVirtualenv)
-            : IJobTemplateJob, IJobDetail, IResource<Summary>
+            : JobTemplateJob(id, type, url, related, summaryFields, created, modified, name, description,
+                             unifiedJobTemplate, launchType, status, executionEnvironment, failed, started,
+                             finished, canceledOn, elapsed, jobExplanation, executionNode, controllerNode,
+                             launchedBy, workUnitId, jobType, inventory, project, playbook, scmBranch, forks,
+                             limit, verbosity, extraVars, jobTags, forceHandlers, skipTags, startAtTask, timeout,
+                             useFactCache, organization, jobTemplate, passwordsNeededToStart, allowSimultaneous,
+                             artifacts, scmRevision, instanceGroup, diffMode, jobSliceNumber, jobSliceCount,
+                             webhookService, webhookCredential, webhookGuid),
+               IJobTemplateJob, IJobDetail, IResource<Summary>
         {
-            #region IResource
-            public ulong Id { get; } = id;
-            public ResourceType Type { get; } = type;
-            public string Url { get; } = url;
-            public RelatedDictionary Related { get; } = related;
-            public Summary SummaryFields { get; } = summaryFields;
-            #endregion
 
-            public DateTime Created { get; } = created;
-            public DateTime? Modified { get; } = modified;
-            public string Name { get; } = name;
-            public string Description { get; } = description;
-            public JobType JobType { get; } = jobType;
-            public ulong Inventory { get; } = inventory;
-            public ulong Project { get; } = project;
-            public string Playbook { get; } = playbook;
-            public string ScmBranch { get; } = scmBranch;
-            public byte Forks { get; } = forks;
-            public string Limit { get; } = limit;
-            public JobVerbosity Verbosity { get; } = verbosity;
-            public string ExtraVars { get; } = extraVars;
-            public string JobTags { get; } = jobTags;
-            public bool ForceHandlers { get; } = forceHandlers;
-            public string SkipTags { get; } = skipTags;
-            public string StartAtTask { get; } = startAtTask;
-            public ushort Timeout { get; } = timeout;
-            public bool UseFactCache { get; } = useFactCache;
-            public ulong Organization { get; } = organization;
-            public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-            public JobLaunchType LaunchType { get; } = launchType;
-            public JobStatus Status { get; } = status;
-            public ulong? ExecutionEnvironment { get; } = executionEnvironment;
-            public bool Failed { get; } = failed;
-            public DateTime? Started { get; } = started;
-            public DateTime? Finished { get; } = finished;
-            public DateTime? CanceledOn { get; } = canceledOn;
-            public double Elapsed { get; } = elapsed;
             public string JobArgs { get; } = jobArgs;
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
-            public string JobExplanation { get; } = jobExplanation;
-            public string ExecutionNode { get; } = executionNode;
-            public string ControllerNode { get; } = controllerNode;
             public string ResultTraceback { get; } = resultTraceback;
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
-            public LaunchedBy LaunchedBy { get; } = launchedBy;
-            public string? WorkUnitId { get; } = workUnitId;
 
-            public ulong JobTemplate { get; } = jobTemplate;
-            public string[] PasswordsNeededToStart { get; } = passwordsNeededToStart;
-            public bool AllowSimultaneous { get; } = allowSimultaneous;
-            public OrderedDictionary Artifacts { get; } = artifacts;
-            public string ScmRevision { get; } = scmRevision;
-            public ulong? InstanceGroup { get; } = instanceGroup;
-            public bool DiffMode { get; } = diffMode;
-            public int JobSliceNumber { get; } = jobSliceNumber;
-            public int JobSliceCount { get; } = jobSliceCount;
-            public string WebhookService { get; } = webhookService;
-            public uint? WebhookCredential { get; } = webhookCredential;
-            public string WebhookGuid { get; } = webhookGuid;
 
             [JsonPropertyName("host_status_counts")]
             public Dictionary<string, int> HostStatusCounts { get; } = hostStatusCounts;

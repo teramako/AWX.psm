@@ -39,15 +39,18 @@ namespace AnsibleTower.Resources
                            DateTime? canceledOn, double elapsed, string jobExplanation, string executionNode,
                            LaunchedBy launchedBy, string? workUnitId, ulong systemJobTemplate, string jobType,
                            string extraVars, string resultStdout)
-        : ISystemJob, IResource<SystemJob.Summary>
+        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
+                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
+                     launchedBy, workUnitId),
+          ISystemJob, IResource<SystemJob.Summary> 
     {
-        public const string PATH = "/api/v2/system_jobs/";
+        public new const string PATH = "/api/v2/system_jobs/";
         public static async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
+        public new static async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
             {
@@ -73,39 +76,21 @@ namespace AnsibleTower.Resources
                             string resultTraceback, bool eventProcessingFinished, LaunchedBy launchedBy,
                             string? workUnitId, ulong systemJobTemplate, string jobType, string extraVars,
                             string resultStdout)
-            : ISystemJob, IJobDetail, IResource<Summary>
+            : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate,
+                         launchType, status, executionEnvironment, failed, started, finished, canceledOn,
+                         elapsed, jobExplanation, launchedBy, workUnitId),
+              ISystemJob, IJobDetail, IResource<Summary>
         {
 
-            public ulong Id { get; } = id;
-            public ResourceType Type { get; } = type;
-            public string Url { get; } = url;
             public RelatedDictionary Related { get; } = related;
             public Summary SummaryFields { get; } = summaryFields;
 
-            #region UnifiedJob Properties
-            public DateTime Created { get; } = created;
-            public DateTime? Modified { get; } = modified;
-            public string Name { get; } = name;
-            public string Description { get; } = description;
-            public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-            public JobLaunchType LaunchType { get; } = launchType;
-            public JobStatus Status { get; } = status;
-            public ulong? ExecutionEnvironment { get; } = executionEnvironment;
-            public bool Failed { get; } = failed;
-            public DateTime? Started { get; } = started;
-            public DateTime? Finished { get; } = finished;
-            public DateTime? CanceledOn { get; } = canceledOn;
-            public double Elapsed { get; } = elapsed;
             public string JobArgs { get; } = jobArgs;
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
-            public string JobExplanation { get; } = jobExplanation;
             public string ExecutionNode { get; } = executionNode;
             public string ResultTraceback { get; } = resultTraceback;
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
-            public LaunchedBy LaunchedBy { get; } = launchedBy;
-            public string? WorkUnitId { get; } = workUnitId;
-            #endregion
 
             public ulong SystemJobTemplate { get; } = systemJobTemplate;
             public string JobType { get; } = jobType;
@@ -113,31 +98,10 @@ namespace AnsibleTower.Resources
             public string ResultStdout { get; } = resultStdout;
         }
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
-        #region UnifiedJob Properties
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        public JobLaunchType LaunchType { get; } = launchType;
-        public JobStatus Status { get; } = status;
-        public ulong? ExecutionEnvironment { get; } = executionEnvironment;
-        public bool Failed { get; } = failed;
-        public DateTime? Started { get; } = started;
-        public DateTime? Finished { get; } = finished;
-        public DateTime? CanceledOn { get; } = canceledOn;
-        public double Elapsed { get; } = elapsed;
-        public string JobExplanation { get; } = jobExplanation;
         public string ExecutionNode { get; } = executionNode;
-        public LaunchedBy LaunchedBy { get; } = launchedBy;
-        public string? WorkUnitId { get; } = workUnitId;
-        #endregion
 
         public ulong SystemJobTemplate { get; } = systemJobTemplate;
         public string JobType { get; } = jobType;

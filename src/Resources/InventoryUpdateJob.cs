@@ -122,16 +122,19 @@ namespace AnsibleTower.Resources
                                     string? customVirtualenv, int timeout, int verbosity, string limit, ulong inventory,
                                     ulong inventorySource, bool licenseError, bool orgHostLimitError,
                                     ulong? sourceProjectUpdate, ulong? instanceGroup, string scmRevision)
-        : IInventoryUpdateJob, IResource<InventoryUpdateJob.Summary>
+        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
+                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
+                     launchedBy, workUnitId),
+          IInventoryUpdateJob, IResource<InventoryUpdateJob.Summary>
     {
-        public const string PATH = "/api/v2/inventory_updates/";
+        public new const string PATH = "/api/v2/inventory_updates/";
 
         public static async Task<InventoryUpdateJob> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<InventoryUpdateJob>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<InventoryUpdateJob> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<InventoryUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
             {
@@ -153,32 +156,11 @@ namespace AnsibleTower.Resources
             CredentialSummary[] Credentials);
 
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
-        #region UnifiedJob Properties
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        public JobLaunchType LaunchType { get; } = launchType;
-        public JobStatus Status { get; } = status;
-        public ulong? ExecutionEnvironment { get; } = executionEnvironment;
         public string ControllerNode { get; } = controllerNode;
-        public bool Failed { get; } = failed;
-        public DateTime? Started { get; } = started;
-        public DateTime? Finished { get; } = finished;
-        public DateTime? CanceledOn { get; } = canceledOn;
-        public double Elapsed { get; } = elapsed;
-        public string JobExplanation { get; } = jobExplanation;
         public string ExecutionNode { get; } = executionNode;
-        public LaunchedBy LaunchedBy { get; } = launchedBy;
-        public string? WorkUnitId { get; } = workUnitId;
-        #endregion
 
         public InventorySourceSource Source { get; } = source;
         public string SourcePath { get; } = sourcePath;

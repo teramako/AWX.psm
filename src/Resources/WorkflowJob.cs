@@ -47,15 +47,18 @@ namespace AnsibleTower.Resources
                              ulong? jobTemplate, bool isSlicedJob, ulong? inventory, string? limit, string? scmBranch,
                              string webhookService, ulong? webhookCredential, string webhookGuid, string? skipTags,
                              string? jobTags)
-                : IWorkflowJob, IResource<WorkflowJob.Summary>
+        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
+                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
+                     launchedBy, workUnitId),
+          IWorkflowJob, IResource<WorkflowJob.Summary>
     {
-        public const string PATH = "/api/v2/workflow_jobs/";
+        public new const string PATH = "/api/v2/workflow_jobs/";
         public static async Task<WorkflowJob> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJob>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<WorkflowJob> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<WorkflowJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJob>(PATH, query, getAll))
             {
@@ -74,27 +77,8 @@ namespace AnsibleTower.Resources
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<NameSummary> Labels);
 
-        public ulong Id { get; } = id;
-        public ResourceType Type { get; } = type;
-        public string Url { get; } = url;
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
-        public DateTime Created { get; } = created;
-        public DateTime? Modified { get; } = modified;
-        public string Name { get; } = name;
-        public string Description { get; } = description;
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        public JobLaunchType LaunchType { get; } = launchType;
-        public JobStatus Status { get; } = status;
-        public ulong? ExecutionEnvironment { get; } = executionEnvironment;
-        public bool Failed { get; } = failed;
-        public DateTime? Started { get; } = started;
-        public DateTime? Finished { get; } = finished;
-        public DateTime? CanceledOn { get; } = canceledOn;
-        public double Elapsed { get; } = elapsed;
-        public string JobExplanation { get; } = jobExplanation;
-        public LaunchedBy LaunchedBy { get; } = launchedBy;
-        public string? WorkUnitId { get; } = workUnitId;
         public ulong WorkflowJobTemplate { get; } = workflowJobTemplate;
         public string ExtraVars { get; } = extraVars;
         public bool AllowSimultaneous { get; } = allowSimultaneous;

@@ -1795,6 +1795,13 @@ namespace API_Test
     [TestClass]
     public class Test_UnifiedJob
     {
+        static void DumpResource(IUnifiedJob job)
+        {
+            Console.WriteLine($"---- Type: {job.GetType().Name} ----");
+            Console.WriteLine($"{job.Id} [{job.Type}] {job.Name}");
+            Console.WriteLine($"  Start: {job.Started} - {job.Finished} ({job.Elapsed})");
+            Console.WriteLine($"  Status: {job.Status}");
+        }
         [TestMethod]
         public async Task Get_1_Single()
         {
@@ -1807,10 +1814,57 @@ namespace API_Test
             var query = HttpUtility.ParseQueryString("page_size=10&order_by=-id");
             await foreach (var job in UnifiedJob.Find(query, false))
             {
-                Console.WriteLine($"{job.Id} [{job.Type}] {job.Name}");
-                Console.WriteLine($"  Start: {job.Started} - {job.Finished} ({job.Elapsed})");
-                Console.WriteLine($"  Status: {job.Status}");
-                // Util.DumpObject(job);
+                DumpResource(job);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_JobTemplateJob()
+        {
+            var query = HttpUtility.ParseQueryString("type=job&page_size=2&order_by=-id");
+            await foreach (var job in UnifiedJob.Find(query, false))
+            {
+                DumpResource(job);
+                Assert.IsInstanceOfType<JobTemplateJob>(job);
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ProjectUpdateJob()
+        {
+            var query = HttpUtility.ParseQueryString("type=project_update&page_size=2&order_by=-id");
+            await foreach (var job in UnifiedJob.Find(query, false))
+            {
+                DumpResource(job);
+                Assert.IsInstanceOfType<ProjectUpdateJob>(job);
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_InventoryUpdate()
+        {
+            var query = HttpUtility.ParseQueryString("type=inventory_update&page_size=2&order_by=-id");
+            await foreach (var job in UnifiedJob.Find(query, false))
+            {
+                DumpResource(job);
+                Assert.IsInstanceOfType<InventoryUpdateJob>(job);
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_WorkflobJob()
+        {
+            var query = HttpUtility.ParseQueryString("type=workflow_job&page_size=2&order_by=-id");
+            await foreach (var job in UnifiedJob.Find(query, false))
+            {
+                DumpResource(job);
+                Assert.IsInstanceOfType<WorkflowJob>(job);
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_SystemJob()
+        {
+            var query = HttpUtility.ParseQueryString("type=system_job&page_size=2&order_by=-id");
+            await foreach (var job in UnifiedJob.Find(query, false))
+            {
+                DumpResource(job);
+                Assert.IsInstanceOfType<SystemJob>(job);
             }
         }
     }
