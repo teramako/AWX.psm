@@ -332,10 +332,6 @@ namespace AnsibleTower
                             {
                                 dict.Add(propertyName, int32val);
                             }
-                            else if (reader.TryGetDouble(out double doubleVal))
-                            {
-                                dict.Add(propertyName, doubleVal);
-                            }
                             else if (reader.TryGetInt64(out long int64val))
                             {
                                 dict.Add(propertyName, int64val);
@@ -343,6 +339,10 @@ namespace AnsibleTower
                             else if (reader.TryGetUInt64(out ulong uint64val))
                             {
                                 dict.Add(propertyName, uint64val);
+                            }
+                            else if (reader.TryGetDouble(out double doubleVal))
+                            {
+                                dict.Add(propertyName, doubleVal);
                             }
                             break;
                         case JsonTokenType.True:
