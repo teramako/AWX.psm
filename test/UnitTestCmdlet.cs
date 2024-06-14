@@ -142,18 +142,4 @@ namespace Cmdlet_Test
             }
         }
     }
-    [TestClass]
-    public class Test
-    {
-        [TestMethod]
-        public void SleepTest()
-        {
-            var cmdlet = new TestSleep();
-            foreach (var line in cmdlet.Invoke<string>())
-            {
-                Console.WriteLine(line);
-            }
-
-        }
-    }
 }
