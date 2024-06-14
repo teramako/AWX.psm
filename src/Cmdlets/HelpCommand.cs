@@ -13,8 +13,7 @@ namespace AnsibleTower.Cmdlets
 
         protected override void EndProcessing()
         {
-            Uri uri = new(ApiConfig.Instance.Origin, Path);
-            var help = GetApiHelp(uri);
+            var help = GetApiHelp(Path);
             WriteObject(help, false);
         }
     }

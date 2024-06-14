@@ -23,15 +23,13 @@ namespace AnsibleTower.Cmdlets
                 WriteObject(GetSetting(Name), false);
             }
         }
-        private OrderedDictionary? GetSetting(string name)
+        private Dictionary<string, object?>? GetSetting(string name)
         {
-            Uri uri = new Uri(ApiConfig.Instance.Origin, $"{BasePath}{name}/");
-            return GetResource<OrderedDictionary>(uri);
+            return GetResource<Dictionary<string, object?>>($"{BasePath}{name}");
         }
         private Setting[]? GetSettingList()
         {
-            Uri uri = new Uri(ApiConfig.Instance.Origin, BasePath);
-            var resultSet = GetResultSet<Setting>(uri, false).First();
+            var resultSet = GetResultSet<Setting>(BasePath, false).First();
             return resultSet.Results;
         }
     }

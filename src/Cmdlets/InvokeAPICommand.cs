@@ -1,13 +1,10 @@
 ﻿using AnsibleTower.Resources;
 using System.Collections;
-using System.Collections.Frozen;
 using System.Collections.Specialized;
 using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Reflection;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Unicode;
 using System.Web;
 
 namespace AnsibleTower.Cmdlets
@@ -33,44 +30,51 @@ namespace AnsibleTower.Cmdlets
         public SwitchParameter AsJson { get; set; }
 
         private Uri? uri;
+        private string pathAndQuery = string.Empty;
 
         protected override void BeginProcessing()
         {
+            var query = HttpUtility.ParseQueryString(QueryString);
             NameValueCollection? queryInPath = null;
-            if (Path?.IndexOf('?') > 0)
+            if (Path.IndexOf('?') > 0)
             {
-                var pathAndQuery = Path.Split('?', 2);
-                Path = pathAndQuery[0];
-                queryInPath = HttpUtility.ParseQueryString(pathAndQuery[1]);
+                var buf = Path.Split('?', 2);
+                Path = buf[0];
+                queryInPath = HttpUtility.ParseQueryString(buf[1]);
+                queryInPath.Add(query);
+                pathAndQuery = $"{Path}?{queryInPath}";
+                return;
             }
-            var uriBuilder = new UriBuilder(ApiConfig.Instance.Origin)
+            if (query.Count > 0)
             {
-                Path = Path,
-                Query = (queryInPath == null ? "" : queryInPath.ToString() + '&') + QueryString,
-            };
-            uri = uriBuilder.Uri;
+                pathAndQuery = $"{Path}?{query}";
+            }
+            else
+            {
+                pathAndQuery = Path;
+            }
         }
         protected override void ProcessRecord()
         {
-            if (uri == null) { return; }
-            WriteVerboseRequest(uri, Method);
+            if (string.IsNullOrEmpty(pathAndQuery)) { return; }
+            WriteVerboseRequest(pathAndQuery, Method);
 
             Task<RestAPIResult<string>>? task;
 
             switch (Method)
             {
                 case Method.GET:
-                    task = RestAPI.GetAsync<string>(uri.PathAndQuery);
+                    task = RestAPI.GetAsync<string>(pathAndQuery);
                     break;
                 case Method.POST:
                     if (SenData == null)
                     {
                         throw new ArgumentNullException(nameof(SenData));
                     }
-                    task = RestAPI.PostJsonAsync<string>(uri.PathAndQuery, SenData);
+                    task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
                     break;
                 case Method.OPTIONS:
-                    task = RestAPI.OptionsJsonAsync<string>(uri.PathAndQuery);
+                    task = RestAPI.OptionsJsonAsync<string>(pathAndQuery);
                     break;
                 default:
                     throw new NotSupportedException();

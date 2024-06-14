@@ -10,8 +10,7 @@ namespace AnsibleTower.Cmdlets
         private const string BasePath = "/api/v2/config/";
         protected override void EndProcessing()
         {
-            Uri uri = new(ApiConfig.Instance.Origin, BasePath);
-            var config = GetResource<Config>(uri);
+            var config = GetResource<Config>(BasePath);
             WriteObject(config, false);
         }
     }

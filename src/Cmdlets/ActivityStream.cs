@@ -1,22 +1,33 @@
 ﻿using AnsibleTower.Resources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnsibleTower.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ActivityStream")]
     [OutputType(typeof(ActivityStream))]
-    public class GetActivityStreamCommand : GetCmdletBase<ActivityStream>
+    public class GetActivityStreamCommand : GetCmdletBase
     {
+        protected override void ProcessRecord()
+        {
+            foreach (var id in Id)
+            {
+                IdSet.Add(id);
+            }
+        }
+        protected override void EndProcessing()
+        {
+            Query.Add("id__in", string.Join(',', IdSet));
+            Query.Add("page_size", $"{IdSet.Count}");
+            foreach (var resultSet in GetResultSet<ActivityStream>($"{ActivityStream.PATH}?{Query}", true))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
     }
 
     [Cmdlet(VerbsCommon.Find, "ActivityStream", DefaultParameterSetName = "All")]
     [OutputType(typeof(ActivityStream))]
-    public class FindActivityStreamCommand : FindCmdletBase<ActivityStream>
+    public class FindActivityStreamCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
@@ -24,5 +35,14 @@ namespace AnsibleTower.Cmdlets
         public override ResourceType Type { get; set; }
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["!id"];
+
+        protected override void BeginProcessing()
+        {
+            SetupCommonQuery();
+        }
+        protected override void EndProcessing()
+        {
+            Find<ActivityStream>(ActivityStream.PATH);
+        }
     }
 }

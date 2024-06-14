@@ -10,8 +10,7 @@ namespace AnsibleTower.Cmdlets
         const string Path = "/api/v2/ping/";
         protected override void EndProcessing()
         {
-            Uri uri = new(ApiConfig.Instance.Origin, Path);
-            var pong = GetResource<Ping>(uri);
+            var pong = GetResource<Ping>(Path);
             WriteObject(pong);
         }
     }

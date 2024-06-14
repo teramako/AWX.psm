@@ -1,27 +1,35 @@
 ﻿using AnsibleTower.Resources;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Management.Automation;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace AnsibleTower.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "JobTemplate")]
     [OutputType(typeof(JobTemplate))]
-    public class GetJobTemplate : GetCmdletBase<JobTemplate>
+    public class GetJobTemplate : GetCmdletBase
     {
+        protected override void ProcessRecord()
+        {
+            foreach (var id in Id)
+            {
+                IdSet.Add(id);
+            }
+        }
+        protected override void EndProcessing()
+        {
+            Query.Add("id__in", string.Join(',', IdSet));
+            Query.Add("page_size", $"{IdSet.Count}");
+            foreach (var resultSet in GetResultSet<JobTemplate>($"{JobTemplate.PATH}?{Query}", true))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
     }
 
     [Cmdlet(VerbsCommon.Find, "JobTemplate", DefaultParameterSetName = "All")]
     [OutputType(typeof(JobTemplate))]
-    public class FindJobTemplateCommand : FindCmdletBase<JobTemplate>
+    public class FindJobTemplateCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
@@ -41,7 +49,11 @@ namespace AnsibleTower.Cmdlets
             {
                 Query.Add("name__in", string.Join(',', Name));
             }
-            base.BeginProcessing();
+            SetupCommonQuery();
+        }
+        protected override void EndProcessing()
+        {
+            Find<JobTemplate>(JobTemplate.PATH);
         }
     }
 
@@ -76,8 +88,7 @@ namespace AnsibleTower.Cmdlets
             {
                 Id = JobTemplate.Id;
             }
-            Uri uri = new(ApiConfig.Instance.Origin, $"/api/v2/job_templates/{Id}/launch/");
-            var launchResult = CreateResource<JobTemplateLaunchResult>(uri, CreateSendData());
+            var launchResult = CreateResource<JobTemplateLaunchResult>($"/api/v2/job_templates/{Id}/launch/", CreateSendData());
             if (launchResult == null)
             {
                 return;

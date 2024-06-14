@@ -5,13 +5,29 @@ namespace AnsibleTower.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Organization")]
     [OutputType(typeof(Organization))]
-    public class GetOrganizationCommand : GetCmdletBase<Organization>
+    public class GetOrganizationCommand : GetCmdletBase
     {
+        protected override void ProcessRecord()
+        {
+            foreach (var id in Id)
+            {
+                IdSet.Add(id);
+            }
+        }
+        protected override void EndProcessing()
+        {
+            Query.Add("id__in", string.Join(',', IdSet));
+            Query.Add("page_size", $"{IdSet.Count}");
+            foreach (var resultSet in GetResultSet<Organization>($"{Organization.PATH}?{Query}", true))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
     }
 
     [Cmdlet(VerbsCommon.Find, "Organization", DefaultParameterSetName = "All")]
     [OutputType(typeof(Organization))]
-    public class FindOrganizationCommand : FindCmdletBase<Organization>
+    public class FindOrganizationCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
@@ -30,7 +46,11 @@ namespace AnsibleTower.Cmdlets
             {
                 Query.Add("name__in", string.Join(",", Name));
             }
-            base.BeginProcessing();
+            SetupCommonQuery();
+        }
+        protected override void EndProcessing()
+        {
+            Find<Organization>(Organization.PATH);
         }
     }
 }

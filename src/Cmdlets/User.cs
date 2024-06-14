@@ -12,7 +12,7 @@ namespace AnsibleTower.Cmdlets
         private Uri RequestUri { get; set; } = new(ApiConfig.Instance.Origin, Path);
         protected override void EndProcessing()
         {
-            foreach (var resultSet in GetResultSet<User>(RequestUri, true))
+            foreach (var resultSet in GetResultSet<User>(Path, true))
             {
                 WriteObject(resultSet.Results, true);
             }
@@ -21,13 +21,29 @@ namespace AnsibleTower.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "User")]
     [OutputType(typeof(User))]
-    public class GetUserCommand : GetCmdletBase<User>
+    public class GetUserCommand : GetCmdletBase
     {
+        protected override void ProcessRecord()
+        {
+            foreach (var id in Id)
+            {
+                IdSet.Add(id);
+            }
+        }
+        protected override void EndProcessing()
+        {
+            Query.Add("id__in", string.Join(',', IdSet));
+            Query.Add("page_size", $"{IdSet.Count}");
+            foreach (var resultSet in GetResultSet<User>($"{User.PATH}?{Query}", true))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
     }
 
     [Cmdlet(VerbsCommon.Find, "User", DefaultParameterSetName = "All")]
     [OutputType(typeof(User))]
-    public class FindUserCommand : FindCmdletBase<User>
+    public class FindUserCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
@@ -56,6 +72,10 @@ namespace AnsibleTower.Cmdlets
                 Query.Add("email", string.Join(",", Email));
             }
             SetupCommonQuery();
+        }
+        protected override void EndProcessing()
+        {
+            Find<User>(User.PATH);
         }
     }
 }

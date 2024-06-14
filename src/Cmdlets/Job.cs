@@ -1,23 +1,34 @@
 ﻿using AnsibleTower.Resources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnsibleTower.Cmdlets
 {
 
     [Cmdlet(VerbsCommon.Get, "Job")]
     [OutputType(typeof(JobTemplateJob.Detail))]
-    public class GetJobTemplateJob : GetCmdletBase<JobTemplateJob.Detail>
+    public class GetJobTemplateJobCommand : GetCmdletBase
     {
+        protected override void ProcessRecord()
+        {
+            foreach (var id in Id)
+            {
+                if (!IdSet.Add(id))
+                {
+                    // skip already processed
+                    continue;
+                }
+                var res = GetResource<JobTemplateJob.Detail>($"{JobTemplateJob.PATH}{Id}/");
+                if (res != null)
+                {
+                    WriteObject(res);
+                }
+            }
+        }
     }
 
     [Cmdlet(VerbsCommon.Find, "Job", DefaultParameterSetName = "All")]
     [OutputType(typeof(JobTemplateJob))]
-    public class FindJobTemplateJobCommand : FindCmdletBase<JobTemplateJob>
+    public class FindJobTemplateJobCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
@@ -39,6 +50,7 @@ namespace AnsibleTower.Cmdlets
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["!id"];
 
+
         protected override void BeginProcessing()
         {
             if (Name != null)
@@ -49,7 +61,11 @@ namespace AnsibleTower.Cmdlets
             {
                 Query.Add("status__in", string.Join(',', Status));
             }
-            base.BeginProcessing();
+            SetupCommonQuery();
+        }
+        protected override void EndProcessing()
+        {
+            Find<JobTemplateJob>(JobTemplateJob.PATH);
         }
     }
 }

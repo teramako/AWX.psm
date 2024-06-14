@@ -23,8 +23,24 @@ namespace AnsibleTower.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            Uri uri = CreateURI(APIv2RootPath, ResourceType.Stdout, Type, Id, Query);
-            var log = base.GetResource<Resources.JobLog>(uri);
+            var path = string.Empty;
+            switch (Type)
+            {
+                case ResourceType.Job:
+                    path = JobTemplateJob.PATH;
+                    break;
+                case ResourceType.ProjectUpdate:
+                    path = ProjectUpdateJob.PATH;
+                    break;
+                case ResourceType.InventoryUpdate:
+                    path = InventoryUpdateJob.PATH;
+                    break;
+                case ResourceType.SystemJob:
+                case ResourceType.AdHocCommand:
+                default:
+                    throw new NotImplementedException();
+            }
+            var log = base.GetResource<JobLog>($"{path}?{Query}");
             WriteObject(log?.Content);
         }
     }
