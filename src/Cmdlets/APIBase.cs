@@ -357,19 +357,6 @@ namespace AnsibleTower.Cmdlets
         {
             WriteError(new ErrorRecord(ex, "APIError", ErrorCategory.InvalidResult, ex.Response));
         }
-
-        private Sleep? _sleep;
-        protected void Sleep(int milliseconds)
-        {
-            using (_sleep = new Sleep())
-            {
-                _sleep.Do(milliseconds);
-            }
-        }
-        protected override void StopProcessing()
-        {
-            _sleep?.Stop();
-        }
     }
 
 }

@@ -155,6 +155,18 @@ namespace AnsibleTower.Cmdlets
 
             } while(jobTasks.Count != 0);
         }
+        private Sleep? _sleep;
+        protected void Sleep(int milliseconds)
+        {
+            using (_sleep = new Sleep())
+            {
+                _sleep.Do(milliseconds);
+            }
+        }
+        protected override void StopProcessing()
+        {
+            _sleep?.Stop();
+        }
     }
 
     class JobTask(IUnifiedJob job)
