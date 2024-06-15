@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Management.Automation;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AnsibleTower
@@ -16,18 +17,22 @@ namespace AnsibleTower
             Origin = new Uri($"{uri.Scheme}://{uri.Authority}");
             Token = token;
         }
+        public ApiConfig()
+        {
+        }
         /// <summary>
         /// The URL of AnsibleTower or AWX.<br/>
         /// Should be `<c>scheme</c>://<c>domain</c>[:<c>port</c>]`
         /// </summary>
         [JsonPropertyName("origin")]
-        public Uri Origin{ get; private set; }
+        public Uri Origin { get; private set; } = new Uri("http://localhost");
         /// <summary>
         /// Personal Access Token for OAuth.<br/>
         /// This token is assigned to the <c>Authorization</c> HTTP request header
         /// </summary>
         [JsonPropertyName("token")]
-        public string Token { get; private set; }
+        [Hidden]
+        public string Token { get; private set; } = string.Empty;
         [JsonPropertyName("last_saved")]
         public DateTime? LastSaved { get; private set; }
         /// <summary>
@@ -70,6 +75,11 @@ namespace AnsibleTower
             using var fs = fileInfo.OpenWrite();
             JsonSerializer.Serialize(fs, this);
         }
+        public static ApiConfig Load(ApiConfig config)
+        {
+            _instance = config;
+            return config;
+        }
         /// <summary>
         /// Load config from specified file
         /// </summary>
@@ -81,14 +91,13 @@ namespace AnsibleTower
         {
             if (!fileInfo.Exists)
             {
-                throw new FileNotFoundException($"Ansible Config is not found: {fileInfo.FullName}");
+                return Load(new ApiConfig());
             }
             using var fs = fileInfo.OpenRead();
             var config = JsonSerializer.Deserialize<ApiConfig>(fs)
                 ?? throw new Exception($"Could not load config.");
             config.File = fileInfo;
-            _instance = config;
-            return config;
+            return Load(config);
         }
         /// <summary>
         /// Load config file from default file (<see cref="DefaultConfigPath"/>)
