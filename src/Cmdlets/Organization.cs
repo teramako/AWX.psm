@@ -32,7 +32,10 @@ namespace AnsibleTower.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [ValidateSet(nameof(ResourceType.User))]
         public override ResourceType Type { get; set; }
+        [Parameter(ParameterSetName = "AssociatedWith")]
+        public SwitchParameter Admin { get; set; }
 
         [Parameter(Position = 0)]
         public string[]? Name { get; set; }
@@ -48,9 +51,14 @@ namespace AnsibleTower.Cmdlets
             }
             SetupCommonQuery();
         }
-        protected override void EndProcessing()
+        protected override void ProcessRecord()
         {
-            Find<Organization>(Organization.PATH);
+            var path = Organization.PATH;
+            if (Id > 0)
+            {
+                path = $"{User.PATH}{Id}/" + (Admin ? "admin_of_organizations/" : "organizations/");
+            }
+            Find<Organization>(path);
         }
     }
 }
