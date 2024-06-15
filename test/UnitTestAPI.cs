@@ -504,7 +504,7 @@ namespace API_Test
                 Console.WriteLine($"  {key} [{val?.Id}] {val?.Name} - {val?.Description}");
             }
             Console.WriteLine($"RelatedFieldCounts:");
-            Console.WriteLine($"  {summary.RelatedFieldCouns}");
+            Console.WriteLine($"  {summary.RelatedFieldCounts}");
         }
         private static void DumpResource(Organization org)
         {
@@ -547,7 +547,7 @@ namespace API_Test
     [TestClass]
     public class Test_User
     {
-        [TestMethod("Šù‘¶ƒ†[ƒU[‚Ìì¬‚ğs")]
+        [TestMethod("æ—¢å­˜ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ä½œæˆã‚’è©¦è¡Œ")]
         public async Task User_CreateError_1()
         {
             var user = new UserData()

@@ -50,7 +50,7 @@ namespace AnsibleTower.Resources
             [property: JsonPropertyName("modified_by")] UserSummary ModifiedBy,
             [property: JsonPropertyName("object_roles")] Dictionary<string, RoleSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            [property: JsonPropertyName("related_field_counts")] RelatedFieldCountsSummary RelatedFieldCouns);
+            [property: JsonPropertyName("related_field_counts")] RelatedFieldCountsSummary RelatedFieldCounts);
 
 
         public ulong Id { get; } = id;
