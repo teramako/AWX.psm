@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<JobType>))]
     public enum JobType

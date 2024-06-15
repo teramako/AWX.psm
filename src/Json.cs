@@ -1,15 +1,14 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
-using System.Runtime;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
-namespace AnsibleTower
+namespace AWX
 {
     public class Json
     {

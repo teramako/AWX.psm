@@ -1,7 +1,7 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     /// <summary>
     /// Resource Type

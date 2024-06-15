@@ -1,7 +1,7 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public interface IJobTemplateJob : IUnifiedJob
     {
@@ -58,7 +58,7 @@ namespace AnsibleTower.Resources
         string WebhookGuid { get; }
 
     }
-    
+
     [ResourceType(ResourceType.Job,
         Description = "JobTemplate's Job",
         CanAggregate = false)]

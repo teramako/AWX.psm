@@ -1,7 +1,7 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public interface IJobTemplate
     {
@@ -122,7 +122,7 @@ namespace AnsibleTower.Resources
         [JsonPropertyName("prevent_instance_group_fallback")]
         bool PreventInstanceGroupFallback { get; }
     }
-    
+
 
     [ResourceType(ResourceType.JobTemplate)]
     public class JobTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,

@@ -1,13 +1,11 @@
-﻿using AnsibleTower.Resources;
-using System.Collections.Frozen;
+using AWX.Resources;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
-namespace AnsibleTower
+namespace AWX
 {
     public enum AcceptType
     {
@@ -18,12 +16,12 @@ namespace AnsibleTower
         GET, POST, PUT, PATCH, DELETE, OPTIONS
     }
     /// <summary>
-    /// Rest API client for AnsibleTower or AWX.
+    /// Rest API client for AWX
     /// </summary>
     public class RestAPI
     {
         /// <summary>
-        /// Single HttpClient for AnsibleTower or AWX.
+        /// Single HttpClient for AWX
         /// </summary>
         static public HttpClient Client
         {
@@ -165,7 +163,7 @@ namespace AnsibleTower
             } while (all && !string.IsNullOrEmpty(nextPathAndQuery));
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Get">GET</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Get">GET</see> to AWX
         /// and deserialize the contents json to <typeparamref name="T"/>.<br/>
         /// <c>Accept</c> header will be set when:
         /// <list type="bullet"><paramref name="type"/> is <see cref="AcceptType.Json"/> => <c>application/json</c> (default)</list>
@@ -199,7 +197,7 @@ namespace AnsibleTower
             return await HandleResponse<T>(response);
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Get">GET</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Get">GET</see> to AWX
         /// and deserialize the contents json to <see cref="ResultSet{T}">ResultSet&lt;<typeparamref name="T"/>&gt;</see>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -234,7 +232,7 @@ namespace AnsibleTower
             } while (all && !string.IsNullOrEmpty(nextPathAndQuery));
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Options">OPTIONS</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Options">OPTIONS</see> to AWX
         /// for getting API help document.
         /// </summary>
         /// <param name="path"></param>
@@ -265,7 +263,7 @@ namespace AnsibleTower
             }
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Post">POST</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Post">POST</see> to AWX
         /// for creating resouce.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -280,7 +278,7 @@ namespace AnsibleTower
             return await HandleResponse<T>(response);
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Put">PUT</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Put">PUT</see> to AWX
         /// for replacing the whole of the resouce.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -295,7 +293,7 @@ namespace AnsibleTower
             return await HandleResponse<T>(response);
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Patch">PATCH</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Patch">PATCH</see> to AWX
         /// for replacing parts of the resouce.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -310,7 +308,7 @@ namespace AnsibleTower
             return await HandleResponse<T>(response);
         }
         /// <summary>
-        /// Request <see cref="HttpMethod.Delete">DELETE</see> to AnsibleTower or AWX
+        /// Request <see cref="HttpMethod.Delete">DELETE</see> to AWX
         /// for deleting the resource.
         /// </summary>
         /// <param name="path"></param>

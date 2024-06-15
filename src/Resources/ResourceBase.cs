@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ResourceTypeAttribute(ResourceType type) : Attribute

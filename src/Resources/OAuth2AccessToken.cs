@@ -1,6 +1,6 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public interface IOAuth2AccessToken
     {

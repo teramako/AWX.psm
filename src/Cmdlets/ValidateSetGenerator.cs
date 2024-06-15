@@ -1,8 +1,8 @@
-﻿using System.Management.Automation;
+using System.Management.Automation;
 using System.Reflection;
-using AnsibleTower.Resources;
+using AWX.Resources;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     public class EnumValidateSetGenerator<TEnum> : IValidateSetValuesGenerator
         where TEnum : Enum

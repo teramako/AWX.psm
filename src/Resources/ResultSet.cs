@@ -1,6 +1,6 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public class ResultSet(int count, string? next, string? previous, object[] results)
     {

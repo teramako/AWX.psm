@@ -1,9 +1,9 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Collections.Specialized;
 using System.Management.Automation;
 using System.Web;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "JobLog")]
     [OutputType(typeof(JobLog))]

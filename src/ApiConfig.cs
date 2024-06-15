@@ -1,8 +1,8 @@
-﻿using System.Management.Automation;
+using System.Management.Automation;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower
+namespace AWX
 {
     public class ApiConfig
     {
@@ -21,7 +21,7 @@ namespace AnsibleTower
         {
         }
         /// <summary>
-        /// The URL of AnsibleTower or AWX.<br/>
+        /// The URL of AWX.<br/>
         /// Should be `<c>scheme</c>://<c>domain</c>[:<c>port</c>]`
         /// </summary>
         [JsonPropertyName("origin")]

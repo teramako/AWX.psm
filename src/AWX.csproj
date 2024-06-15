@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>AnsibleTower</AssemblyName>
-    <RootNamespace>AnsibleTower</RootNamespace>
+    <AssemblyName>AWX.psm</AssemblyName>
+    <RootNamespace>AWX</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,4 +15,10 @@
     </Reference>
   </ItemGroup>
 
+  <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
+    <ItemGroup>
+      <PowerShellModules Include="*.psd1;*.ps1xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PowerShellModules)" DestinationFolder="$(OutDir)" />
+  </Target>
 </Project>

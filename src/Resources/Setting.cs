@@ -1,4 +1,4 @@
-﻿namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     /// <summary>
     /// <code>

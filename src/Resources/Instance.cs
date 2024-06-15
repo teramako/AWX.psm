@@ -1,7 +1,7 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     /// <summary>
     /// Role that this node plays in the mesh

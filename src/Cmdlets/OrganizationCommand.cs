@@ -1,7 +1,7 @@
-﻿using System.Management.Automation;
-using AnsibleTower.Resources;
+using System.Management.Automation;
+using AWX.Resources;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Organization")]
     [OutputType(typeof(Organization))]

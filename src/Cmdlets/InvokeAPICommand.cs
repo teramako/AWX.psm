@@ -1,4 +1,4 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Management.Automation;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Web;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsLifecycle.Invoke, "API", DefaultParameterSetName = "NonSendData")]
     public class InvokeAPICommand : APICmdletBase
@@ -175,7 +175,7 @@ namespace AnsibleTower.Cmdlets
                         string p5 = paths[5];
                         ResourcePathAttribute? p3Attr = null;
                         FieldInfo? resourceField = null;
-                        
+
                         foreach (var field in resourceType.GetFields())
                         {
                             var attr = field.GetCustomAttribute<ResourcePathAttribute>(false);

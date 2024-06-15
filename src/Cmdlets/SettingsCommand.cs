@@ -1,8 +1,8 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Collections.Specialized;
 using System.Management.Automation;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Setting")]
     [OutputType(typeof(Setting))]

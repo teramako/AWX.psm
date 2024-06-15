@@ -1,8 +1,8 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<JobEventEvent>))]
     public enum JobEventEvent

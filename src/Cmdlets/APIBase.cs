@@ -1,11 +1,11 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Collections.Frozen;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Management.Automation;
 using System.Web;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     public abstract class GetCmdletBase : APICmdletBase
     {
@@ -38,8 +38,7 @@ namespace AnsibleTower.Cmdlets
         /// <br/>
         /// To sort in reverse (Descending), add <c>"!"</c> prefix instead of <c>"-"</c>.
         /// <br/>
-        /// See: 
-        /// <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/sorting.html">
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/sorting.html">
         /// 4. Sorting — Automation Controller API Guide
         /// </a>
         /// </summary>
@@ -48,8 +47,7 @@ namespace AnsibleTower.Cmdlets
         /// <summary>
         /// <c>"search"</c> query parameter for API.
         /// <br/>
-        /// See: 
-        /// <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/searching.html">
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/searching.html">
         /// 5. Searching — Automation Controller API Guide
         /// </a>
         /// </summary>
@@ -60,8 +58,7 @@ namespace AnsibleTower.Cmdlets
         /// Max size of per page.
         /// This parameter is converted to <c>"page_size"</c> query parameter for API.
         /// <br/>
-        /// See: 
-        /// <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/pagination.html">
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/pagination.html">
         /// 7. Pagination — Automation Controller API Guide
         /// </a>
         /// </summary>
@@ -72,8 +69,7 @@ namespace AnsibleTower.Cmdlets
         /// <summary>
         /// <c>"page"</c> query parameter for API.
         /// <br/>
-        /// See: 
-        /// <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/pagination.html">
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/pagination.html">
         /// 7. Pagination — Automation Controller API Guide
         /// </a>
         /// </summary>

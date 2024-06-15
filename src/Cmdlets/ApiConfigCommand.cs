@@ -1,11 +1,11 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
 
     [Cmdlet(VerbsCommon.Get, "ApiConfig")]

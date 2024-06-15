@@ -1,7 +1,7 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public interface ISystemJob : IUnifiedJob
     {
@@ -42,7 +42,7 @@ namespace AnsibleTower.Resources
         : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
                      executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
                      launchedBy, workUnitId),
-          ISystemJob, IResource<SystemJob.Summary> 
+          ISystemJob, IResource<SystemJob.Summary>
     {
         public new const string PATH = "/api/v2/system_jobs/";
         public static async Task<Detail> Get(ulong id)

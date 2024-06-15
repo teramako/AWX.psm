@@ -1,4 +1,4 @@
-﻿namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public class LaunchedBy(ulong? id, string type, string name, string url)
     {

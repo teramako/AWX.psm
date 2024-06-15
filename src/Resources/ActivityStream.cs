@@ -1,8 +1,7 @@
-﻿using System.Collections.Specialized;
-using System.Text.Json;
+using System.Collections.Specialized;
 using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<ActivityStreamOperation>))]
     public enum ActivityStreamOperation

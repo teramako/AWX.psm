@@ -1,4 +1,4 @@
-﻿namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
     internal class Sleep : IDisposable
     {

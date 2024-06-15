@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     public class JobTemplateLaunchResult(ulong job, Dictionary<string, object?> ignoreFields,
                                          ulong id, ResourceType type, string url, RelatedDictionary related,

@@ -1,7 +1,7 @@
-﻿using AnsibleTower.Resources;
+using AWX.Resources;
 using System.Management.Automation;
 
-namespace AnsibleTower.Cmdlets
+namespace AWX.Cmdlets
 {
 
     [Cmdlet(VerbsCommon.Get, "Job")]

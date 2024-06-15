@@ -1,8 +1,7 @@
-﻿using System.Collections.Frozen;
+using System.Collections.Frozen;
 using System.Net;
-using System.Text.Json;
 
-namespace AnsibleTower
+namespace AWX
 {
     public interface IRestAPIResponse
     {

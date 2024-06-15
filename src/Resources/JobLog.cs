@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace AnsibleTower.Resources
+namespace AWX.Resources
 {
     [ResourceType(ResourceType.Stdout)]
     public class JobLog(JobLog.JobLogRange range, string content)
