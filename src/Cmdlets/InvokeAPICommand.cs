@@ -29,7 +29,6 @@ namespace AnsibleTower.Cmdlets
         [Parameter()]
         public SwitchParameter AsJson { get; set; }
 
-        private Uri? uri;
         private string pathAndQuery = string.Empty;
 
         protected override void BeginProcessing()
