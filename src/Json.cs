@@ -279,7 +279,7 @@ namespace AnsibleTower
             Converters =
             {
                 new LocalDateTimeConverter(),
-                // new DictConverter(),
+                new DictConverter(),
                 // new ArrayConverter()
             }
         };
