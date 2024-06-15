@@ -22,7 +22,7 @@ namespace AnsibleTower.Resources
                           ActivityStream.Summary summaryFields,
                           DateTime timestamp,
                           ActivityStreamOperation operation,
-                          IDictionary<string, object> changes,
+                          Dictionary<string, object?> changes,
                           string object1,
                           string object2,
                           string objectAssociation,
@@ -66,7 +66,7 @@ namespace AnsibleTower.Resources
         [JsonPropertyOrder(11)]
         public ActivityStreamOperation Operation { get; } = operation;
         [JsonPropertyOrder(12)]
-        public IDictionary<string, object> Changes { get; } = changes;
+        public Dictionary<string, object?> Changes { get; } = changes;
         [JsonPropertyOrder(13)]
         public string Object1 { get; } = object1;
         [JsonPropertyOrder(14)]
