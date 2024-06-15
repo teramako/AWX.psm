@@ -100,26 +100,34 @@ namespace AnsibleTower
         }
         /// <summary>
         /// Default config file
-        /// <list type="bullet">Windows: <c>%USEFPROIFLE%\.ansible_psm_config.json</c></list>
-        /// <list type="bullet">Linux, MacOS: <c>$HOME/.ansible_psm_config.json</c></list>
+        /// <list type="bullet">
+        /// <item><term>Windows</term><description><c>%USEFPROIFLE%\.ansible_psm_config.json</c></description></item>
+        /// <item><term>Linux, MacOS</term><description><c>$HOME/.ansible_psm_config.json</c></description></item>
+        /// </list>
         /// </summary>
         public static string DefaultConfigPath
         {
             get
             {
-                string fileName = ".ansible_psm_config.json";
+                var envPath = Environment.GetEnvironmentVariable(ENV_CONFIG);
+                if (!string.IsNullOrEmpty(envPath) && System.IO.File.Exists(envPath))
+                {
+                    return envPath;
+                }
                 switch (Environment.OSVersion.Platform)
                 {
                     case PlatformID.Unix:
                     case PlatformID.MacOSX:
-                        return Path.Join(Environment.GetEnvironmentVariable("HOME") ?? string.Empty, fileName);
+                        return Path.Join(Environment.GetEnvironmentVariable("HOME") ?? string.Empty, DEFULT_CONFIG_NAME);
                     case PlatformID.Win32NT:
-                        return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), fileName);
+                        return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), DEFULT_CONFIG_NAME);
                     default:
                         throw new NotSupportedException($"Not supported: {Environment.OSVersion.Platform}");
 
                 }
             }
         }
+        const string ENV_CONFIG = "ANSIBLE_API_CONFIG";
+        const string DEFULT_CONFIG_NAME = ".ansible_api_config.json";
     }
 }
