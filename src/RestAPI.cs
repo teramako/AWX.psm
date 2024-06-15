@@ -36,7 +36,10 @@ namespace AnsibleTower
                     BaseAddress = config.Origin,
                 };
                 _client.DefaultRequestHeaders.Add("Accept", "application/json");
-                _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.Token}");
+                if (!string.IsNullOrEmpty(config.Token))
+                {
+                    _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.Token}");
+                }
                 return _client;
             }
             private set
@@ -62,7 +65,10 @@ namespace AnsibleTower
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             client.DefaultRequestVersion = HttpVersion.Version11;
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.Token}");
+            if (!string.IsNullOrEmpty(config.Token))
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.Token}");
+            }
         }
         private static async Task<RestAPIException> CreateException(HttpResponseMessage response, string contentType)
         {
