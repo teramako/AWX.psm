@@ -49,7 +49,9 @@ namespace AnsibleTower.Cmdlets
         public override ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
-                     nameof(ResourceType.ActivityStream))]
+                     nameof(ResourceType.Team),
+                     nameof(ResourceType.Credential),
+                     nameof(ResourceType.Role))]
         public override ResourceType Type { get; set; }
 
         [Parameter(Position = 0)]
@@ -73,9 +75,33 @@ namespace AnsibleTower.Cmdlets
             }
             SetupCommonQuery();
         }
-        protected override void EndProcessing()
+        protected override void ProcessRecord()
         {
-            Find<User>(User.PATH);
+            var path = User.PATH;
+            if (Id > 0)
+            {
+                switch (Type)
+                {
+                    case ResourceType.Organization:
+                        path = $"{Organization.PATH}{Id}/users/";
+                        break;
+                    case ResourceType.Team:
+                        path = $"{Team.PATH}{Id}/users/";
+                        break;
+                    case ResourceType.Credential:
+                        path = $"{Credential.PATH}{Id}/owner_users/";
+                        break;
+                    case ResourceType.Role:
+                        path = $"{Role.PATH}{Id}/users/";
+                        break;
+                    default:
+                        WriteError(new ErrorRecord(new ArgumentException(nameof(Type)),
+                                                   "",
+                                                   ErrorCategory.InvalidArgument, Type));
+                        return;
+                }
+            }
+            Find<User>(path);
         }
     }
 }
