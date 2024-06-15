@@ -25,7 +25,7 @@ namespace AnsibleTower.Cmdlets
         }
         private Dictionary<string, object?>? GetSetting(string name)
         {
-            return GetResource<Dictionary<string, object?>>($"{BasePath}{name}");
+            return GetResource<Dictionary<string, object?>>($"{BasePath}{name}/");
         }
         private Setting[]? GetSettingList()
         {
