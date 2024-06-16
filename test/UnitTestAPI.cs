@@ -1451,6 +1451,47 @@ namespace API_Test
             }
         }
     }
+
+    [TestClass]
+    public class Test_AdHocCommand
+    {
+        private static void DumpResource(AdHocCommand res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Name}");
+            Console.WriteLine($"  {res.JobType} {res.Created} {res.Modified}");
+            Console.WriteLine($"  {res.ModuleName} {res.ModuleArgs}");
+            DumpSummary(res.SummaryFields);
+        }
+        private static void DumpSummary(AdHocCommand.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"Inventory          : [{summary.Inventory.Id}][{summary.Inventory.Kind}] {summary.Inventory.Name}");
+            Console.WriteLine($"ExecutionEnv       : [{summary.ExecutionEnvironment?.Id}] {summary.ExecutionEnvironment?.Name}");
+            Console.WriteLine($"Credential         : [{summary.Credential?.Id}] {summary.Credential?.Kind} {summary.Credential?.Name}");
+            Console.WriteLine($"InstanceGroup      : [{summary.InstanceGroup.Id}] {summary.InstanceGroup.Name}");
+            Console.WriteLine($"CreatedBy          : [{summary.CreatedBy?.Id}] {summary.CreatedBy?.Username}");
+            Console.WriteLine($"Caps               : {summary.UserCapabilities}");
+            Console.WriteLine();
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            var res = await AdHocCommand.Get(69);
+            Assert.IsInstanceOfType<AdHocCommand>(res);
+            Assert.IsInstanceOfType<AdHocCommand.Detail>(res);
+            DumpResource(res);
+        }
+        [TestMethod]
+        public async Task Get_2_List()
+        {
+            var query = HttpUtility.ParseQueryString("order_by=-id&page_size=2");
+            await foreach (var res in AdHocCommand.Find(query, false))
+            {
+                DumpResource(res);
+            }
+        }
+    }
+
     [TestClass]
     public class Test_SystemJobTemplate
     {
