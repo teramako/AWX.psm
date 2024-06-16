@@ -101,14 +101,14 @@ namespace AWX.Resources
                              JobStatus Status,
                              bool Failed,
                              double Elapsed,
-                             string Type);
+                             ResourceType Type);
     public record JobExSummary(ulong Id,
                                string Name,
                                string Description,
                                JobStatus Status,
                                bool Failed,
                                double Elapsed,
-                               string Type,
+                               ResourceType Type,
                                [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
                                [property: JsonPropertyName("job_template_name")] string JobTemplateName);
 
@@ -149,7 +149,7 @@ namespace AWX.Resources
     public record UnifiedJobTemplateSummary(ulong Id,
                                      string Name,
                                      string Description,
-                                     [property: JsonPropertyName("unified_job_type")] string UnifiedJobType)
+                                     [property: JsonPropertyName("unified_job_type")] ResourceType UnifiedJobType)
         : NameDescriptionSummary(Id, Name, Description);
     public record InstanceGroupSummary(ulong Id,
                                        string Name,
