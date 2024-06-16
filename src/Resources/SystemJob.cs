@@ -78,27 +78,17 @@ namespace AWX.Resources
                             string resultTraceback, bool eventProcessingFinished, LaunchedBy launchedBy,
                             string? workUnitId, ulong systemJobTemplate, string jobType, string extraVars,
                             string resultStdout)
-            : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
-                         started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
+            : SystemJob(id, type, url, related, summaryFields, created, modified, name, description, unifiedJobTemplate,
+                        launchType, status, executionEnvironment, failed, started, finished, canceledOn, elapsed,
+                        jobExplanation, executionNode, launchedBy, workUnitId, systemJobTemplate, jobType, extraVars, resultStdout),
               ISystemJob, IJobDetail, IResource<Summary>
         {
-
-            public RelatedDictionary Related { get; } = related;
-            public Summary SummaryFields { get; } = summaryFields;
-            public string Description { get; } = description;
-            public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
 
             public string JobArgs { get; } = jobArgs;
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
-            public string ExecutionNode { get; } = executionNode;
             public string ResultTraceback { get; } = resultTraceback;
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
-
-            public ulong SystemJobTemplate { get; } = systemJobTemplate;
-            public string JobType { get; } = jobType;
-            public string ExtraVars { get; } = extraVars;
-            public string ResultStdout { get; } = resultStdout;
         }
 
         public RelatedDictionary Related { get; } = related;
