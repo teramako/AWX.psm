@@ -5,6 +5,9 @@ namespace AWX.Resources
 {
     public interface IProjectUpdateJob : IUnifiedJob
     {
+        string Description { get; }
+        [JsonPropertyName("unified_job_template")]
+        ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
 
@@ -44,9 +47,8 @@ namespace AWX.Resources
                                   string scmType, string scmUrl, string scmBranch, string scmRefspec, bool scmClean,
                                   bool scmTrackSubmodules, bool scmDeleteOnUpdate, ulong? credential, int timeout,
                                   string scmRevision, ulong project, JobType jobType, string jobTags)
-        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
-                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
-                     launchedBy, workUnitId),
+        : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
+                     started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
           IProjectUpdateJob, IResource<ProjectUpdateJob.Summary>
     {
         public new const string PATH = "/api/v2/project_updates/";
@@ -110,6 +112,8 @@ namespace AWX.Resources
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
+        public string Description { get; } = description;
+        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public string ExecutionNode { get; } = executionNode;
 
         public string LocalPath { get; } = localPath;

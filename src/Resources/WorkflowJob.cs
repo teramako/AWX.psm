@@ -5,6 +5,9 @@ namespace AWX.Resources
 {
     public interface IWorkflowJob : IUnifiedJob
     {
+        string Description { get; }
+        [JsonPropertyName("unified_job_template")]
+        ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("workflow_job_template")]
         ulong WorkflowJobTemplate { get; }
         [JsonPropertyName("extra_vars")]
@@ -47,9 +50,8 @@ namespace AWX.Resources
                              ulong? jobTemplate, bool isSlicedJob, ulong? inventory, string? limit, string? scmBranch,
                              string webhookService, ulong? webhookCredential, string webhookGuid, string? skipTags,
                              string? jobTags)
-        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
-                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
-                     launchedBy, workUnitId),
+        : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
+                     started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
           IWorkflowJob, IResource<WorkflowJob.Summary>
     {
         public new const string PATH = "/api/v2/workflow_jobs/";
@@ -79,6 +81,8 @@ namespace AWX.Resources
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
+        public string Description { get; } = description;
+        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public ulong WorkflowJobTemplate { get; } = workflowJobTemplate;
         public string ExtraVars { get; } = extraVars;
         public bool AllowSimultaneous { get; } = allowSimultaneous;

@@ -12,9 +12,6 @@ namespace AWX.Resources
         DateTime Created { get; }
         DateTime? Modified { get; }
         string Name { get; }
-        string Description { get; }
-        [JsonPropertyName("unified_job_template")]
-        ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("launch_type")]
         JobLaunchType LaunchType { get; }
         JobStatus Status { get; }
@@ -48,8 +45,6 @@ namespace AWX.Resources
                                      DateTime created,
                                      DateTime? modified,
                                      string name,
-                                     string description,
-                                     ulong unifiedJobTemplate,
                                      JobLaunchType launchType,
                                      JobStatus status,
                                      ulong? executionEnvironment,
@@ -72,8 +67,6 @@ namespace AWX.Resources
         public DateTime Created { get; } = created;
         public DateTime? Modified { get; } = modified;
         public string Name { get; } = name;
-        public string Description { get; } = description;
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public JobLaunchType LaunchType { get; } = launchType;
         public JobStatus Status { get; } = status;
         public ulong? ExecutionEnvironment { get; } = executionEnvironment;

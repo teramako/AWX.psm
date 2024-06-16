@@ -5,6 +5,9 @@ namespace AWX.Resources
 {
     public interface IInventoryUpdateJob : IUnifiedJob
     {
+        string Description { get; }
+        [JsonPropertyName("unified_job_template")]
+        ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("controller_node")]
         string ControllerNode { get; }
         InventorySourceSource Source { get; }
@@ -122,9 +125,8 @@ namespace AWX.Resources
                                     string? customVirtualenv, int timeout, int verbosity, string limit, ulong inventory,
                                     ulong inventorySource, bool licenseError, bool orgHostLimitError,
                                     ulong? sourceProjectUpdate, ulong? instanceGroup, string scmRevision)
-        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
-                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
-                     launchedBy, workUnitId),
+        : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
+                     started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
           IInventoryUpdateJob, IResource<InventoryUpdateJob.Summary>
     {
         public new const string PATH = "/api/v2/inventory_updates/";
@@ -159,6 +161,8 @@ namespace AWX.Resources
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
+        public string Description { get; } = description;
+        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public string ControllerNode { get; } = controllerNode;
         public string ExecutionNode { get; } = executionNode;
 

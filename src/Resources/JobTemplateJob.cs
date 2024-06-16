@@ -5,6 +5,9 @@ namespace AWX.Resources
 {
     public interface IJobTemplateJob : IUnifiedJob
     {
+        string Description { get; }
+        [JsonPropertyName("unified_job_template")]
+        ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
         [JsonPropertyName("controller_node")]
@@ -75,9 +78,8 @@ namespace AWX.Resources
                                 string[] passwordsNeededToStart, bool allowSimultaneous, OrderedDictionary artifacts,
                                 string scmRevision, ulong? instanceGroup, bool diffMode, int jobSliceNumber,
                                 int jobSliceCount, string webhookService, uint? webhookCredential, string webhookGuid)
-        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
-                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
-                     launchedBy, workUnitId),
+        : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
+                     started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
           IJobTemplateJob, IResource<JobTemplateJob.Summary>
     {
         public new const string PATH = "/api/v2/jobs/";
@@ -114,6 +116,8 @@ namespace AWX.Resources
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
+        public string Description { get; } = description;
+        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public string ExecutionNode { get; } = executionNode;
         public string ControllerNode { get; } = controllerNode;
 

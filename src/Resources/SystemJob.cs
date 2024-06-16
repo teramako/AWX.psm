@@ -5,6 +5,9 @@ namespace AWX.Resources
 {
     public interface ISystemJob : IUnifiedJob
     {
+        string Description { get; }
+        [JsonPropertyName("unified_job_template")]
+        ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
 
@@ -39,9 +42,8 @@ namespace AWX.Resources
                            DateTime? canceledOn, double elapsed, string jobExplanation, string executionNode,
                            LaunchedBy launchedBy, string? workUnitId, ulong systemJobTemplate, string jobType,
                            string extraVars, string resultStdout)
-        : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate, launchType, status,
-                     executionEnvironment, failed, started, finished, canceledOn, elapsed, jobExplanation,
-                     launchedBy, workUnitId),
+        : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
+                     started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
           ISystemJob, IResource<SystemJob.Summary>
     {
         public new const string PATH = "/api/v2/system_jobs/";
@@ -76,14 +78,15 @@ namespace AWX.Resources
                             string resultTraceback, bool eventProcessingFinished, LaunchedBy launchedBy,
                             string? workUnitId, ulong systemJobTemplate, string jobType, string extraVars,
                             string resultStdout)
-            : UnifiedJob(id, type, url, created, modified, name, description, unifiedJobTemplate,
-                         launchType, status, executionEnvironment, failed, started, finished, canceledOn,
-                         elapsed, jobExplanation, launchedBy, workUnitId),
+            : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
+                         started, finished, canceledOn, elapsed, jobExplanation, launchedBy, workUnitId),
               ISystemJob, IJobDetail, IResource<Summary>
         {
 
             public RelatedDictionary Related { get; } = related;
             public Summary SummaryFields { get; } = summaryFields;
+            public string Description { get; } = description;
+            public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
 
             public string JobArgs { get; } = jobArgs;
             public string JobCwd { get; } = jobCwd;
@@ -100,6 +103,8 @@ namespace AWX.Resources
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
+        public string Description { get; } = description;
+        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
 
         public string ExecutionNode { get; } = executionNode;
 
