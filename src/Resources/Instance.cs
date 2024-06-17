@@ -93,6 +93,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List instances for an Instance Group<br/>
+        /// API Path: <c>/api/v2/instance_groups/<paramref name="instanceGroupId"/>/instances/</c>
+        /// </summary>
+        /// <param name="instanceGroupId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Instance> FindFromInstanceGroup(ulong instanceGroupId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{InstanceGroup.PATH}{instanceGroupId}/instances/";
+            await foreach (var result in RestAPI.GetResultSetAsync<Instance>(path, query, getAll))
+            {
+                foreach (var instance in result.Contents.Results)
+                {
+                    yield return instance;
+                }
+            }
+        }
+
         public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
         public ulong Id { get; } = id;

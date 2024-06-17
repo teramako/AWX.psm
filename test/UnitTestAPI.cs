@@ -476,6 +476,15 @@ namespace API_Test
             }
             Assert.IsTrue(c <= expectCount);
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInstanceGroup()
+        {
+            await foreach(var inst in Instance.FindFromInstanceGroup(1))
+            {
+                Assert.IsInstanceOfType<Instance>(inst);
+                Console.WriteLine($"[{inst.Id}] {inst.Hostname} {inst.NodeType} {inst.NodeState}");
+            }
+        }
     }
     [TestClass]
     public class Test_InstanceGroup
