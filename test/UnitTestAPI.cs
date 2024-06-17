@@ -546,6 +546,71 @@ namespace API_Test
             }
             Assert.IsTrue(c <= expectCount);
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInstance()
+        {
+            await foreach (var ig in InstanceGroup.FindFromInstance(1))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromOranization()
+        {
+            await foreach (var ig in InstanceGroup.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromInventory()
+        {
+            await foreach (var ig in InstanceGroup.FindFromInventory(2))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromJobTemplate()
+        {
+            await foreach (var ig in InstanceGroup.FindFromJobTemplate(7))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromSchedule()
+        {
+            await foreach (var ig in InstanceGroup.FindFromSchedule(8))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_8_ListFromWorkflowJobTemplateNode()
+        {
+            await foreach (var ig in InstanceGroup.FindFromWorkflowJobTemplateNode(4))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_9_ListFromWorkflowJobNode()
+        {
+            await foreach (var ig in InstanceGroup.FindFromWorkflowJobNode(7))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
     }
     [TestClass]
     public class Test_Organization
