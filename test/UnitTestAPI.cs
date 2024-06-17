@@ -1453,6 +1453,37 @@ namespace API_Test
     }
 
     [TestClass]
+    public class Test_JobHostSummary
+    {
+        private static void DumpResource(JobHostSummary res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} [{res.Host}]{res.HostName} [Job:{res.Job}]");
+            Console.WriteLine($"  OK        : {res.OK}");
+            Console.WriteLine($"  Changed   : {res.Changed}");
+            Console.WriteLine($"  Failed    : {res.Failures}");
+            Console.WriteLine($"  Skiped    : {res.Skipped}");
+            Console.WriteLine($"  Ignored   : {res.Ignored}");
+            Console.WriteLine($"  Proecessed: {res.Processed}");
+            Console.WriteLine($"  Dark      : {res.Dark}");
+        }
+        private static void DumpSummary(JobHostSummary.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"Job         : [{summary.Job.Id}] {summary.Job.Name}");
+            Console.WriteLine($"JobTemplate : [{summary.Job.JobTemplateId}] {summary.Job.JobTemplateName}");
+            Console.WriteLine($"Host        : [{summary.Host?.Id}] {summary.Host?.Name}");
+        }
+        [TestMethod]
+        public async Task Test_Get_1_Single()
+        {
+            var res = await JobHostSummary.Get(1);
+            Assert.IsInstanceOfType<JobHostSummary>(res);
+            DumpResource(res);
+            DumpSummary(res.SummaryFields);
+        }
+    }
+
+    [TestClass]
     public class Test_AdHocCommand
     {
         private static void DumpResource(AdHocCommand res)
