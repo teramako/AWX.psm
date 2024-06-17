@@ -320,6 +320,24 @@ namespace API_Test
             }
             Assert.AreEqual(expectCount, c);
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(Application app in Application.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Application>(app);
+                Console.WriteLine($"{app.Id,5:d}: {app.Name} {app.Description}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var app in Application.FindFromUser(1, null))
+            {
+                Assert.IsInstanceOfType<Application>(app);
+                Console.WriteLine($"{app.Id,5:d}: {app.Name} {app.Description}");
+            }
+        }
 
     }
 
