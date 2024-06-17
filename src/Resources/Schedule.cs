@@ -54,9 +54,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Schedule>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var schedule in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return schedule;
                 }
             }
         }

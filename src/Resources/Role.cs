@@ -22,9 +22,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var role in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return role;
                 }
             }
         }

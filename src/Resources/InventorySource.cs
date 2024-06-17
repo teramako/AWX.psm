@@ -187,9 +187,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(PATH, query, getAll))
             {
-                foreach (var inventory in result.Contents.Results)
+                foreach (var inventorySource in result.Contents.Results)
                 {
-                    yield return inventory;
+                    yield return inventorySource;
                 }
             }
         }

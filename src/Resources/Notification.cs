@@ -38,9 +38,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Notification>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var notification in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return notification;
                 }
             }
         }

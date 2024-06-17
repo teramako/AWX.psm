@@ -99,9 +99,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobNode>(PATH, query, getAll))
             {
-                foreach (var res in result.Contents.Results)
+                foreach (var jobNode in result.Contents.Results)
                 {
-                    yield return res;
+                    yield return jobNode;
                 }
             }
         }

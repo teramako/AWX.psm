@@ -81,9 +81,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplateNode>(PATH, query, getAll))
             {
-                foreach (var res in result.Contents.Results)
+                foreach (var jobTemplateNode in result.Contents.Results)
                 {
-                    yield return res;
+                    yield return jobTemplateNode;
                 }
             }
         }

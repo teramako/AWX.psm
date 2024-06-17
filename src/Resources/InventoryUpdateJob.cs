@@ -140,9 +140,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return inventoryUpdateJob;
                 }
             }
         }

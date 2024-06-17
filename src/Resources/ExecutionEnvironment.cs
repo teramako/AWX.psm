@@ -61,9 +61,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var exeEnv in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return exeEnv;
                 }
             }
         }

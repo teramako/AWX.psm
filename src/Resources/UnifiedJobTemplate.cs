@@ -133,9 +133,9 @@ namespace AWX.Resources
             {
                 foreach (var obj in result.Contents.Results)
                 {
-                    if (obj is IUnifiedJobTemplate job)
+                    if (obj is IUnifiedJobTemplate jobTemplate)
                     {
-                        yield return job;
+                        yield return jobTemplate;
                     }
                 }
             }

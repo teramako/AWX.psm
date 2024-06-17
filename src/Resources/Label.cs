@@ -36,9 +36,9 @@ namespace AWX.Resources
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Label>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var label in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return label;
                 }
             }
         }
