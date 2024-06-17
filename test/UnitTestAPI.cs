@@ -504,7 +504,7 @@ namespace API_Test
                 Console.WriteLine($"  {key} [{val?.Id}] {val?.Name} - {val?.Description}");
             }
             Console.WriteLine($"RelatedFieldCounts:");
-            Console.WriteLine($"  {summary.RelatedFieldCouns}");
+            Console.WriteLine($"  {summary.RelatedFieldCounts}");
         }
         private static void DumpResource(Organization org)
         {
