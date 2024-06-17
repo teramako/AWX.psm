@@ -649,7 +649,7 @@ namespace API_Test
             Assert.IsInstanceOfType<Organization>(org);
             DumpResource(org);
             DumpSummary(org.SummaryFields);
-            Util.DumpObject(org);
+            // Util.DumpObject(org);
         }
         [TestMethod]
         public async Task Get_2_List()
@@ -666,6 +666,24 @@ namespace API_Test
                 DumpSummary(org.SummaryFields);
             }
             Assert.IsTrue(c <= expectCount);
+        }
+        [TestMethod]
+        public async Task Get_3_ListAdministeredFromUser()
+        {
+            await foreach (var org in Organization.FindAdministeredByUser(8))
+            {
+                Assert.IsInstanceOfType<Organization>(org);
+                Console.WriteLine($"[{org.Id}] {org.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach (var org in Organization.FindFromUser(8))
+            {
+                Assert.IsInstanceOfType<Organization>(org);
+                Console.WriteLine($"[{org.Id}] {org.Name}");
+            }
         }
 
     }
