@@ -1,12 +1,5 @@
 using System.Net;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Management.Automation;
 using System.Web;
-using System.Text.Json.Nodes;
-using System.Reflection;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace API_Test
 {
@@ -375,6 +368,46 @@ namespace API_Test
                 DumpToken(token);
                 DumpSummary(token.SummaryFields);
                 Console.WriteLine();
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromApplication()
+        {
+            await foreach(var token in OAuth2AccessToken.FindFromApplication(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var token in OAuth2AccessToken.FindFromUser(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListPersonalTokensFromUser()
+        {
+            await foreach(var token in OAuth2AccessToken.FindPersonalTokensFromUser(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListAuthorizedTokensFromUser()
+        {
+            await foreach(var token in OAuth2AccessToken.FindAuthorizedTokensFromUser(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
             }
         }
     }

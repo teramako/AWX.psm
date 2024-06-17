@@ -52,6 +52,93 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Access Tokens for an Application.<br/>
+        /// API Path: <c>/api/v2/applications/<paramref name="applicationId"/>/tokens/</c>
+        /// </summary>
+        /// <param name="applicationId">Application ID</param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<OAuth2AccessToken> FindFromApplication(ulong applicationId,
+                                                                                    NameValueCollection? query = null,
+                                                                                    bool getAll = false)
+        {
+            var path = $"{Resources.Application.PATH}{applicationId}/tokens/";
+            await foreach (var result in RestAPI.GetResultSetAsync<OAuth2AccessToken>(path, query, getAll))
+            {
+                foreach (var token in result.Contents.Results)
+                {
+                    yield return token;
+                }
+            }
+        }
+        /// <summary>
+        /// List Access Tokens for a User.<br/>
+        /// API Path: <c>/api/v2/users/<paramref name="userId"/>/tokens/</c>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<OAuth2AccessToken> FindFromUser(ulong userId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{Resources.User.PATH}{userId}/tokens/";
+            await foreach (var result in RestAPI.GetResultSetAsync<OAuth2AccessToken>(path, query, getAll))
+            {
+                foreach (var token in result.Contents.Results)
+                {
+                    yield return token;
+                }
+            }
+
+        }
+        /// <summary>
+        /// List Access Tokens for a User.<br/>
+        /// API Path: <c>/api/v2/users/<paramref name="userId"/>/personal_tokens/</c>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<OAuth2AccessToken> FindPersonalTokensFromUser(ulong userId,
+                                                                                           NameValueCollection? query = null,
+                                                                                           bool getAll = false)
+        {
+            var path = $"{Resources.User.PATH}{userId}/personal_tokens/";
+            await foreach (var result in RestAPI.GetResultSetAsync<OAuth2AccessToken>(path, query, getAll))
+            {
+                foreach (var token in result.Contents.Results)
+                {
+                    yield return token;
+                }
+            }
+
+        }
+        /// <summary>
+        /// List Access Tokens for a User.<br/>
+        /// API Path: <c>/api/v2/users/<paramref name="userId"/>/authorized_tokens/</c>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<OAuth2AccessToken> FindAuthorizedTokensFromUser(ulong userId,
+                                                                                             NameValueCollection? query = null,
+                                                                                             bool getAll = false)
+        {
+            var path = $"{Resources.User.PATH}{userId}/authorized_tokens/";
+            await foreach (var result in RestAPI.GetResultSetAsync<OAuth2AccessToken>(path, query, getAll))
+            {
+                foreach (var token in result.Contents.Results)
+                {
+                    yield return token;
+                }
+            }
+        }
+
         public record Summary(UserSummary User, NameSummary? Application = null);
 
 
