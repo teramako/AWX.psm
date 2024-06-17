@@ -69,6 +69,91 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Users for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/users/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindFromOrganization(ulong organizationId,
+                                                                        NameValueCollection? query = null,
+                                                                        bool getAll = false)
+        {
+            var path = $"{Organization.PATH}{organizationId}/users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+        /// <summary>
+        /// List Users for a Team.<br/>
+        /// API Path: <c>/api/v2/teams/<paramref name="teamId"/>/users/</c>
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindFromTeam(ulong teamId,
+                                                                NameValueCollection? query = null,
+                                                                bool getAll = false)
+        {
+            var path = $"{Team.PATH}{teamId}/users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+        /// <summary>
+        /// List Users for a Credential.<br/>
+        /// API Path: <c>/api/v2/credentials/<paramref name="credentialId"/>/owner_users/</c>
+        /// </summary>
+        /// <param name="credentialId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindOwnerFromCredential(ulong credentialId,
+                                                                           NameValueCollection? query = null,
+                                                                           bool getAll = false)
+        {
+            var path = $"{Credential.PATH}{credentialId}/owner_users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+        /// <summary>
+        /// List Users for a Role.<br/>
+        /// API Path: <c>/api/v2/roles/<paramref name="roleId"/>/users/</c>
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindFromRole(ulong roleId,
+                                                                NameValueCollection? query = null,
+                                                                bool getAll = false)
+        {
+            var path = $"{Role.PATH}{roleId}/users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+
         public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
         public ulong Id { get; } = id;

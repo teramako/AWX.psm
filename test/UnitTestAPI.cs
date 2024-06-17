@@ -789,7 +789,42 @@ namespace API_Test
             var user = await User.GetMe();
             Assert.IsInstanceOfType<User>(user);
             DumpResource(user);
-            DumpSummary(user.SummaryFields);
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromOrganization()
+        {
+            await foreach(var user in User.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromTeam()
+        {
+            await foreach(var user in User.FindFromTeam(1))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListOwnersFromCredential()
+        {
+            await foreach(var user in User.FindOwnerFromCredential(1))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromRole()
+        {
+            await foreach(var user in User.FindFromRole(1))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
         }
     }
     [TestClass]
