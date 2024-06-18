@@ -1155,19 +1155,127 @@ namespace API_Test
         }
 
         [TestMethod]
-        public async Task Get_1_Single()
+        public async Task Get_01_Single()
         {
             var cred = await Credential.Get(2);
             Assert.IsInstanceOfType<Credential>(cred);
             DumpResource(cred);
         }
         [TestMethod]
-        public async Task Get_2_List()
+        public async Task Get_02_List()
         {
             var query = HttpUtility.ParseQueryString("page_size=10&order_by=id");
             await foreach(var cred in Credential.Find(query, false))
             {
                 DumpResource(cred);
+            }
+        }
+        [TestMethod]
+        public async Task Get_03_ListFromOrganization()
+        {
+            await foreach(var cred in Credential.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_04_ListGalaxyFromOrganization()
+        {
+            await foreach(var cred in Credential.FindGalaxyFromOrganization(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_05_ListFromUser()
+        {
+            await foreach(var cred in Credential.FindFromUser(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_06_ListFromTeam()
+        {
+            await foreach(var cred in Credential.FindFromTeam(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_07_ListFromCredentialType()
+        {
+            await foreach(var cred in Credential.FindFromCredentialType(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_08_ListFromInventorySource()
+        {
+            await foreach(var cred in Credential.FindFromInventorySource(17))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_09_ListFromInventoryUpdate()
+        {
+            await foreach(var cred in Credential.FindFromInventoryUpdateJob(75))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_10_ListFromJobTemplate()
+        {
+            await foreach(var cred in Credential.FindFromJobTemplate(7))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_11_ListFromJob()
+        {
+            await foreach(var cred in Credential.FindFromJobTemplateJob(4))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_12_ListFromSchedule()
+        {
+            await foreach(var cred in Credential.FindFromSchedule(6))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_13_ListFromWorkflowJobTemplateNode()
+        {
+            await foreach(var cred in Credential.FindFromWorkflowJobTemplateNode(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_14_ListFromWorkflowJobNode()
+        {
+            await foreach(var cred in Credential.FindFromWorkflowJobNode(8))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
             }
         }
     }
