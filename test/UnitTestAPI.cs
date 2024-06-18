@@ -1659,6 +1659,61 @@ namespace API_Test
                 DumpResource(group);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(2);
+            Console.WriteLine($"Groups in [{inventory.Type}][{inventory.Id}] {inventory.Name}");
+            await foreach(var group in Group.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListOnlyRootFromInventory()
+        {
+            var inventory = await Inventory.Get(2);
+            Console.WriteLine($"Groups in [{inventory.Type}][{inventory.Id}] {inventory.Name}");
+            await foreach(var group in Group.FindOnlyRootFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromInventorySource()
+        {
+            var inventorySOurce = await InventorySource.Get(11);
+            Console.WriteLine($"Groups in [{inventorySOurce.Type}][{inventorySOurce.Id}] {inventorySOurce.Name}");
+            await foreach(var group in Group.FindFromInventorySource(inventorySOurce.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListAllFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"Groups in [{host.Type}][{host.Id}] {host.Name}");
+            await foreach(var group in Group.FindAllFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"Groups in [{host.Type}][{host.Id}] {host.Name}");
+            await foreach(var group in Group.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
     }
     [TestClass]
     public class Test_Host

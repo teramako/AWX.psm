@@ -52,6 +52,112 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Groups for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/groups/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Group> FindFromInventory(ulong inventoryId,
+                                                                      NameValueCollection? query = null,
+                                                                      bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/groups/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            {
+                foreach(var group in result.Contents.Results)
+                {
+                    yield return group;
+                }
+            }
+        }
+        /// <summary>
+        /// List Root Groups for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/root_groups/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Group> FindOnlyRootFromInventory(ulong inventoryId,
+                                                                              NameValueCollection? query = null,
+                                                                              bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/root_groups/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            {
+                foreach(var group in result.Contents.Results)
+                {
+                    yield return group;
+                }
+            }
+        }
+        /// <summary>
+        /// List Groups for an Inventory Source.<br/>
+        /// API Path: <c>/api/v2/inventory_sources/<paramref name="inventorySourceId"/>/groups/</c>
+        /// </summary>
+        /// <param name="inventorySourceId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Group> FindFromInventorySource(ulong inventorySourceId,
+                                                                            NameValueCollection? query = null,
+                                                                            bool getAll = false)
+        {
+            var path = $"{InventorySource.PATH}{inventorySourceId}/groups/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            {
+                foreach(var group in result.Contents.Results)
+                {
+                    yield return group;
+                }
+            }
+        }
+        /// <summary>
+        /// List All Groups for a Host.<br/>
+        /// API Path: <c>/api/v2/hosts/<paramref name="hostId"/>/all_hosts/</c>
+        /// </summary>
+        /// <param name="hostId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Group> FindAllFromHost(ulong hostId,
+                                                                    NameValueCollection? query = null,
+                                                                    bool getAll = false)
+        {
+            var path = $"{Host.PATH}{hostId}/all_groups/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            {
+                foreach(var group in result.Contents.Results)
+                {
+                    yield return group;
+                }
+            }
+        }
+        /// <summary>
+        /// List Groups for a Host.<br/>
+        /// API Path: <c>/api/v2/hosts/<paramref name="hostId"/>/hosts/</c>
+        /// </summary>
+        /// <param name="hostId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Group> FindFromHost(ulong hostId,
+                                                                 NameValueCollection? query = null,
+                                                                 bool getAll = false)
+        {
+            var path = $"{Host.PATH}{hostId}/groups/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            {
+                foreach(var group in result.Contents.Results)
+                {
+                    yield return group;
+                }
+            }
+        }
+
         public record Summary(
             InventorySummary Inventory,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
