@@ -1595,6 +1595,28 @@ namespace API_Test
                 DumpResource(res);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromProjectUpdate()
+        {
+            var projectUpdateJob = await ProjectUpdateJob.Get(76);
+            Console.WriteLine($"InventoryUpdateJobs for ([{projectUpdateJob.Id}][{projectUpdateJob.Type}] {projectUpdateJob.Name})");
+            await foreach(var res in InventoryUpdateJob.FindFromProjectUpdate(projectUpdateJob.Id))
+            {
+                Assert.IsInstanceOfType<InventoryUpdateJob>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name} {res.Status} {res.Finished}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromInventorySource()
+        {
+            var inventorySource = await InventorySource.Get(11);
+            Console.WriteLine($"InventoryUpdateJobs for ([{inventorySource.Id}][{inventorySource.Type}] {inventorySource.Name})");
+            await foreach(var res in InventoryUpdateJob.FindFromInventorySource(inventorySource.Id))
+            {
+                Assert.IsInstanceOfType<InventoryUpdateJob>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name} {res.Status} {res.Finished}");
+            }
+        }
     }
 
     [TestClass]

@@ -146,6 +146,50 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Inventory Updadates for a Project Update.<br/>
+        /// API Path: <c>/api/v2/project_update/<paramref name="projectUpdateId"/>/scm_inventory_updates/</c>
+        /// </summary>
+        /// <param name="projectUpdateId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventoryUpdateJob> FindFromProjectUpdate(ulong projectUpdateId,
+                                                                                       NameValueCollection? query = null,
+                                                                                       bool getAll = false)
+        {
+            var path = $"{ProjectUpdateJob.PATH}{projectUpdateId}/scm_inventory_updates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            {
+                foreach(var inventoryUpdateJob in result.Contents.Results)
+                {
+                    yield return inventoryUpdateJob;
+                }
+            }
+        }
+        /// <summary>
+        /// List Inventory Updadates for an Inventory Source.<br/>
+        /// API Path: <c>/api/v2/nventory_sources/<paramref name="inventorySourceId"/>/inventory_updates/</c>
+        /// </summary>
+        /// <param name="inventorySourceId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventoryUpdateJob> FindFromInventorySource(ulong inventorySourceId,
+                                                                                         NameValueCollection? query = null,
+                                                                                         bool getAll = false)
+        {
+            var path = $"{Resources.InventorySource.PATH}{inventorySourceId}/inventory_updates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            {
+                foreach(var inventoryUpdateJob in result.Contents.Results)
+                {
+                    yield return inventoryUpdateJob;
+                }
+            }
+        }
+
+
         public record Summary(
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
