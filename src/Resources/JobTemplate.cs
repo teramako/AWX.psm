@@ -161,6 +161,49 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Job Templates for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/job_templates/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobTemplate> FindFromOrganization(ulong organizationId,
+                                                                               NameValueCollection? query = null,
+                                                                               bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/job_templates/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(path, query, getAll))
+            {
+                foreach(var jobTemplate in result.Contents.Results)
+                {
+                    yield return jobTemplate;
+                }
+            }
+        }
+        /// <summary>
+        /// List Job Templates for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/job_templates/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobTemplate> FindFromInventory(ulong inventoryId,
+                                                                            NameValueCollection? query = null,
+                                                                            bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/job_templates/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(path, query, getAll))
+            {
+                foreach(var jobTemplate in result.Contents.Results)
+                {
+                    yield return jobTemplate;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             InventorySummary Inventory,

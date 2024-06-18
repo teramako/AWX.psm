@@ -1870,6 +1870,28 @@ namespace API_Test
                 DumpResource(jt);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            var org = await Organization.Get(2);
+            Console.WriteLine($"JobTemplates in ({org.Type})[{org.Id}] {org.Name}");
+            await foreach (var jt in JobTemplate.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<JobTemplate>(jt);
+                Console.WriteLine($"[{jt.Id}] {jt.Name} {jt.Status}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_listFromInventory()
+        {
+            var inv = await Inventory.Get(2);
+            Console.WriteLine($"JobTemplates in ({inv.Type})[{inv.Id}] {inv.Name}");
+            await foreach (var jt in JobTemplate.FindFromInventory(inv.Id))
+            {
+                Assert.IsInstanceOfType<JobTemplate>(jt);
+                Console.WriteLine($"[{jt.Id}] {jt.Name} {jt.Status}");
+            }
+        }
     }
     [TestClass]
     public class Test_Job
