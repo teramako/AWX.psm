@@ -1500,6 +1500,50 @@ namespace API_Test
                 DumpResource(res);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromProject()
+        {
+            var proj = await Project.Get(8);
+            Console.WriteLine($"Scm InventorySources for ([{proj.Type}][{proj.Id}] {proj.Name})");
+            await foreach(var res in InventorySource.FindFromProject(8))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(4);
+            Console.WriteLine($"InventorySources for ([{inventory.Type}][{inventory.Id}] {inventory.Name})");
+            await foreach(var res in InventorySource.FindFromInventory(4))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromGroup()
+        {
+            var group = await Group.Get(4);
+            Console.WriteLine($"InventorySources for ([{group.Type}][{group.Id}] {group.Name})");
+            await foreach(var res in InventorySource.FindFromGroup(4))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"InventorySources for ([{host.Type}][{host.Id}] {host.Name})");
+            await foreach(var res in InventorySource.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
     }
     [TestClass]
     public class Test_InventoryUpdate
