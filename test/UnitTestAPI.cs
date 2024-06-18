@@ -1046,6 +1046,72 @@ namespace API_Test
                 DumpResource(team);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(var team in Team.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var team in Team.FindFromUser(2))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromProject()
+        {
+            await foreach(var team in Team.FindFromProject(8))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_FindOwnerFromCredential()
+        {
+            await foreach(var team in Team.FindOwnerFromCredential(4))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_FindFromRole()
+        {
+            await foreach(var team in Team.FindFromRole(73))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+
+        }
     }
     [TestClass]
     public class Test_Credential
