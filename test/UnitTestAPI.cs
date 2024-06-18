@@ -1972,6 +1972,18 @@ namespace API_Test
             }
         }
         [TestMethod]
+        public async Task Get_3_ListFromJobtemplate()
+        {
+            var jt = await JobTemplate.Get(9);
+            Console.WriteLine($"Jobs in ({jt.Type})[{jt.Id}] {jt.Name}");
+            await foreach (var job in JobTemplateJob.FindFromJobTemplate(jt.Id))
+            {
+                Assert.IsInstanceOfType<JobTemplateJob>(job);
+                Console.WriteLine($"[{job.Id}] {job.Status} {job.Finished} {job.LaunchedBy}");
+            }
+        }
+
+        [TestMethod]
         public async Task JobLogTest_Text()
         {
             var apiResult = await RestAPI.GetAsync<string>($"/api/v2/jobs/{jobId}/stdout/", AcceptType.Text);

@@ -98,6 +98,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Jobs for a Job Template.<br/>
+        /// API Path: <c>/api/v2/job_templates/<paramref name="jobTemplateId"/>/jobs/</c>
+        /// </summary>
+        /// <param name="jobTemplateId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobTemplateJob> FindFromJobTemplate(ulong jobTemplateId,
+                                                                                 NameValueCollection? query = null,
+                                                                                 bool getAll = false)
+        {
+            var path = $"{Resources.JobTemplate.PATH}{jobTemplateId}/jobs/";
+            await foreach(var result in RestAPI.GetResultSetAsync<JobTemplateJob>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
