@@ -1766,6 +1766,50 @@ namespace API_Test
                 DumpResource(host);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(2);
+            Console.WriteLine($"Hosts in [{inventory.Type}][{inventory.Id}] {inventory.Name}");
+            await foreach(var host in Host.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromInventorySource()
+        {
+            var inventorySOurce = await InventorySource.Get(11);
+            Console.WriteLine($"Hosts in [{inventorySOurce.Type}][{inventorySOurce.Id}] {inventorySOurce.Name}");
+            await foreach(var host in Host.FindFromInventorySource(inventorySOurce.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListAllFromHost()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"Groups in [{group.Type}][{group.Id}] {group.Name}");
+            await foreach(var host in Host.FindAllFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromHost()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"Groups in [{group.Type}][{group.Id}] {group.Name}");
+            await foreach(var host in Host.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
     }
     [TestClass]
     public class Test_JobTemplate
