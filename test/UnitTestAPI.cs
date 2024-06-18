@@ -897,6 +897,40 @@ namespace API_Test
                 DumpResource(proj);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(var proj in Project.FindFromOrganization(1))
+            {
+                Assert.IsInstanceOfType<Project>(proj);
+                Console.WriteLine($"[{proj.Id}] {proj.Name} {proj.ScmType}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var proj in Project.FindFromUser(1))
+            {
+                Assert.IsInstanceOfType<Project>(proj);
+                Console.WriteLine($"[{proj.Id}] {proj.Name} {proj.ScmType}");
+            }
+
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromTeam()
+        {
+            await foreach(var proj in Project.FindFromTeam(1))
+            {
+                Assert.IsInstanceOfType<Project>(proj);
+                Console.WriteLine($"[{proj.Id}] {proj.Name} {proj.ScmType}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_GetInventoryFiles()
+        {
+            var files = await Project.GetInventoryFiles(8);
+            Console.WriteLine(string.Join('\n', files));
+        }
     }
 
     [TestClass]
