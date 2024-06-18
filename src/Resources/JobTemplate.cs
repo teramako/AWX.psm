@@ -161,20 +161,20 @@ namespace AWX.Resources
                 }
             }
         }
-    public record Summary(
-        NameDescriptionSummary Organization,
-        InventorySummary Inventory,
-        ProjectSummary Project,
-        [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-        [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-        [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-        [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-        [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
-        [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-        ListSummary<NameSummary> Labels,
-        [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment,
-        [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs,
-        JobTemplateCredentialSummary[] Credentials);
+        public record Summary(
+            NameDescriptionSummary Organization,
+            InventorySummary Inventory,
+            ProjectSummary Project,
+            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
+            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
+            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
+            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
+            [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
+            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
+            ListSummary<NameSummary> Labels,
+            [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment,
+            [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs,
+            JobTemplateCredentialSummary[] Credentials);
 
 
         public RelatedDictionary Related { get; } = related;
