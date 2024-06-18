@@ -1377,6 +1377,25 @@ namespace API_Test
                 DumpResource(inventory);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(var inventory in Inventory.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Inventory>(inventory);
+                Console.WriteLine($"[{inventory.Id}] {inventory.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListInputInventires()
+        {
+            Console.WriteLine("Inventory [4]'s Inpput Inventories:");
+            await foreach(var inventory in Inventory.FindInputInventoires(4))
+            {
+                Assert.IsInstanceOfType<Inventory>(inventory);
+                Console.WriteLine($"[{inventory.Id}] {inventory.Name}");
+            }
+        }
     }
     [TestClass]
     public class Test_ConstructedInventory

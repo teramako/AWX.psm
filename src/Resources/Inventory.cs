@@ -78,6 +78,49 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Inventories for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/inventories/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Inventory> FindFromOrganization(ulong organizationId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/inventories/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Inventory>(path, query, getAll))
+            {
+                foreach(var inventory in result.Contents.Results)
+                {
+                    yield return inventory;
+                }
+            }
+        }
+        /// <summary>
+        /// List Inventories for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/input_inventories/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Inventory> FindInputInventoires(ulong inventoryId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{PATH}{inventoryId}/input_inventories/";
+            await foreach(var result in RestAPI.GetResultSetAsync<Inventory>(path, query, getAll))
+            {
+                foreach(var inventory in result.Contents.Results)
+                {
+                    yield return inventory;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
