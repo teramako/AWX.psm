@@ -68,6 +68,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Project Updates for a Project.<br/>
+        /// API Path: <c>/api/v2/projects/<paramref name="projectId"/>/project_updates/</c>
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ProjectUpdateJob> FindFromProject(ulong projectId,
+                                                                               NameValueCollection? query = null,
+                                                                               bool getAll = false)
+        {
+            var path = $"{Resources.Project.PATH}{projectId}/project_updates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(path, query, getAll))
+            {
+                foreach(var projectUpdateJob in result.Contents.Results)
+                {
+                    yield return projectUpdateJob;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,

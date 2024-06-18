@@ -990,6 +990,16 @@ namespace API_Test
                 DumpSummary(job.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromProject()
+        {
+            await foreach(var job in ProjectUpdateJob.FindFromProject(8))
+            {
+                Assert.IsInstanceOfType<ProjectUpdateJob>(job);
+                Console.WriteLine($"[{job.Id}] {job.Name} {job.Finished}");
+                Console.WriteLine($"  {job.ScmType} {job.ScmRevision}");
+            }
+        }
     }
     [TestClass]
     public class Test_Team
