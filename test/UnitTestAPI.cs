@@ -2134,6 +2134,23 @@ namespace API_Test
                 }
             }
         }
+        [TestMethod]
+        public async Task Get_6_SystemJob()
+        {
+            var job = await SystemJob.Get(80);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
+            await foreach(var je in SystemJobEvent.FindFromSystemJob(job.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<SystemJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventDisplay}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
     }
 
     [TestClass]

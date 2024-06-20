@@ -92,6 +92,8 @@ namespace AWX.Resources
         SystemJobTemplate,
         [ResourcePath("system_jobs", typeof(SystemJob))]
         SystemJob,
+        [ResourcePath("system_job_event", typeof(SystemJobEvent))]
+        SystemJobEvent,
         [ResourcePath("schedules", typeof(Schedule))]
         Schedule,
         [ResourcePath("roles", typeof(Role))]
