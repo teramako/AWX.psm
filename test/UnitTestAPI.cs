@@ -2117,6 +2117,23 @@ namespace API_Test
                 }
             }
         }
+        [TestMethod]
+        public async Task Get_5_InventoryUpdate()
+        {
+            var job = await InventoryUpdateJob.Get(43);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
+            await foreach(var je in InventoryUpdateJobEvent.FindFromInventoryUpdateJob(job.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<InventoryUpdateJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventDisplay}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
     }
 
     [TestClass]
