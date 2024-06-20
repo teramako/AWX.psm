@@ -2151,6 +2151,22 @@ namespace API_Test
                 }
             }
         }
+        [TestMethod]
+        public async Task Get_7_AdHocCommandEvent()
+        {
+            var cmd = await AdHocCommand.Get(69);
+            Console.WriteLine($"AdHocCommand in ({cmd.Type})[{cmd.Id}] {cmd.Name} {cmd.Status}");
+            await foreach(var je in AdHocCommandJobEvent.FindFromAdHocCommand(cmd.Id))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<AdHocCommandJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventDisplay}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
     }
 
     [TestClass]

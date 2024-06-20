@@ -86,7 +86,7 @@ namespace AWX.Resources
         JobHostSummary,
         [ResourcePath("ad_hoc_commands")]
         AdHocCommand,
-        [ResourcePath("ad_hoc_command_events")]
+        [ResourcePath("ad_hoc_command_events", typeof(AdHocCommandJobEvent))]
         AdHocCommandEvent,
         [ResourcePath("system_job_templates", typeof(SystemJobTemplate))]
         SystemJobTemplate,
