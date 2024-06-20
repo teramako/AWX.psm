@@ -150,21 +150,70 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/job_events/";
 
-        public static async IAsyncEnumerable<JobEvent> Find(IUnifiedJob job, NameValueCollection? query, bool getAll = false)
+        /// <summary>
+        /// List Job Events for a Job.<br/>
+        /// API Path: <c>/api/v2/jobs/<paramref name="jobId"/>/job_events/</c>
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobEvent> FindFromJob(ulong jobId,
+                                                                   NameValueCollection? query = null,
+                                                                   bool getAll = false)
         {
-            var fieldInfo = typeof(ResourceType).GetField($"{job.Type}")
-                ??  throw new NullReferenceException("fieldInfo is null");
-            var attr = fieldInfo.GetCustomAttribute<ResourcePathAttribute>(false)
-                ?? throw new NullReferenceException($"{job.Type} has no {nameof(ResourcePathAttribute)}");;
-            var path = $"/api/v2/{attr.PathName}/{job.Id}/job_events/";
-            await foreach (var apiResult in RestAPI.GetResultSetAsync<JobEvent>(path, query, getAll))
+            var path = $"{JobTemplateJob.PATH}{jobId}/job_events/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobEvent>(path, query, getAll))
             {
-                foreach (var jobEvent in apiResult.Contents.Results)
+                foreach (var jobEvent in result.Contents.Results)
                 {
                     yield return jobEvent;
                 }
             }
         }
+        /// <summary>
+        /// List Job Events for a Group.<br/>
+        /// API Path: <c>/api/v2/groups/<paramref name="groupId"/>/job_events/</c>
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobEvent> FindFromGroup(ulong groupId,
+                                                                     NameValueCollection? query = null,
+                                                                     bool getAll = false)
+        {
+            var path = $"{Group.PATH}{groupId}/job_events/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobEvent>(path, query, getAll))
+            {
+                foreach (var jobEvent in result.Contents.Results)
+                {
+                    yield return jobEvent;
+                }
+            }
+        }
+        /// <summary>
+        /// List Job Events for a Host.<br/>
+        /// API Path: <c>/api/v2/hosts/<paramref name="hostId"/>/job_events/</c>
+        /// </summary>
+        /// <param name="hostId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobEvent> FindFromHost(ulong hostId,
+                                                                    NameValueCollection? query = null,
+                                                                    bool getAll = false)
+        {
+            var path = $"{Resources.Host.PATH}{hostId}/job_events/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobEvent>(path, query, getAll))
+            {
+                foreach (var jobEvent in result.Contents.Results)
+                {
+                    yield return jobEvent;
+                }
+            }
+        }
+
         public record Summary(NameDescriptionSummary? Host, JobExSummary Job, OrderedDictionary Role);
 
         public ulong Id { get; } = id;

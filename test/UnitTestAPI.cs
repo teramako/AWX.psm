@@ -2051,16 +2051,52 @@ namespace API_Test
             Console.WriteLine($"Role        : {{{summary.Role.Count}}}");
             Console.WriteLine();
         }
+
         [TestMethod]
-        public async Task Get_1_Jobs()
+        public async Task Get_1_FindFromJob()
         {
+            var job = await JobTemplateJob.Get(40);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
             var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
-            await foreach (var job in JobTemplateJob.Find(HttpUtility.ParseQueryString("order_by=-id&page_size=1"), false))
+            await foreach(var je in JobEvent.FindFromJob(job.Id, eventQuery))
             {
-                Console.WriteLine($"{job.Id} {job.Name}");
-                await foreach(var e in JobEvent.Find(job, eventQuery, false))
+                Assert.IsInstanceOfType<JobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
                 {
-                    DumpResource(e);
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_2_FindFromGroup()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"JobEvents in ({group.Type})[{group.Id}] {group.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=job,counter");
+            await foreach(var je in JobEvent.FindFromGroup(group.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<JobEvent>(je);
+                Console.WriteLine($"{je.Job} [{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_FindFromHost()
+        {
+            var host = await Host.Get(2);
+            Console.WriteLine($"JobEvents in ({host.Type})[{host.Id}] {host.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=job,counter");
+            await foreach(var je in JobEvent.FindFromHost(host.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<JobEvent>(je);
+                Console.WriteLine($"{je.Job} [{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
                 }
             }
         }
