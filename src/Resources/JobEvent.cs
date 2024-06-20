@@ -4,6 +4,22 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    public interface IJobEvent : IJobEventBase
+    {
+        [JsonPropertyName("event_level")]
+        int EventLevel { get; }
+        [JsonPropertyName("parent_uuid")]
+        string ParentUUID { get; }
+        ulong? Host { get; }
+        [JsonPropertyName("host_name")]
+        string HostName { get; }
+        string Playbook { get; }
+        string Play { get; }
+        string Task { get; }
+        string Role { get; }
+        ulong Job { get; }
+    }
+
     [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<JobEventEvent>))]
     public enum JobEventEvent
     {
@@ -125,12 +141,12 @@ namespace AWX.Resources
 
 
     public class JobEvent(ulong id, ResourceType type, string url, RelatedDictionary related,
-                          JobEvent.Summary summaryFields, DateTime created, DateTime? modifed, ulong job,
+                          JobEvent.Summary summaryFields, DateTime created, DateTime? modified, ulong job,
                           JobEventEvent @event, int counter, string eventDisplay, OrderedDictionary eventData,
                           int eventLevel, bool failed, bool changed, string uuid, string parentUUID, ulong? host,
                           string hostName, string playbook, string play, string task, string role, string stdout,
                           int startLine, int endLine, JobVerbosity verbosity)
-                : IResource<JobEvent.Summary>
+                : IJobEvent, IResource<JobEvent.Summary>
     {
         public const string PATH = "/api/v2/job_events/";
 
@@ -158,32 +174,25 @@ namespace AWX.Resources
         public Summary SummaryFields { get; } = summaryFields;
 
         public DateTime Created { get; } = created;
-        public DateTime? Modifed { get; } = modifed;
+        public DateTime? Modified { get; } = modified;
         public ulong Job { get; } = job;
         public JobEventEvent Event { get; } = @event;
         public int Counter { get; } = counter;
-        [JsonPropertyName("event_display")]
         public string EventDisplay { get; } = eventDisplay;
-        [JsonPropertyName("event_data")]
         public OrderedDictionary EventData { get; } = eventData;
-        [JsonPropertyName("event_level")]
         public int EventLevel { get; } = eventLevel;
         public bool Failed { get; } = failed;
         public bool Changed { get; } = changed;
         public string UUID { get; } = uuid;
-        [JsonPropertyName("parent_uuid")]
         public string ParentUUID { get; } = parentUUID;
         public ulong? Host { get; } = host;
-        [JsonPropertyName("host_name")]
         public string HostName { get; } = hostName;
         public string Playbook { get; } = playbook;
         public string Play { get; } = play;
         public string Task { get; } = task;
         public string Role { get; } = role;
         public string Stdout { get; } = stdout;
-        [JsonPropertyName("start_line")]
         public int StartLine { get; } = startLine;
-        [JsonPropertyName("end_line")]
         public int EndLine { get; } = endLine;
         public JobVerbosity Verbosity { get; } = verbosity;
     }
