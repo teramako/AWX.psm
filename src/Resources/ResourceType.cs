@@ -78,6 +78,8 @@ namespace AWX.Resources
         Job,
         [ResourcePath("job_events", typeof(JobEvent))]
         JobEvent,
+        [ResourcePath("project_update_event", typeof(ProjectUpdateJobEvent))]
+        ProjectUpdateEvent,
         [ResourcePath("job_host_summaries")]
         JobHostSummary,
         [ResourcePath("ad_hoc_commands")]

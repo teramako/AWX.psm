@@ -146,6 +146,9 @@ namespace AWX.Resources
                                  [property: JsonPropertyName("scm_type")] string ScmType,
                                  [property: JsonPropertyName("allow_override")] bool AllowOverride)
         : NameDescriptionSummary(Id, Name, Description);
+    public record ProjectUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
+        : NameDescriptionSummary(Id, Name, Description);
+
     public record UnifiedJobTemplateSummary(ulong Id,
                                      string Name,
                                      string Description,

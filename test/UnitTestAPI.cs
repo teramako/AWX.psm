@@ -2100,6 +2100,23 @@ namespace API_Test
                 }
             }
         }
+        [TestMethod]
+        public async Task Get_4_ProjectUpdate()
+        {
+            var job = await ProjectUpdateJob.Get(76);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
+            await foreach(var je in ProjectUpdateJobEvent.FindFromProjectUpdateJob(job.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<ProjectUpdateJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
     }
 
     [TestClass]
