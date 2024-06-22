@@ -2191,12 +2191,51 @@ namespace API_Test
             Console.WriteLine($"Host        : [{summary.Host?.Id}] {summary.Host?.Name}");
         }
         [TestMethod]
-        public async Task Test_Get_1_Single()
+        public async Task Get_1_Single()
         {
             var res = await JobHostSummary.Get(1);
             Assert.IsInstanceOfType<JobHostSummary>(res);
             DumpResource(res);
             DumpSummary(res.SummaryFields);
+        }
+        [TestMethod]
+        public async Task Get_2_ListFromGroup()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"JobHostSummaries in ({group.Type})[{group.Id}] {group.Name}");
+            await foreach(var summary in JobHostSummary.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<JobHostSummary>(summary);
+                Console.WriteLine($"{summary.Job} [{summary.Id}][{summary.Host}] {summary.HostName}");
+                Console.WriteLine($"  OK={summary.OK} Changed={summary.Changed} Failures={summary.Failures}");
+                Console.WriteLine($"  Rescued{summary.Rescued} Skipped={summary.Skipped}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromHost()
+        {
+            var host = await Host.Get(2);
+            Console.WriteLine($"JobHostSummaries in ({host.Type})[{host.Id}] {host.Name}");
+            await foreach(var summary in JobHostSummary.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<JobHostSummary>(summary);
+                Console.WriteLine($"{summary.Job} [{summary.Id}][{summary.Host}] {summary.HostName}");
+                Console.WriteLine($"  OK={summary.OK} Changed={summary.Changed} Failures={summary.Failures}");
+                Console.WriteLine($"  Rescued{summary.Rescued} Skipped={summary.Skipped}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromJob()
+        {
+            var job = await JobTemplateJob.Get(4);
+            Console.WriteLine($"JobHostSummaries in ({job.Type})[{job.Id}] {job.Name}");
+            await foreach(var summary in JobHostSummary.FindFromJob(job.Id))
+            {
+                Assert.IsInstanceOfType<JobHostSummary>(summary);
+                Console.WriteLine($"{summary.Job} [{summary.Id}][{summary.Host}] {summary.HostName}");
+                Console.WriteLine($"  OK={summary.OK} Changed={summary.Changed} Failures={summary.Failures}");
+                Console.WriteLine($"  Rescued{summary.Rescued} Skipped={summary.Skipped}");
+            }
         }
     }
 
