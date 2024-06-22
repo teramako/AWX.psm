@@ -57,6 +57,69 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Ad Hoc Commands for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<AdHocCommand> FindFromInventory(ulong inventoryId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/ad_hoc_commands/";
+            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+        /// <summary>
+        /// List Ad Hoc Commands for a Group.<br/>
+        /// API Path: <c>/api/v2/groups/<paramref name="groupId"/>/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<AdHocCommand> FindFromGroup(ulong groupId,
+                                                                         NameValueCollection? query = null,
+                                                                         bool getAll = false)
+        {
+            var path = $"{Group.PATH}{groupId}/ad_hoc_commands/";
+            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+        /// <summary>
+        /// List Ad Hoc Commands for a Host.
+        /// API Path: <c>/api/v2/hosts/<paramref name="hostId"/>/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="hostId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<AdHocCommand> FindFromHost(ulong hostId,
+                                                                        NameValueCollection? query = null,
+                                                                        bool getAll = false)
+        {
+            var path = $"{Host.PATH}{hostId}/ad_hoc_commands/";
+            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
 
         public record Summary(
             InventorySummary Inventory,

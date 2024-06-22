@@ -2277,6 +2277,39 @@ namespace API_Test
                 DumpResource(res);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(1);
+            Console.WriteLine($"AdHocCommands in ({inventory.Type})[{inventory.Id}] {inventory.Name}");
+            await foreach(var cmd in AdHocCommand.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<AdHocCommand>(cmd);
+                Console.WriteLine($"[{cmd.Id}] {cmd.Name}[{cmd.Status}] {cmd.Finished}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromFroup()
+        {
+            var group = await Group.Get(5);
+            Console.WriteLine($"AdHocCommands in ({group.Type})[{group.Id}] {group.Name}");
+            await foreach(var cmd in AdHocCommand.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<AdHocCommand>(cmd);
+                Console.WriteLine($"[{cmd.Id}] {cmd.Name}[{cmd.Status}] {cmd.Finished}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"AdHocCommands in ({host.Type})[{host.Id}] {host.Name}");
+            await foreach(var cmd in AdHocCommand.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<AdHocCommand>(cmd);
+                Console.WriteLine($"[{cmd.Id}] {cmd.Name}[{cmd.Status}] {cmd.Finished}");
+            }
+        }
     }
 
     [TestClass]
