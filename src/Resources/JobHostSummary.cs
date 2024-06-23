@@ -16,17 +16,6 @@ namespace AWX.Resources
             var apiResult = await RestAPI.GetAsync<JobHostSummary>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public static async IAsyncEnumerable<JobHostSummary> ListFromHost(ulong hostId, NameValueCollection query, bool getAll = false)
-        {
-            string path = $"{Resources.Host.PATH}{hostId}/";
-            await foreach(var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
-            {
-                foreach (var jobHostSummary in result.Contents.Results)
-                {
-                    yield return jobHostSummary;
-                }
-            }
-        }
         /// <summary>
         /// List Job Host Summaries for a Group.<br/>
         /// API Path: <c>/api/v2/groups/<paramref name="groupId"/>/job_host_summaries/</c>
