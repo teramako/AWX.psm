@@ -11,6 +11,12 @@ namespace AWX.Resources
                 : IResource<JobHostSummary.Summary>
     {
         public const string PATH = "/api/v2/job_host_summaries/";
+        /// <summary>
+        /// Retrieve a Job Host Summary.<br/>
+        /// API Path: <c>/api/v2/job_host_summaries/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<JobHostSummary> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<JobHostSummary>($"{PATH}{id}/");

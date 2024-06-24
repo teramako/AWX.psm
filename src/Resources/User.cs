@@ -41,7 +41,8 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/users/";
         /// <summary>
-        /// Retrieve information about the current User.
+        /// Retrieve information about the current User.<br/>
+        /// API Path: <c>/api/v2/me/</c>
         /// </summary>
         /// <returns></returns>
         public static async Task<User> GetMe()
@@ -50,7 +51,8 @@ namespace AWX.Resources
             return apiResult.Contents.Results.Single();
         }
         /// <summary>
-        /// Retrieve a User for the <paramref name="id"/>
+        /// Retrieve a User.<br/>
+        /// API Path: <c>/api/v2/users/<paramref name="id"/>/</c>
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -59,6 +61,13 @@ namespace AWX.Resources
             var apiResult = await RestAPI.GetAsync<User>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Users.<br/>
+        /// API Path: <c>/api/v2/users/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<User> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<User>(PATH, query, getAll))

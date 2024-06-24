@@ -13,11 +13,24 @@ namespace AWX.Resources
                 : IResource<Role.Summary>
     {
         public const string PATH = "/api/v2/roles/";
+        /// <summary>
+        /// Retrieve a Role.<br/>
+        /// API Path: <c>/api/v2/roles/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Role> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Role>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Roles.<br/>
+        /// API Path: <c>/api/v2/roles/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Role> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))

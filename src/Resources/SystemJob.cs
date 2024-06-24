@@ -34,11 +34,24 @@ namespace AWX.Resources
           ISystemJob, IResource<SystemJob.Summary>
     {
         public new const string PATH = "/api/v2/system_jobs/";
+        /// <summary>
+        /// Retrieve a System Job Template.<br/>
+        /// API Path: <c>/api/v2/system_job_templates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List System Job Templates.<br/>
+        /// API Path: <c>/api/v2/system_job_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public new static async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))

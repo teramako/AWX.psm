@@ -146,11 +146,24 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/job_templates/";
 
+        /// <summary>
+        /// Retrieve a Job Template.<br/>
+        /// API Path: <c>/api/v2/job_templates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<JobTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<JobTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Job Templates.<br/>
+        /// API Path: <c>/api/v2/job_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<JobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<JobTemplate>(PATH, query, getAll))

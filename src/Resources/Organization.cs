@@ -29,11 +29,24 @@ namespace AWX.Resources
         : IOrganization, IResource<Organization.Summary>
     {
         public const string PATH = "/api/v2/organizations/";
+        /// <summary>
+        /// Retrieve an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Organization> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Organization>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Organizations.<br/>
+        /// API Path: <c>/api/v2/organizations/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Organization> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<Organization>(PATH, query, getAll))

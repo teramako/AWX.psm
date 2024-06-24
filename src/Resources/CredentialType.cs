@@ -36,11 +36,24 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/credential_types/";
 
+        /// <summary>
+        /// Retrieve a Credential Type.<br/>
+        /// API Path: <c>/api/v2/credential_types/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<CredentialType> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<CredentialType>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Credential Types.<br/>
+        /// API Path: <c>/api/v2/credential_types/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<CredentialType> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<CredentialType>(PATH, query, getAll))

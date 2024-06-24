@@ -33,11 +33,24 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/teams/";
 
+        /// <summary>
+        /// Retrieve a Team.<br/>
+        /// API Path: <c>/api/v2/teams/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Team> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Team>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Teams.<br/>
+        /// API Path: <c>/api/v2/teams/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Team> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Team>(PATH, query, getAll))

@@ -31,11 +31,24 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/activity_stream/";
 
+        /// <summary>
+        /// Retrieve an Activity Stream.<br/>
+        /// API Path: <c>/api/v2/activity_stream/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<ActivityStream> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<ActivityStream>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Activity Sterams.<br/>
+        /// API Path: <c>/api/v2/activity_stream/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<ActivityStream> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<ActivityStream>(PATH, query, getAll))

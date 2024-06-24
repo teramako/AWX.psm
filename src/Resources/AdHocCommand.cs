@@ -42,11 +42,24 @@ namespace AWX.Resources
           IAdHocCommand, IResource<AdHocCommand.Summary>
     {
         public new const string PATH = "/api/v2/ad_hoc_commands/";
+        /// <summary>
+        /// Retrieve an Ad Hoc Command.<br/>
+        /// API Path: <c>/api/v2/ad_hoc_commands/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Ad Hoc Commands.<br/>
+        /// API Path: <c>/api/v2/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<AdHocCommand> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(PATH, query, getAll))

@@ -78,11 +78,24 @@ namespace AWX.Resources
         : IInstance, IResource<Instance.Summary>
     {
         public const string PATH = "/api/v2/instances/";
+        /// <summary>
+        /// Retrieve an Instance.<br/>
+        /// API Path: <c>/api/v2/instances/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Instance> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Instance>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Instances.<br/>
+        /// API Path: <c>/api/v2/instances/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Instance> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<Instance>(PATH, query, getAll))

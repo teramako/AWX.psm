@@ -29,11 +29,24 @@ namespace AWX.Resources
                 : INotification, IResource<Notification.Summary>
     {
         public const string PATH = "/api/v2/notifications/";
+        /// <summary>
+        /// Retrieve a Notification.<br/>
+        /// API Path: <c>/api/v2/notifications/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Notification> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Notification>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Notifications.<br/>
+        /// API Path: <c>/api/v2/notifications/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Notification> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Notification>(PATH, query, getAll))

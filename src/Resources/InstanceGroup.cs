@@ -49,11 +49,24 @@ namespace AWX.Resources
         : IInstanceGroup, IResource<InstanceGroup.Summary>
     {
         public const string PATH = "/api/v2/instance_groups/";
+        /// <summary>
+        /// Retrieve an Instance Group.<br/>
+        /// API Path: <c>api/v2/instance_groups/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<InstanceGroup> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<InstanceGroup>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Instance Groups.<br/>
+        /// API Path: <c>/api/v2/instance_groups/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<InstanceGroup> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<InstanceGroup>(PATH, query, getAll))

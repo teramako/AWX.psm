@@ -72,11 +72,24 @@ namespace AWX.Resources
                 : IWorkflowJobTemplateNode, IResource<WorkflowJobTemplateNode.Summary>
     {
         public const string PATH = "/api/v2/workflow_job_template_nodes/";
+        /// <summary>
+        /// Retrieve a Workflow Job Template Node.<br/>
+        /// API Path: <c>/api/v2/workflow_job_template_nodes/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<WorkflowJobTemplateNode> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJobTemplateNode>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Workflow Job Template Nodes.<br/>
+        /// API Path: <c>/api/v2/workflow_job_templates_nodes/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<WorkflowJobTemplateNode> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplateNode>(PATH, query, getAll))

@@ -131,11 +131,24 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/inventory_updates/";
 
+        /// <summary>
+        /// Retrieve an Inventory Update.<br/>
+        /// API Path: <c>/api/v2/inventory_updates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<InventoryUpdateJob> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<InventoryUpdateJob>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Inventory Updates.<br/>
+        /// API Path: <c>/api/v2/inventory_updates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<InventoryUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))

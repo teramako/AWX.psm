@@ -37,11 +37,24 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/groups/";
 
+        /// <summary>
+        /// Retrieve a Group.<br/>
+        /// API Path: <c>/api/v2/groups/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Group> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Group>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Groups.<br/>
+        /// API Path: <c>/api/v2/groups/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Group> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Group>(PATH, query, getAll))

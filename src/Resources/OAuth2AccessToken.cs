@@ -37,11 +37,24 @@ namespace AWX.Resources
             : IOAuth2AccessToken, IResource<OAuth2AccessToken.Summary>
     {
         public const string PATH = "/api/v2/tokens/";
+        /// <summary>
+        /// Retieve an Access Token.<br/>
+        /// API Path: <c>/api/v2/tokens/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<OAuth2AccessToken> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<OAuth2AccessToken>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Assess Tokens.<br/>
+        /// API Path: <c>/api/v2/tokens/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<OAuth2AccessToken> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<OAuth2AccessToken>(PATH, query, getAll))

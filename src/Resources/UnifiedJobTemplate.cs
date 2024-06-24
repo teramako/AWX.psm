@@ -127,6 +127,13 @@ namespace AWX.Resources
             var apiResult = await RestAPI.GetAsync<ResultSet>($"{PATH}?{query}");
             return apiResult.Contents.Results.OfType<IUnifiedJobTemplate>().ToArray();
         }
+        /// <summary>
+        /// List Unified Job Templates.<br/>
+        /// API Path: <c>/api/v2/unified_job_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<IUnifiedJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync(PATH, query, getAll))

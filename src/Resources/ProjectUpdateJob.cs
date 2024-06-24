@@ -53,11 +53,24 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/project_updates/";
 
+        /// <summary>
+        /// Retrieve a Project Update.<br/>
+        /// API Path: <c>/api/v2/project_updates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Project Updages.<br/>
+        /// API Path: <c>/api/v2/project_updates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<ProjectUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(PATH, query, getAll))

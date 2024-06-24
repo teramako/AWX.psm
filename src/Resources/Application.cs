@@ -65,11 +65,24 @@ namespace AWX.Resources
         : IApplication, IResource<Application.Summary>
     {
         public const string PATH = "/api/v2/applications/";
+        /// <summary>
+        /// Retieve an Application.<br/>
+        /// API Path: <c>/api/v2/applications/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Application> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Application>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Applications.<br/>
+        /// API Path: <c>/api/v2/applications/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Application> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<Application>(PATH, query, getAll))

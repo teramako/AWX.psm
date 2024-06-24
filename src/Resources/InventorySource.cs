@@ -178,11 +178,24 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/inventory_sources/";
 
+        /// <summary>
+        /// Retrieve an Inventory Source.<br/>
+        /// API Path: <c>/api/v2/inventory_sources/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<InventorySource> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<InventorySource>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Inventory Sources.<br/>
+        /// API Path: <c>/api/v2/inventory_sources/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<InventorySource> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(PATH, query, getAll))
