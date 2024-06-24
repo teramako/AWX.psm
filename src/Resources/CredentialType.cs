@@ -64,8 +64,8 @@ namespace AWX.Resources
                 }
             }
         }
-    public record Summary(
-        [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(
+            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
 
         public ulong Id { get; } = id;
