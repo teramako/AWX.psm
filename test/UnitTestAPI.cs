@@ -258,7 +258,50 @@ namespace API_Test
             }
             Assert.AreEqual(expectCount, c);
         }
-
+        [TestMethod]
+        public async Task Get_3_ListFromApplication()
+        {
+            var app = await Application.Get(1);
+            Console.WriteLine($"ActivityStream for ([{app.Id}][{app.Type}] {app.Name})");
+            await foreach(var activity in ActivityStream.FindFromApplication(app.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromToken()
+        {
+            var token = await OAuth2AccessToken.Get(1);
+            Console.WriteLine($"ActivityStream for ([{token.Id}][{token.Type}] {token.Description})");
+            await foreach(var activity in ActivityStream.FindFromToken(token.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromOrganization()
+        {
+            var org = await Organization.Get(1);
+            Console.WriteLine($"ActivityStream for ([{org.Id}][{org.Type}] {org.Name})");
+            await foreach(var activity in ActivityStream.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromUser()
+        {
+            var user = await User.Get(1);
+            Console.WriteLine($"ActivityStream for ([{user.Id}][{user.Type}] {user.Username})");
+            await foreach(var activity in ActivityStream.FindFromUser(user.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
     }
     [TestClass]
     public class Test_Application
