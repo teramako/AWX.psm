@@ -143,6 +143,111 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Activity Stream for a Project.<br/>
+        /// API Path: <c>/api/v2/projects/<paramref name="projectId"/>/activity_stream/</c>
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ActivityStream> FindFromProject(ulong projectId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{Project.PATH}{projectId}/activity_stream/";
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(path, query, getAll))
+            {
+                foreach (var activity in result.Contents.Results)
+                {
+                    yield return activity;
+                }
+            }
+        }
+        /// <summary>
+        /// List Activity Stream for a Team.<br/>
+        /// API Path: <c>/api/v2/teams/<paramref name="teamId"/>/activity_stream/</c>
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ActivityStream> FindFromTeam(ulong teamId,
+                                                                          NameValueCollection? query = null,
+                                                                          bool getAll = false)
+        {
+            var path = $"{Team.PATH}{teamId}/activity_stream/";
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(path, query, getAll))
+            {
+                foreach (var activity in result.Contents.Results)
+                {
+                    yield return activity;
+                }
+            }
+        }
+        /// <summary>
+        /// List Activity Stream for a Credential.<br/>
+        /// API Path: <c>/api/v2/credentials/<paramref name="credentialId"/>/activity_stream/</c>
+        /// </summary>
+        /// <param name="credentialId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ActivityStream> FindFromCredential(ulong credentialId,
+                                                                                NameValueCollection? query = null,
+                                                                                bool getAll = false)
+        {
+            var path = $"{Credential.PATH}{credentialId}/activity_stream/";
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(path, query, getAll))
+            {
+                foreach (var activity in result.Contents.Results)
+                {
+                    yield return activity;
+                }
+            }
+        }
+        /// <summary>
+        /// List Activity Stream for a CredentialType.<br/>
+        /// API Path: <c>/api/v2/credential_types/<paramref name="credentialTypeId"/>/activity_stream/</c>
+        /// </summary>
+        /// <param name="credentialTypeId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ActivityStream> FindFromCredentialType(ulong credentialTypeId,
+                                                                                NameValueCollection? query = null,
+                                                                                bool getAll = false)
+        {
+            var path = $"{CredentialType.PATH}{credentialTypeId}/activity_stream/";
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(path, query, getAll))
+            {
+                foreach (var activity in result.Contents.Results)
+                {
+                    yield return activity;
+                }
+            }
+        }
+        /// <summary>
+        /// List Activity Stream for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/activity_stream/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ActivityStream> FindFromInventory(ulong inventoryId,
+                                                                               NameValueCollection? query = null,
+                                                                               bool getAll = false)
+        {
+            var path = $"{Inventory.PATH}{inventoryId}/activity_stream/";
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(path, query, getAll))
+            {
+                foreach (var activity in result.Contents.Results)
+                {
+                    yield return activity;
+                }
+            }
+        }
         public class Summary(UserSummary? actor)
         {
             public UserSummary? Actor { get; set; } = actor;

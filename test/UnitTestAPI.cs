@@ -302,6 +302,61 @@ namespace API_Test
                 Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
             }
         }
+        [TestMethod]
+        public async Task Get_7_ListFromProject()
+        {
+            var proj = await Project.Get(8);
+            Console.WriteLine($"ActivityStream for ([{proj.Id}][{proj.Type}] {proj.Name})");
+            await foreach(var activity in ActivityStream.FindFromProject(proj.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_8_ListFromTeam()
+        {
+            var team = await Team.Get(1);
+            Console.WriteLine($"ActivityStream for ([{team.Id}][{team.Type}] {team.Name})");
+            await foreach(var activity in ActivityStream.FindFromTeam(team.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_9_ListFromCredential()
+        {
+            var cred = await Credential.Get(1);
+            Console.WriteLine($"ActivityStream for ([{cred.Id}][{cred.Type}] {cred.Name})");
+            await foreach(var activity in ActivityStream.FindFromCredential(cred.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_10_ListFromCredentialType()
+        {
+            var credType = await CredentialType.Get(29);
+            Console.WriteLine($"ActivityStream for ([{credType.Id}][{credType.Type}] {credType.Name})");
+            await foreach(var activity in ActivityStream.FindFromCredentialType(credType.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_11_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(1);
+            Console.WriteLine($"ActivityStream for ([{inventory.Id}][{inventory.Type}] {inventory.Name})");
+            await foreach(var activity in ActivityStream.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
     }
     [TestClass]
     public class Test_Application
