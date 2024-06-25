@@ -357,6 +357,105 @@ namespace API_Test
                 Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
             }
         }
+        [TestMethod]
+        public async Task Get_12_ListFromInventorySource()
+        {
+            var inventorySource = await InventorySource.Get(11);
+            Console.WriteLine($"ActivityStream for ([{inventorySource.Id}][{inventorySource.Type}] {inventorySource.Name})");
+            await foreach(var activity in ActivityStream.FindFromInventorySource(inventorySource.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_13_ListFromGroup()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"ActivityStream for ([{group.Id}][{group.Type}] {group.Name})");
+            await foreach(var activity in ActivityStream.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_14_ListFromHost()
+        {
+            var host = await Host.Get(2);
+            Console.WriteLine($"ActivityStream for ([{host.Id}][{host.Type}] {host.Name})");
+            await foreach(var activity in ActivityStream.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_15_ListFromJobTemplate()
+        {
+            var jt = await JobTemplate.Get(9);
+            Console.WriteLine($"ActivityStream for ([{jt.Id}][{jt.Type}] {jt.Name})");
+            await foreach(var activity in ActivityStream.FindFromJobTemplate(jt.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_16_ListFromJobTemplateJob()
+        {
+            var job = await JobTemplateJob.Get(40);
+            Console.WriteLine($"ActivityStream for ([{job.Id}][{job.Type}] {job.Name})");
+            await foreach(var activity in ActivityStream.FindFromJob(job.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_17_ListFromAdHoCommand()
+        {
+            var cmd = await AdHocCommand.Get(69);
+            Console.WriteLine($"ActivityStream for ([{cmd.Id}][{cmd.Type}] {cmd.Name})");
+            await foreach(var activity in ActivityStream.FindFromAdHocCommand(cmd.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_18_ListFromWorkflowJobTemplate()
+        {
+            var wjt = await WorkflowJobTemplate.Get(13);
+            Console.WriteLine($"ActivityStream for ([{wjt.Id}][{wjt.Type}] {wjt.Name})");
+            await foreach(var activity in ActivityStream.FindFromWorkflowJobTemplate(wjt.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_19_ListFromWorkflowJob()
+        {
+            var wjt = await WorkflowJob.Get(51);
+            Console.WriteLine($"ActivityStream for ([{wjt.Id}][{wjt.Type}] {wjt.Name})");
+            await foreach(var activity in ActivityStream.FindFromWorkflowJob(wjt.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_20_ListFromExecutionEnvironment()
+        {
+            var ee = await ExecutionEnvironment.Get(1);
+            Console.WriteLine($"ActivityStream for ([{ee.Id}][{ee.Type}] {ee.Name})");
+            await foreach(var activity in ActivityStream.FindFromExecutionEnvironment(ee.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
     }
     [TestClass]
     public class Test_Application
