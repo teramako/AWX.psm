@@ -83,6 +83,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Workflow Jobs for a Workflow Job Templates.<br/>
+        /// API Path: <c>/api/v2/workflow_job_templates/<paramref name="wjtId"/>/workflow_jobs/</c>
+        /// </summary>
+        /// <param name="wjtId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<WorkflowJob> FindFromWorkflowJobTemplate(ulong wjtId,
+                                                                                      NameValueCollection? query = null,
+                                                                                      bool getAll = false)
+        {
+            var path = $"{Resources.WorkflowJobTemplate.PATH}{wjtId}/workflow_jobs/";
+            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJob>(path, query, getAll))
+            {
+                foreach (var workflowJob in result.Contents.Results)
+                {
+                    yield return workflowJob;
+                }
+            }
+        }
+
         public record Summary(
             [property: JsonPropertyName("workflow_job_template")] NameDescriptionSummary WorkflowJobTemplate,
             ScheduleSummary? Schedule,

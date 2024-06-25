@@ -3071,6 +3071,17 @@ namespace API_Test
                 DumpSummary(res.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromWorkflowJobTemplate()
+        {
+            var wjt = await WorkflowJobTemplate.Get(13);
+            Console.WriteLine($"WorkflowJobTemplate in ({wjt.Type})[{wjt.Id}]{wjt.Name}");
+            await foreach(var job in WorkflowJob.FindFromWorkflowJobTemplate(wjt.Id))
+            {
+                Assert.IsInstanceOfType<WorkflowJob>(job);
+                Console.WriteLine($"[{job.Id}] {job.Name} [{job.Status}] [{job.Finished}]");
+            }
+        }
     }
 
     [TestClass]
