@@ -3198,6 +3198,17 @@ namespace API_Test
                 DumpSummary(res.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            var org = await Organization.Get(2);
+            Console.WriteLine($"ActivityStream for ([{org.Id}][{org.Type}] {org.Name})");
+            await foreach (var exeEnv in ExecutionEnvironment.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<ExecutionEnvironment>(exeEnv);
+                Console.WriteLine($"[{exeEnv.Id}] {exeEnv.Name} {exeEnv.Image}");
+            }
+        }
     }
 
 

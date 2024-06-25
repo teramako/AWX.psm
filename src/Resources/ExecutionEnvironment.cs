@@ -52,11 +52,24 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/execution_environments/";
 
+        /// <summary>
+        /// Retrieve an Execution Environment.<br/>
+        /// API Path: <c>/api/v2/execution_environments/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<ExecutionEnvironment> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<ExecutionEnvironment>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Execution Environments.<br/>
+        /// API Path: <c>/api/v2/execution_environments/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<ExecutionEnvironment> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(PATH, query, getAll))
@@ -67,6 +80,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Execution Environments for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/execution_environments/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ExecutionEnvironment> FindFromOrganization(ulong organizationId,
+                                                                                        NameValueCollection? query = null,
+                                                                                        bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/execution_environments/";
+            await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(path, query, getAll))
+            {
+                foreach (var exeEnv in result.Contents.Results)
+                {
+                    yield return exeEnv;
+                }
+            }
+        }
+
         public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
         public ulong Id { get; } = id;
