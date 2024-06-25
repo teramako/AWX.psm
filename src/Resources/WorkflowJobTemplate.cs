@@ -102,6 +102,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Workflow Job Templates for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/workflow_job_templates/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<WorkflowJobTemplate> FindFromOrganization(ulong organizationId,
+                                                                                       NameValueCollection? query = null,
+                                                                                       bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/workflow_job_templates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(path, query, getAll))
+            {
+                foreach (var jobTemplate in result.Contents.Results)
+                {
+                    yield return jobTemplate;
+                }
+            }
+        }
+
         public record Summary(
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,

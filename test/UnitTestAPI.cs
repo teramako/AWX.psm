@@ -3020,6 +3020,17 @@ namespace API_Test
                 DumpSummary(res.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            var org = await Organization.Get(2);
+            Console.WriteLine($"WorkflowJobTemplate in ({org.Type})[{org.Id}]{org.Name}");
+            await foreach(var wjt in WorkflowJobTemplate.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<WorkflowJobTemplate>(wjt);
+                Console.WriteLine($"[{wjt.Id}] {wjt.Name} [{wjt.Status}]");
+            }
+        }
     }
 
     [TestClass]
