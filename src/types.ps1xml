@@ -37,4 +37,38 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.OAuth2AccessToken</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Description</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>User</Name>
+              <Name>Username</Name>
+              <Name>Application</Name>
+              <Name>ApplicationName</Name>
+              <Name>Expires</Name>
+              <Name>Scope</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>Username</Name>
+        <GetScriptBlock>$this.SummaryFields.User.Username</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ApplicationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Application.Name</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>

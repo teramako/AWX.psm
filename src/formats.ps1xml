@@ -56,5 +56,71 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Token</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.OAuth2AccessToken</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- Expires -->
+          <TableColumnHeader><!-- User -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Username -->
+          <TableColumnHeader><!-- Application -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- ApplicationName -->
+          <TableColumnHeader/><!-- Scope -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Expires</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>User</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Username</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Application</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ApplicationName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Scope</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
