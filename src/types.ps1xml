@@ -71,4 +71,47 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Instance</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Hostname</Name>
+              <Name>Uuid</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>LastSeen</Name>
+              <Name>HealthCheckStarted</Name>
+              <Name>HealthCheckPending</Name>
+              <Name>LastHealthCheck</Name>
+              <Name>Errors</Name>
+              <Name>CapacityAdjustment</Name>
+              <Name>Version</Name>
+              <Name>Capacity</Name>
+              <Name>ConsumedCapacity</Name>
+              <Name>PercentCapacityRemaining</Name>
+              <Name>JobsRunning</Name>
+              <Name>JobsTotal</Name>
+              <Name>Cpu</Name>
+              <Name>Memory</Name>
+              <Name>CpuCapacity</Name>
+              <Name>MemCapacity</Name>
+              <Name>Enabled</Name>
+              <Name>ManagedByPolicy</Name>
+              <Name>NodeType</Name>
+              <Name>NodeState</Name>
+              <Name>IpAddress</Name>
+              <Name>ListenerPort</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+    </Members>
+  </Type>
 </Types>
