@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Types>
+  <Type>
+    <Name>AWX.Resources.Application</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>ClientId</Name>
+              <Name>ClientType</Name>
+              <Name>RedirectUris</Name>
+              <Name>AuthorizationGrantType</Name>
+              <Name>SkipAuthorization</Name>
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+              <Name>Tokens</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>OrganizationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Tokens</Name>
+        <GetScriptBlock>$this.SummaryFields.Tokens.Results | ForEach-Object { [PSCustomObject]$_ }</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
