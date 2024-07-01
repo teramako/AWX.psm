@@ -16,11 +16,22 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Query.Add("id__in", string.Join(',', IdSet));
-            Query.Add("page_size", $"{IdSet.Count}");
-            foreach(var application in Application.Find(Query).ToBlockingEnumerable())
+            string path;
+            if (IdSet.Count == 1)
             {
-                WriteObject(application);
+                path = $"{Application.PATH}{IdSet.First()}/";
+                var res = GetResource<Application>(path);
+                WriteObject(res);
+            }
+            else
+            {
+                path = Application.PATH;
+                Query.Add("id__in", string.Join(',', IdSet));
+                Query.Add("page_size", $"{IdSet.Count}");
+                foreach (var resultSet in GetResultSet<Application>(path, Query))
+                {
+                    WriteObject(resultSet.Results, true);
+                }
             }
         }
     }

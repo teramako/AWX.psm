@@ -16,11 +16,22 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Query.Add("id__in", string.Join(',', IdSet));
-            Query.Add("page_size", $"{IdSet.Count}");
-            foreach(var token in OAuth2AccessToken.Find(Query).ToBlockingEnumerable())
+            string path;
+            if (IdSet.Count == 1)
             {
-                WriteObject(token);
+                path = $"{OAuth2AccessToken.PATH}{IdSet.First()}/";
+                var result = GetResource<OAuth2AccessToken>(path);
+                WriteObject(result);
+            }
+            else
+            {
+                path = OAuth2AccessToken.PATH;
+                Query.Add("id__in", string.Join(',', IdSet));
+                Query.Add("page_size", $"{IdSet.Count}");
+                foreach(var resultSet in GetResultSet<OAuth2AccessToken>(path, Query))
+                {
+                    WriteObject(resultSet.Results, true);
+                }
             }
         }
     }
