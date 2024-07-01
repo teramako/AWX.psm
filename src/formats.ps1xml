@@ -412,5 +412,77 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Project</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Project</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- ScmType -->
+          <TableColumnHeader/><!-- ScmUrl -->
+          <TableColumnHeader/><!-- ScmBranch -->
+          <TableColumnHeader><!-- ScmClean -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- AllowOverride -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LastUpdated -->
+          <TableColumnHeader/><!-- NextJobRun -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmUrl</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmBranch</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmClean</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AllowOverride</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastUpdated</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
