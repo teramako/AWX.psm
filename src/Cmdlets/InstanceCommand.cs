@@ -55,14 +55,14 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var asyncInstances = Type switch
+            var path = Type switch
             {
-                ResourceType.InstanceGroup => Instance.FindFromInstanceGroup(Id, Query, All),
-                _ => Instance.Find(Query, All)
+                ResourceType.InstanceGroup => $"{InstanceGroup.PATH}{Id}/instances/",
+                _ => Instance.PATH
             };
-            foreach (var instance in asyncInstances.ToBlockingEnumerable())
+            foreach (var resultSet in GetResultSet<Instance>(path, Query, All))
             {
-                WriteObject(instance);
+                WriteObject(resultSet.Results, true);
             }
         }
     }

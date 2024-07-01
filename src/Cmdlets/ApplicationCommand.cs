@@ -53,15 +53,15 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var asyncApps = Type switch
+            var path = Type switch
             {
-                ResourceType.Organization => Application.FindFromOrganization(Id, Query, All),
-                ResourceType.User => Application.FindFromUser(Id, Query, All),
-                _ => Application.Find(Query, All)
+                ResourceType.Organization => $"{Organization.PATH}{Id}/applications/",
+                ResourceType.User => $"{User.PATH}{Id}/applications/",
+                _ => Application.PATH
             };
-            foreach (var application in asyncApps.ToBlockingEnumerable())
+            foreach (var resultSet in GetResultSet<Application>(path, Query, All))
             {
-                WriteObject(application);
+                WriteObject(resultSet.Results, true);
             }
         }
     }

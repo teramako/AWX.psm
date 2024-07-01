@@ -79,15 +79,15 @@ namespace AWX.Cmdlets
                 }
             }
             SetupCommonQuery();
-            IAsyncEnumerable<OAuth2AccessToken> asyncTokens = Type switch
+            var path = Type switch
             {
-                ResourceType.OAuth2Application => OAuth2AccessToken.FindFromApplication(Id, Query, All),
-                ResourceType.User => OAuth2AccessToken.FindFromUser(Id, Query, All),
-                _ => OAuth2AccessToken.Find(Query, All),
+                ResourceType.OAuth2Application => $"{Application.PATH}{Id}/tokens/",
+                ResourceType.User => $"{User.PATH}{Id}/tokens/",
+                _ => OAuth2AccessToken.PATH
             };
-            foreach (var token in asyncTokens.ToBlockingEnumerable())
+            foreach (var resultSet in GetResultSet<OAuth2AccessToken>(path, Query, All))
             {
-                WriteObject(token);
+                WriteObject(resultSet.Results, true);
             }
         }
     }
