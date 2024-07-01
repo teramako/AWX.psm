@@ -209,7 +209,7 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? CreateResource<TValue>(string pathAndQuery, object sendData)
+        protected virtual TValue? CreateResource<TValue>(string pathAndQuery, object? sendData = null)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.POST);

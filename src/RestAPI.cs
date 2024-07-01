@@ -252,7 +252,10 @@ namespace AWX
         /// <returns><see cref="StringContent"/></returns>
         private static StringContent GetStringContent(object? data)
         {
-            ArgumentNullException.ThrowIfNull(data);
+            if (data == null)
+            {
+                return new StringContent(string.Empty);
+            }
             switch (data)
             {
                 case string stringData:
