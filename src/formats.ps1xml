@@ -250,5 +250,97 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Organization</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Organization</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- MaxHosts -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- InventryCount -->
+            <Label>Inventories</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- TeamCount -->
+            <Label>Teams</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UserCount -->
+            <Label>Users</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobTemplateCount -->
+            <Label>JobTemplates</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- AdminCount-->
+            <Label>Admins</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ProjectCount -->
+            <Label>Projects</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- DefaultEnvironmentName -->
+            <Label>DefaultEnvironment</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>MaxHosts</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InventoryCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TeamCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UserCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobTemplateCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AdminCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ProjectCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>DefaultEnvironmentName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>

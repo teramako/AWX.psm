@@ -16,11 +16,22 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Query.Add("id__in", string.Join(',', IdSet));
-            Query.Add("page_size", $"{IdSet.Count}");
-            foreach (var resultSet in GetResultSet<Organization>($"{Organization.PATH}?{Query}", true))
+            string path;
+            if (IdSet.Count == 1)
             {
-                WriteObject(resultSet.Results, true);
+                path = $"{Organization.PATH}{IdSet.First()}/";
+                var res = GetResource<Organization>(path);
+                WriteObject(res);
+            }
+            else
+            {
+                path = Organization.PATH;
+                Query.Add("id__in", string.Join(',', IdSet));
+                Query.Add("page_size", $"{IdSet.Count}");
+                foreach (var resultSet in GetResultSet<Organization>(path, Query))
+                {
+                    WriteObject(resultSet.Results, true);
+                }
             }
         }
     }
@@ -30,10 +41,10 @@ namespace AWX.Cmdlets
     public class FindOrganizationCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        public override ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.User))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
         [Parameter(ParameterSetName = "AssociatedWith")]
         public SwitchParameter Admin { get; set; }
 
@@ -53,12 +64,14 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Organization.PATH;
-            if (Id > 0)
+            var path = Type switch {
+                ResourceType.User => $"{User.PATH}{Id}/" + (Admin ? "admin_of_organizations/" : "organizations/"),
+                _ => Organization.PATH
+            };
+            foreach (var resultSet in GetResultSet<Organization>(path, Query, All))
             {
-                path = $"{User.PATH}{Id}/" + (Admin ? "admin_of_organizations/" : "organizations/");
+                WriteObject(resultSet.Results, true);
             }
-            Find<Organization>(path);
         }
     }
 }
