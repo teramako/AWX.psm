@@ -4,7 +4,7 @@ using System.Management.Automation;
 namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Token")]
-    [OutputType(typeof(Application))]
+    [OutputType(typeof(OAuth2AccessToken))]
     public class GetTokenCommand : GetCmdletBase
     {
         protected override void ProcessRecord()
@@ -26,7 +26,7 @@ namespace AWX.Cmdlets
     }
 
     [Cmdlet(VerbsCommon.Find, "Token", DefaultParameterSetName = "All")]
-    [OutputType(typeof(Application))]
+    [OutputType(typeof(OAuth2AccessToken))]
     public class FindTokenCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
