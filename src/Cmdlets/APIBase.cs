@@ -13,7 +13,6 @@ namespace AWX.Cmdlets
         [PSDefaultValue(Value = 1, Help = "The resource ID")]
         public ulong[] Id { get; set; } = [];
 
-        protected bool CanAggregate { get; }
         protected readonly HashSet<ulong> IdSet  = [];
         protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
     }
