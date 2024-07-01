@@ -8,11 +8,9 @@ namespace AWX.Cmdlets
     [OutputType(typeof(User))]
     public class GetMeCommand: APICmdletBase
     {
-        const string Path = "/api/v2/me/";
-        private Uri RequestUri { get; set; } = new(ApiConfig.Instance.Origin, Path);
         protected override void EndProcessing()
         {
-            foreach (var resultSet in GetResultSet<User>(Path, true))
+            foreach (var resultSet in GetResultSet<User>("/api/v2/me/", true))
             {
                 WriteObject(resultSet.Results, true);
             }
@@ -32,11 +30,22 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Query.Add("id__in", string.Join(',', IdSet));
-            Query.Add("page_size", $"{IdSet.Count}");
-            foreach (var resultSet in GetResultSet<User>($"{User.PATH}?{Query}", true))
+            string path;
+            if (IdSet.Count == 1)
             {
-                WriteObject(resultSet.Results, true);
+                path = $"{User.PATH}{IdSet.First()}/";
+                var res = GetResource<User>(path);
+                WriteObject(res);
+            }
+            else
+            {
+                path = User.PATH;
+                Query.Add("id__in", string.Join(',', IdSet));
+                Query.Add("page_size", $"{IdSet.Count}");
+                foreach (var resultSet in GetResultSet<User>(path, Query))
+                {
+                    WriteObject(resultSet.Results, true);
+                }
             }
         }
     }
@@ -46,13 +55,13 @@ namespace AWX.Cmdlets
     public class FindUserCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        public override ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
                      nameof(ResourceType.Team),
                      nameof(ResourceType.Credential),
                      nameof(ResourceType.Role))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
 
         [Parameter(Position = 0)]
         public string[]? UserName { get; set; }
@@ -77,31 +86,18 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = User.PATH;
-            if (Id > 0)
+            var path = Type switch
             {
-                switch (Type)
-                {
-                    case ResourceType.Organization:
-                        path = $"{Organization.PATH}{Id}/users/";
-                        break;
-                    case ResourceType.Team:
-                        path = $"{Team.PATH}{Id}/users/";
-                        break;
-                    case ResourceType.Credential:
-                        path = $"{Credential.PATH}{Id}/owner_users/";
-                        break;
-                    case ResourceType.Role:
-                        path = $"{Role.PATH}{Id}/users/";
-                        break;
-                    default:
-                        WriteError(new ErrorRecord(new ArgumentException(nameof(Type)),
-                                                   "",
-                                                   ErrorCategory.InvalidArgument, Type));
-                        return;
-                }
+                ResourceType.Organization => $"{Organization.PATH}{Id}/users/",
+                ResourceType.Team => $"{Team.PATH}{Id}/users/",
+                ResourceType.Credential => $"{Credential.PATH}{Id}/owner_users/",
+                ResourceType.Role => $"{Role.PATH}{Id}/users/",
+                _ => User.PATH
+            };
+            foreach (var resultSet in GetResultSet<User>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
             }
-            Find<User>(path);
         }
     }
 }

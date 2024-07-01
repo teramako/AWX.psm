@@ -207,4 +207,33 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.User</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Username</Name>
+              <Name>Email</Name>
+              <Name>FirstName</Name>
+              <Name>LastName</Name>
+              <Name>IsSuperuser</Name>
+              <Name>IsSystemAuditor</Name>
+              <Name>LdapDn</Name>
+              <Name>LastLogin</Name>
+              <Name>ExternalAccount</Name>
+              <Name>Auth</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+    </Members>
+  </Type>
 </Types>
