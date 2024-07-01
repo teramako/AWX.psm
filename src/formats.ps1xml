@@ -484,5 +484,79 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>ProjectUpdate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.ProjectUpdateJob</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Project -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader><!-- LaunchType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Finished -->
+          <TableColumnHeader/><!-- Status -->
+          <TableColumnHeader><!-- Elapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- ScmBranch -->
+          <TableColumnHeader/><!-- ScmRevision -->
+          <TableColumnHeader/><!-- LaunchedBy -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Project</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Finished</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Elapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmBranch</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmRevision</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchedBy</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
