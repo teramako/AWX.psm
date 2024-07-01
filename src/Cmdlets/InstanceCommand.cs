@@ -41,10 +41,10 @@ namespace AWX.Cmdlets
     public class FindInstanceCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        public override ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.InstanceGroup))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["id"];

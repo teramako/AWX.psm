@@ -40,10 +40,10 @@ namespace AWX.Cmdlets
     public class FindApplicationCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        public override ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization), nameof(ResourceType.User))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["id"];
 
