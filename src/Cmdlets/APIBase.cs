@@ -180,7 +180,7 @@ namespace AWX.Cmdlets
             string nextPathAndQuery = pathAndQuery;
             do
             {
-                WriteVerboseRequest(pathAndQuery, Method.GET);
+                WriteVerboseRequest(nextPathAndQuery, Method.GET);
                 RestAPIResult<ResultSet<TValue>>? result;
                 try
                 {
