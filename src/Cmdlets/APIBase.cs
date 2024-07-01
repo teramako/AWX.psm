@@ -155,6 +155,17 @@ namespace AWX.Cmdlets
             }
             return null;
         }
+        protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string path,
+                                                                              NameValueCollection? query = null,
+                                                                              bool getAll = false)
+            where TValue : class
+        {
+            var pathAndQuery = path + (query == null ? "" : $"?{query}");
+            foreach (var resultSet in GetResultSet<TValue>(pathAndQuery, getAll))
+            {
+                yield return resultSet;
+            }
+        }
         /// <summary>
         /// Send requests to retrieve resource list.
         /// (HTTP method: <c>GET</c>)
@@ -163,7 +174,7 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="getAll"></param>
         /// <returns>Returns successed responses</returns>
-        protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string pathAndQuery, bool getAll)
+        protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string pathAndQuery, bool getAll = false)
             where TValue : class
         {
             string nextPathAndQuery = pathAndQuery;
