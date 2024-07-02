@@ -230,6 +230,42 @@ namespace AWX.Resources
             [JsonPropertyName("custom_virtualenv")]
             public string? CustomVirtualenv { get; } = customVirtualenv;
         }
+        public class LaunchResult(ulong job, Dictionary<string, object?> ignoreFields, ulong id, ResourceType type,
+                                  string url, RelatedDictionary related, Summary summaryFields, DateTime created,
+                                  DateTime? modified, string name, string description, JobType jobType, ulong inventory,
+                                  ulong project, string playbook, string scmBranch, byte forks, string limit,
+                                  JobVerbosity verbosity, string extraVars, string jobTags, bool forceHandlers,
+                                  string skipTags, string startAtTask, ushort timeout, bool useFactCache,
+                                  ulong organization, ulong unifiedJobTemplate, JobLaunchType launchType,
+                                  JobStatus status, ulong? executionEnvironment, bool failed, DateTime? started,
+                                  DateTime? finished, DateTime? canceledOn, double elapsed, string jobArgs,
+                                  string jobCwd, Dictionary<string, string> jobEnv, string jobExplanation,
+                                  string executionNode, string controllerNode, string resultTraceback,
+                                  bool eventProcessingFinished, LaunchedBy launchedBy, string workUnitId,
+                                  ulong jobTemplate, string[] passwordsNeededToStart, bool allowSimultaneous,
+                                  OrderedDictionary artifacts, string scmRevision, ulong? instanceGroup, bool diffMode,
+                                  int jobSliceNumber, int jobSliceCount, string webhookService, uint? webhookCredential,
+                                  string webhookGuid)
+            : JobTemplateJob(id, type, url, related, summaryFields, created, modified, name, description,
+                             unifiedJobTemplate, launchType, status, executionEnvironment, failed, started,
+                             finished, canceledOn, elapsed, jobExplanation, executionNode, controllerNode,
+                             launchedBy, workUnitId, jobType, inventory, project, playbook, scmBranch, forks,
+                             limit, verbosity, extraVars, jobTags, forceHandlers, skipTags, startAtTask, timeout,
+                             useFactCache, organization, jobTemplate, passwordsNeededToStart, allowSimultaneous,
+                             artifacts, scmRevision, instanceGroup, diffMode, jobSliceNumber, jobSliceCount,
+                             webhookService, webhookCredential, webhookGuid),
+               IJobTemplateJob, IJobDetail, IResource<Summary>
+        {
+            public ulong Job { get; } = job;
+            [JsonPropertyName("ignore_fields")]
+            public Dictionary<string, object?> IgnoreFields { get; } = ignoreFields;
+
+            public string JobArgs { get; } = jobArgs;
+            public string JobCwd { get; } = jobCwd;
+            public Dictionary<string, string> JobEnv { get; } = jobEnv;
+            public string ResultTraceback { get; } = resultTraceback;
+            public bool EventProcessingFinished { get; } = eventProcessingFinished;
+        }
     }
 }
 

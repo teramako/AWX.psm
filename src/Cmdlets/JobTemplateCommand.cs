@@ -88,7 +88,7 @@ namespace AWX.Cmdlets
             {
                 Id = JobTemplate.Id;
             }
-            var launchResult = CreateResource<JobTemplateLaunchResult>($"/api/v2/job_templates/{Id}/launch/", CreateSendData());
+            var launchResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{Id}/launch/", CreateSendData());
             if (launchResult == null)
             {
                 return;
