@@ -1,7 +1,6 @@
 using AWX.Resources;
 using System.Collections;
 using System.Management.Automation;
-using System.Web;
 
 namespace AWX.Cmdlets
 {
@@ -58,21 +57,31 @@ namespace AWX.Cmdlets
     }
 
     [Cmdlet(VerbsLifecycle.Invoke, "JobTemplate")]
-    public class StartJobTemplateCommand : APICmdletBase
+    public class InvokeJobTemplateCommand : InvokeJobBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id")]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
         public ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true)]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate", ValueFromPipeline = true)]
         public JobTemplate? JobTemplate { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate")]
+        public SwitchParameter Async { get; set; }
 
         [Parameter()]
         public string? Limit { get; set; }
 
-        [Parameter()]
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "JobTemplate")]
         [ValidateRange(5, int.MaxValue)]
         public int IntervalSeconds { get; set; } = 5;
 
-        private readonly Dictionary<ulong, JobTask> jobTasks = [];
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "JobTemplate")]
+        public SwitchParameter SuppressJobLog { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -93,102 +102,26 @@ namespace AWX.Cmdlets
             {
                 return;
             }
-            WriteVerbose($"Launch JobTemplate:{Id} => Job:[{launchResult.Job}]");
-            // launchJobs.Add(launchResult.Job);
-            jobTasks.Add(launchResult.Job, new JobTask(launchResult));
+            WriteVerbose($"Launch JobTemplate:{Id} => Job:[{launchResult.Id}]");
+            if (Async)
+            {
+                WriteObject(launchResult, false);
+            }
+            else
+            {
+                jobTasks.Add(launchResult.Id, new JobTask(launchResult));
+            }
         }
         protected override void EndProcessing()
         {
-            var start = DateTime.Now;
-            var rootProgress = new ProgressRecord(0, "Launch Job", "Waiting...")
+            if (Async)
             {
-                SecondsRemaining = IntervalSeconds
-            };
-            do
+                return;
+            }
+            else
             {
-                for(var i = 1; i <= IntervalSeconds; i++)
-                {
-                    Sleep(1000);
-                    var elapsed = DateTime.Now - start;
-                    rootProgress.PercentComplete = i * 100 / IntervalSeconds;
-                    rootProgress.SecondsRemaining = IntervalSeconds - i;
-                    rootProgress.StatusDescription = $"Waiting... Elapsed: {elapsed:hh\\:mm\\:ss\\.ff}";
-                    WriteProgress(rootProgress);
-                }
-                using var task = UnifiedJob.Get(jobTasks.Keys.ToArray());
-                var tasks = jobTasks.Values.Select(jobTask => jobTask.GetLogAsync()).ToArray();
-                task.Wait();
-                Task.WaitAll(tasks);
-
-                // Remove Progressbar
-                rootProgress.RecordType = ProgressRecordType.Completed;
-                WriteProgress(rootProgress);
-
-                foreach (var t in tasks)
-                {
-                    var jobTask = t.Result;
-                    var color = Console.ForegroundColor;
-                    if (tasks.Length > 1)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine($"====== {jobTask.Job.Name} ======");
-                        Console.ForegroundColor = color;
-                    }
-                    Console.Write(jobTask.CurrentLog);
-                }
-                foreach (var job in task.Result)
-                {
-                    jobTasks[job.Id].Job = job;
-                    switch (job.Status)
-                    {
-                        case JobStatus.New:
-                        case JobStatus.Pending:
-                        case JobStatus.Waiting:
-                        case JobStatus.Running:
-                            break;
-                        default:
-                            jobTasks.Remove(job.Id);
-                            WriteObject(job, false);
-                            break;
-                    }
-                }
-
-            } while(jobTasks.Count != 0);
-        }
-        private Sleep? _sleep;
-        protected void Sleep(int milliseconds)
-        {
-            using (_sleep = new Sleep())
-            {
-                _sleep.Do(milliseconds);
+                WaitJobs("Launch Jobs", IntervalSeconds, SuppressJobLog);
             }
         }
-        protected override void StopProcessing()
-        {
-            _sleep?.Stop();
-        }
     }
-
-    /*
-    class JobProgress
-    {
-        public ulong Id { get; private set; }
-        public ResourceType Type { get; private set; }
-        bool Finished = false;
-        bool Completed = false;
-        Dictionary<ulong, JobProgress>? Children = null;
-        int StartNext = 0;
-        public ProgressRecord Progress { get; }
-        public JobProgress(ulong id, int parentId = 0, UnifiedJob? job = null)
-        {
-            Id = id;
-            var recordeId = (int)id >> 32;
-            Progress = new ProgressRecord(recordeId, $"Wait Job {id}", $"Start")
-            {
-                ParentActivityId = parentId
-            };
-
-        }
-    }
-    */
 }
