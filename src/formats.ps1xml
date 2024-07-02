@@ -558,5 +558,51 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Team</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Team</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- OrganizationName -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OrganizationName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
