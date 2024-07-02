@@ -498,4 +498,39 @@
       </MemberSet>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Inventory</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Kind</Name>
+              <Name>TotalHosts</Name>
+              <Name>TotalGroups</Name>
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+              <Name>Variables</Name>
+              <Name>HasActiveFailures</Name>
+              <Name>HostsWithActiveFailures</Name>
+              <Name>HasInventorySources</Name>
+              <Name>TotalInventorySources</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>OrganizationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
