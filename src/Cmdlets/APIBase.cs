@@ -129,6 +129,30 @@ namespace AWX.Cmdlets
             Console.ForegroundColor = currentColor;
         }
         /// <summary>
+        /// Write message to the console as Information
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="foregroundColor"></param>
+        /// <param name="backgroundColor"></param>
+        /// <param name="tags"></param>
+        /// <param name="dontshow">Follow the <c>$InformationPreference</c> value, don't output to console forcely.</param>
+        protected void WriteHost (string message,
+                                  ConsoleColor? foregroundColor = null,
+                                  ConsoleColor? backgroundColor = null,
+                                  string[]? tags = null,
+                                  bool dontshow = false)
+        {
+            var msg = new HostInformationMessage() {
+                Message = message,
+                ForegroundColor = foregroundColor,
+                BackgroundColor = backgroundColor,
+                NoNewLine = true
+            };
+            List<string> infoTags = dontshow ? [] : ["PSHOST"];
+            if (tags != null) { infoTags.AddRange(tags); }
+            WriteInformation(msg, infoTags.ToArray());
+        }
+        /// <summary>
         /// Send a request to retrieve a resource.
         /// (HTTP method: <c>GET</c>)
         /// </summary>
