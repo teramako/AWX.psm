@@ -7,6 +7,95 @@ using System.Web;
 
 namespace AWX.Cmdlets
 {
+    public abstract class InvokeJobBase : APICmdletBase
+    {
+        protected readonly Dictionary<ulong, JobTask> jobTasks = [];
+
+        private Sleep? _sleep;
+        protected void Sleep(int milliseconds)
+        {
+            using (_sleep = new Sleep())
+            {
+                _sleep.Do(milliseconds);
+            }
+        }
+        protected void WriteJobIndicator(JobTask jobTask, bool suppressJobLog)
+        {
+            WriteHost($"====== [{jobTask.Id}] {jobTask.Job.Name} ======\n",
+                      foregroundColor: ConsoleColor.Magenta,
+                      tags: ["Ansible", "Indicator", $"job-{jobTask.Id}"],
+                      dontshow: suppressJobLog);
+        }
+        protected void WriteJobLog(JobTask jobTask, bool suppressJobLog)
+        {
+            WriteHost(jobTask.CurrentLog,
+                      tags: ["Ansible", "JobLog", $"job-{jobTask.Id}"],
+                      dontshow: suppressJobLog);
+        }
+
+        protected void WaitJobs(string activityId,
+                                int intervalSeconds,
+                                bool suppressJobLog)
+        {
+            var start = DateTime.Now;
+            var rootProgress = new ProgressRecord(0, activityId, "Waiting...")
+            {
+                SecondsRemaining = intervalSeconds
+            };
+            do
+            {
+                for(var i = 1; i <= intervalSeconds; i++)
+                {
+                    Sleep(1000);
+                    var elapsed = DateTime.Now - start;
+                    rootProgress.PercentComplete = i * 100 / intervalSeconds;
+                    rootProgress.SecondsRemaining = intervalSeconds - i;
+                    rootProgress.StatusDescription = $"Waiting... Elapsed: {elapsed:hh\\:mm\\:ss\\.ff}";
+                    WriteProgress(rootProgress);
+                }
+                using var task = UnifiedJob.Get(jobTasks.Keys.ToArray());
+                var tasks = jobTasks.Values.Select(jobTask => jobTask.GetLogAsync()).ToArray();
+                task.Wait();
+                Task.WaitAll(tasks);
+
+                // Remove Progressbar
+                rootProgress.RecordType = ProgressRecordType.Completed;
+                WriteProgress(rootProgress);
+
+                foreach (var t in tasks)
+                {
+                    var jobTask = t.Result;
+                    if (tasks.Length > 1)
+                    {
+                        WriteJobIndicator(jobTask, suppressJobLog);
+                    }
+                    WriteJobLog(jobTask, suppressJobLog);
+                }
+                foreach (var job in task.Result)
+                {
+                    jobTasks[job.Id].Job = job;
+                    switch (job.Status)
+                    {
+                        case JobStatus.New:
+                        case JobStatus.Pending:
+                        case JobStatus.Waiting:
+                        case JobStatus.Running:
+                            break;
+                        default:
+                            jobTasks.Remove(job.Id);
+                            WriteObject(job, false);
+                            break;
+                    }
+                }
+
+            } while(jobTasks.Count != 0);
+        }
+        protected override void StopProcessing()
+        {
+            _sleep?.Stop();
+        }
+    }
+
     public abstract class GetCmdletBase : APICmdletBase
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromRemainingArguments = true, ValueFromPipeline = true)]
