@@ -3,6 +3,59 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<CredentialTypeKind>))]
+    public enum CredentialTypeKind
+    {
+        /// <summary>
+        /// Machine
+        /// </summary>
+        ssh,
+        /// <summary>
+        /// Vault
+        /// </summary>
+        vault,
+        /// <summary>
+        /// Network
+        /// </summary>
+        net,
+        /// <summary>
+        /// Source Control
+        /// </summary>
+        scm,
+        /// <summary>
+        /// Cloud
+        /// </summary>
+        cloud,
+        /// <summary>
+        /// Container Registry
+        /// </summary>
+        registry,
+        /// <summary>
+        /// Personal Access Token
+        /// </summary>
+        token,
+        /// <summary>
+        /// Insights
+        /// </summary>
+        insights,
+        /// <summary>
+        /// External
+        /// </summary>
+        external,
+        /// <summary>
+        /// Kubernetes
+        /// </summary>
+        kubernetes,
+        /// <summary>
+        /// Galaxy/Automation Hub
+        /// </summary>
+        galaxy,
+        /// <summary>
+        /// Cryptography
+        /// </summary>
+        cryptography
+    }
+
     public interface ICredentialType
     {
         /// <summary>
@@ -13,7 +66,7 @@ namespace AWX.Resources
         /// Optional description of this credential type.
         /// </summary>
         string Description { get; }
-        string Kind { get; }
+        CredentialTypeKind Kind { get; }
         OrderedDictionary Inputs { get; }
         OrderedDictionary Injectors { get; }
     }
@@ -27,7 +80,7 @@ namespace AWX.Resources
                                 DateTime? modified,
                                 string name,
                                 string description,
-                                string kind,
+                                CredentialTypeKind kind,
                                 string nameSpace,
                                 bool managed,
                                 OrderedDictionary inputs,
@@ -77,7 +130,7 @@ namespace AWX.Resources
         public DateTime? Modified { get; } = modified;
         public string Name { get; } = name;
         public string Description { get; } = description;
-        public string Kind { get; } = kind;
+        public CredentialTypeKind Kind { get; } = kind;
         public string Namespace { get; } = nameSpace;
         public bool Managed { get; } = managed;
         public OrderedDictionary Inputs { get; } = inputs;
