@@ -71,4 +71,64 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsLifecycle.Invoke, "ProjectUpdate")]
+    [OutputType(typeof(ProjectUpdateJob), ParameterSetName = ["Id", "Project"])]
+    [OutputType(typeof(ProjectUpdateJob.Detail), ParameterSetName = ["AsyncId", "AsyncProject"])]
+    public class InvokeProjectUpdateCommand: InvokeJobBase
+    {
+        [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncId", ValueFromPipeline = true, Position = 0)]
+        public ulong Id { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "Project", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncProject", ValueFromPipeline = true, Position = 0)]
+        public Project? Project { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncProject")]
+        public SwitchParameter Async { get; set; }
+
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "Project")]
+        [ValidateRange(5, int.MaxValue)]
+        public int IntervalSeconds { get; set; } = 5;
+
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "Project")]
+        public SwitchParameter SuppressJobLog { get; set; }
+
+
+        protected override void ProcessRecord()
+        {
+            if (Project != null)
+            {
+                Id = Project.Id;
+            }
+            var launchResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{Id}/update/");
+            if (launchResult == null)
+            {
+                return;
+            }
+            WriteVerbose($"Update Project:{Id} => Job:[{launchResult.Id}]");
+            if (Async)
+            {
+                WriteObject(launchResult, false);
+            }
+            else
+            {
+                jobTasks.Add(launchResult.Id, new JobTask(launchResult));
+            }
+        }
+        protected override void EndProcessing()
+        {
+            if (Async)
+            {
+                return;
+            }
+            else
+            {
+                WaitJobs("Update Project", IntervalSeconds, SuppressJobLog);
+            }
+        }
+    }
 }
