@@ -276,4 +276,9 @@ namespace AWX.Resources
         public ulong? InstanceGroup { get; } = instanceGroup;
         public string ScmRevision {  get; } = scmRevision;
     }
+
+    public record CanUpdateInventorySource(
+        [property: JsonPropertyName("inventory_source")] ulong? InventorySource,
+        [property: JsonPropertyName("can_update")] bool CanUpdate
+    );
 }
