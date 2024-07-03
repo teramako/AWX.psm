@@ -730,4 +730,31 @@
       </MemberSet>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Group</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>InventoryName</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Variables</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>InventoryName</Name>
+        <GetScriptBlock>$this.SummaryFields.Inventory.Name</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
