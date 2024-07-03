@@ -228,7 +228,7 @@ namespace AWX.Resources
                             string hostFilter, bool overwrite, bool overwriteVars, string? customVirtualenv, int timeout,
                             int verbosity, string limit, ulong inventory, ulong inventorySource, bool licenseError,
                             bool orgHostLimitError, ulong? sourceProjectUpdate, ulong? instanceGroup, string scmRevision,
-                            ulong sourceProject)
+                            ulong? sourceProject)
             : InventoryUpdateJob(id, type, url, related, summaryFields, created, modified, name, description, unifiedJobTemplate,
                                  launchType, status, executionEnvironment, controllerNode, failed, started, finished, canceledOn,
                                  elapsed, jobExplanation, executionNode, launchedBy, workUnitId, source, sourcePath, sourceVars,
@@ -243,7 +243,7 @@ namespace AWX.Resources
             public string ResultTraceback { get; } = resultTraceback;
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
             [JsonPropertyName("source_project")]
-            public ulong SourceProject { get; } = sourceProject;
+            public ulong? SourceProject { get; } = sourceProject;
         }
 
         public RelatedDictionary Related { get; } = related;
