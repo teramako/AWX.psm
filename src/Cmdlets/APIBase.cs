@@ -29,6 +29,10 @@ namespace AWX.Cmdlets
         private ulong lastShownJob = 0;
         protected void WriteJobLog(JobTask jobTask, bool suppressJobLog)
         {
+            if (string.IsNullOrWhiteSpace(jobTask.CurrentLog))
+            {
+                return;
+            }
             if (lastShownJob != jobTask.Id)
             {
                 WriteJobIndicator(jobTask, suppressJobLog);
