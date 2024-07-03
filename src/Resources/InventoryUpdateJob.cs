@@ -137,9 +137,9 @@ namespace AWX.Resources
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static async Task<InventoryUpdateJob> Get(ulong id)
+        public static async Task<Detail> Get(ulong id)
         {
-            var apiResult = await RestAPI.GetAsync<InventoryUpdateJob>($"{PATH}{id}/");
+            var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
         /// <summary>
@@ -214,6 +214,35 @@ namespace AWX.Resources
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             CredentialSummary[] Credentials);
 
+        public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
+                            DateTime created, DateTime? modified, string name, string description,
+                            ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
+                            ulong? executionEnvironment, string controllerNode, bool failed, DateTime? started,
+                            DateTime? finished, DateTime? canceledOn, double elapsed, string jobArgs, string jobCwd,
+                            Dictionary<string, string> jobEnv, string jobExplanation, string executionNode,
+                            LaunchedBy launchedBy, string resultTraceback, bool eventProcessingFinished,
+                            string? workUnitId, InventorySourceSource source, string sourcePath, string sourceVars,
+                            string scmBranch, ulong? credential, string enabledVar, string enabledValue,
+                            string hostFilter, bool overwrite, bool overwriteVars, string? customVirtualenv, int timeout,
+                            int verbosity, string limit, ulong inventory, ulong inventorySource, bool licenseError,
+                            bool orgHostLimitError, ulong? sourceProjectUpdate, ulong? instanceGroup, string scmRevision,
+                            ulong sourceProject)
+            : InventoryUpdateJob(id, type, url, related, summaryFields, created, modified, name, description, unifiedJobTemplate,
+                                 launchType, status, executionEnvironment, controllerNode, failed, started, finished, canceledOn,
+                                 elapsed, jobExplanation, executionNode, launchedBy, workUnitId, source, sourcePath, sourceVars,
+                                 scmBranch, credential, enabledVar, enabledValue, hostFilter, overwrite, overwriteVars,
+                                 customVirtualenv, timeout, verbosity, limit, inventory, inventorySource, licenseError,
+                                 orgHostLimitError, sourceProjectUpdate, instanceGroup, scmRevision),
+              IInventoryUpdateJob, IJobDetail
+        {
+            public string JobArgs { get; } = jobArgs;
+            public string JobCwd { get; } = jobCwd;
+            public Dictionary<string, string> JobEnv { get; } = jobEnv;
+            public string ResultTraceback { get; } = resultTraceback;
+            public bool EventProcessingFinished { get; } = eventProcessingFinished;
+            [JsonPropertyName("source_project")]
+            public ulong SourceProject { get; } = sourceProject;
+        }
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;

@@ -1780,7 +1780,7 @@ namespace API_Test
         public async Task Get_1_Single()
         {
             var res = await InventoryUpdateJob.Get(46);
-            Assert.IsInstanceOfType<InventoryUpdateJob>(res);
+            Assert.IsInstanceOfType<InventoryUpdateJob.Detail>(res);
             Assert.IsInstanceOfType<IUnifiedJob>(res);
             DumpResource(res);
         }
