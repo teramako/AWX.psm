@@ -119,7 +119,7 @@ namespace AWX.Resources
                                     JobStatus status, ulong? executionEnvironment, string controllerNode, bool failed,
                                     DateTime? started, DateTime? finished, DateTime? canceledOn, double elapsed,
                                     string jobExplanation, string executionNode, LaunchedBy launchedBy,
-                                    string workUnitId, InventorySourceSource source, string sourcePath,
+                                    string? workUnitId, InventorySourceSource source, string sourcePath,
                                     string sourceVars, string scmBranch, ulong? credential, string enabledVar,
                                     string enabledValue, string hostFilter, bool overwrite, bool overwriteVars,
                                     string? customVirtualenv, int timeout, int verbosity, string limit, ulong inventory,
