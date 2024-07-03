@@ -26,11 +26,17 @@ namespace AWX.Cmdlets
                       tags: ["Ansible", "Indicator", $"job-{jobTask.Id}"],
                       dontshow: suppressJobLog);
         }
+        private ulong lastShownJob = 0;
         protected void WriteJobLog(JobTask jobTask, bool suppressJobLog)
         {
+            if (lastShownJob != jobTask.Id)
+            {
+                WriteJobIndicator(jobTask, suppressJobLog);
+            }
             WriteHost(jobTask.CurrentLog,
                       tags: ["Ansible", "JobLog", $"job-{jobTask.Id}"],
                       dontshow: suppressJobLog);
+            lastShownJob = jobTask.Id;
         }
 
         protected void WaitJobs(string activityId,
@@ -69,12 +75,7 @@ namespace AWX.Cmdlets
 
                 foreach (var t in tasks)
                 {
-                    var jobTask = t.Result;
-                    if (tasks.Length > 1)
-                    {
-                        WriteJobIndicator(jobTask, suppressJobLog);
-                    }
-                    WriteJobLog(jobTask, suppressJobLog);
+                    WriteJobLog(t.Result, suppressJobLog);
                 }
                 foreach (var job in task.Result)
                 {
