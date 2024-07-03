@@ -6,6 +6,7 @@ namespace AWX.Resources
     public enum JobStatus
     {
         New,
+        Started,
         Pending,
         Waiting,
         Running,

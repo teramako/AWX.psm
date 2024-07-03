@@ -77,6 +77,7 @@ namespace AWX.Cmdlets
                     switch (job.Status)
                     {
                         case JobStatus.New:
+                        case JobStatus.Started:
                         case JobStatus.Pending:
                         case JobStatus.Waiting:
                         case JobStatus.Running:
