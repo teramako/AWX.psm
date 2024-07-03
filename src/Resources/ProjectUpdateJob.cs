@@ -166,4 +166,9 @@ namespace AWX.Resources
         public JobType JobType { get; } = jobType;
         public string JobTags { get; } = jobTags;
     }
+
+    public record CanUpdateProject(
+        ulong? Project,
+        [property: JsonPropertyName("can_update")] bool CanUpdate
+    );
 }
