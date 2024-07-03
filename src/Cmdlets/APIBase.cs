@@ -48,6 +48,7 @@ namespace AWX.Cmdlets
             };
             do
             {
+                rootProgress.RecordType = ProgressRecordType.Processing;
                 for(var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
