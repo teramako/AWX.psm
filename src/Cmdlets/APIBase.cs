@@ -37,6 +37,10 @@ namespace AWX.Cmdlets
                                 int intervalSeconds,
                                 bool suppressJobLog)
         {
+            if (jobTasks.Count == 0)
+            {
+                return;
+            }
             var start = DateTime.Now;
             var rootProgress = new ProgressRecord(0, activityId, "Waiting...")
             {
