@@ -112,6 +112,10 @@ namespace AWX.Resources
                                [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
                                [property: JsonPropertyName("job_template_name")] string JobTemplateName);
 
+    public record WorkflowJobSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed, double Elapsed);
+
+    public record AncestorJobSummary(ulong Id, string Name, ResourceType Type, string Url);
+
     public record LastJobHostSummary(ulong Id, bool Failed);
 
     public record LastUpdateSummary(ulong Id,

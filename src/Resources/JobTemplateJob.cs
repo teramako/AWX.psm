@@ -145,6 +145,8 @@ namespace AWX.Resources
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<NameSummary> Labels,
+            [property: JsonPropertyName("source_workflow_job")] WorkflowJobSummary? SourceWorkflowJob,
+            [property: JsonPropertyName("ancestor_job")] AncestorJobSummary? AncestorJob,
             JobTemplateCredentialSummary[] Credentials);
 
 
