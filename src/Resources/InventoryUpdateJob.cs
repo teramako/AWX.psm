@@ -207,12 +207,14 @@ namespace AWX.Resources
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
             [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
+            CredentialSummary? Credential,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("inventory_source")] InventorySourceSummary InventorySource,
             [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            CredentialSummary[] Credentials);
+            CredentialSummary[] Credentials,
+            [property: JsonPropertyName("source_project")] ProjectSummary? SourceProject);
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
                             DateTime created, DateTime? modified, string name, string description,
