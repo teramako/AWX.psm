@@ -17,7 +17,7 @@ namespace AWX.Cmdlets
                     // skip already processed
                     continue;
                 }
-                var res = GetResource<JobTemplateJob.Detail>($"{JobTemplateJob.PATH}{Id}/");
+                var res = GetResource<JobTemplateJob.Detail>($"{JobTemplateJob.PATH}{id}/");
                 if (res != null)
                 {
                     WriteObject(res);
