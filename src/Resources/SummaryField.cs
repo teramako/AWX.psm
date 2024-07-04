@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace AWX.Resources
 {
@@ -87,7 +82,7 @@ namespace AWX.Resources
                                  bool Failed);
     public record HostRecentJobSummary(ulong Id,
                                        string Name,
-                                       string Type,
+                                       ResourceType Type,
                                        JobStatus Status,
                                        DateTime? Finished);
     public record JobTemplateRecentJobSummary(ulong Id,
