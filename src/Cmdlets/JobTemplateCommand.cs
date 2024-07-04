@@ -33,7 +33,8 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        [ValidateSet(nameof(ResourceType.JobTemplate))]
+        [ValidateSet(nameof(ResourceType.Organization),
+                     nameof(ResourceType.Inventory))]
         public override ResourceType Type { get; set; }
 
         [Parameter(Position = 0)]
@@ -52,7 +53,16 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Find<JobTemplate>(JobTemplate.PATH);
+            var path = Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{Id}/job_templates/",
+                ResourceType.Inventory => $"{Inventory.PATH}{Id}/job_templates/",
+                _ => JobTemplate.PATH
+            };
+            foreach (var resultSet in GetResultSet<JobTemplate>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
         }
     }
 
