@@ -132,7 +132,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<NameSummary> Labels,
-            [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs);
+            [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs);
 
 
         public RelatedDictionary Related { get; } = related;

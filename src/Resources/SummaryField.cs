@@ -85,11 +85,11 @@ namespace AWX.Resources
                                        ResourceType Type,
                                        JobStatus Status,
                                        DateTime? Finished);
-    public record JobTemplateRecentJobSummary(ulong Id,
-                                              JobStatus Status,
-                                              DateTime? Finished,
-                                              [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
-                                              string Type);
+    public record RecentJobSummary(ulong Id,
+                                   JobStatus Status,
+                                   DateTime? Finished,
+                                   [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
+                                   ResourceType Type);
     public record JobSummary(ulong Id,
                              string Name,
                              string Description,
