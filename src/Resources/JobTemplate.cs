@@ -221,6 +221,7 @@ namespace AWX.Resources
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
             ProjectSummary Project,
+            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
@@ -228,7 +229,6 @@ namespace AWX.Resources
             [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<NameSummary> Labels,
-            [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment,
             [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs,
             JobTemplateCredentialSummary[] Credentials);
 
