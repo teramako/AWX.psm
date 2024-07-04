@@ -67,20 +67,32 @@ namespace AWX.Cmdlets
     }
 
     [Cmdlet(VerbsLifecycle.Invoke, "JobTemplate")]
+    [OutputType(typeof(JobTemplateJob), ParameterSetName = ["Id", "JobTemplate"])]
+    [OutputType(typeof(JobTemplateJob.LaunchResult), ParameterSetName = ["AsyncId", "AsyncJobTemplate"])]
+    [OutputType(typeof(JobTemplateLaunchRequirements), ParameterSetName = ["GetRequirementsId", "GetRequirementsJobTemplate"])]
     public class InvokeJobTemplateCommand : InvokeJobBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "Id")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
+        [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncId", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate", ValueFromPipeline = true)]
+        [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsJobTemplate", ValueFromPipeline = true, Position = 0)]
         public JobTemplate? JobTemplate { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsId")]
+        [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsJobTemplate")]
+        public SwitchParameter GetRequirements { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
         [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate")]
         public SwitchParameter Async { get; set; }
 
-        [Parameter()]
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "AsyncId")]
+        [Parameter(ParameterSetName = "JobTemplate")]
+        [Parameter(ParameterSetName = "AsyncJobTemplate")]
         public string? Limit { get; set; }
 
         [Parameter(ParameterSetName = "Id")]
@@ -101,18 +113,23 @@ namespace AWX.Cmdlets
             }
             return dict;
         }
-        protected override void ProcessRecord()
+        private void GetLaunchRequirements(ulong id)
         {
-            if (JobTemplate != null)
+            var res = GetResource<JobTemplateLaunchRequirements>($"{JobTemplate.PATH}{id}/launch/");
+            if (res == null)
             {
-                Id = JobTemplate.Id;
+                return;
             }
-            var launchResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{Id}/launch/", CreateSendData());
+            WriteObject(res, false);
+        }
+        private void Launch(ulong id)
+        {
+            var launchResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", CreateSendData());
             if (launchResult == null)
             {
                 return;
             }
-            WriteVerbose($"Launch JobTemplate:{Id} => Job:[{launchResult.Id}]");
+            WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
             if (Async)
             {
                 WriteObject(launchResult, false);
@@ -122,16 +139,32 @@ namespace AWX.Cmdlets
                 jobTasks.Add(launchResult.Id, new JobTask(launchResult));
             }
         }
+        protected override void ProcessRecord()
+        {
+            if (JobTemplate != null)
+            {
+                Id = JobTemplate.Id;
+            }
+            if (GetRequirements)
+            {
+                GetLaunchRequirements(Id);
+            }
+            else
+            {
+                Launch(Id);
+            }
+        }
         protected override void EndProcessing()
         {
+            if (GetRequirements)
+            {
+                return;
+            }
             if (Async)
             {
                 return;
             }
-            else
-            {
-                WaitJobs("Launch Jobs", IntervalSeconds, SuppressJobLog);
-            }
+            WaitJobs("Launch JobTemplate", IntervalSeconds, SuppressJobLog);
         }
     }
 }
