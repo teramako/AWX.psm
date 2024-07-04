@@ -3,6 +3,28 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    [Flags]
+    public enum JobTemplateAskOnLaunch
+    {
+        None = 0,
+        JobType    = 1 << 0,
+        Inventory  = 1 << 1,
+        ScmBranch  = 1 << 2,
+        ExecutionEnvironment = 1 << 3,
+        Credentials = 1 << 4,
+        Labels = 1 << 5,
+        Variables = 1 << 6,
+        Forks = 1 << 7,
+        Limit = 1 << 8,
+        Verbosity = 1 << 9,
+        JobSliceCount = 1 << 10,
+        Timeout = 1 << 11,
+        DiffMode = 1 << 12,
+        InstanceGroups = 1 << 13,
+        JobTags = 1 << 14,
+        SkipTags = 1 << 15,
+    }
+
     public interface IJobTemplate
     {
         /// <summary>
@@ -279,5 +301,29 @@ namespace AWX.Resources
         public string WebhookService { get; } = webhookService;
         public ulong? WebhookCredential { get; } = webhookCredential;
         public bool PreventInstanceGroupFallback { get; } = preventInstanceGroupFallback;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public JobTemplateAskOnLaunch AskOnLaunch
+        {
+            get
+            {
+                return (AskJobTypeOnLaunch ? JobTemplateAskOnLaunch.JobType: 0) |
+                       (AskInventoryOnLaunch ? JobTemplateAskOnLaunch.Inventory : 0) |
+                       (AskScmBranchOnLaunch ? JobTemplateAskOnLaunch.ScmBranch : 0) |
+                       (AskExecutionEnvironmentOnLaunch ? JobTemplateAskOnLaunch.ExecutionEnvironment : 0) |
+                       (AskCredentialOnLaunch ? JobTemplateAskOnLaunch.Credentials : 0) |
+                       (AskLabelsOnLaunch ? JobTemplateAskOnLaunch.Labels : 0) |
+                       (AskVariablesOnLaunch ? JobTemplateAskOnLaunch.Variables : 0) |
+                       (AskForksOnLaunch ? JobTemplateAskOnLaunch.Forks : 0) |
+                       (AskLimitOnLaunch ? JobTemplateAskOnLaunch.Limit : 0) |
+                       (AskVerbosityOnLaunch ? JobTemplateAskOnLaunch.Verbosity : 0) |
+                       (AskJobSliceCountOnLaunch ? JobTemplateAskOnLaunch.JobSliceCount : 0) |
+                       (AskTimeoutOnLaunch ? JobTemplateAskOnLaunch.Timeout : 0) |
+                       (AskDiffModeOnLaunch ? JobTemplateAskOnLaunch.DiffMode : 0) |
+                       (AskInstanceGroupsOnLaunch ? JobTemplateAskOnLaunch.InstanceGroups : 0) |
+                       (AskTagsOnLaunch ? JobTemplateAskOnLaunch.JobTags : 0) |
+                       (AskSkipTagsOnLaunch ? JobTemplateAskOnLaunch.SkipTags : 0);
+            }
+        }
     }
 }
