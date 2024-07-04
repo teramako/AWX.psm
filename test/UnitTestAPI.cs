@@ -2044,7 +2044,7 @@ namespace API_Test
                 Console.WriteLine($"  {key} [{val?.Id}] {val?.Name} - {val?.Description}");
             }
             Console.WriteLine($"Caps               : {summary.UserCapabilities}");
-            Console.WriteLine($"ResolvedEnv   : [{summary.ResolvedEnvironment?.Id}] {summary.ResolvedEnvironment?.Name}");
+            Console.WriteLine($"ResolvedEnv   : [{summary.ExecutionEnvironment?.Id}] {summary.ExecutionEnvironment?.Name}");
             Console.WriteLine($"RecentJobs    : ({summary.RecentJobs.Length})");
             foreach (var job in summary.RecentJobs)
             {
