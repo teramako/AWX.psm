@@ -25,6 +25,19 @@ namespace AWX.Resources
         SkipTags = 1 << 15,
     }
 
+    [Flags]
+    public enum JobTemplateOptions
+    {
+        None = 0,
+        Survey = 1 << 0,
+        Become = 1 << 1,
+        ProvisioningCallback = 1 << 2,
+        Webhook = 1 << 3,
+        Simultaneous = 1 << 4,
+        FactCache = 1 << 5,
+        PreventInstanceGroupFallback = 1 << 6
+    }
+
     public interface IJobTemplate
     {
         /// <summary>
@@ -323,6 +336,20 @@ namespace AWX.Resources
                        (AskInstanceGroupsOnLaunch ? JobTemplateAskOnLaunch.InstanceGroups : 0) |
                        (AskTagsOnLaunch ? JobTemplateAskOnLaunch.JobTags : 0) |
                        (AskSkipTagsOnLaunch ? JobTemplateAskOnLaunch.SkipTags : 0);
+            }
+        }
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public JobTemplateOptions Options
+        {
+            get
+            {
+                return (SurveyEnabled ? JobTemplateOptions.Survey : 0) |
+                       (BecomeEnabled ? JobTemplateOptions.Become : 0) |
+                       (!string.IsNullOrEmpty(HostConfigKey) ? JobTemplateOptions.ProvisioningCallback : 0) |
+                       (!string.IsNullOrEmpty(WebhookService) ? JobTemplateOptions.Webhook : 0) |
+                       (AllowSimultaneous ? JobTemplateOptions.Simultaneous : 0) |
+                       (UseFactCache ? JobTemplateOptions.FactCache : 0) |
+                       (PreventInstanceGroupFallback ? JobTemplateOptions.PreventInstanceGroupFallback : 0);
             }
         }
     }
