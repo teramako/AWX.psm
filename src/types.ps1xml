@@ -548,10 +548,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>Status</Name>
               <Name>OrganizationName</Name>
               <Name>Inventory</Name>
@@ -561,24 +561,18 @@
               <Name>Source</Name>
               <Name>SourcePath</Name>
               <Name>SourceVars</Name>
-              <Name>LastJobRun</Name>
-              <Name>LastJobFailed</Name>
-              <Name>LastUpdated</Name>
-              <Name>LastUpdateFailed</Name>
-              <Name>NextJobRun</Name>
               <Name>Credential</Name>
+              <Name>Credentials</Name>
               <Name>EnabledVar</Name>
               <Name>EnabledValue</Name>
               <Name>HostFilter</Name>
-              <Name>Overwrite</Name>
-              <Name>OverwriteVars</Name>
-              <Name>CustomVirtualenv</Name>
               <Name>Timeout</Name>
               <Name>Verbosity</Name>
+              <Name>Options</Name>
               <Name>ExecutionEnvironment</Name>
-              <Name>UpdateOnLaunch</Name>
               <Name>UpdateCacheTimeout</Name>
-              <Name>UpdateOnProjectUpdate</Name>
+              <Name>LastJob</Name>
+              <Name>NextJobRun</Name>
             </ReferencedProperties>
           </PropertySet>
         </Members>
@@ -594,6 +588,14 @@
       <ScriptProperty>
         <Name>SourceProjectName</Name>
         <GetScriptBlock>$this.SummaryFields.SourceProject.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Credentials</Name>
+        <GetScriptBlock>$this.SummaryFields.Credentials</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>LastJob</Name>
+        <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
       </ScriptProperty>
     </Members>
   </Type>

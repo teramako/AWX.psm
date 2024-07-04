@@ -56,6 +56,15 @@ namespace AWX.Resources
         Insights,
     }
 
+    [Flags]
+    public enum InventorySourceOptions
+    {
+        None = 0,
+        Overwrite = 1 << 0,
+        OverwriteVars = 1 << 1,
+        UpdateOnLaunch = 1 << 2,
+    }
+
     public interface IInventorySource
     {
         /// <summary>
@@ -331,5 +340,16 @@ namespace AWX.Resources
         public bool LastUpdateFailed { get; } = lastUpdateFailed;
         [JsonPropertyName("last_updated")]
         public DateTime? LastUpdated { get; } = lastUpdated;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public InventorySourceOptions Options
+        {
+            get
+            {
+                return (Overwrite ? InventorySourceOptions.Overwrite : 0) |
+                       (OverwriteVars ? InventorySourceOptions.OverwriteVars : 0) |
+                       (UpdateOnLaunch ? InventorySourceOptions.UpdateOnLaunch : 0);
+            }
+        }
     }
 }

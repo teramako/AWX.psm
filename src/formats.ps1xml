@@ -807,6 +807,7 @@
           </TableColumnHeader>
           <TableColumnHeader/><!-- Source -->
           <TableColumnHeader/><!-- SourcePath -->
+          <TableColumnHeader/><!-- Options -->
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -840,6 +841,9 @@
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>SourcePath</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
