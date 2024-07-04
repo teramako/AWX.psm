@@ -11,10 +11,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>ClientId</Name>
               <Name>ClientType</Name>
               <Name>RedirectUris</Name>
@@ -48,9 +48,9 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Description</Name>
               <Name>User</Name>
               <Name>Username</Name>
               <Name>Application</Name>
@@ -82,10 +82,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Hostname</Name>
-              <Name>Uuid</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Hostname</Name>
+              <Name>Uuid</Name>
               <Name>LastSeen</Name>
               <Name>HealthCheckStarted</Name>
               <Name>HealthCheckPending</Name>
@@ -125,9 +125,9 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
               <Name>LastSeen</Name>
               <Name>Capacity</Name>
               <Name>ConsumedCapacity</Name>
@@ -160,10 +160,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>MaxHosts</Name>
               <Name>CustomVirtualenv</Name>
               <Name>InventoryCount</Name>
@@ -422,10 +422,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>Organization</Name>
               <Name>OrganizationName</Name>
             </ReferencedProperties>
@@ -449,10 +449,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>Organization</Name>
               <Name>OrganizationName</Name>
               <Name>Kind</Name>
@@ -487,10 +487,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>Kind</Name>
               <Name>Namespace</Name>
               <Name>Managed</Name>
@@ -513,10 +513,10 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
               <Name>Kind</Name>
               <Name>TotalHosts</Name>
               <Name>TotalGroups</Name>
@@ -745,11 +745,11 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
               <Name>Name</Name>
               <Name>Description</Name>
               <Name>InventoryName</Name>
-              <Name>Created</Name>
-              <Name>Modified</Name>
               <Name>Variables</Name>
             </ReferencedProperties>
           </PropertySet>
@@ -772,12 +772,12 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
               <Name>Name</Name>
               <Name>Description</Name>
               <Name>Enabled</Name>
               <Name>InventoryName</Name>
-              <Name>Created</Name>
-              <Name>Modified</Name>
               <Name>LastJob</Name>
               <Name>Variables</Name>
               <Name>Groups</Name>
