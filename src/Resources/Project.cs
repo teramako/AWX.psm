@@ -3,6 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    [Flags]
+    public enum ProjectOptions
+    {
+        None = 0,
+        ScmClean = 1 << 0,
+        ScmDeleteOnUpdate = 1 << 1,
+        ScmTrackSubmodules = 1 << 2,
+        ScmUpdateOnLaunch = 1 << 3,
+        AllowOverride = 1 << 4
+    }
+
     public interface IProject
     {
         /// <summary>
@@ -246,6 +257,19 @@ namespace AWX.Resources
         public bool LastUpdateFailed { get; } = lastUpdateFailed;
         [JsonPropertyName("last_updated")]
         public DateTime? LastUpdated { get; } = lastUpdated;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public ProjectOptions Options
+        {
+            get
+            {
+                return (ScmClean ? ProjectOptions.ScmClean : 0) |
+                       (ScmDeleteOnUpdate ? ProjectOptions.ScmDeleteOnUpdate : 0) |
+                       (ScmTrackSubmodules ? ProjectOptions.ScmTrackSubmodules : 0) |
+                       (ScmUpdateOnLaunch ? ProjectOptions.ScmUpdateOnLaunch : 0) |
+                       (AllowOverride ? ProjectOptions.AllowOverride : 0);
+            }
+        }
 
         /// <summary>
         /// Get inventory files and directories.
