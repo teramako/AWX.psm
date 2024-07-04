@@ -757,4 +757,42 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Host</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Enabled</Name>
+              <Name>InventoryName</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>LastJob</Name>
+              <Name>Variables</Name>
+              <Name>Groups</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>InventoryName</Name>
+        <GetScriptBlock>$this.SummaryFields.Inventory.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Groups</Name>
+        <GetScriptBlock>$this.SummaryFields.Groups.Results.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>RecentJobs</Name>
+        <GetScriptBlock>$this.SummaryFields.RecentJobs</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
