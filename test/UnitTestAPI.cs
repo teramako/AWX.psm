@@ -1944,6 +1944,9 @@ namespace API_Test
             {
                 Console.WriteLine($"  [{job.Id}] {job.Name} {job.Status} {job.Finished}");
             }
+            if (summary.LastJob != null) {
+                Console.WriteLine($"LastJob: [{summary.LastJob.Id}] {summary.LastJob.Name} [{summary.LastJob.JobTemplateId}]{summary.LastJob.JobTemplateName}");
+            }
             Console.WriteLine();
 
         }
