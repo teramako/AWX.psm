@@ -247,31 +247,29 @@
             <ReferencedProperties>
               <Name>Id</Name>
               <Name>Type</Name>
-              <Name>Name</Name>
-              <Name>Description</Name>
               <Name>Created</Name>
               <Name>Modified</Name>
-              <Name>LastUpdated</Name>
-              <Name>LastUpdateFailed</Name>
-              <Name>Status</Name>
-              <Name>Organization</Name>
-              <Name>OrganizationName</Name>
-              <Name>ScmTrackSubmodules</Name>
-              <Name>ScmUpdateOnLaunch</Name>
-              <Name>AllowOverride</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>LocalPath</Name>
               <Name>ScmType</Name>
               <Name>ScmUrl</Name>
               <Name>ScmBranch</Name>
               <Name>ScmRevision</Name>
               <Name>ScmRefspec</Name>
-              <Name>LastUpdated</Name>
+              <Name>Options</Name><!-- Options for ScmClean, ScmDeleteOnUpdate, ScmTrackSubmodules, ScmUpdateOnLaunch, AllowOverride-->
               <Name>Credential</Name>
               <Name>CredentialName</Name>
+              <Name>Timeout</Name>
+              <Name>LastJob</Name>
+              <Name>NextJobRun</Name>
+              <Name>Status</Name>
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+              <Name>ScmUpdateCacheTimeout</Name>
               <Name>DefaultEnvironment</Name>
               <Name>DefaultEnvironmentName</Name>
-              <Name>LastJobRun</Name>
-              <Name>LastJobFailed</Name>
-              <Name>NextJobRun</Name>
+              <Name>SignatureValidationCredential</Name>
             </ReferencedProperties>
           </PropertySet>
         </Members>
@@ -291,6 +289,10 @@
       <ScriptProperty>
         <Name>DefaultEnvironmentName</Name>
         <GetScriptBlock>$this.SummaryFields.DefaultEnvironment.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>LastJob</Name>
+        <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
       </ScriptProperty>
     </Members>
   </Type>

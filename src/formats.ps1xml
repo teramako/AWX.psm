@@ -428,15 +428,11 @@
           <TableColumnHeader><!-- Status -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
+          <TableColumnHeader/><!-- LocalPath -->
           <TableColumnHeader/><!-- ScmType -->
           <TableColumnHeader/><!-- ScmUrl -->
           <TableColumnHeader/><!-- ScmBranch -->
-          <TableColumnHeader><!-- ScmClean -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader><!-- AllowOverride -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
+          <TableColumnHeader/><!-- Options -->
           <TableColumnHeader/><!-- LastUpdated -->
           <TableColumnHeader/><!-- NextJobRun -->
         </TableHeaders>
@@ -459,6 +455,9 @@
                 <PropertyName>Status</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
+                <PropertyName>LocalPath</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
                 <PropertyName>ScmType</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
@@ -468,10 +467,7 @@
                 <PropertyName>ScmBranch</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>ScmClean</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>AllowOverride</PropertyName>
+                <PropertyName>Options</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>LastUpdated</PropertyName>
