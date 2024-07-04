@@ -795,4 +795,90 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.JobTemplate</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>JobType</Name>
+              <Name>Inventory</Name>
+              <Name>InventoryName</Name>
+              <Name>Project</Name>
+              <Name>ProjectName</Name>
+              <Name>ScmBranch</Name>
+              <Name>ExecutionEnvironment</Name>
+              <Name>Playbook</Name>
+              <Name>Credentials</Name>
+              <Name>Labels</Name>
+              <Name>AskLabelsOnLaunch</Name>
+              <Name>ExtraVars</Name>
+              <Name>Forks</Name>
+              <Name>Limit</Name>
+              <Name>Verbosity</Name>
+              <Name>JobSliceCount</Name>
+              <Name>Timeout</Name>
+              <Name>DiffMode</Name>
+              <Name>JobTags</Name>
+              <Name>Skiptags</Name>
+              <Name>AskOnLaunch</Name>
+              <Name>Options</Name><!-- Options for SurveyEnabled, BecomEnabled, ProvisioningCallback, Webhook, AllowSimultaneous, PreventInstanceGroupFallback -->
+              <Name>HostConfigKey</Name><!-- Key for ProvisioningCallback -->
+              <Name>WebhookService</Name><!-- ServiceName for Webhook -->
+              <Name>WebhookCredential</Name><!-- Credential for Webhook-->
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+              <Name>LastJob</Name>
+              <Name>NextJobRun</Name>
+              <Name>RecentJobs</Name>
+              <Name>Status</Name>
+              <Name>ForceHandlers</Name><!-- force-handlers option of ansible-playbook command -->
+              <Name>StartAtTask</Name><!-- start-at-task option of ansible-playbook command -->
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>OrganizationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>InventoryName</Name>
+        <GetScriptBlock>$this.SummaryFields.Inventory.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ExecutionEnvironmentName</Name>
+        <GetScriptBlock>$this.SummaryFields.ExecutionEnvironment.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ProjectName</Name>
+        <GetScriptBlock>$this.SummaryFields.Project.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Credentials</Name>
+        <GetScriptBlock>$this.SummaryFields.Credentials</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Labels</Name>
+        <GetScriptBlock>$this.SummaryFields.Labels.Results</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>LastJob</Name>
+        <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>RecentJobs</Name>
+        <GetScriptBlock>$this.SummaryFields.RecentJobs</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
