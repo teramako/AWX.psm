@@ -358,6 +358,20 @@
         <Name>ProjectName</Name>
         <GetScriptBlock>$this.SummaryFields.Project.Name</GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>$t=$this.SummaryFields.Project;"[{0}][{1}]{2}" -f $t.Id,$t.ScmType,$t.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            Branch = $this.ScmBranch;
+            Revision = $this.ScmRevision;
+            Url = $this.ScmUrl;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
@@ -671,6 +685,20 @@
         <Name>InventorySourceName</Name>
         <GetScriptBlock>$this.SummaryFields.InventorySource.Name</GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>$t=$this.SummaryFields.InventorySource;"[{0}]{1}" -f $t.Id,$t.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
+            Source = $this.Source;
+            SourcePath = $this.SourcePath;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
@@ -977,6 +1005,20 @@
       <ScriptProperty>
         <Name>Labels</Name>
         <GetScriptBlock>$this.SummaryFields.Labels.Results</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>$t=$this.SummaryFields.JobTemplate;"[{0}]{1}" -f $t.Id,$t.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            Playbook = $this.Playbook;
+            Artifacts = $this.Artifacts | ConvertTo-Json -Compress;
+            Labels = $this.Labels.Name -join ",";
+          }
+        </GetScriptBlock>
       </ScriptProperty>
     </Members>
   </Type>

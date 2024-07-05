@@ -481,80 +481,6 @@
       </TableControl>
     </View>
     <View>
-      <Name>ProjectUpdate</Name>
-      <ViewSelectedBy>
-        <TypeName>AWX.Resources.ProjectUpdateJob</TypeName>
-      </ViewSelectedBy>
-      <TableControl>
-        <TableHeaders>
-          <TableColumnHeader><!-- Id -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
-          <TableColumnHeader><!-- Project -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader/><!-- Name-->
-          <TableColumnHeader><!-- LaunchType -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader><!-- JobType -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader/><!-- Finished -->
-          <TableColumnHeader/><!-- Status -->
-          <TableColumnHeader><!-- Elapsed -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader/><!-- ScmBranch -->
-          <TableColumnHeader/><!-- ScmRevision -->
-          <TableColumnHeader/><!-- LaunchedBy -->
-        </TableHeaders>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
-                <PropertyName>Id</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Type</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Project</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Name</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>LaunchType</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>JobType</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Finished</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Status</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Elapsed</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>ScmBranch</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>ScmRevision</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>LaunchedBy</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
-    </View>
-    <View>
       <Name>Team</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.Team</TypeName>
@@ -851,76 +777,6 @@
       </TableControl>
     </View>
     <View>
-      <Name>InventoryUpdate</Name>
-      <ViewSelectedBy>
-        <TypeName>AWX.Resources.InventoryUpdateJob</TypeName>
-      </ViewSelectedBy>
-      <TableControl>
-        <TableHeaders>
-          <TableColumnHeader><!-- Id -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
-          <TableColumnHeader/><!-- Name-->
-          <TableColumnHeader/><!-- Description -->
-          <TableColumnHeader/><!-- LaunchType -->
-          <TableColumnHeader/><!-- Status -->
-          <TableColumnHeader/><!-- Started -->
-          <TableColumnHeader/><!-- Finished -->
-          <TableColumnHeader><!-- Elapsed -->
-            <Alignment>Right</Alignment>
-          </TableColumnHeader>
-          <TableColumnHeader><!-- InventoryName -->
-            <Label>Inventory</Label>
-          </TableColumnHeader>
-          <TableColumnHeader/><!-- Source -->
-          <TableColumnHeader/><!-- SourcePath -->
-        </TableHeaders>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
-                <PropertyName>Id</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Type</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Name</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Description</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>LaunchType</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Status</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Started</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Finished</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Elapsed</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <Propertyname>InventoryName</Propertyname>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Source</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>SourcePath</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
-    </View>
-    <View>
       <Name>Group</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.Group</TypeName>
@@ -1100,6 +956,8 @@
       <Name>Job</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.JobTemplateJob</TypeName>
+        <TypeName>AWX.Resources.ProjectUpdateJob</TypeName>
+        <TypeName>AWX.Resources.InventoryUpdateJob</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <AutoSize/>
@@ -1123,7 +981,8 @@
             <Alignment>Right</Alignment>
           </TableColumnHeader>
           <TableColumnHeader/><!-- LaunchedBy -->
-          <TableColumnHeader/><!-- Playbook -->
+          <TableColumnHeader/><!-- Template -->
+          <TableColumnHeader/><!-- Note -->
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -1156,7 +1015,10 @@
                 <PropertyName>LaunchedBy</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Playbook</PropertyName>
+                <PropertyName>Template</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Note</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
