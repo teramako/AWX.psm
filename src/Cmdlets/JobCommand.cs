@@ -61,11 +61,23 @@ namespace AWX.Cmdlets
             {
                 Query.Add("status__in", string.Join(',', Status));
             }
+            if (LaunchType != null)
+            {
+                Query.Add("launch_type__in", string.Join(',', LaunchType));
+            }
             SetupCommonQuery();
         }
-        protected override void EndProcessing()
+        protected override void ProcessRecord()
         {
-            Find<JobTemplateJob>(JobTemplateJob.PATH);
+            var path = Type switch
+            {
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{Id}/jobs/",
+                _ => JobTemplateJob.PATH
+            };
+            foreach (var resultSet in GetResultSet<JobTemplateJob>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
         }
     }
 }

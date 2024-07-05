@@ -1096,5 +1096,72 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Job</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobTemplateJob</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader><!-- JobType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- LaunchType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Finished -->
+          <TableColumnHeader><!-- Elapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LaunchedBy -->
+          <TableColumnHeader/><!-- Playbook -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Finished</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Elapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchedBy</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Playbook</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
