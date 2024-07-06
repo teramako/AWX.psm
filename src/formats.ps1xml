@@ -785,7 +785,9 @@
           <TableColumnHeader/><!-- Type -->
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
-          <TableColumnHeader/><!-- Status -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- LastUpdated -->
           <TableColumnHeader><!-- InventoryName -->
             <Label>Inventory</Label>
