@@ -494,9 +494,9 @@
           <TableColumnHeader/><!-- ScmType -->
           <TableColumnHeader/><!-- ScmUrl -->
           <TableColumnHeader/><!-- ScmBranch -->
-          <TableColumnHeader/><!-- Options -->
           <TableColumnHeader/><!-- LastUpdated -->
           <TableColumnHeader/><!-- NextJobRun -->
+          <TableColumnHeader/><!-- Options -->
         </TableHeaders>
         <TableRowEntries>
           <TableRowEntry>
@@ -529,13 +529,13 @@
                 <PropertyName>ScmBranch</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Options</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
                 <PropertyName>LastUpdated</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
