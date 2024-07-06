@@ -1015,7 +1015,7 @@
       </TableControl>
     </View>
     <View>
-      <Name>Job</Name>
+      <Name>UnifiedJob</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.JobTemplateJob</TypeName>
         <TypeName>AWX.Resources.ProjectUpdateJob</TypeName>
