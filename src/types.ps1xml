@@ -294,6 +294,21 @@
         <Name>LastJob</Name>
         <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          if ($this.ScmType) {
+            @{
+              Scm = "[{0}]{1}" -f $this.ScmType, $this.ScmUrl;
+              Branch = $this.ScmBranch
+            }
+          } else {
+            @{
+              LocalPath = $this.LocalPath;
+            }
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
@@ -611,6 +626,17 @@
         <Name>LastJob</Name>
         <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
+            SourceProject = "[{0}]{1}" -f $this.SourceProject,$this.SourceProjectName;
+            Source = $this.Source;
+            SourcePath = $this.SourcePath;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
@@ -911,6 +937,18 @@
         <Name>RecentJobs</Name>
         <GetScriptBlock>$this.SummaryFields.RecentJobs</GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            JobType = $this.JobType;
+            Playbook = $this.Playbook;
+            Project = "[{0}]{1}" -f $this.Project,$this.ProjectName;
+            Branch = $this.ScmBranch;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
+
     </Members>
   </Type>
   <Type>
