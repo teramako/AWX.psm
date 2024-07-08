@@ -12,7 +12,7 @@ namespace AWX.Resources
         [JsonPropertyName("event_display")]
         string EventDisplay { get; }
         [JsonPropertyName("event_data")]
-        OrderedDictionary EventData { get; }
+        Dictionary<string, object?> EventData { get; }
         bool Failed { get; }
         bool Changed { get; }
         string UUID { get; }

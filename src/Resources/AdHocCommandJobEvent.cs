@@ -15,7 +15,7 @@ namespace AWX.Resources
     public class AdHocCommandJobEvent(ulong id, ResourceType type, string url, RelatedDictionary related,
                                       AdHocCommandJobEvent.Summary summaryFields, DateTime created, DateTime? modified,
                                       ulong adHocCommand, JobEventEvent @event, int counter, string eventDisplay,
-                                      OrderedDictionary eventData, bool failed, bool changed, string uuid, ulong? host,
+                                      Dictionary<string, object?> eventData, bool failed, bool changed, string uuid, ulong? host,
                                       string hostName, string stdout, int startLine, int endLine, JobVerbosity verbosity)
         : IAdHocCommandJobEvent, IResource<AdHocCommandJobEvent.Summary>
     {
@@ -54,7 +54,7 @@ namespace AWX.Resources
         public JobEventEvent Event { get; } = @event;
         public int Counter { get; } = counter;
         public string EventDisplay { get; } = eventDisplay;
-        public OrderedDictionary EventData { get; } = eventData;
+        public Dictionary<string, object?> EventData { get; } = eventData;
         public bool Failed { get; } = failed;
         public bool Changed { get; } = changed;
         public string UUID { get; } = uuid;

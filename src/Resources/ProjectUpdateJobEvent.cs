@@ -20,7 +20,7 @@ namespace AWX.Resources
     public class ProjectUpdateJobEvent(ulong id, ResourceType type, string url, RelatedDictionary related,
                                        ProjectUpdateJobEvent.Summary summaryFields, DateTime created, DateTime? modified,
                                        JobEventEvent @event, int counter, string eventDisplay,
-                                       OrderedDictionary eventData, int eventLevel, bool failed, bool changed,
+                                       Dictionary<string, object?> eventData, int eventLevel, bool failed, bool changed,
                                        string uUID, string hostName, string playbook, string play, string task,
                                        string role, string stdout, int startLine, int endLine, JobVerbosity verbosity,
                                        ulong projectUpdate)
@@ -61,7 +61,7 @@ namespace AWX.Resources
         public JobEventEvent Event { get; } = @event;
         public int Counter { get; } = counter;
         public string EventDisplay { get; } = eventDisplay;
-        public OrderedDictionary EventData { get; } = eventData;
+        public Dictionary<string, object?> EventData { get; } = eventData;
         public int EventLevel { get; } = eventLevel;
         public bool Failed { get; } = failed;
         public bool Changed { get; } = changed;
