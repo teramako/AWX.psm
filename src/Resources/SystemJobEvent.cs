@@ -5,7 +5,7 @@ namespace AWX.Resources
     public class SystemJobEvent(ulong id, ResourceType type, string url, RelatedDictionary related,
                                 SystemJobEvent.Summary summaryFields, DateTime created, DateTime? modified,
                                 JobEventEvent @event, int counter, string eventDisplay, Dictionary<string, object?> eventData,
-                                bool failed, bool changed, string uUID, string stdout, int startLine, int endLine,
+                                bool failed, bool changed, string uuid, string stdout, int startLine, int endLine,
                                 JobVerbosity verbosity, ulong systemJob)
         : IJobEventBase, IResource<SystemJobEvent.Summary>
     {
@@ -45,7 +45,7 @@ namespace AWX.Resources
         public Dictionary<string, object?> EventData { get; } = eventData;
         public bool Failed { get; } = failed;
         public bool Changed { get; } = changed;
-        public string UUID { get; } = uUID;
+        public string UUID { get; } = uuid;
         public string Stdout { get; } = stdout;
         public int StartLine { get; } = startLine;
         public int EndLine { get; } = endLine;

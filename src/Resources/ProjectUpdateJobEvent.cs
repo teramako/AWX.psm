@@ -21,7 +21,7 @@ namespace AWX.Resources
                                        ProjectUpdateJobEvent.Summary summaryFields, DateTime created, DateTime? modified,
                                        JobEventEvent @event, int counter, string eventDisplay,
                                        Dictionary<string, object?> eventData, int eventLevel, bool failed, bool changed,
-                                       string uUID, string hostName, string playbook, string play, string task,
+                                       string uuid, string hostName, string playbook, string play, string task,
                                        string role, string stdout, int startLine, int endLine, JobVerbosity verbosity,
                                        ulong projectUpdate)
         : IProjectUpdateJobEvent, IResource<ProjectUpdateJobEvent.Summary>
@@ -65,7 +65,7 @@ namespace AWX.Resources
         public int EventLevel { get; } = eventLevel;
         public bool Failed { get; } = failed;
         public bool Changed { get; } = changed;
-        public string UUID { get; } = uUID;
+        public string UUID { get; } = uuid;
         public string HostName { get; } = hostName;
         public string Playbook { get; } = playbook;
         public string Play { get; } = play;
