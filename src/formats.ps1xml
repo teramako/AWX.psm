@@ -1173,5 +1173,120 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>JobHostSummary</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobHostSummary</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Job -->
+            <Label>Job</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobStatus -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobElapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobTemplate -->
+            <Label>JobTemplate</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Host -->
+            <Label>Host</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Changed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Dark -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Failures -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- OK -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Processed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Skipped -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Failed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Ignored -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Rescued -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.Job,$_.JobName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobStatus</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobElapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.JobTemplate,$_.JobTemplateName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.Host,$_.HostName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Changed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Dark</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Failures</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OK</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Processed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Skipped</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Failed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Ignored</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Rescued</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
