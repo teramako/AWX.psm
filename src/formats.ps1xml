@@ -1107,6 +1107,7 @@
         <TypeName>AWX.Resources.JobEvent</TypeName>
         <TypeName>AWX.Resources.ProjectUpdateJobEvent</TypeName>
         <TypeName>AWX.Resources.InventoryUpdateJobEvent</TypeName>
+        <TypeName>AWX.Resources.SystemJobEvent</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>

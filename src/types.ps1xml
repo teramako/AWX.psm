@@ -1282,4 +1282,38 @@
       </AliasProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.SystemJobEvent</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>SystemJob</Name>
+              <Name>Counter</Name>
+              <Name>Event</Name>
+              <Name>EventDisplay</Name>
+              <Name>Failed</Name>
+              <Name>Changed</Name>
+              <Name>UUID</Name>
+              <Name>Stdout</Name>
+              <Name>StartLine</Name>
+              <Name>EndLine</Name>
+              <Name>Verbosity</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <AliasProperty>
+        <Name>Job</Name>
+        <ReferencedMemberName>SystemJob</ReferencedMemberName>
+      </AliasProperty>
+    </Members>
+  </Type>
 </Types>
