@@ -1429,4 +1429,71 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.AdHocCommand</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>LaunchType</Name>
+              <Name>Status</Name>
+              <Name>ExecutionEnvironment</Name>
+              <Name>Failed</Name>
+              <Name>Started</Name>
+              <Name>Finished</Name>
+              <Name>CanceledOn</Name>
+              <Name>Elapsed</Name>
+              <Name>JobExplanation</Name>
+              <Name>ExecutionNode</Name>
+              <Name>ControllerNode</Name>
+              <Name>LaunchedBy</Name>
+              <Name>WorkUnitId</Name>
+              <Name>JobType</Name>
+              <Name>Inventory</Name>
+              <Name>InventoryName</Name>
+              <Name>Limit</Name>
+              <Name>Credential</Name>
+              <Name>ModuleName</Name>
+              <Name>ModuleArgs</Name>
+              <Name>Forks</Name>
+              <Name>Verbosity</Name>
+              <Name>ExtraVars</Name>
+              <Name>BecomeEnabled</Name>
+              <Name>DiffMode</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>InventoryName</Name>
+        <GetScriptBlock>$this.SummaryFields.Inventory.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>CredentialName</Name>
+        <GetScriptBlock>$this.SummaryFields.Credential.Name</GetScriptBlock>
+      </ScriptProperty>
+      <AliasProperty>
+        <Name>Template</Name>
+        <ReferencedMemberName>ModuleName</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            ModuleArgs = $this.ModuleArgs;
+            Limit = $this.Limit;
+            Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
