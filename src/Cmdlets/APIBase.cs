@@ -133,6 +133,16 @@ namespace AWX.Cmdlets
         public abstract ulong Id { get; set; }
 
         /// <summary>
+        /// <c>"search"</c> query parameter for API.
+        /// <br/>
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/searching.html">
+        /// 5. Searching — Automation Controller API Guide
+        /// </a>
+        /// </summary>
+        [Parameter()]
+        public string[]? Search { get; set; }
+
+        /// <summary>
         /// <c>"order_by"</c> query parameter for API.
         /// <br/>
         /// To sort in reverse (Descending), add <c>"!"</c> prefix instead of <c>"-"</c>.
@@ -142,16 +152,6 @@ namespace AWX.Cmdlets
         /// </a>
         /// </summary>
         public abstract string[] OrderBy { get; set; }
-
-        /// <summary>
-        /// <c>"search"</c> query parameter for API.
-        /// <br/>
-        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/searching.html">
-        /// 5. Searching — Automation Controller API Guide
-        /// </a>
-        /// </summary>
-        [Parameter(Position = 1)]
-        public string[]? Search { get; set; }
 
         /// <summary>
         /// Max size of per page.
