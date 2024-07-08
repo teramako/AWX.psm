@@ -9,7 +9,7 @@ namespace AWX.Cmdlets
         public IUnifiedJob Job {
             get { return _job; }
             set { 
-                if (_job.Id != value.Id)
+                if (_job.Id == value.Id)
                 {
                     _job = value;
                 }
