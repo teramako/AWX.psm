@@ -84,7 +84,7 @@ namespace AWX.Resources
         InventoryUpdateEvent,
         [ResourcePath("job_host_summaries")]
         JobHostSummary,
-        [ResourcePath("ad_hoc_commands")]
+        [ResourcePath("ad_hoc_commands", typeof(AdHocCommand))]
         AdHocCommand,
         [ResourcePath("ad_hoc_command_events", typeof(AdHocCommandJobEvent))]
         AdHocCommandEvent,
