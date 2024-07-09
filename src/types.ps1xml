@@ -1681,4 +1681,60 @@
       </MemberSet>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Schedule</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Enabled</Name>
+              <Name>Rrule</Name>
+              <Name>Dtstart</Name>
+              <Name>Dtend</Name>
+              <Name>NextRun</Name>
+              <Name>Timezone</Name>
+              <Name>Until</Name>
+              <Name>UnifiedJobTemplate</Name>
+              <Name>UnifiedJobTemplateName</Name>
+              <Name>UnifiedJobType</Name>
+              <Name>ExtraData</Name>
+              <Name>Inventory</Name>
+              <Name>ScmBranch</Name>
+              <Name>JobType</Name>
+              <Name>JobTags</Name>
+              <Name>SkipTags</Name>
+              <Name>Limit</Name>
+              <Name>DiffMode</Name>
+              <Name>Verbosity</Name>
+              <Name>ExecutionEnvironment</Name>
+              <Name>Forks</Name>
+              <Name>JobSliceCount</Name>
+              <Name>Timeout</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>UnifiedJobTemplateName</Name>
+        <GetScriptBlock>$this.SummaryFields.UnifiedJobTemplate.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>UnifiedJobType</Name>
+        <GetScriptBlock>$this.SummaryFields.UnifiedJobTemplate.UnifiedJobType</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>"[{0}]{1}" -f $this.UnifiedJobTemplate,$this.UnifiedJobTemplateName</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
