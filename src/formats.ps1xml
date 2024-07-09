@@ -1036,6 +1036,7 @@
         <TypeName>AWX.Resources.ProjectUpdateJob</TypeName>
         <TypeName>AWX.Resources.InventoryUpdateJob</TypeName>
         <TypeName>AWX.Resources.AdHocCommand</TypeName>
+        <TypeName>AWX.Resources.SystemJob</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <AutoSize/>
