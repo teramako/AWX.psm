@@ -1547,4 +1547,42 @@
       </MemberSet>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.SystemJobTemplate</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>JobType</Name>
+              <Name>LastJob</Name>
+              <Name>NextJobRun</Name>
+              <Name>Status</Name>
+              <Name>ExecutionEnvironment</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>LastJob</Name>
+        <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          @{
+            JobType = $this.JobType;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>

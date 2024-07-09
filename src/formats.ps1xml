@@ -7,6 +7,7 @@
         <TypeName>AWX.Resources.JobTemplate</TypeName>
         <TypeName>AWX.Resources.Project</TypeName>
         <TypeName>AWX.Resources.InventorySource</TypeName>
+        <TypeName>AWX.Resources.SystemJobTemplate</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>
@@ -1283,6 +1284,58 @@
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Rescued</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>SystemJobTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.SystemJobTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- JobType -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LastJobRun-->
+          <TableColumnHeader/><!-- NextJobRun -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
