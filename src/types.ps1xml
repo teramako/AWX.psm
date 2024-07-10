@@ -1737,4 +1737,43 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Role</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>ResourceId</Name>
+              <Name>ResourceType</Name>
+              <Name>ResourceName</Name>
+              <Name>ResourceTypeDisplayName</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>ResourceId</Name>
+        <GetScriptBlock>$this.SummaryFields.ResourceId</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ResourceType</Name>
+        <GetScriptBlock>$this.SummaryFields.ResourceType</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ResourceName</Name>
+        <GetScriptBlock>$this.SummaryFields.ResourceName</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ResourceTypeDisplayName</Name>
+        <GetScriptBlock>$this.SummaryFields.ResourceTypeDisplayName</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>

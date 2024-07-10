@@ -1410,5 +1410,55 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>Role</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Role</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!--  ResourceId -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ResourceType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- ResourceName -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ResourceId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ResourceType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ResourceName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
