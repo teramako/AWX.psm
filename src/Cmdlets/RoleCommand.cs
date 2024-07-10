@@ -68,4 +68,49 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Find, "ObjectRole", DefaultParameterSetName = "All")]
+    [OutputType(typeof(Role))]
+    public class FindObjectRoleCommand : FindCmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateSet(nameof(ResourceType.InstanceGroup),
+                     nameof(ResourceType.Organization),
+                     nameof(ResourceType.Project),
+                     nameof(ResourceType.Team),
+                     nameof(ResourceType.Credential),
+                     nameof(ResourceType.Inventory),
+                     nameof(ResourceType.JobTemplate),
+                     nameof(ResourceType.WorkflowJobTemplate))]
+        public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
+
+        [Parameter()]
+        public override string[] OrderBy { get; set; } = ["id"];
+
+        protected override void BeginProcessing()
+        {
+            SetupCommonQuery();
+        }
+        protected override void ProcessRecord()
+        {
+            var path = Type switch
+            {
+                ResourceType.InstanceGroup => $"{InstanceGroup.PATH}{Id}/object_roles/",
+                ResourceType.Organization => $"{Organization.PATH}{Id}/object_roles/",
+                ResourceType.Project => $"{Project.PATH}{Id}/object_roles/",
+                ResourceType.Team => $"{Team.PATH}{Id}/object_roles/",
+                ResourceType.Credential => $"{Credential.PATH}{Id}/object_roles/",
+                ResourceType.Inventory => $"{Inventory.PATH}{Id}/object_roles/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{Id}/object_roles/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{Id}/object_roles/",
+                _ => throw new ArgumentException()
+            };
+            foreach (var resultSet in GetResultSet<Role>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
+    }
 }
