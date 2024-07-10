@@ -208,6 +208,7 @@ namespace AWX.Resources
             InventorySummary Inventory,
             [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
             CredentialSummary? Credential,
+            ScheduleSummary? Schedule,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("inventory_source")] InventorySourceSummary InventorySource,
             [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,

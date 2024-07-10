@@ -108,6 +108,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
             ProjectSummary Project,
             CredentialSummary? Credential,
+            ScheduleSummary? Schedule,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
