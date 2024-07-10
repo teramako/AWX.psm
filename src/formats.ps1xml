@@ -1460,5 +1460,51 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>NotificationTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.NotificationTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- NotificationType -->
+          <TableColumnHeader/><!-- NotificationConfiguration-->
+          <TableColumnHeader/><!-- Messages -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NotificationType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NotificationConfiguration</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Messages</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
