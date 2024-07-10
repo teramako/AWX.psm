@@ -1839,4 +1839,45 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.Notification</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>NotificationTemplate</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Status</Name>
+              <Name>Error</Name>
+              <Name>NotificationsSent</Name>
+              <Name>NotificationType</Name>
+              <Name>Recipients</Name>
+              <Name>Subject</Name>
+              <Name>Body</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>Name</Name>
+        <GetScriptBlock>$this.SummaryFields.NotificationTemplate.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Description</Name>
+        <GetScriptBlock>$this.SummaryFields.NotificationTemplate.Description</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>"[{0}]{1}" -f $this.NotificationTemplate,$this.Name</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
