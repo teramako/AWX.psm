@@ -42,10 +42,10 @@ namespace AWX.Resources
             }
         }
         public record Summary(
-            [property: JsonPropertyName("resource_name")] string ResourceName,
-            [property: JsonPropertyName("resource_type")] string ResourceType,
-            [property: JsonPropertyName("resource_type_display_name")] string ResourceTypeDisplayName,
-            [property: JsonPropertyName("resource_id")] ulong ResourceId);
+            [property: JsonPropertyName("resource_name")] string? ResourceName,
+            [property: JsonPropertyName("resource_type")] ResourceType? ResourceType,
+            [property: JsonPropertyName("resource_type_display_name")]string? ResourceTypeDisplayName,
+            [property: JsonPropertyName("resource_id")] ulong? ResourceId);
 
 
         public ulong Id { get; } = id;
