@@ -1905,4 +1905,76 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.WorkflowJobTemplate</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+              <Name>Inventory</Name>
+              <Name>InventoryName</Name>
+              <Name>Limit</Name>
+              <Name>ScmBranch</Name>
+              <Name>Labels</Name>
+              <Name>ExtraVars</Name>
+              <Name>JobTags</Name>
+              <Name>SkipTags</Name>
+              <Name>AskOnLaunch</Name>
+              <Name>Options</Name><!-- Options for SurveyEnabled, Webhook, AllowSimultaneous -->
+              <Name>WebhookService</Name><!-- ServiceName for Webhook -->
+              <Name>WebhookCredential</Name><!-- Credential for Webhook-->
+              <Name>LastJob</Name>
+              <Name>NextJobRun</Name>
+              <Name>RecentJobs</Name>
+              <Name>Status</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>InventoryName</Name>
+        <GetScriptBlock>$this.SummaryFields.Inventory.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>OrganizationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Labels</Name>
+        <GetScriptBlock>$this.SummaryFields.Labels.Results</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>LastJob</Name>
+        <GetScriptBlock>$this.SummaryFields.LastJob</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>RecentJobs</Name>
+        <GetScriptBlock>$this.SummaryFields.RecentJobs</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          [ordered]@{
+            Organization = if($this.Organization){"[{0}]{1}" -f $this.Organization,$this.OrganizationName}else{$null};
+            Inventory = if($this.Inventory){"[{0}]{1}" -f $this.Inventory,$this.InventoryName}else{$null};
+            Branch = $this.ScmBranch;
+            Limit = $this.Limit;
+            JobTags = $this.JobTags;
+            SkipTags = $this.SkipTags;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>

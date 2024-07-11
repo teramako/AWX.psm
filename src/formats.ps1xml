@@ -8,6 +8,7 @@
         <TypeName>AWX.Resources.Project</TypeName>
         <TypeName>AWX.Resources.InventorySource</TypeName>
         <TypeName>AWX.Resources.SystemJobTemplate</TypeName>
+        <TypeName>AWX.Resources.WorkflowJobTemplate</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>
