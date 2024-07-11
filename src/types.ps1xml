@@ -948,7 +948,6 @@
           }
         </GetScriptBlock>
       </ScriptProperty>
-
     </Members>
   </Type>
   <Type>
@@ -1877,6 +1876,32 @@
       <ScriptProperty>
         <Name>Template</Name>
         <GetScriptBlock>"[{0}]{1}" -f $this.NotificationTemplate,$this.Name</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>AWX.Resources.Label</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>OrganizationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
       </ScriptProperty>
     </Members>
   </Type>
