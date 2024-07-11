@@ -2054,4 +2054,34 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.ActivityStream</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Timestamp</Name>
+              <Name>Operation</Name>
+              <Name>Changes</Name>
+              <Name>Object1</Name>
+              <Name>Object2</Name>
+              <Name>ObjectAssociation</Name>
+              <Name>ActionNode</Name>
+              <Name>ObjectType</Name>
+              <Name>Actor</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>Actor</Name>
+        <GetScriptBlock>$t=$this.SummaryFields.Actor; "[{0}]{1}" -f $t.Id,$t.Username</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
