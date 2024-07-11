@@ -298,12 +298,12 @@
         <Name>Note</Name>
         <GetScriptBlock>
           if ($this.ScmType) {
-            @{
+            [ordered]@{
               Scm = "[{0}]{1}" -f $this.ScmType, $this.ScmUrl;
               Branch = $this.ScmBranch
             }
           } else {
-            @{
+            [ordered]@{
               LocalPath = $this.LocalPath;
             }
           }
@@ -380,7 +380,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             Branch = $this.ScmBranch;
             Revision = $this.ScmRevision;
             Url = $this.ScmUrl;
@@ -629,7 +629,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
             SourceProject = "[{0}]{1}" -f $this.SourceProject,$this.SourceProjectName;
             Source = $this.Source;
@@ -718,7 +718,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
             Source = $this.Source;
             SourcePath = $this.SourcePath;
@@ -940,7 +940,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             JobType = $this.JobType;
             Playbook = $this.Playbook;
             Project = "[{0}]{1}" -f $this.Project,$this.ProjectName;
@@ -1050,7 +1050,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             Playbook = $this.Playbook;
             Artifacts = $this.Artifacts | ConvertTo-Json -Compress;
             Labels = $this.Labels.Name -join ",";
@@ -1486,7 +1486,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             ModuleArgs = $this.ModuleArgs;
             Limit = $this.Limit;
             Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
@@ -1577,7 +1577,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             JobType = $this.JobType;
           }
         </GetScriptBlock>
@@ -1630,7 +1630,7 @@
       <ScriptProperty>
         <Name>Note</Name>
         <GetScriptBlock>
-          @{
+          [ordered]@{
             ExtraVars = $this.ExtraVars;
             Stdout = $this.ResultStdout;
           }
