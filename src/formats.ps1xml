@@ -1735,5 +1735,69 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>WorkflowJobTemplateNode</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.WorkflowJobTemplateNode</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- WorkflowJobTemplate -->
+            <Label>WorkflowJobTemplate</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplate -->
+            <Label>Template ID</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplateType -->
+            <Label>Template Type</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplateName -->
+            <Label>Template Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- SuccessNodes -->
+          <TableColumnHeader/><!-- FailureNodes -->
+          <TableColumnHeader/><!-- AlwaysNodes -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJobTemplate,$_.WorkflowJobTemplateName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplate</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplateType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplateName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SuccessNodes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>FailureNodes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AlwaysNodes</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
