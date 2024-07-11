@@ -125,6 +125,8 @@ namespace AWX.Resources
         }
 
         public record Summary(
+            NameDescriptionSummary? Organization,
+            InventorySummary? Inventory,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
