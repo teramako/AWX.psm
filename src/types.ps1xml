@@ -1977,4 +1977,81 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.WorkflowJob</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>UnifiedJobTemplate</Name>
+              <Name>LaunchType</Name>
+              <Name>Status</Name>
+              <Name>Failed</Name>
+              <Name>Started</Name>
+              <Name>Finished</Name>
+              <Name>CanceledOn</Name>
+              <Name>Elapsed</Name>
+              <Name>JobExplanation</Name>
+              <Name>LaunchedBy</Name>
+              <Name>WorkUnitId</Name>
+              <Name>WorkflowJobTemplate</Name>
+              <Name>WorkflowJobTemplateName</Name>
+              <Name>ExtraVars</Name>
+              <Name>AllowSimultaneous</Name>
+              <Name>JobTemplate</Name>
+              <Name>IsSlicedJob</Name>
+              <Name>Inventory</Name>
+              <Name>InventoryName</Name>
+              <Name>Limit</Name>
+              <Name>ScmBranch</Name>
+              <Name>Labels</Name>
+              <Name>WebhookService</Name>
+              <Name>WebhookCredential</Name>
+              <Name>WebhookGuid</Name>
+              <Name>JobTags</Name>
+              <Name>SkipTags</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>WorkflowJobTemplateName</Name>
+        <GetScriptBlock>$this.SummaryFields.WorkflowJobTemplate.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>InventoryName</Name>
+        <GetScriptBlock>$this.SummaryFields.Inventory.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Labels</Name>
+        <GetScriptBlock>$this.SummaryFields.Labels.Results</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>$t=$this.SummaryFields.UnifiedJobTemplate;"[{0}]{1}" -f $t.Id,$t.Name</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          [ordered]@{
+            Labels = $this.Labels.Name -join ",";
+            Inventory = "[{0}]{1}" -f $this.Inventory,$this.InventoryName;
+            Limit = $this.Limit;
+            Branch = $this.ScmBranch;
+            JobTags = $this.JobTags;
+            SkipTags = $this.SkipTags;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>

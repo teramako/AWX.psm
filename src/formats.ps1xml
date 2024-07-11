@@ -1038,6 +1038,7 @@
         <TypeName>AWX.Resources.InventoryUpdateJob</TypeName>
         <TypeName>AWX.Resources.AdHocCommand</TypeName>
         <TypeName>AWX.Resources.SystemJob</TypeName>
+        <TypeName>AWX.Resources.WorkflowJob</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <AutoSize/>
