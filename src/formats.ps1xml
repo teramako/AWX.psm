@@ -15,7 +15,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- Status -->
@@ -76,7 +78,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Created -->
@@ -130,7 +134,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Created -->
           <TableColumnHeader/><!-- Modified -->
@@ -196,7 +202,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Hostname -->
           <TableColumnHeader><!-- Enabled -->
             <Alignment>Right</Alignment>
@@ -276,7 +284,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader><!-- Instances -->
             <Alignment>Right</Alignment>
@@ -324,6 +334,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Created -->
@@ -364,6 +377,9 @@
             <TableColumnItems>
               <TableColumnItem>
                 <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Name</PropertyName>
@@ -416,6 +432,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Username -->
           <TableColumnHeader/><!-- Email -->
           <TableColumnHeader/><!-- FirstName -->
@@ -437,6 +456,9 @@
             <TableColumnItems>
               <TableColumnItem>
                 <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Username</PropertyName>
@@ -486,7 +508,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- Status -->
@@ -554,7 +578,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Created -->
@@ -601,7 +627,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Created  -->
@@ -666,7 +694,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Created -->
@@ -722,7 +752,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- Kind -->
@@ -784,7 +816,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- Status -->
@@ -853,7 +887,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- InventoryName -->
@@ -904,7 +940,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- Enabled -->
@@ -962,7 +1000,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- JobType -->
@@ -1046,7 +1086,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader><!-- JobType -->
             <Alignment>Right</Alignment>
@@ -1120,7 +1162,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader><!-- Job -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
@@ -1189,7 +1233,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader><!-- Job -->
             <Label>Job</Label>
           </TableColumnHeader>
@@ -1303,7 +1349,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- JobType -->
@@ -1355,7 +1403,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- Enabled -->
@@ -1422,7 +1472,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!--  ResourceId -->
@@ -1472,7 +1524,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader/><!-- NotificationType -->
@@ -1518,7 +1572,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Modified -->
           <TableColumnHeader><!-- Status -->
             <Alignment>Right</Alignment>
@@ -1570,7 +1626,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name -->
           <TableColumnHeader/><!-- Modified -->
           <TableColumnHeader><!-- Organization -->
@@ -1611,7 +1669,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Timestamp -->
           <TableColumnHeader><!-- Operation -->
             <Alignment>Right</Alignment>
@@ -1667,7 +1727,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader/><!-- Name-->
           <TableColumnHeader/><!-- Description -->
           <TableColumnHeader><!-- Status -->
@@ -1745,7 +1807,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader><!-- WorkflowJobTemplate -->
             <Label>WorkflowJobTemplate</Label>
           </TableColumnHeader>
@@ -1809,7 +1873,9 @@
           <TableColumnHeader><!-- Id -->
             <Alignment>Right</Alignment>
           </TableColumnHeader>
-          <TableColumnHeader/><!-- Type -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
           <TableColumnHeader><!-- WorkflowJob -->
             <Label>WorkflowJob</Label>
           </TableColumnHeader>
