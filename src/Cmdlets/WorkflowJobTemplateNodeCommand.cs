@@ -55,4 +55,45 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Find, "WorkflowJobTemplateNodeFor")]
+    [OutputType(typeof(WorkflowJobTemplateNode))]
+    public class FindWorkflowJobTemplateNodeForCommand : FindCmdletBase
+    {
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        [ValidateSet(nameof(ResourceType.WorkflowJobTemplateNode))]
+        public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 0)]
+        public NodeType For { get; set; }
+
+        [Parameter()]
+        public override string[] OrderBy { get; set; } = ["!id"];
+
+        public enum NodeType
+        {
+            Always, Failure, Success
+        }
+
+        protected override void BeginProcessing()
+        {
+            SetupCommonQuery();
+        }
+        protected override void ProcessRecord()
+        {
+            var path = For switch
+            {
+                NodeType.Always => $"{WorkflowJobTemplateNode.PATH}{Id}/always_nodes/",
+                NodeType.Failure => $"{WorkflowJobTemplateNode.PATH}{Id}/failure_nodes/",
+                NodeType.Success => $"{WorkflowJobTemplateNode.PATH}{Id}/success_nodes/",
+                _ => throw new ArgumentException()
+            };
+            foreach (var resultSet in GetResultSet<WorkflowJobTemplateNode>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
+    }
 }
