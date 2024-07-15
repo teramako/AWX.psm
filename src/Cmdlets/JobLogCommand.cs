@@ -67,16 +67,21 @@ namespace AWX.Cmdlets
             {
                 foreach(var node in resultSet.Results)
                 {
+                    if (node.Job == null || node.SummaryFields.Job == null)
+                    {
+                        continue;
+                    }
+                    var jobId = (ulong)node.Job;
                     var type = node.SummaryFields.Job.Type;
                     switch (type)
                     {
                         case ResourceType.WorkflowJob:
-                            GetJobsFromWorkflowJob(node.Job);
+                            GetJobsFromWorkflowJob(jobId);
                             break;
                         default:
                             if (jobIdSet.Add(node.Id))
                             {
-                                jobs.Add(new Job(node.Job, type));
+                                jobs.Add(new Job(jobId, type));
                             }
                             break;
                     }

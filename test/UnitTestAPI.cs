@@ -3141,7 +3141,7 @@ namespace API_Test
         static void DumpSummary(WorkflowJobNode.Summary summary)
         {
             Console.WriteLine("-----SummaryFields-----");
-            Console.WriteLine($"Job             : [{summary.Job.Id}][{summary.Job.Type}] {summary.Job.Status} {summary.Job.Name}");
+            Console.WriteLine($"Job             : [{summary.Job?.Id}][{summary.Job?.Type}] {summary.Job?.Status} {summary.Job?.Name}");
             Console.WriteLine($"WorkflowJob     : [{summary.WorkflowJob.Id}] {summary.WorkflowJob.Name}");
             Console.WriteLine($"UnifiedTemplate : [{summary.UnifiedJobTemplate.Id}][{summary.UnifiedJobTemplate.UnifiedJobType}] {summary.UnifiedJobTemplate.Name}");
             Console.WriteLine();
