@@ -102,7 +102,12 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(
+            NameDescriptionSummary? Organization,
+            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
+            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
+            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities
+        );
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
