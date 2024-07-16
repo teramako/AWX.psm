@@ -134,7 +134,7 @@ namespace AWX.Resources
         Debug,
         Verbose,
         Deprecated,
-        Warnining,
+        Warning,
         SystemWarning,
         Error
     }
