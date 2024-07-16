@@ -2001,7 +2001,7 @@
       </TableControl>
     </View>
     <View>
-      <Name>AnsibleTowerExecutionEnvironment</Name>
+      <Name>ExecutionEnvironment</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.ExecutionEnvironment</TypeName>
       </ViewSelectedBy>
