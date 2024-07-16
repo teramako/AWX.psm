@@ -129,7 +129,7 @@ namespace AWX.Cmdlets
             }
             else
             {
-                jobTasks.Add(launchResult.Id, new JobTask(launchResult));
+                JobManager.Add(launchResult);
             }
         }
         protected override void ProcessRecord()

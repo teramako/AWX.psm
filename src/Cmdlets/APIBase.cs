@@ -9,8 +9,7 @@ namespace AWX.Cmdlets
 {
     public abstract class InvokeJobBase : APICmdletBase
     {
-        protected readonly Dictionary<ulong, JobTask> jobTasks = [];
-
+        protected readonly JobProgressManager JobManager = [];
         private Sleep? _sleep;
         protected void Sleep(int milliseconds)
         {
@@ -19,35 +18,35 @@ namespace AWX.Cmdlets
                 _sleep.Do(milliseconds);
             }
         }
-        protected void WriteJobIndicator(JobTask jobTask, bool suppressJobLog)
+        protected void WriteJobIndicator(JobProgress jp, bool suppressJobLog)
         {
-            WriteHost($"====== [{jobTask.Id}] {jobTask.Job.Name} ======\n",
+            WriteHost($"====== [{jp.Id}] {jp.Job?.Name} ======\n",
                       foregroundColor: ConsoleColor.Magenta,
-                      tags: ["Ansible", "Indicator", $"job-{jobTask.Id}"],
+                      tags: ["Ansible", "Indicator", $"job-{jp.Id}"],
                       dontshow: suppressJobLog);
         }
         private ulong lastShownJob = 0;
-        protected void WriteJobLog(JobTask jobTask, bool suppressJobLog)
+        protected void WriteJobLog(JobProgress jp, bool suppressJobLog)
         {
-            if (string.IsNullOrWhiteSpace(jobTask.CurrentLog))
+            if (string.IsNullOrWhiteSpace(jp.CurrentLog))
             {
                 return;
             }
-            if (lastShownJob != jobTask.Id)
+            if (lastShownJob != jp.Id)
             {
-                WriteJobIndicator(jobTask, suppressJobLog);
+                WriteJobIndicator(jp, suppressJobLog);
             }
-            WriteHost(jobTask.CurrentLog,
-                      tags: ["Ansible", "JobLog", $"job-{jobTask.Id}"],
+            WriteHost(jp.CurrentLog,
+                      tags: ["Ansible", "JobLog", $"job-{jp.Id}"],
                       dontshow: suppressJobLog);
-            lastShownJob = jobTask.Id;
+            lastShownJob = jp.Id;
         }
 
         protected void WaitJobs(string activityId,
                                 int intervalSeconds,
                                 bool suppressJobLog)
         {
-            if (jobTasks.Count == 0)
+            if (JobManager.Count == 0)
             {
                 return;
             }
@@ -59,6 +58,11 @@ namespace AWX.Cmdlets
             do
             {
                 rootProgress.RecordType = ProgressRecordType.Processing;
+                WriteProgress(rootProgress);
+                foreach (var jp in JobManager.GetAll())
+                {
+                    WriteProgress(jp.Progress);
+                }
                 for(var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
@@ -68,39 +72,28 @@ namespace AWX.Cmdlets
                     rootProgress.StatusDescription = $"Waiting... Elapsed: {elapsed:hh\\:mm\\:ss\\.ff}";
                     WriteProgress(rootProgress);
                 }
-                using var task = UnifiedJob.Get(jobTasks.Keys.ToArray());
-                var tasks = jobTasks.Values.Select(jobTask => jobTask.GetLogAsync()).ToArray();
-                task.Wait();
-                Task.WaitAll(tasks);
-
+                JobManager.UpdateJob();
+                var jpList = JobManager.GetJobLog();
                 // Remove Progressbar
                 rootProgress.RecordType = ProgressRecordType.Completed;
                 WriteProgress(rootProgress);
 
-                foreach (var t in tasks)
+                foreach (var jp in jpList)
                 {
-                    WriteJobLog(t.Result, suppressJobLog);
+                    if (jp == null) continue;
+                    WriteJobLog(jp, suppressJobLog);
                 }
-                foreach (var job in task.Result)
+                foreach (var (id, jp) in JobManager)
                 {
-                    jobTasks[job.Id].Job = job;
-                    switch (job.Status)
+                    if (jp.SetComplete())
                     {
-                        case JobStatus.New:
-                        case JobStatus.Started:
-                        case JobStatus.Pending:
-                        case JobStatus.Waiting:
-                        case JobStatus.Running:
-                            break;
-                        default:
-                            jobTasks.Remove(job.Id);
-                            WriteObject(job, false);
-                            break;
+                        JobManager.Remove(id);
+                        WriteObject(jp.Job, false);
                     }
                 }
-
-            } while(jobTasks.Count != 0);
+            } while(JobManager.Count > 0);
         }
+
         protected override void StopProcessing()
         {
             _sleep?.Stop();

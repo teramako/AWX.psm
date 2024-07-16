@@ -165,7 +165,7 @@ namespace AWX.Cmdlets
             }
             else
             {
-                jobTasks.Add(job.Id, new JobTask(job));
+                JobManager.Add(job);
             }
         }
         protected override void EndProcessing()
