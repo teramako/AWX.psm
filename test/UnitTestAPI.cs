@@ -3168,6 +3168,58 @@ namespace API_Test
     }
 
     [TestClass]
+    public class Test_CredentialInputSource
+    {
+        static void DumpResource(CredentialInputSource res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Description}");
+            Console.WriteLine($"  InputFieldName  : {res.InputFieldName}");
+            Console.WriteLine($"  SourceCredential: {res.SourceCredential}");
+            Console.WriteLine($"  TargetCredential: {res.TargetCredential}");
+        }
+        static void DumpSummary(CredentialInputSource.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"SourceCredential: {summary.SourceCredential}");
+            Console.WriteLine($"TargetCredential: {summary.TargetCredential}");
+            Console.WriteLine($"CreatedBy       : {summary.CreatedBy}");
+            Console.WriteLine($"ModifiedBy      : {summary.ModifiedBy}");
+            Console.WriteLine($"Caps            : {summary.UserCapabilities}");
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            var res = await CredentialInputSource.Get(1);
+            Assert.IsInstanceOfType<CredentialInputSource>(res);
+            DumpResource(res);
+            DumpSummary(res.SummaryFields);
+        }
+        [TestMethod]
+        public async Task Get_2_List()
+        {
+            var query = HttpUtility.ParseQueryString("page_size=10&order_by=id");
+            await foreach (var res in CredentialInputSource.Find(query, false))
+            {
+                Assert.IsInstanceOfType<CredentialInputSource>(res);
+                DumpResource(res);
+                DumpSummary(res.SummaryFields);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromCredential()
+        {
+            var cred = await Credential.Get(7);
+            Console.WriteLine($"Credential for ([{cred.Id}][{cred.Type}] {cred.Name})");
+            await foreach (var cis in CredentialInputSource.FindFromCredential(cred.Id))
+            {
+                Assert.IsInstanceOfType<CredentialInputSource>(cis);
+                Console.WriteLine($"[{cis.Id}] Source:{cis.SourceCredential} Target:{cis.TargetCredential}");
+            }
+
+        }
+    }
+
+    [TestClass]
     public class Test_ExecutionEnvironment
     {
         static void DumpResource(ExecutionEnvironment res)

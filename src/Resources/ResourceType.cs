@@ -120,6 +120,8 @@ namespace AWX.Resources
         WorkflowJobNode,
         // Analytices,
         // Bulk
+        [ResourcePath("credential_input_sources", typeof(CredentialInputSource))]
+        CredentialInputSource,
         [ResourcePath("execution_environments", typeof(ExecutionEnvironment))]
         ExecutionEnvironment,
         [ResourcePath("metrics")]
