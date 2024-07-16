@@ -1948,5 +1948,57 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>CredentialInputSource</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.CredentialInputSource</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- InputFieldName -->
+          <TableColumnHeader/><!-- Metadata -->
+          <TableColumnHeader>
+            <Label>TargetCredential</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>SourceCredential</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InputFieldName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Metadata</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}][{1}]{2}" -f $_.TargetCredential,$_.TargetCredentialKind,$_.TargetCredentialName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}][{1}]{2}" -f $_.SourceCredential,$_.SourceCredentialKind,$_.SourceCredentialName</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
