@@ -2315,4 +2315,35 @@
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.ExecutionEnvironment</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>Organization</Name>
+              <Name>OrganizationName</Name>
+              <Name>Image</Name>
+              <Name>Managed</Name>
+              <Name>Credential</Name>
+              <Name>Pull</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>OrganizationName</Name>
+        <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
