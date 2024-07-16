@@ -3266,6 +3266,20 @@ namespace API_Test
         }
     }
 
+    [TestClass]
+    public class Test_Metrics
+    {
+        [TestMethod]
+        public async Task Get_Metrics()
+        {
+            var apiResult = await RestAPI.GetAsync<Metrics>(Metrics.PATH);
+            foreach (var (key, value) in apiResult.Contents)
+            {
+                Console.WriteLine($"{key}:");
+                Console.WriteLine($"    {value}");
+            }
+        }
+    }
 
     [TestClass]
     public class Test_Config
