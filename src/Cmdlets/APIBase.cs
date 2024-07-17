@@ -269,6 +269,18 @@ namespace AWX.Cmdlets
             {
                 WriteApiError(ex);
             }
+            catch(AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                }
+                else
+                {
+                    throw;
+                }
+            }
             return null;
         }
         protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string path,
@@ -311,6 +323,16 @@ namespace AWX.Cmdlets
                     WriteApiError(ex);
                     break;
                 }
+                catch(AggregateException aex)
+                {
+                    if (aex.InnerException is RestAPIException ex)
+                    {
+                        WriteVerboseResponse(ex.Response);
+                        WriteApiError(ex);
+                        break;
+                    }
+                    throw;
+                }
                 var resultSet = result.Contents;
 
                 yield return resultSet;
@@ -342,7 +364,14 @@ namespace AWX.Cmdlets
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
-
+            }
+            catch(AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                }
             }
             return null;
         }
