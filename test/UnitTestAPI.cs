@@ -3282,6 +3282,77 @@ namespace API_Test
     }
 
     [TestClass]
+    public class Test_WorkflowApprovalTemplate
+    {
+        static void DumpResource(WorkflowApprovalTemplate res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Name} {res.Description}");
+            Console.WriteLine($"Timeout: {res.Timeout}");
+        }
+        static void DumpSummary(WorkflowApprovalTemplate.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"WorkflowJobTemplate: {summary.WorkflowJobTemplate}");
+            Console.WriteLine();
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            await foreach(var approval in WorkflowApproval.Find(HttpUtility.ParseQueryString("order_by=-id&page_size=1"), false))
+            {
+                Console.WriteLine($"WorkflowApproval: [{approval.Id}]{approval.Name}");
+                Console.WriteLine($"Workflow: [{approval.SummaryFields.WorkflowJobTemplate.Id}]{approval.SummaryFields.WorkflowApprovalTemplate.Name}");
+                var res = await WorkflowApprovalTemplate.Get(approval.UnifiedJobTemplate);
+                Assert.IsInstanceOfType<WorkflowApprovalTemplate>(res);
+                DumpResource(res);
+                DumpSummary(res.SummaryFields);
+            }
+        }
+    }
+
+    [TestClass]
+    public class Test_WorkflowApproval
+    {
+        static void DumpResource(WorkflowApproval res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Name} {res.Description}");
+            Console.WriteLine($"  {res.Status} {res.Finished}");
+        }
+        static void DumpSummary(WorkflowApproval.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"WorkflowJobTemplate     : {summary.WorkflowJobTemplate}");
+            Console.WriteLine($"WorkflowApprovalTemplate: {summary.WorkflowApprovalTemplate}");
+            Console.WriteLine($"WorkflowJob             : {summary.WorkflowJob}");
+            Console.WriteLine($"SourceWorkflowJob       : {summary.SourceWorkflowJob}");
+            Console.WriteLine();
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            var query = HttpUtility.ParseQueryString("order_by=-id&page_size=1");
+            await foreach(var res in WorkflowApproval.Find(query, false))
+            {
+                var detail = await WorkflowApproval.Get(res.Id);
+                Assert.IsInstanceOfType<WorkflowApproval.Detail>(detail);
+                DumpResource(detail);
+                DumpSummary(detail.SummaryFields);
+            }
+        }
+        [TestMethod]
+        public async Task Get_2_Find()
+        {
+            var query = HttpUtility.ParseQueryString("order_by=-id&page_size=2");
+            await foreach(var res in WorkflowApproval.Find(query, false))
+            {
+                Assert.IsInstanceOfType<WorkflowApproval>(res);
+                DumpResource(res);
+                DumpSummary(res.SummaryFields);
+            }
+        }
+    }
+
+    [TestClass]
     public class Test_Config
     {
         [TestMethod]
