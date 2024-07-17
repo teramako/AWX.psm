@@ -61,7 +61,7 @@ namespace AWX.Resources
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static async Task<WorkflowJob> Get(ulong id)
+        public static new async Task<WorkflowJob> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJob>($"{PATH}{id}/");
             return apiResult.Contents;

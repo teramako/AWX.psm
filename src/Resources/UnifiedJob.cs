@@ -92,7 +92,7 @@ namespace AWX.Resources
         /// </summary>
         /// <param name="id">Unified Job ID</param>
         /// <returns></returns>
-        public static async Task<IUnifiedJob> Get(long id)
+        public static async Task<IUnifiedJob> Get(ulong id)
         {
             var query = HttpUtility.ParseQueryString($"id={id}&page_size=1");
             var apiResult = await RestAPI.GetAsync<ResultSet>($"{PATH}?{query}");

@@ -89,7 +89,7 @@ namespace AWX.Resources
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static async Task<Detail> Get(ulong id)
+        public static new async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;

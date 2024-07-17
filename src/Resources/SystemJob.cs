@@ -40,7 +40,7 @@ namespace AWX.Resources
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static async Task<Detail> Get(ulong id)
+        public static new async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
@@ -52,7 +52,7 @@ namespace AWX.Resources
         /// <param name="query"></param>
         /// <param name="getAll"></param>
         /// <returns></returns>
-        public new static async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
+        public static new async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
             {
