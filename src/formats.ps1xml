@@ -2161,5 +2161,100 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>WorkflowApproval</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.WorkflowApproval</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- TimedOut -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ApprovalExpiration -->
+            <Label>Expire</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ApprovalExpiration - Now -->
+            <Label>Remaining</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ApprovedOrDeniedBy -->
+            <Label>By</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Finished -->
+          <TableColumnHeader><!-- Elapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LaunchedBy -->
+          <TableColumnHeader><!-- WorkflowJob -->
+            <Label>WorkflowJob</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- WorkflowJobTemplate -->
+            <Label>WorkflowJobTemplate</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- WorkflowApprovalTemplate -->
+            <Label>ApprovalTemplate</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TimedOut</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ApprovalExpiration</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>if ($_.ApprovalExpiration) { $_.ApprovalExpiration - [datetime]::Now }</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$user=$_.ApprovedOrDeniedBy; if($user){"[{0}]{1}" -f $user.Id,$user.Username}</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Finished</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Elapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchedBy</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJob.Id,$_.WorkflowJob.Name</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJobTemplate.Id,$_.WorkflowJobTemplate.Name</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowApprovalTemplate.Id,$_.WorkflowApprovalTemplate.Name</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>
