@@ -70,15 +70,17 @@ namespace AWX
         }
         private static async Task<RestAPIException> CreateException(HttpResponseMessage response, string contentType)
         {
+            var msg1 = $"{response.StatusCode:d} ({response.ReasonPhrase}): ";
+            var msg2 = (response.RequestMessage != null && response.RequestMessage.RequestUri != null)
+                       ? $" on {response.RequestMessage.Method} {response.RequestMessage.RequestUri.PathAndQuery}"
+                       : string.Empty;
             switch (contentType)
             {
                 case JsonContentType:
                     var error = await response.Content.ReadAsStringAsync();
-                    return new RestAPIException($"{response.StatusCode:d} ({response.ReasonPhrase}): {error}",
-                                                response);
+                    return new RestAPIException($"{msg1}{error}{msg2}", response);
                 default:
-                    return new RestAPIException($"{response.StatusCode:d} {response.ReasonPhrase}: {contentType}",
-                                                response);
+                    return new RestAPIException($"{msg1}{contentType}{msg2}", response);
             }
 
         }
