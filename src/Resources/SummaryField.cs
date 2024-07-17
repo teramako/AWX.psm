@@ -164,4 +164,6 @@ namespace AWX.Resources
                                   string Description,
                                   [property: JsonPropertyName("next_run")] DateTime NextRun);
     public record RecentNotificationSummary(ulong Id, JobStatus Status, DateTime Created, string Error);
+
+    public record WorkflowApprovalTemplateSummary(ulong Id, string Name, string Description, int Timeout);
 }
