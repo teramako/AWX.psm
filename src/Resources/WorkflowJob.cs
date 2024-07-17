@@ -153,7 +153,6 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            public bool EventProcessingFinished { get; } = false;
         }
         public class LaunchResult(ulong workflowJob, Dictionary<string, object?> ignoreFields, ulong id,
                                   ResourceType type, string url, RelatedDictionary related,

@@ -12,8 +12,6 @@ namespace AWX.Resources
         Dictionary<string, string> JobEnv { get; }
         [JsonPropertyName("result_traceback")]
         string ResultTraceback { get; }
-        [JsonPropertyName("event_processing_finished")]
-        bool EventProcessingFinished { get; }
     }
 }
 
