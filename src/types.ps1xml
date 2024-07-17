@@ -2391,4 +2391,45 @@
       </MemberSet>
     </Members>
   </Type>
+  <Type>
+    <Name>AWX.Resources.WorkflowApprovalTemplate</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>Id</Name>
+              <Name>Type</Name>
+              <Name>Created</Name>
+              <Name>Modified</Name>
+              <Name>Name</Name>
+              <Name>Description</Name>
+              <Name>LastJobRun</Name>
+              <Name>LastJobFailed</Name>
+              <Name>NextJobRun</Name>
+              <Name>Status</Name>
+              <Name>ExecutionEnvironment</Name>
+              <Name>Timeout</Name>
+              <Name>WorkflowJobtemplate</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptProperty>
+        <Name>WorkflowJobTemplate</Name>
+        <GetScriptBlock>$this.SummaryFields.WorkflowJobTemplate</GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Note</Name>
+        <GetScriptBlock>
+          [ordered]@{
+            Timeout = $this.Timeout;
+            WorkflowTemplate = "[{0}]{1}" -f $this.WorkflowJobTemplate.Id,$this.WorkflowJobTemplate.Name;
+          }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
