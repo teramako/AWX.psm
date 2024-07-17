@@ -57,11 +57,11 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Invoke, "WorkJobTemplate")]
+    [Cmdlet(VerbsLifecycle.Invoke, "WorkflowJobTemplate")]
     [OutputType(typeof(JobTemplateJob), ParameterSetName = ["Id", "JobTemplate"])]
     [OutputType(typeof(JobTemplateJob.LaunchResult), ParameterSetName = ["AsyncId", "AsyncJobTemplate"])]
     [OutputType(typeof(JobTemplateLaunchRequirements), ParameterSetName = ["GetRequirementsId", "GetRequirementsJobTemplate"])]
-    public class InvokeWorkJobTemplateCommand : InvokeJobBase
+    public class InvokeWorkflowJobTemplateCommand : InvokeJobBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "AsyncId", ValueFromPipeline = true, Position = 0)]
