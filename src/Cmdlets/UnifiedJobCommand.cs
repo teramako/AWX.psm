@@ -55,4 +55,44 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsLifecycle.Wait, "UnifiedJob")]
+    [OutputType(typeof(JobTemplateJob),
+                typeof(ProjectUpdateJob),
+                typeof(InventoryUpdateJob),
+                typeof(SystemJob),
+                typeof(AdHocCommand),
+                typeof(WorkflowJob))]
+    public class WaitJobCommand : InvokeJobBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, Position = 0)]
+        [ValidateSet(nameof(ResourceType.Job),
+                     nameof(ResourceType.ProjectUpdate),
+                     nameof(ResourceType.InventoryUpdate),
+                     nameof(ResourceType.SystemJob),
+                     nameof(ResourceType.AdHocCommand),
+                     nameof(ResourceType.WorkflowJob))]
+        public ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, Position = 1)]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        [ValidateRange(5, int.MaxValue)]
+        public int IntervalSeconds { get; set; } = 5;
+
+        [Parameter()]
+        public SwitchParameter SuppressJobLog { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            JobManager.Add(Id, new JobProgress(Id, Type));
+        }
+        protected override void EndProcessing()
+        {
+            JobManager.UpdateJob();
+            ShowJobLog(SuppressJobLog);
+            JobManager.CleanCompleted();
+            WaitJobs("Wait Job", IntervalSeconds, SuppressJobLog);
+        }
+    }
 }
