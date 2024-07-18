@@ -78,6 +78,8 @@ namespace AWX.Cmdlets
                         case ResourceType.WorkflowJob:
                             GetJobsFromWorkflowJob(jobId);
                             break;
+                        case ResourceType.WorkflowApproval:
+                            break;
                         default:
                             if (jobIdSet.Add(node.Id))
                             {
