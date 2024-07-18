@@ -157,6 +157,7 @@ namespace AWX.Cmdlets
         {
             foreach (var job in jobs)
             {
+                WriteHost($"==> [{job.Id}] {job.Type}\n", foregroundColor: ConsoleColor.Magenta);
                 var path = GetStdoutPath(job.Id, job.Type);
                 if (job.Type == ResourceType.SystemJob)
                 {
