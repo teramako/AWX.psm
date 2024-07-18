@@ -1,5 +1,6 @@
 using AWX.Resources;
 using System.Management.Automation;
+using System.Web;
 
 namespace AWX.Cmdlets
 {
@@ -62,5 +63,62 @@ namespace AWX.Cmdlets
                 WriteObject(resultSet.Results, true);
             }
         }
+    }
+
+    public abstract class WorkflowApprovalProcessCommand : APICmdletBase
+    {
+        protected abstract string Command { get; }
+
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        [ValidateSet(nameof(ResourceType.WorkflowApproval))]
+        public ResourceType Type { get; set; } = ResourceType.WorkflowApproval;
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, Position = 0)]
+        public ulong Id { get; set; }
+
+        protected readonly HashSet<ulong> treatedIds = [];
+
+        protected override void ProcessRecord()
+        {
+            if (treatedIds.Contains(Id))
+            {
+                return;
+            }
+
+            var result = CreateResource<string>($"{WorkflowApproval.PATH}{Id}/{Command}/");
+            if (result == null)
+            {
+                return;
+            }
+            treatedIds.Add(Id);
+        }
+        protected override void EndProcessing()
+        {
+            if (treatedIds.Count == 0)
+            {
+                return;
+            }
+
+            var query = HttpUtility.ParseQueryString("");
+            query.Add("id__in", string.Join(',', treatedIds));
+            query.Add("page_size", $"{treatedIds.Count}");
+            foreach (var resultSet in GetResultSet<WorkflowApproval>(WorkflowApproval.PATH, query, false))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Approve, "Workflow")]
+    [OutputType(typeof(WorkflowApproval))]
+    public class ApproveWorkflowApprovalCommand : WorkflowApprovalProcessCommand
+    {
+        protected override string Command => "approve";
+    }
+
+    [Cmdlet(VerbsLifecycle.Deny, "Workflow")]
+    [OutputType(typeof(WorkflowApproval))]
+    public class DenyWorkflowApprovalCommand : WorkflowApprovalProcessCommand
+    {
+        protected override string Command => "deny";
     }
 }
