@@ -6,6 +6,9 @@ namespace AWX.Cmdlets
 {
     public class JobProgressManager : Dictionary<ulong, JobProgress>
     {
+        public ProgressRecord RootProgress { get; } = new(0);
+        private DateTime _startTime;
+        private int _intervalSeconds;
         public void Add(IUnifiedJob job, int parnetId = 0)
         {
             if (!ContainsKey(job.Id))
@@ -14,19 +17,32 @@ namespace AWX.Cmdlets
                 this.Add(job.Id, jp);
             }
         }
+        public void Start(string activityId, int intervalSeconds)
+        {
+            _startTime = DateTime.Now;
+            _intervalSeconds = intervalSeconds;
+            RootProgress.Activity = activityId;
+            RootProgress.StatusDescription = "Waiting...";
+            RootProgress.SecondsRemaining = intervalSeconds;
+        }
+        public void UpdateProgress(int index)
+        {
+            var elapsed = DateTime.Now - _startTime;
+            RootProgress.PercentComplete = index * 100 / _intervalSeconds;
+            RootProgress.SecondsRemaining = _intervalSeconds - index;
+            RootProgress.StatusDescription = $"Waiting... Elapsed: {elapsed:hh\\:mm\\:ss\\.ff}";
+        }
         public void UpdateJob()
         {
             var getJobsTask = UnifiedJob.Get([.. Keys]);
             getJobsTask.Wait();
-            List<Task> tasks = [];
             foreach (var job in getJobsTask.Result)
             {
                 if (TryGetValue(job.Id, out var jp))
                 {
-                    tasks.Add(jp.UpdateJob(job));
+                    jp.UpdateJob(job);
                 }
             }
-            Task.WaitAll([.. tasks]);
         }
         public IEnumerable<JobProgress> GetAll()
         {
@@ -41,12 +57,40 @@ namespace AWX.Cmdlets
         public IEnumerable<JobProgress?> GetJobLog()
         {
             List<Task<JobProgress?>> tasks = [];
-            foreach (var jp in GetAll().Where(jp => !jp.Completed && jp.Type != ResourceType.WorkflowJob))
+            foreach (var jp in GetAll().Where(jp => jp.Job != null && !jp.Completed))
             {
-                tasks.Add(jp.GetLogAsync());
+                switch (jp.Type)
+                {
+                    case ResourceType.WorkflowJob:
+                    case ResourceType.WorkflowApproval:
+                        continue;
+                    default:
+                        tasks.Add(jp.GetLogAsync());
+                        break;
+                }
             }
             Task.WaitAll([.. tasks]);
             return tasks.Select(t => t.Result);
+        }
+        public List<IUnifiedJobSummary> CleanCompleted()
+        {
+            List<IUnifiedJobSummary> completedJobs = [];
+            foreach (var (id, jp) in this)
+            {
+                if (jp.SetComplete())
+                {
+                    if (jp.Job != null)
+                    {
+                        completedJobs.Add(jp.Job);
+                    }
+                    Remove(id);
+                }
+                else
+                {
+                    jp.CleanCompletedChildren();
+                }
+            }
+            return completedJobs;
         }
     }
 
@@ -62,18 +106,17 @@ namespace AWX.Cmdlets
             };
             ParentId = parentId;
         }
-        public JobProgress(IUnifiedJob job, int parentId = 0)
+        public JobProgress(IUnifiedJobSummary job, int parentId = 0)
             : this(job.Id, job.Type, parentId)
         {
             Job = job;
-            Progress.Activity = $"[{job.Id}]{job.Name}";
-            Progress.StatusDescription = $"{job.Status} {job.Started} Elapsed: {job.Elapsed}";
+            Update();
         }
         public ulong Id { get; }
         public int ParentId { get; private set; } = 0;
         public ResourceType Type { get; private set; }
         public ProgressRecord Progress { get; }
-        public IUnifiedJob? Job { get; private set; }
+        public IUnifiedJobSummary? Job { get; private set; }
         public bool Finished { get; private set; } = false;
         public bool Completed { get; private set; } = false;
         public Dictionary<ulong, JobProgress> Children = [];
@@ -99,62 +142,76 @@ namespace AWX.Cmdlets
         {
             if (Job == null) return null;
             if (Completed) return null;
-            if (Job.Type == ResourceType.SystemJob)
+            switch (Job.Type)
             {
-                CurrentLog = ((ISystemJob)Job).ResultStdout;
-                // throw new NotImplementedException($"Geting SystemJob is not implemented now.");
+                case ResourceType.SystemJob:
+                    CurrentLog = ((ISystemJob)Job).ResultStdout;
+                    return this;
+                case ResourceType.WorkflowJob:
+                case ResourceType.WorkflowApproval:
+                    return null;
+                default:
+                    var query = HttpUtility.ParseQueryString("format=json");
+                    query.Add("start_line", $"{JobLogStartNext}");
+                    var apiResult = await RestAPI.GetAsync<JobLog>($"{Job.Url}stdout/?{query}");
+                    var log = apiResult.Contents;
+                    JobLogStartNext = log.Range.End;
+                    CurrentLog = log.Content;
+                    return this;
             }
-            else if(Job.Type == ResourceType.WorkflowJob)
-            {
-                return null;
-            }
-            else
-            {
-                var query = HttpUtility.ParseQueryString("format=json");
-                query.Add("start_line", $"{JobLogStartNext}");
-                var apiResult = await RestAPI.GetAsync<JobLog>($"{Job.Url}stdout/?{query}");
-                var log = apiResult.Contents;
-                JobLogStartNext = log.Range.End;
-                CurrentLog = log.Content;
-            }
-            return this;
         }
-        public async Task UpdateJob(IUnifiedJob job)
+
+        private void Update()
         {
-            Job = job;
-            if (job.Finished != null)
+            if (Job == null) return;
+            if (Completed) return;
+            Progress.Activity = $"[{Job.Id}]{Job.Name}";
+            Progress.StatusDescription = $"{Job.Status} Elapsed: {Job.Elapsed}";
+            switch (Job.Status)
             {
-                if (Finished)
-                {
-                    SetComplete();
-                }
-                else
-                {
-                    Finished = true;
-                }
+                case JobStatus.New:
+                case JobStatus.Waiting:
+                case JobStatus.Pending:
+                    Progress.PercentComplete = 0;
+                    break;
+                case JobStatus.Running:
+                    Progress.PercentComplete = 50;
+                    break;
+                case JobStatus.Canceled:
+                case JobStatus.Error:
+                case JobStatus.Failed:
+                case JobStatus.Successful:
+                    Progress.PercentComplete = 100;
+                    if (Finished)
+                    {
+                        SetComplete();
+                    }
+                    else
+                    {
+                        Finished = true;
+                    }
+                    break;
             }
-            Progress.Activity = $"[{job.Id}]{job.Name}";
-            Progress.StatusDescription = $"{job.Status} {job.Started} Elapsed: {job.Elapsed}";
-            Progress.PercentComplete = job.Status switch
-            {
-                JobStatus.New => 0,
-                JobStatus.Waiting => 10,
-                JobStatus.Pending => 10,
-                JobStatus.Running => 30,
-                _ => 100
-            };
             if (Completed)
             {
+                /*
                 if (Children.Count > 0)
                 {
                     Children.Clear();
                 }
+                */
                 return;
             }
-            if (job.Type == ResourceType.WorkflowJob)
+            if (Job.Type == ResourceType.WorkflowJob)
             {
-                await UpdateWorkflowJobNodes();
+                UpdateWorkflowJobNodes().Wait();
             }
+        }
+
+        public void UpdateJob(IUnifiedJobSummary job)
+        {
+            Job = job;
+            Update();
         }
         public bool SetComplete()
         {
@@ -172,6 +229,19 @@ namespace AWX.Cmdlets
             }
             return Completed;
         }
+        public void CleanCompletedChildren()
+        {
+            if (Children.Count == 0) return;
+            if (Completed)
+            {
+                Children.Clear();
+                return;
+            }
+            foreach (var child in Children.Values)
+            {
+                child.CleanCompletedChildren();
+            }
+        }
         private async Task UpdateWorkflowJobNodes()
         {
             var query = HttpUtility.ParseQueryString("do_not_run=False&page_size=50&order_by=id");
@@ -180,23 +250,48 @@ namespace AWX.Cmdlets
             {
                 query.Add("not__job__in", string.Join(',', completedIds));
             }
-            var result = await RestAPI.GetAsync<ResultSet<WorkflowJobNode>>($"{WorkflowJob.PATH}{Id}/workflow_nodes/?{query}");
-            var jobs = result.Contents.Results.Where(n => n.Job != null).Select(n => n.Job ?? 0);
-            List<Task> tasks = [];
-            foreach (var job in await UnifiedJob.Get(jobs.ToArray()))
+            await foreach (var apiResult in RestAPI.GetResultSetAsync<WorkflowJobNode>($"{WorkflowJob.PATH}{Id}/workflow_nodes/", query, true))
             {
-                if (Children.TryGetValue(job.Id, out var childJP))
+                foreach (var node in apiResult.Contents.Results)
                 {
-                    tasks.Add(childJP.UpdateJob(job));
-                }
-                else
-                {
-                    var jp = new JobProgress(job.Id, job.Type, Progress.ActivityId);
-                    Children.Add(job.Id, jp);
-                    tasks.Add(jp.UpdateJob(job));
+                    if (node.SummaryFields.Job == null) continue;
+                    JobNodeSummary jobSummary = new(node);
+                    if (Children.TryGetValue(jobSummary.Id, out var jp))
+                    {
+                        jp.UpdateJob(jobSummary);
+                    }
+                    else
+                    {
+                        Children.Add(jobSummary.Id, new JobProgress(jobSummary, Progress.ActivityId));
+                    }
                 }
             }
-            Task.WaitAll([.. tasks]);
         }
+    }
+
+    public class JobNodeSummary : IUnifiedJobSummary
+    {
+        public JobNodeSummary(WorkflowJobNode node)
+        {
+            if (node.SummaryFields.Job == null)
+            {
+                throw new ArgumentException($"{nameof(node.SummaryFields.Job)} is null");
+            }
+            var job = node.SummaryFields.Job;
+            Id = job.Id;
+            Type = job.Type;
+            Url = (string)node.Related["job"];
+            Name = job.Name;
+            Status = job.Status;
+            Elapsed = job.Elapsed;
+            Failed = job.Failed;
+        }
+        public ulong Id { get; }
+        public ResourceType Type { get; }
+        public string Url { get; }
+        public string Name { get; }
+        public JobStatus Status { get; }
+        public double Elapsed { get; }
+        public bool Failed { get; }
     }
 }

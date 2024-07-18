@@ -50,48 +50,45 @@ namespace AWX.Cmdlets
             {
                 return;
             }
-            var start = DateTime.Now;
-            var rootProgress = new ProgressRecord(0, activityId, "Waiting...")
-            {
-                SecondsRemaining = intervalSeconds
-            };
+            JobManager.Start(activityId, intervalSeconds);
             do
             {
-                rootProgress.RecordType = ProgressRecordType.Processing;
-                WriteProgress(rootProgress);
-                foreach (var jp in JobManager.GetAll())
-                {
-                    WriteProgress(jp.Progress);
-                }
+                UpdateAllProgressRecordType(ProgressRecordType.Processing);
                 for(var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
-                    var elapsed = DateTime.Now - start;
-                    rootProgress.PercentComplete = i * 100 / intervalSeconds;
-                    rootProgress.SecondsRemaining = intervalSeconds - i;
-                    rootProgress.StatusDescription = $"Waiting... Elapsed: {elapsed:hh\\:mm\\:ss\\.ff}";
-                    WriteProgress(rootProgress);
+                    JobManager.UpdateProgress(i);
+                    WriteProgress(JobManager.RootProgress);
                 }
                 JobManager.UpdateJob();
-                var jpList = JobManager.GetJobLog();
                 // Remove Progressbar
-                rootProgress.RecordType = ProgressRecordType.Completed;
-                WriteProgress(rootProgress);
+                UpdateAllProgressRecordType(ProgressRecordType.Completed);
 
-                foreach (var jp in jpList)
-                {
-                    if (jp == null) continue;
-                    WriteJobLog(jp, suppressJobLog);
-                }
-                foreach (var (id, jp) in JobManager)
-                {
-                    if (jp.SetComplete())
-                    {
-                        JobManager.Remove(id);
-                        WriteObject(jp.Job, false);
-                    }
-                }
+                ShowJobLog(suppressJobLog);
+
+                WriteObject(JobManager.CleanCompleted(), true);
             } while(JobManager.Count > 0);
+        }
+
+        private void UpdateAllProgressRecordType(ProgressRecordType type)
+        {
+            JobManager.RootProgress.RecordType = type;
+            WriteProgress(JobManager.RootProgress);
+            foreach (var jp in JobManager.GetAll())
+            {
+                jp.Progress.RecordType = type;
+                WriteProgress(jp.Progress);
+            }
+        }
+
+        protected void ShowJobLog(bool suppressJobLog)
+        {
+            var jpList = JobManager.GetJobLog();
+            foreach (var jp in jpList)
+            {
+                if (jp == null) continue;
+                WriteJobLog(jp, suppressJobLog);
+            }
         }
 
         protected override void StopProcessing()

@@ -4,25 +4,29 @@ using System.Web;
 
 namespace AWX.Resources
 {
-    public interface IUnifiedJob
+    public interface IUnifiedJobSummary
     {
         ulong Id { get; }
         ResourceType Type { get; }
         string Url { get; }
+        string Name { get; }
+        JobStatus Status { get; }
+        double Elapsed { get; }
+        bool Failed { get; }
+    }
+
+    public interface IUnifiedJob : IUnifiedJobSummary
+    {
         DateTime Created { get; }
         DateTime? Modified { get; }
-        string Name { get; }
         [JsonPropertyName("launch_type")]
         JobLaunchType LaunchType { get; }
-        JobStatus Status { get; }
         [JsonPropertyName("execution_environment")]
         ulong? ExecutionEnvironment { get; }
-        bool Failed { get; }
         DateTime? Started { get; }
         DateTime? Finished { get; }
         [JsonPropertyName("canceled_on")]
         DateTime? CanceledOn { get; }
-        double Elapsed { get; }
         [JsonPropertyName("job_explanation")]
         string JobExplanation { get; }
         /*
