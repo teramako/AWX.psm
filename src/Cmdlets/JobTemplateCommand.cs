@@ -124,11 +124,8 @@ namespace AWX.Cmdlets
         }
         private void Launch(ulong id)
         {
-            var launchResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", CreateSendData());
-            if (launchResult == null)
-            {
-                return;
-            }
+            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", CreateSendData());
+            var launchResult = apiResult.Contents;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
             if (Async)
             {

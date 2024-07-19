@@ -117,11 +117,8 @@ namespace AWX.Cmdlets
         }
         private void UpdateProject(ulong projectId)
         {
-            var launchResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
-            if (launchResult == null)
-            {
-                return;
-            }
+            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
+            var launchResult = apiResult.Contents;
             WriteVerbose($"Update Project:{Id} => Job:[{launchResult.Id}]");
             if (Async)
             {

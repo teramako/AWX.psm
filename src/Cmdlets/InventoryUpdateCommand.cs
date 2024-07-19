@@ -122,21 +122,13 @@ namespace AWX.Cmdlets
         }
         private void UpdateInventorySource(ulong id)
         {
-            var job = CreateResource<InventoryUpdateJob.Detail>($"{InventorySource.PATH}{id}/update/");
-            if (job == null)
-            {
-                return;
-            }
-            ProcessJob(job);
+            var apiResult = CreateResource<InventoryUpdateJob.Detail>($"{InventorySource.PATH}{id}/update/");
+            ProcessJob(apiResult.Contents);
         }
         private void UpdateInventory(Inventory inventory)
         {
-            var jobs = CreateResource<InventoryUpdateJob.Detail[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
-            if (jobs == null)
-            {
-                return;
-            }
-            foreach (var job in jobs)
+            var apiResult = CreateResource<InventoryUpdateJob.Detail[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
+            foreach (var job in apiResult.Contents)
             {
                 ProcessJob(job);
             }

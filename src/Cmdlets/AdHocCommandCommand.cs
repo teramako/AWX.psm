@@ -136,28 +136,29 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            AdHocCommand? job = null;
+            RestAPIResult<AdHocCommand>? apiResult = null;
             if (InventoryId  != null)
             {
-                job = CreateResource<AdHocCommand>($"{Inventory.PATH}{InventoryId}/ad_hoc_commands/", SendData);
+                apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{InventoryId}/ad_hoc_commands/", SendData);
             }
             else if (Inventory != null)
             {
-                job = CreateResource<AdHocCommand>($"{Inventory.PATH}{Inventory.Id}/ad_hoc_commands/", SendData);
+                apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{Inventory.Id}/ad_hoc_commands/", SendData);
             }
             else if (Host != null)
             {
-                job = CreateResource<AdHocCommand>($"{Host.PATH}{Host.Id}/ad_hoc_commands/", SendData);
+                apiResult = CreateResource<AdHocCommand>($"{Host.PATH}{Host.Id}/ad_hoc_commands/", SendData);
             }
             else if (Group != null)
             {
-                job = CreateResource<AdHocCommand>($"{Group.PATH}{Group.Id}/ad_hoc_commands/", SendData);
+                apiResult = CreateResource<AdHocCommand>($"{Group.PATH}{Group.Id}/ad_hoc_commands/", SendData);
             }
 
-            if (job == null)
+            if (apiResult == null)
             {
                 return;
             }
+            var job = apiResult.Contents;
             WriteVerbose($"Invoke AdHocCommand:{job.Name} => Job:[{job.Id}]");
             if (Async)
             {

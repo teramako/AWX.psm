@@ -345,7 +345,8 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? CreateResource<TValue>(string pathAndQuery, object? sendData = null)
+        /// <exception cref="RestAPIException"/>
+        protected virtual RestAPIResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.POST);
@@ -355,12 +356,13 @@ namespace AWX.Cmdlets
                 apiTask.Wait();
                 RestAPIResult<TValue> result = apiTask.Result;
                 WriteVerboseResponse(result.Response);
-                return result.Contents;
+                return result;
             }
             catch(RestAPIException ex)
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
+                throw;
             }
             catch(AggregateException aex)
             {
@@ -368,9 +370,10 @@ namespace AWX.Cmdlets
                 {
                     WriteVerboseResponse(ex.Response);
                     WriteApiError(ex);
+                    throw ex;
                 }
+                throw;
             }
-            return null;
         }
         /// <summary>
         /// Send a request to replace the resource.
