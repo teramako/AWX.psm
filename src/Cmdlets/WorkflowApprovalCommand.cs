@@ -4,9 +4,9 @@ using System.Web;
 
 namespace AWX.Cmdlets
 {
-    [Cmdlet(VerbsCommon.Get, "WorkflowApproval")]
+    [Cmdlet(VerbsCommon.Get, "WorkflowApprovalRequest")]
     [OutputType(typeof(WorkflowApproval.Detail))]
-    public class GetWorkflowApprovalCommand : GetCmdletBase
+    public class GetWorkflowApprovalRequestCommand : GetCmdletBase
     {
         protected override void ProcessRecord()
         {
@@ -26,11 +26,11 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Find, "WorkflowApproval", DefaultParameterSetName = "All")]
+    [Cmdlet(VerbsCommon.Find, "WorkflowApprovalRequest", DefaultParameterSetName = "All")]
     [OutputType(typeof(WorkflowApproval))]
-    public class FindWorkflowApprovalCommand : FindCmdletBase
+    public class FindWorkflowApprovalRequestCommand : FindCmdletBase
     {
-        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true, DontShow = true)]
         [ValidateSet(nameof(ResourceType.WorkflowApprovalTemplate))]
         public override ResourceType Type { get; set; } = ResourceType.WorkflowApproval;
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
@@ -65,11 +65,11 @@ namespace AWX.Cmdlets
         }
     }
 
-    public abstract class WorkflowApprovalProcessCommand : APICmdletBase
+    public abstract class WorkflowApprovalRequestCommand : APICmdletBase
     {
         protected abstract string Command { get; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true)]
+        [Parameter(ValueFromPipelineByPropertyName = true, DontShow = true)]
         [ValidateSet(nameof(ResourceType.WorkflowApproval))]
         public ResourceType Type { get; set; } = ResourceType.WorkflowApproval;
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, Position = 0)]
@@ -108,16 +108,16 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Approve, "Workflow")]
+    [Cmdlet(VerbsLifecycle.Approve, "WorkflowApprovalRequest")]
     [OutputType(typeof(WorkflowApproval))]
-    public class ApproveWorkflowApprovalCommand : WorkflowApprovalProcessCommand
+    public class ApproveWorkflowApprovalCommand : WorkflowApprovalRequestCommand
     {
         protected override string Command => "approve";
     }
 
-    [Cmdlet(VerbsLifecycle.Deny, "Workflow")]
+    [Cmdlet(VerbsLifecycle.Deny, "WorkflowApprovalRequest")]
     [OutputType(typeof(WorkflowApproval))]
-    public class DenyWorkflowApprovalCommand : WorkflowApprovalProcessCommand
+    public class DenyWorkflowApprovalCommand : WorkflowApprovalRequestCommand
     {
         protected override string Command => "deny";
     }
