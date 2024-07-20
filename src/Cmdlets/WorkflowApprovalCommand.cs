@@ -84,12 +84,16 @@ namespace AWX.Cmdlets
                 return;
             }
 
-            var result = CreateResource<string>($"{WorkflowApproval.PATH}{Id}/{Command}/");
-            if (result == null)
+            try
             {
-                return;
+                var result = CreateResource<string>($"{WorkflowApproval.PATH}{Id}/{Command}/");
+                if (result == null)
+                {
+                    return;
+                }
+                treatedIds.Add(Id);
             }
-            treatedIds.Add(Id);
+            catch (RestAPIException) {}
         }
         protected override void EndProcessing()
         {

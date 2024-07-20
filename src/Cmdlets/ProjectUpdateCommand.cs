@@ -141,7 +141,11 @@ namespace AWX.Cmdlets
             }
             else
             {
-                UpdateProject(Id);
+                try
+                {
+                    UpdateProject(Id);
+                }
+                catch (RestAPIException) {}
             }
         }
         protected override void EndProcessing()

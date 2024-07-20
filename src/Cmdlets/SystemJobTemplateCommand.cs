@@ -108,7 +108,11 @@ namespace AWX.Cmdlets
             {
                 Id = SystemJobTemplate.Id;
             }
-            Launch(Id);
+            try
+            {
+                Launch(Id);
+            }
+            catch (RestAPIException) {}
         }
         protected override void EndProcessing()
         {

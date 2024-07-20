@@ -148,7 +148,11 @@ namespace AWX.Cmdlets
             }
             else
             {
-                Launch(Id);
+                try
+                {
+                    Launch(Id);
+                }
+                catch (RestAPIException) {}
             }
         }
         protected override void EndProcessing()

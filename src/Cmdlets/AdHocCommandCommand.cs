@@ -137,22 +137,26 @@ namespace AWX.Cmdlets
         protected override void ProcessRecord()
         {
             RestAPIResult<AdHocCommand>? apiResult = null;
-            if (InventoryId  != null)
+            try
             {
-                apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{InventoryId}/ad_hoc_commands/", SendData);
+                if (InventoryId != null)
+                {
+                    apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{InventoryId}/ad_hoc_commands/", SendData);
+                }
+                else if (Inventory != null)
+                {
+                    apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{Inventory.Id}/ad_hoc_commands/", SendData);
+                }
+                else if (Host != null)
+                {
+                    apiResult = CreateResource<AdHocCommand>($"{Host.PATH}{Host.Id}/ad_hoc_commands/", SendData);
+                }
+                else if (Group != null)
+                {
+                    apiResult = CreateResource<AdHocCommand>($"{Group.PATH}{Group.Id}/ad_hoc_commands/", SendData);
+                }
             }
-            else if (Inventory != null)
-            {
-                apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{Inventory.Id}/ad_hoc_commands/", SendData);
-            }
-            else if (Host != null)
-            {
-                apiResult = CreateResource<AdHocCommand>($"{Host.PATH}{Host.Id}/ad_hoc_commands/", SendData);
-            }
-            else if (Group != null)
-            {
-                apiResult = CreateResource<AdHocCommand>($"{Group.PATH}{Group.Id}/ad_hoc_commands/", SendData);
-            }
+            catch (RestAPIException) {}
 
             if (apiResult == null)
             {

@@ -155,7 +155,11 @@ namespace AWX.Cmdlets
                 }
                 else
                 {
-                    UpdateInventory(Inventory);
+                    try
+                    {
+                        UpdateInventory(Inventory);
+                    }
+                    catch (RestAPIException) {}
                 }
             }
             else
@@ -170,7 +174,11 @@ namespace AWX.Cmdlets
                 }
                 else
                 {
-                    UpdateInventorySource(Id);
+                    try
+                    {
+                        UpdateInventorySource(Id);
+                    }
+                    catch (RestAPIException) {}
                 }
             }
         }
