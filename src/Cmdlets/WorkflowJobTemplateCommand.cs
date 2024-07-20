@@ -118,6 +118,13 @@ namespace AWX.Cmdlets
             var apiResult = CreateResource<WorkflowJob.LaunchResult>($"{WorkflowJobTemplate.PATH}{id}/launch/", CreateSendData());
             var launchResult = apiResult.Contents;
             WriteVerbose($"Launch WorkflowJobTemplate:{id} => Job:[{launchResult.Id}]");
+            if (launchResult.IgnoredFields.Count > 0)
+            {
+                foreach (var (key ,val) in launchResult.IgnoredFields)
+                {
+                    WriteWarning($"Ignored field: {key} ({val})");
+                }
+            }
             if (Async)
             {
                 WriteObject(launchResult, false);
