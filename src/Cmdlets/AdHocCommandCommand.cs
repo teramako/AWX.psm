@@ -63,25 +63,19 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Invoke, "AdHocCommand")]
-    [OutputType(typeof(AdHocCommand))]
-    public class InvokeAdHocCommand : InvokeJobBase
+    public abstract class LaunchAdHocCommandBase : InvokeJobBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Host", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncHost", ValueFromPipeline = true, Position = 0)]
         public Host? Host { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "Group", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncGroup", ValueFromPipeline = true, Position = 0)]
         public Group? Group { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "Inventory", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventory", ValueFromPipeline = true, Position = 0)]
         public Inventory? Inventory { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "InventoryId", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventoryId", ValueFromPipeline = true, Position = 0)]
-        public ulong? InventoryId { get; set; }
+        public ulong InventoryId { get; set; }
 
         [Parameter(Mandatory = true, Position = 1)]
         public string ModuleName { get; set; } = string.Empty;
@@ -99,26 +93,6 @@ namespace AWX.Cmdlets
         [Parameter()]
         public SwitchParameter Check { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventory")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventoryId")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncHost")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncGroup")]
-        public SwitchParameter Async { get; set; }
-
-        [Parameter(ParameterSetName = "Host")]
-        [Parameter(ParameterSetName = "Group")]
-        [Parameter(ParameterSetName = "Inventory")]
-        [Parameter(ParameterSetName = "InventoryId")]
-        [ValidateRange(5, int.MaxValue)]
-        public int IntervalSeconds { get; set; } = 5;
-
-        [Parameter(ParameterSetName = "Host")]
-        [Parameter(ParameterSetName = "Group")]
-        [Parameter(ParameterSetName = "Inventory")]
-        [Parameter(ParameterSetName = "InventoryId")]
-        public SwitchParameter SuppressJobLog { get; set; }
-
-
         protected Hashtable SendData { get; set; } = [];
         protected override void BeginProcessing()
         {
@@ -134,52 +108,78 @@ namespace AWX.Cmdlets
                 SendData.Add("limit", Limit);
             }
         }
-        protected override void ProcessRecord()
+        private string GetPath()
         {
-            RestAPIResult<AdHocCommand>? apiResult = null;
+            if (InventoryId > 0)
+            {
+                return $"{Inventory.PATH}{InventoryId}/ad_hoc_commands/";
+            }
+            else if (Inventory != null)
+            {
+                return $"{Inventory.PATH}{Inventory.Id}/ad_hoc_commands/";
+            }
+            else if (Host != null)
+            {
+                return $"{Host.PATH}{Host.Id}/ad_hoc_commands/";
+            }
+            else if (Group != null)
+            {
+                return $"{Group.PATH}{Group.Id}/ad_hoc_commands/";
+            }
+            throw new ArgumentException();
+        }
+        protected AdHocCommand? Launch()
+        {
             try
             {
-                if (InventoryId != null)
-                {
-                    apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{InventoryId}/ad_hoc_commands/", SendData);
-                }
-                else if (Inventory != null)
-                {
-                    apiResult = CreateResource<AdHocCommand>($"{Inventory.PATH}{Inventory.Id}/ad_hoc_commands/", SendData);
-                }
-                else if (Host != null)
-                {
-                    apiResult = CreateResource<AdHocCommand>($"{Host.PATH}{Host.Id}/ad_hoc_commands/", SendData);
-                }
-                else if (Group != null)
-                {
-                    apiResult = CreateResource<AdHocCommand>($"{Group.PATH}{Group.Id}/ad_hoc_commands/", SendData);
-                }
+                var apiResult = CreateResource<AdHocCommand>(GetPath(), SendData);
+                return apiResult.Contents;
             }
             catch (RestAPIException) {}
+            return null;
+        }
+    }
 
-            if (apiResult == null)
+    [Cmdlet(VerbsLifecycle.Invoke, "AdHocCommand")]
+    [OutputType(typeof(AdHocCommand))]
+    public class InvokeAdHocCommand : LaunchAdHocCommandBase
+    {
+        [Parameter()]
+        [ValidateRange(5, int.MaxValue)]
+        public int IntervalSeconds { get; set; } = 5;
+
+        [Parameter()]
+        public SwitchParameter SuppressJobLog { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            AdHocCommand? job = Launch();
+            if (job == null)
             {
                 return;
             }
-            var job = apiResult.Contents;
             WriteVerbose($"Invoke AdHocCommand:{job.Name} => Job:[{job.Id}]");
-            if (Async)
-            {
-                WriteObject(job, false);
-            }
-            else
-            {
-                JobManager.Add(job);
-            }
+            JobManager.Add(job);
         }
         protected override void EndProcessing()
         {
-            if (Async)
+            WaitJobs("Invoke AdHocCommand", IntervalSeconds, SuppressJobLog);
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Start, "AdHocCommand")]
+    [OutputType(typeof(AdHocCommand))]
+    public class StartAdHocCommand : LaunchAdHocCommandBase
+    {
+        protected override void ProcessRecord()
+        {
+            AdHocCommand? job = Launch();
+            if (job == null)
             {
                 return;
             }
-            WaitJobs("Invoke AdHocCommand", IntervalSeconds, SuppressJobLog);
+            WriteVerbose($"Invoke AdHocCommand:{job.Name} => Job:[{job.Id}]");
+            WriteObject(job, false);
         }
     }
 }
