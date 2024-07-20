@@ -233,7 +233,7 @@ namespace AWX.Resources
             [JsonPropertyName("custom_virtualenv")]
             public string? CustomVirtualenv { get; } = customVirtualenv;
         }
-        public class LaunchResult(ulong job, Dictionary<string, object?> ignoreFields, ulong id, ResourceType type,
+        public class LaunchResult(ulong job, Dictionary<string, object?> ignoredFields, ulong id, ResourceType type,
                                   string url, RelatedDictionary related, Summary summaryFields, DateTime created,
                                   DateTime? modified, string name, string description, JobType jobType, ulong inventory,
                                   ulong project, string playbook, string scmBranch, byte forks, string limit,
@@ -260,8 +260,8 @@ namespace AWX.Resources
                IJobTemplateJob, IJobDetail, IResource<Summary>
         {
             public ulong Job { get; } = job;
-            [JsonPropertyName("ignore_fields")]
-            public Dictionary<string, object?> IgnoreFields { get; } = ignoreFields;
+            [JsonPropertyName("ignored_fields")]
+            public Dictionary<string, object?> IgnoredFields { get; } = ignoredFields;
 
             public string JobArgs { get; } = jobArgs;
             public string JobCwd { get; } = jobCwd;

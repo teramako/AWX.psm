@@ -154,7 +154,7 @@ namespace AWX.Resources
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
         }
-        public class LaunchResult(ulong workflowJob, Dictionary<string, object?> ignoreFields, ulong id,
+        public class LaunchResult(ulong workflowJob, Dictionary<string, object?> ignoredFields, ulong id,
                                   ResourceType type, string url, RelatedDictionary related,
                                   Summary summaryFields, DateTime created, DateTime? modified, string name,
                                   string description, ulong unifiedJobTemplate, JobLaunchType launchType,
@@ -176,8 +176,8 @@ namespace AWX.Resources
         {
             [JsonPropertyName("workflow_job")]
             public ulong WorkflowJob { get; } = workflowJob;
-            [JsonPropertyName("ignore_fields")]
-            public Dictionary<string, object?> IgnoreFields { get; } = ignoreFields;
+            [JsonPropertyName("ignored_fields")]
+            public Dictionary<string, object?> IgnoredFields { get; } = ignoredFields;
         }
     }
 }
