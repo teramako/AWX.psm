@@ -72,18 +72,12 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Invoke, "ProjectUpdate")]
-    [OutputType(typeof(ProjectUpdateJob), ParameterSetName = ["Id", "Project"])]
-    [OutputType(typeof(ProjectUpdateJob.Detail), ParameterSetName = ["AsyncId", "AsyncProject"])]
-    [OutputType(typeof(CanUpdateProject), ParameterSetName = ["CheckId", "CheckProject"])]
-    public class InvokeProjectUpdateCommand: InvokeJobBase
+    public class LaunchProjectUpdateCommandBase : InvokeJobBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "Project", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncProject", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckProject", ValueFromPipeline = true, Position = 0)]
         public Project? Project { get; set; }
 
@@ -91,10 +85,31 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "CheckProject")]
         public SwitchParameter Check { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncProject")]
-        public SwitchParameter Async { get; set; }
+        protected void CheckCanUpdate(ulong projectId)
+        {
+            var res = GetResource<CanUpdateProject>($"{Project.PATH}{projectId}/update/");
+            if (res == null)
+            {
+                return;
+            }
+            var psobject = new PSObject();
+            psobject.Members.Add(new PSNoteProperty("Id", projectId));
+            psobject.Members.Add(new PSNoteProperty("Type", ResourceType.Project));
+            psobject.Members.Add(new PSNoteProperty("CanUpdate", res.CanUpdate));
+            WriteObject(psobject, false);
+        }
+        protected ProjectUpdateJob.Detail UpdateProject(ulong projectId)
+        {
+            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
+            return apiResult.Contents;
+        }
+    }
 
+    [Cmdlet(VerbsLifecycle.Invoke, "ProjectUpdate")]
+    [OutputType(typeof(ProjectUpdateJob), ParameterSetName = ["Id", "Project"])]
+    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckProject"])]
+    public class InvokeProjectUpdateCommand : LaunchProjectUpdateCommandBase
+    {
         [Parameter(ParameterSetName = "Id")]
         [Parameter(ParameterSetName = "Project")]
         [ValidateRange(5, int.MaxValue)]
@@ -104,31 +119,6 @@ namespace AWX.Cmdlets
         [Parameter(ParameterSetName = "Project")]
         public SwitchParameter SuppressJobLog { get; set; }
 
-
-        private void CheckCanUpdate(ulong projectId)
-        {
-            var res = GetResource<CanUpdateProject>($"{Project.PATH}{projectId}/update/");
-            if (res == null)
-            {
-                return;
-            }
-            var result = res with { Project = projectId };
-            WriteObject(result, false);
-        }
-        private void UpdateProject(ulong projectId)
-        {
-            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
-            var launchResult = apiResult.Contents;
-            WriteVerbose($"Update Project:{Id} => Job:[{launchResult.Id}]");
-            if (Async)
-            {
-                WriteObject(launchResult, false);
-            }
-            else
-            {
-                JobManager.Add(launchResult);
-            }
-        }
         protected override void ProcessRecord()
         {
             if (Project != null)
@@ -143,7 +133,9 @@ namespace AWX.Cmdlets
             {
                 try
                 {
-                    UpdateProject(Id);
+                    var job = UpdateProject(Id);
+                    WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
+                    JobManager.Add(job);
                 }
                 catch (RestAPIException) {}
             }
@@ -154,11 +146,35 @@ namespace AWX.Cmdlets
             {
                 return;
             }
-            if (Async)
-            {
-                return;
-            }
             WaitJobs("Update Project", IntervalSeconds, SuppressJobLog);
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Start, "ProjectUpdate")]
+    [OutputType(typeof(ProjectUpdateJob.Detail), ParameterSetName = ["Id", "Project"])]
+    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckProject"])]
+    public class StartProjectUpdateCommand : LaunchProjectUpdateCommandBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (Project != null)
+            {
+                Id = Project.Id;
+            }
+            if (Check)
+            {
+                CheckCanUpdate(Id);
+            }
+            else
+            {
+                try
+                {
+                    var job = UpdateProject(Id);
+                    WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
+                    WriteObject(job, false);
+                }
+                catch (RestAPIException) {}
+            }
         }
     }
 }
