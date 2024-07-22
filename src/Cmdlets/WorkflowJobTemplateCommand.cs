@@ -57,18 +57,12 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Invoke, "WorkflowJobTemplate")]
-    [OutputType(typeof(JobTemplateJob), ParameterSetName = ["Id", "JobTemplate"])]
-    [OutputType(typeof(JobTemplateJob.LaunchResult), ParameterSetName = ["AsyncId", "AsyncJobTemplate"])]
-    [OutputType(typeof(JobTemplateLaunchRequirements), ParameterSetName = ["GetRequirementsId", "GetRequirementsJobTemplate"])]
-    public class InvokeWorkflowJobTemplateCommand : InvokeJobBase
+    public abstract class LaunchWorkflowJobTemplateCommandBase : InvokeJobBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsJobTemplate", ValueFromPipeline = true, Position = 0)]
         public WorkflowJobTemplate? WorkflowJobTemplate { get; set; }
 
@@ -76,35 +70,28 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "GetRequirementsJobTemplate")]
         public SwitchParameter GetRequirements { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncJobTemplate")]
-        public SwitchParameter Async { get; set; }
-
         [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "AsyncId")]
         [Parameter(ParameterSetName = "JobTemplate")]
-        [Parameter(ParameterSetName = "AsyncJobTemplate")]
         public string? Limit { get; set; }
 
         [Parameter(ParameterSetName = "Id")]
         [Parameter(ParameterSetName = "JobTemplate")]
-        [ValidateRange(5, int.MaxValue)]
-        public int IntervalSeconds { get; set; } = 5;
-
-        [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "JobTemplate")]
-        public SwitchParameter SuppressJobLog { get; set; }
+        public ulong? Inventory { get; set; }
 
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
+            if (Inventory != null)
+            {
+                dict.Add("inventory", Inventory);
+            }
             if (Limit != null)
             {
                 dict.Add("limit", Limit);
             }
             return dict;
         }
-        private void GetLaunchRequirements(ulong id)
+        protected void GetLaunchRequirements(ulong id)
         {
             var res = base.GetResource<WorkflowJobTemplateLaunchRequirements>($"{WorkflowJobTemplate.PATH}{id}/launch/");
             if (res == null)
@@ -113,7 +100,7 @@ namespace AWX.Cmdlets
             }
             WriteObject(res, false);
         }
-        private void Launch(ulong id)
+        protected WorkflowJob.LaunchResult Launch(ulong id)
         {
             var apiResult = CreateResource<WorkflowJob.LaunchResult>($"{WorkflowJobTemplate.PATH}{id}/launch/", CreateSendData());
             var launchResult = apiResult.Contents;
@@ -125,15 +112,24 @@ namespace AWX.Cmdlets
                     WriteWarning($"Ignored field: {key} ({val})");
                 }
             }
-            if (Async)
-            {
-                WriteObject(launchResult, false);
-            }
-            else
-            {
-                JobManager.Add(launchResult);
-            }
+            return launchResult;
         }
+    }
+
+    [Cmdlet(VerbsLifecycle.Invoke, "WorkflowJobTemplate")]
+    [OutputType(typeof(JobTemplateJob), ParameterSetName = ["Id", "JobTemplate"])]
+    [OutputType(typeof(JobTemplateLaunchRequirements), ParameterSetName = ["GetRequirementsId", "GetRequirementsJobTemplate"])]
+    public class InvokeWorkflowJobTemplateCommand : LaunchWorkflowJobTemplateCommandBase
+    {
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "JobTemplate")]
+        [ValidateRange(5, int.MaxValue)]
+        public int IntervalSeconds { get; set; } = 5;
+
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "JobTemplate")]
+        public SwitchParameter SuppressJobLog { get; set; }
+
         protected override void ProcessRecord()
         {
             if (WorkflowJobTemplate != null)
@@ -148,7 +144,8 @@ namespace AWX.Cmdlets
             {
                 try
                 {
-                    Launch(Id);
+                    var launchResult = Launch(Id);
+                    JobManager.Add(launchResult);
                 }
                 catch (RestAPIException) {}
             }
@@ -159,11 +156,34 @@ namespace AWX.Cmdlets
             {
                 return;
             }
-            if (Async)
-            {
-                return;
-            }
             WaitJobs("Launch WorkflowJobTemplate", IntervalSeconds, SuppressJobLog);
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Start, "WorkflowJobTemplate")]
+    [OutputType(typeof(JobTemplateJob.LaunchResult), ParameterSetName = ["Id", "JobTemplate"])]
+    [OutputType(typeof(JobTemplateLaunchRequirements), ParameterSetName = ["GetRequirementsId", "GetRequirementsJobTemplate"])]
+    public class StartWorkflowJobTemplateCommand : LaunchWorkflowJobTemplateCommandBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (WorkflowJobTemplate != null)
+            {
+                Id = WorkflowJobTemplate.Id;
+            }
+            if (GetRequirements)
+            {
+                GetLaunchRequirements(Id);
+            }
+            else
+            {
+                try
+                {
+                    var launchResult = Launch(Id);
+                    WriteObject(launchResult, false);
+                }
+                catch (RestAPIException) {}
+            }
         }
     }
 }
