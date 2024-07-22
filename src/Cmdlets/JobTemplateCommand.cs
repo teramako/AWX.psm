@@ -74,8 +74,6 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true, Position = 0)]
         public JobTemplate? JobTemplate { get; set; }
 
-        protected abstract bool Async { get; }
-
         [Parameter()]
         public string? Limit { get; set; }
 
@@ -187,15 +185,11 @@ namespace AWX.Cmdlets
     [OutputType(typeof(JobTemplateJob))]
     public class InvokeJobTemplateCommand : LaunchJobTemplateCommandBase
     {
-        protected override bool Async { get; } = false;
-
-        [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "JobTemplate")]
+        [Parameter()]
         [ValidateRange(5, int.MaxValue)]
         public int IntervalSeconds { get; set; } = 5;
 
-        [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "JobTemplate")]
+        [Parameter()]
         public SwitchParameter SuppressJobLog { get; set; }
 
         protected override void ProcessRecord()
@@ -225,8 +219,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(JobTemplateJob.LaunchResult))]
     public class StartJobTemplateCommand : LaunchJobTemplateCommandBase
     {
-        protected override bool Async { get; } = true;
-
         protected override void ProcessRecord()
         {
             if (JobTemplate != null)
