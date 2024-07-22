@@ -60,22 +60,15 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Invoke, "InventoryUpdate")]
-    [OutputType(typeof(InventoryUpdateJob), ParameterSetName = ["Id", "InventorySource", "Inventory"])]
-    [OutputType(typeof(InventoryUpdateJob.Detail), ParameterSetName = ["AsyncId", "AsyncInventorySource", "AsyncInventory"])]
-    [OutputType(typeof(CanUpdateInventorySource), ParameterSetName = ["CheckId", "CheckInventorySource", "CheckInventory"])]
-    public class InvokeInventoryUpdateCommand: InvokeJobBase
+    public class LaunchInventoryUpdateCommandBase : InvokeJobBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "InventorySource", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventorySource", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckInventorySource", ValueFromPipeline = true, Position = 0)]
         public InventorySource? InventorySource { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "Inventory", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventory", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckInventory", ValueFromPipeline = true, Position = 0)]
         public Inventory? Inventory { get; set; }
 
@@ -84,66 +77,44 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "CheckInventory")]
         public SwitchParameter Check { get; set; }
 
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncId")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventorySource")]
-        [Parameter(Mandatory = true, ParameterSetName = "AsyncInventory")]
-        public SwitchParameter Async { get; set; }
-
-        [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "InventorySource")]
-        [Parameter(ParameterSetName = "Inventory")]
-        [ValidateRange(5, int.MaxValue)]
-        public int IntervalSeconds { get; set; } = 5;
-
-        [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "InventorySource")]
-        [Parameter(ParameterSetName = "Inventory")]
-        public SwitchParameter SuppressJobLog { get; set; }
-
-
-        private void CheckCanUpdateInventorySource(ulong id)
+        protected void CheckCanUpdateInventorySource(ulong id)
         {
             var res = GetResource<CanUpdateInventorySource>($"{InventorySource.PATH}{id}/update/");
             if (res == null)
             {
                 return;
             }
-            var result = res with { InventorySource = id };
-            WriteObject(result, false);
+            var psobject = new PSObject();
+            psobject.Members.Add(new PSNoteProperty("Id", id));
+            psobject.Members.Add(new PSNoteProperty("Type", ResourceType.InventorySource));
+            psobject.Members.Add(new PSNoteProperty("CanUpdate", res.CanUpdate));
+            WriteObject(psobject, false);
         }
-        private void CheckCanUpdateInventory(Inventory inventory)
+        protected void CheckCanUpdateInventory(Inventory inventory)
         {
             var results = GetResource<CanUpdateInventorySource[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
             if (results == null)
             {
                 return;
             }
-            WriteObject(results, true);
+            foreach (var res in results)
+            {
+                var psobject = new PSObject();
+                psobject.Members.Add(new PSNoteProperty("Id", res.InventorySource));
+                psobject.Members.Add(new PSNoteProperty("Type", ResourceType.InventorySource));
+                psobject.Members.Add(new PSNoteProperty("CanUpdate", res.CanUpdate));
+                WriteObject(psobject, false);
+            }
         }
-        private void UpdateInventorySource(ulong id)
+        protected InventoryUpdateJob.Detail UpdateInventorySource(ulong id)
         {
             var apiResult = CreateResource<InventoryUpdateJob.Detail>($"{InventorySource.PATH}{id}/update/");
-            ProcessJob(apiResult.Contents);
+            return apiResult.Contents;
         }
-        private void UpdateInventory(Inventory inventory)
+        protected InventoryUpdateJob.Detail[] UpdateInventory(Inventory inventory)
         {
             var apiResult = CreateResource<InventoryUpdateJob.Detail[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
-            foreach (var job in apiResult.Contents)
-            {
-                ProcessJob(job);
-            }
-        }
-        private void ProcessJob(InventoryUpdateJob.Detail job)
-        {
-            WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
-            if (Async)
-            {
-                WriteObject(job, false);
-            }
-            else
-            {
-                JobManager.Add(job);
-            }
+            return apiResult.Contents;
         }
         protected override void ProcessRecord()
         {
@@ -182,17 +153,121 @@ namespace AWX.Cmdlets
                 }
             }
         }
+    }
+
+    [Cmdlet(VerbsLifecycle.Invoke, "InventoryUpdate")]
+    [OutputType(typeof(InventoryUpdateJob), ParameterSetName = ["Id", "InventorySource", "Inventory"])]
+    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckInventorySource", "CheckInventory"])]
+    public class InvokeInventoryUpdateCommand : LaunchInventoryUpdateCommandBase
+    {
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "InventorySource")]
+        [Parameter(ParameterSetName = "Inventory")]
+        [ValidateRange(5, int.MaxValue)]
+        public int IntervalSeconds { get; set; } = 5;
+
+        [Parameter(ParameterSetName = "Id")]
+        [Parameter(ParameterSetName = "InventorySource")]
+        [Parameter(ParameterSetName = "Inventory")]
+        public SwitchParameter SuppressJobLog { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Inventory != null)
+            {
+                if (Check)
+                {
+                    CheckCanUpdateInventory(Inventory);
+                }
+                else
+                {
+                    try
+                    {
+                        foreach (var job in UpdateInventory(Inventory))
+                        {
+                            WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
+                            JobManager.Add(job);
+                        }
+
+                    }
+                    catch (RestAPIException) {}
+                }
+            }
+            else
+            {
+                if (InventorySource != null)
+                {
+                    Id = InventorySource.Id;
+                }
+                if (Check)
+                {
+                    CheckCanUpdateInventorySource(Id);
+                }
+                else
+                {
+                    try
+                    {
+                        var job = UpdateInventorySource(Id);
+                        WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
+                        JobManager.Add(job);
+                    }
+                    catch (RestAPIException) {}
+                }
+            }
+        }
         protected override void EndProcessing()
         {
             if (Check)
             {
                 return;
             }
-            if (Async)
-            {
-                return;
-            }
             WaitJobs("Update InventorySource", IntervalSeconds, SuppressJobLog);
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Start, "InventoryUpdate")]
+    [OutputType(typeof(InventoryUpdateJob.Detail), ParameterSetName = ["AsyncId", "AsyncInventorySource", "AsyncInventory"])]
+    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckInventorySource", "CheckInventory"])]
+    public class StartInventoryUpdateCommand : LaunchInventoryUpdateCommandBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (Inventory != null)
+            {
+                if (Check)
+                {
+                    CheckCanUpdateInventory(Inventory);
+                }
+                else
+                {
+                    try
+                    {
+                        var jobs = UpdateInventory(Inventory);
+                        WriteObject(jobs, true);
+                    }
+                    catch (RestAPIException) {}
+                }
+            }
+            else
+            {
+                if (InventorySource != null)
+                {
+                    Id = InventorySource.Id;
+                }
+                if (Check)
+                {
+                    CheckCanUpdateInventorySource(Id);
+                }
+                else
+                {
+                    try
+                    {
+                        var job = UpdateInventorySource(Id);
+                        WriteObject(job, false);
+                    }
+                    catch (RestAPIException) {}
+                }
+            }
         }
     }
 }
