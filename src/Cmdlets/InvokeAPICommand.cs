@@ -65,11 +65,24 @@ namespace AWX.Cmdlets
                     task = RestAPI.GetAsync<string>(pathAndQuery);
                     break;
                 case Method.POST:
+                    task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
+                    break;
+                case Method.PUT:
                     if (SenData == null)
                     {
                         throw new ArgumentNullException(nameof(SenData));
                     }
-                    task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
+                    task = RestAPI.PutJsonAsync<string>(pathAndQuery, SenData);
+                    break;
+                case Method.PATCH:
+                    if (SenData == null)
+                    {
+                        throw new ArgumentNullException(nameof(SenData));
+                    }
+                    task = RestAPI.PatchJsonAsync<string>(pathAndQuery, SenData);
+                    break;
+                case Method.DELETE:
+                    task = RestAPI.DeleteAsync(pathAndQuery);
                     break;
                 case Method.OPTIONS:
                     task = RestAPI.OptionsJsonAsync<string>(pathAndQuery);
