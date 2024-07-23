@@ -12,7 +12,6 @@ namespace AWX.Cmdlets
     [Cmdlet(VerbsLifecycle.Invoke, "API", DefaultParameterSetName = "NonSendData")]
     public class InvokeAPICommand : APICmdletBase
     {
-
         [Parameter(Mandatory = true, Position = 0)]
         public Method Method { get; set; }
 
@@ -152,7 +151,7 @@ namespace AWX.Cmdlets
                 {
                     if (method != attr.Method)
                     {
-                        if (!field.GetCustomAttributes<ResourceSubPathAttribute>(false)
+                        if (!field.GetCustomAttributes<ResourceSubPathBase>(false)
                                   .Where(attr => attr.Method == method)
                                   .Any())
                         {
@@ -175,15 +174,6 @@ namespace AWX.Cmdlets
         }
         private static IEnumerable<CompletionResult> Complete(Method method, string p3, string p4)
         {
-            switch (p3)
-            {
-                case "config":
-                case "settings":
-                case "dashboard":
-                case "analytics":
-                case "bulk":
-                    yield break;
-            }
             ResourcePathAttribute? p3Attr = null;
             FieldInfo? resourceField = null;
 
@@ -200,26 +190,50 @@ namespace AWX.Cmdlets
             }
             if (p3Attr == null) yield break;
             if (resourceField == null) yield break;
-            if (!ulong.TryParse(p4, out _)) yield break;
+            var p4IsId = ulong.TryParse(p4, out _);
 
-            var subPathAttrs = resourceField.GetCustomAttributes<ResourceSubPathAttribute>(false).ToArray();
+            var subPathAttrs = resourceField.GetCustomAttributes<ResourceSubPathBase>(false)
+                                            .Where(attr => attr.Method == method)
+                                            .ToArray();
             if (subPathAttrs.Length == 0) yield break;
 
-            foreach (var subAttr in subPathAttrs.Where(attr => attr.Method == method))
+            foreach (var subAttr in subPathAttrs)
             {
                 var tooltip = string.IsNullOrEmpty(subAttr.Description)
                               ? $"{method} {resourceField.Name}"
                               : subAttr.Description;
-                if (string.IsNullOrEmpty(subAttr.PathName))
+                string completeionText;
+                string listItemText;
+                switch (subAttr)
                 {
-                    yield return new CompletionResult($"/api/v2/{p3}/{p4}/", $"{p3}/{p4}/",
-                                                      CompletionResultType.ParameterValue, tooltip);
-                }
-                else
-                {
-                    yield return new CompletionResult($"/api/v2/{p3}/{p4}/{subAttr.PathName}/",
-                                                      $"{p3}/{p4}/{subAttr.PathName}/",
-                                                      CompletionResultType.ParameterValue, tooltip);
+                    case ResourceIdPathAttribute:
+                        if (!p4IsId) continue;
+                        // TODO: 最終的にはID番号の補完もしたい
+                        completeionText = $"/api/v2/{p3}/{p4}/";
+                        listItemText = $"{p3}/{p4}/";
+                        yield return new CompletionResult(completeionText, listItemText,
+                                                          CompletionResultType.ParameterValue, tooltip);
+                        yield break;
+                    case ResourceSubPathAttribute subPathAttr:
+                        if (p4IsId && subPathAttr.IsSubPathOfId)
+                        {
+                            completeionText = $"/api/v2/{p3}/{p4}/{subPathAttr.PathName}";
+                            listItemText = $"{p3}/{p4}/{subPathAttr.PathName}";
+                        }
+                        else if (!p4IsId && !subPathAttr.IsSubPathOfId)
+                        {
+                            completeionText = $"/api/v2/{p3}/{subPathAttr.PathName}/";
+                            listItemText = $"{p3}/{subPathAttr.PathName}/";
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        yield return new CompletionResult(completeionText, listItemText,
+                                                          CompletionResultType.ParameterValue, tooltip);
+                        break;
+                    default:
+                        continue;
                 }
             }
         }
@@ -240,15 +254,16 @@ namespace AWX.Cmdlets
                 }
             }
 
-            if (!ulong.TryParse(p4, out _)) yield break;
             if (p3Attr == null) yield break;
             if (resourceField == null) yield break;
+            var p4IsId = ulong.TryParse(p4, out _);
 
             foreach (var subPathAttr in resourceField.GetCustomAttributes<ResourceSubPathAttribute>(false)
-                                                     .Where(attr => !string.IsNullOrEmpty(attr.PathName)
-                                                                    && attr.Method == method))
+                                                     .Where(attr => attr.Method == method))
             {
-                if (subPathAttr.PathName.StartsWith(p5))
+                if (p4IsId != subPathAttr.IsSubPathOfId) continue;
+                var compWord = p4IsId ? p5 : $"{p4}/{p5}";
+                if (subPathAttr.PathName.StartsWith(compWord))
                 {
                     var text = $"/api/v2/{p3}/{p4}/{subPathAttr.PathName}/";
                     var tooltip = string.IsNullOrEmpty(subPathAttr.Description)

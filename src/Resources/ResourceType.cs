@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace AWX.Resources
@@ -155,9 +154,30 @@ namespace AWX.Resources
     }
 
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]
-    public class ResourceSubPathAttribute : Attribute
+    public abstract class ResourceSubPathBase : Attribute
     {
-        public ResourceSubPathAttribute() { }
+        public Type Type { get; init; } = typeof(string);
+        public Method Method { get; init; } = Method.GET;
+        public string Description { get; init; } = string.Empty;
+    }
+
+    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]
+    public class ResourceIdPathAttribute : ResourceSubPathBase
+    {
+        public ResourceIdPathAttribute() { }
+        public ResourceIdPathAttribute(Type type)
+        {
+            Type = type;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]
+    public class ResourceSubPathAttribute : ResourceSubPathBase
+    {
+        public ResourceSubPathAttribute(string pathName)
+        {
+            PathName = pathName;
+        }
         public ResourceSubPathAttribute(string pathName, Type type)
         {
             PathName = pathName;
@@ -165,9 +185,7 @@ namespace AWX.Resources
         }
 
         public string PathName { get; init; } = string.Empty;
-        public Type Type { get; init; } = typeof(string);
-        public Method Method { get; init; } = Method.GET;
-        public string Description { get; init; } = string.Empty;
+        public bool IsSubPathOfId { get; init; } = true;
     }
 
 }
