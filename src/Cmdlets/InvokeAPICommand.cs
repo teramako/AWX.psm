@@ -26,7 +26,7 @@ namespace AWX.Cmdlets
         public object? SenData { get; set; }
 
         [Parameter()]
-        public SwitchParameter AsJson { get; set; }
+        public SwitchParameter AsRawString { get; set; }
 
         private string pathAndQuery = string.Empty;
 
@@ -81,20 +81,13 @@ namespace AWX.Cmdlets
             task.Wait();
             var result = task.Result;
             WriteVerboseResponse(result.Response);
-            if (result.Response.ContentType == "application/json")
+            if (!AsRawString && result.Response.ContentType == "application/json")
             {
                 var json = JsonSerializer.Deserialize<JsonElement>(result.Contents, Json.DeserializeOptions);
                 try
                 {
                     var obj = Json.ObjectToInferredType(json, true);
-                    if (AsJson)
-                    {
-                        WriteObject(JsonSerializer.Serialize(obj, Json.SerializeOptions), false);
-                    }
-                    else
-                    {
-                        WriteObject(obj, false);
-                    }
+                    WriteObject(obj, false);
                     return;
                 }
                 catch (Exception ex)
