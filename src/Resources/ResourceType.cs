@@ -151,6 +151,7 @@ namespace AWX.Resources
         public string PathName { get; set; }
         public Type? Type { get; init; } = null;
         public string Description { get; init; } = string.Empty;
+        public bool Virtual { get; init; } = false;
     }
 
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]

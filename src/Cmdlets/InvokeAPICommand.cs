@@ -155,7 +155,7 @@ namespace AWX.Cmdlets
             {
                 foreach (var attr in field.GetCustomAttributes<ResourcePathAttribute>(false))
                 {
-                    if (method != attr.Method)
+                    if (attr.Virtual || method != attr.Method)
                     {
                         if (!field.GetCustomAttributes<ResourceSubPathBase>(false)
                                   .Where(attr => attr.Method == method)
