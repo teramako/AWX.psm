@@ -2032,7 +2032,7 @@ namespace API_Test
         {
             Console.WriteLine("-----SummaryFields-----");
             Console.WriteLine($"Organization  : [{summary.Organization.Id}] {summary.Organization.Name}");
-            Console.WriteLine($"Inventory     : [{summary.Inventory.Id}][{summary.Inventory.Kind}] {summary.Inventory.Name}");
+            Console.WriteLine($"Inventory     : [{summary.Inventory?.Id}][{summary.Inventory?.Kind}] {summary.Inventory?.Name}");
             Console.WriteLine($"Project       : [{summary.Project.Id}][{summary.Project.ScmType}] {summary.Project.Name}");
             Console.WriteLine($"LastJob       : [{summary.LastJob?.Id}] {summary.LastJob?.Name} {summary.LastJob?.Status} {summary.LastJob?.Finished}");
             Console.WriteLine($"LastUpdate    : [{summary.LastUpdate?.Id}] {summary.LastUpdate?.Name} {summary.LastUpdate?.Status}");

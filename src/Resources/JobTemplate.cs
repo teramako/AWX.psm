@@ -60,7 +60,7 @@ namespace AWX.Resources
         /// <summary>
         /// Inventory ID.
         /// </summary>
-        ulong Inventory { get; }
+        ulong? Inventory { get; }
         /// <summary>
         /// Project ID.
         /// </summary>
@@ -162,7 +162,7 @@ namespace AWX.Resources
     [ResourceType(ResourceType.JobTemplate)]
     public class JobTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,
                              JobTemplate.Summary summaryFields, DateTime created, DateTime? modified, string name,
-                             string description, JobType jobType, ulong inventory, ulong project, string playbook,
+                             string description, JobType jobType, ulong? inventory, ulong project, string playbook,
                              string scmBranch, int forks, string limit, JobVerbosity verbosity, string extraVars,
                              string jobTags, bool forceHandlers, string startAtTask, int timeout, bool useFactCache,
                              ulong organization, DateTime? lastJobRun, bool lastJobFailed, DateTime? nextJobRun,
@@ -254,7 +254,7 @@ namespace AWX.Resources
 
         public record Summary(
             NameDescriptionSummary Organization,
-            InventorySummary Inventory,
+            InventorySummary? Inventory,
             ProjectSummary Project,
             [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
@@ -271,7 +271,7 @@ namespace AWX.Resources
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
         public JobType JobType { get; } = jobType;
-        public ulong Inventory { get; } = inventory;
+        public ulong? Inventory { get; } = inventory;
         public ulong Project { get; } = project;
         public string Playbook { get; } = playbook;
         public string ScmBranch { get; } = scmBranch;
