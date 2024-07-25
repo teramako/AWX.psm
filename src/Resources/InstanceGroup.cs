@@ -23,7 +23,6 @@ namespace AWX.Resources
         string PodSpecOverride { get; }
     }
 
-    [ResourceType(ResourceType.InstanceGroup)]
     public class InstanceGroup(ulong id,
                                ResourceType type,
                                string url,

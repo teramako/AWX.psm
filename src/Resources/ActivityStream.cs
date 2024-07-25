@@ -13,7 +13,6 @@ namespace AWX.Resources
         Disassociate,
     }
 
-    [ResourceType(ResourceType.ActivityStream)]
     public class ActivityStream(ulong id,
                           ResourceType type,
                           string url,

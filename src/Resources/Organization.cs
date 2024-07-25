@@ -13,7 +13,6 @@ namespace AWX.Resources
         int? DefaultEnvironment { get; }
     }
 
-    [ResourceType(ResourceType.Organization)]
     public class Organization(ulong id,
                               ResourceType type,
                               string url,

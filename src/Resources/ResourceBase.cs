@@ -2,18 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ResourceTypeAttribute(ResourceType type) : Attribute
-    {
-        public ResourceType Type { get; } = type;
-        /// <summary>
-        /// Can retrive aggregated multi resources or not.
-        /// Default is <c>true</c>.
-        /// </summary>
-        public string Description { get; init; } = string.Empty;
-        public bool CanAggregate { get; init; } = true;
-    }
-
     public interface IResource<TSummary>
     {
         /// <summary>

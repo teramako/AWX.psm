@@ -19,7 +19,6 @@ namespace AWX.Resources
         string Scope { get; }
     }
 
-    [ResourceType(ResourceType.OAuth2AccessToken)]
     public class OAuth2AccessToken(ulong id,
                                    ResourceType type,
                                    string url,

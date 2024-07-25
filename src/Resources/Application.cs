@@ -45,7 +45,6 @@ namespace AWX.Resources
         ulong Organization { get; }
     }
 
-    [ResourceType(ResourceType.OAuth2Application)]
     public class Application(ulong id,
                              ResourceType type,
                              string url,

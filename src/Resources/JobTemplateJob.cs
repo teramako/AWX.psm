@@ -62,9 +62,6 @@ namespace AWX.Resources
 
     }
 
-    [ResourceType(ResourceType.Job,
-        Description = "JobTemplate's Job",
-        CanAggregate = false)]
     public class JobTemplateJob(ulong id, ResourceType type, string url, RelatedDictionary related,
                                 JobTemplateJob.Summary summaryFields, DateTime created, DateTime? modified, string name,
                                 string description, ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,

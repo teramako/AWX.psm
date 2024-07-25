@@ -18,7 +18,6 @@ namespace AWX.Resources
         string Password { get; }
     }
 
-    [ResourceType(ResourceType.User)]
     public class User(ulong id,
                       ResourceType type,
                       string url,
