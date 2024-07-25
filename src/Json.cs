@@ -44,10 +44,15 @@ namespace AWX
                             var fieldInfo = typeof(ResourceType).GetField(key);
                             if (fieldInfo != null)
                             {
-                                var attr = fieldInfo.GetCustomAttributes<ResourcePathAttribute>(false).First();
+                                var attr = fieldInfo.GetCustomAttributes<ResourcePathAttribute>(false).FirstOrDefault();
                                 if (attr != null && attr.Type != null)
                                 {
-                                    var obj = val.Deserialize(attr.Type, DeserializeOptions);
+                                    var resourceType = attr.Type;
+                                    if (resourceType.IsGenericType && resourceType.IsSubclassOf(typeof(ResultSetBase)))
+                                    {
+                                        resourceType = resourceType.GenericTypeArguments[0];
+                                    }
+                                    var obj = val.Deserialize(resourceType, DeserializeOptions);
                                     if (obj != null)
                                     {
                                         return obj;
