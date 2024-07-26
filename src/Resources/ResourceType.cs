@@ -63,7 +63,7 @@ namespace AWX.Resources
         [ResourcePath("settings", typeof(Setting))]
         Setting,
         [ResourcePath("dashboard", Description = "Show Dashboard Details")]
-        [ResourceSubPath("graphs/jobs", Description = "View Statistics for job Runs")]
+        [ResourceSubPath("graphs/jobs", Description = "View Statistics for job Runs", IsSubPathOfId = false)]
         Dashboard,
         [ResourcePath("organizations", typeof(ResultSet<Organization>), Description = "List Organizations")]
         [ResourcePath("organizations", typeof(Organization), Method = Method.POST, Description = "Create an Organization")]
@@ -170,7 +170,7 @@ namespace AWX.Resources
         [ResourceSubPath("events", typeof(ResultSet<ProjectUpdateJobEvent>), Description = "List Project Update Events for a Project Update")]
         [ResourceSubPath("notifications", typeof(ResultSet<Notification>), Description = "List Notifications for a Project Update")]
         [ResourceSubPath("scm_inventory_updates", typeof(ResultSet<InventoryUpdateJob>), Description = "List Inventory Updates for a Project Update")]
-        [ResourceSubPath("stdout", typeof(ResultSet<JobLog>), Description = "Retrieve Project Update Stdout")]
+        [ResourceSubPath("stdout", typeof(JobLog), Description = "Retrieve Project Update Stdout")]
         ProjectUpdate,
         [ResourcePath("teams", typeof(ResultSet<Team>), Description = "List Teams")]
         [ResourcePath("teams", typeof(Team), Method = Method.POST, Description = "Create a Team")]
@@ -189,8 +189,8 @@ namespace AWX.Resources
         [ResourceSubPath("users", typeof(ResultSet<User>), Description = "List Users for a Team")]
         [ResourceSubPath("users", typeof(User), Method = Method.POST, Description = "Create a User for a Team")]
         Team,
-        [ResourcePath("crendentials", typeof(ResultSet<Credential>), Description = "List Credentials")]
-        [ResourcePath("crendentials", typeof(Credential), Method = Method.POST, Description = "Create a Credential")]
+        [ResourcePath("credentials", typeof(ResultSet<Credential>), Description = "List Credentials")]
+        [ResourcePath("credentials", typeof(Credential), Method = Method.POST, Description = "Create a Credential")]
         [ResourceIdPath(typeof(Credential), Method = Method.GET, Description = "Retrieve a Credential")]
         [ResourceIdPath(typeof(Credential), Method = Method.PUT, Description = "Update a Credential")]
         [ResourceIdPath(typeof(Credential), Method = Method.PATCH, Description = "Update a Credential")]
@@ -621,9 +621,6 @@ namespace AWX.Resources
         [ResourceSubPath("deny", typeof(Dictionary<string, string>), Description = "Retrieve a Workflow Approval")]
         [ResourceSubPath("deny", Method = Method.POST, Description = "Retrieve a Workflow Approval")]
         WorkflowApproval,
-
-        [ResourcePath("stdout", typeof(JobLog))]
-        Stdout,
     }
 
 
