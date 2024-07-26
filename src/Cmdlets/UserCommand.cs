@@ -80,7 +80,7 @@ namespace AWX.Cmdlets
             }
             if (Email != null)
             {
-                Query.Add("email", string.Join(",", Email));
+                Query.Add("email__in", string.Join(",", Email));
             }
             SetupCommonQuery();
         }
