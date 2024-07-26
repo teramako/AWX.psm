@@ -96,16 +96,28 @@ namespace AWX.Cmdlets
             WriteVerboseResponse(result.Response);
             if (!AsRawString && result.Response.ContentType == "application/json")
             {
-                var json = JsonSerializer.Deserialize<JsonElement>(result.Contents, Json.DeserializeOptions);
-                try
+                if (APIPath.TryGetTypeFromPath(pathAndQuery, Method, out var type))
                 {
-                    var obj = Json.ObjectToInferredType(json, true);
-                    WriteObject(obj, false);
-                    return;
+                    if (type != typeof(string))
+                    {
+                        var obj = JsonSerializer.Deserialize(result.Contents, type, Json.DeserializeOptions);
+                        WriteObject(obj, true);
+                        return;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    WriteWarning($"Could not convert to inferred type. Fallback to string: {ex.Message}");
+                    var json = JsonSerializer.Deserialize<JsonElement>(result.Contents, Json.DeserializeOptions);
+                    try
+                    {
+                        var obj = Json.ObjectToInferredType(json, true);
+                        WriteObject(obj, false);
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteWarning($"Could not convert to inferred type. Fallback to string: {ex.Message}");
+                    }
                 }
             }
             WriteObject(result.Contents);
