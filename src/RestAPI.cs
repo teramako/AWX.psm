@@ -55,7 +55,7 @@ namespace AWX
             {
                 client.BaseAddress = uri;
             }
-            else if (client.BaseAddress.Equals(uri))
+            else if (client.BaseAddress.Scheme != uri.Scheme || client.BaseAddress.Authority != uri.Authority)
             {
                 client = new HttpClient() { BaseAddress = uri };
                 Client = client;
