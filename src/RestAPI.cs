@@ -32,6 +32,7 @@ namespace AWX
                 _client = new HttpClient()
                 {
                     BaseAddress = config.Origin,
+                    DefaultRequestVersion = HttpVersion.Version11,
                 };
                 _client.DefaultRequestHeaders.Add("Accept", "application/json");
                 if (!string.IsNullOrEmpty(config.Token))
@@ -57,12 +58,14 @@ namespace AWX
             }
             else if (client.BaseAddress.Scheme != uri.Scheme || client.BaseAddress.Authority != uri.Authority)
             {
-                client = new HttpClient() { BaseAddress = uri };
+                client = new HttpClient() {
+                    BaseAddress = uri,
+                    DefaultRequestVersion = HttpVersion.Version11,
+                };
                 Client = client;
             }
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestVersion = HttpVersion.Version11;
             if (!string.IsNullOrEmpty(config.Token))
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.Token}");
