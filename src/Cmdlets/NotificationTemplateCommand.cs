@@ -67,9 +67,9 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Find, "NotificationTemplateForApprovals")]
+    [Cmdlet(VerbsCommon.Find, "NotificationTemplateForApproval")]
     [OutputType(typeof(NotificationTemplate))]
-    public class FindNotificationTemplateForApprovalsCommand : FindCmdletBase
+    public class FindNotificationTemplateForApprovalCommand : FindCmdletBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
