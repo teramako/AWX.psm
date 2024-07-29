@@ -5,7 +5,7 @@ namespace AWX.Resources
 {
     public class WorkflowApproval(ulong id, ResourceType type, string url, RelatedDictionary related,
                                   WorkflowApproval.Summary summaryFields, DateTime created, DateTime? modified,
-                                  string name, string description, ulong unifiedJobTemplate, JobLaunchType launchType,
+                                  string name, string description, ulong? unifiedJobTemplate, JobLaunchType launchType,
                                   JobStatus status, ulong? executionEnvironment, bool failed, DateTime? started,
                                   DateTime? finished, DateTime? canceledOn, double elapsed, string jobExplanation,
                                   LaunchedBy launchedBy, string? workUnitId, bool canApproveOrDeny,
@@ -49,7 +49,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("workflow_job_template")] NameDescriptionSummary WorkflowJobTemplate,
             [property: JsonPropertyName("workflow_job")] NameDescriptionSummary WorkflowJob,
             [property: JsonPropertyName("workflow_approval_template")] WorkflowApprovalTemplateSummary WorkflowApprovalTemplate,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
+            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary? UnifiedJobTemplate,
             [property: JsonPropertyName("approved_or_denied_by")] UserSummary? ApprovedOrDeniedBy,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
@@ -60,7 +60,7 @@ namespace AWX.Resources
         public Summary SummaryFields { get; } = summaryFields;
         public string Description { get; } = description;
         [JsonPropertyName("unified_job_template")]
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
+        public ulong? UnifiedJobTemplate { get; } = unifiedJobTemplate;
         [JsonPropertyName("can_approve_or_deny")]
         public bool CanApproveOrDeny { get; } = canApproveOrDeny;
         [JsonPropertyName("approval_expiration")]
@@ -70,7 +70,7 @@ namespace AWX.Resources
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
                             DateTime created, DateTime? modified, string name, string description,
-                            ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
+                            ulong? unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
                             ulong? executionEnvironment, bool failed, DateTime? started, DateTime? finished,
                             DateTime? canceledOn, double elapsed, string jobArgs, string jobCwd,
                             Dictionary<string, string> jobEnv, string jobExplanation, string resultTraceback,
