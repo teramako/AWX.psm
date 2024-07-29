@@ -16,9 +16,25 @@
   </ItemGroup>
 
   <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
+    <PropertyGroup>
+      <DestDir>..</DestDir>
+      <DllFile>$(OutDir)$(AssemblyName).dll</DllFile>
+    </PropertyGroup>
     <ItemGroup>
       <PowerShellModules Include="*.psd1;*.ps1xml" />
     </ItemGroup>
-    <Copy SourceFiles="@(PowerShellModules)" DestinationFolder="$(OutDir)" />
+    <Message Text="Copy built file: $(DllFile)" Importance="high" />
+    <Copy SourceFiles="$(DllFile)" DestinationFolder="$(DestDir)" />
+    <Message Text="Copy *.psd1 and *.ps1xml files: @(PowerShellModules)" Importance="high" />
+    <Copy SourceFiles="@(PowerShellModules)" DestinationFolder="$(DestDir)" />
+  </Target>
+
+  <Target Name="docs" DependsOnTargets="PSM">
+    <PropertyGroup>
+      <PowerShellExe>pwsh</PowerShellExe>
+      <ScriptLocation>../docs/Make-Doc.ps1</ScriptLocation>
+    </PropertyGroup>
+    <Message Text="Update documents (using platyPS)" Importance="high" />
+    <Exec Command="$(PowerShellExe) -NoProfile -Command &quot;&amp; { $(ScriptLocation) }&quot;" />
   </Target>
 </Project>
