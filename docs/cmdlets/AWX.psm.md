@@ -12,10 +12,10 @@ Locale: {{ Update Locale }}
 
 ## AWX.psm Cmdlets
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
-{{ Fill in the Synopsis }}
+Approve requests for WorkflowApproval.
 
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
-{{ Fill in the Synopsis }}
+Deny requests for WorkflowApproval.
 
 ### [Find-ActivityStream](Find-ActivityStream.md)
 {{ Fill in the Synopsis }}

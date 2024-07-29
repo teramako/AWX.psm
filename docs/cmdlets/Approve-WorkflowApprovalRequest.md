@@ -8,7 +8,7 @@ schema: 2.0.0
 # Approve-WorkflowApprovalRequest
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Approve requests for WorkflowApproval.
 
 ## SYNTAX
 
@@ -17,21 +17,32 @@ Approve-WorkflowApprovalRequest [-Id] <UInt64> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Approve requests for pending WorkflowApprovals.
+And output the results for jobs of those.
+
+Implements following Rest API:  
+- `/api/v2/workflow_approvals/{id}/approve/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Approve-WorkflowApprovalRequest -Id 1
 ```
 
-{{ Add example description here }}
+Approve the WorkflowApproval of ID 1.
+
+### Example 2
+```powershell
+PS C:\> Find-WorkflowApprovalRequest -Status pending | Approve-WorkflowApprovalRequest
+```
+
+Approve all pending WorkflowApprovals.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+Database ID for the WorkflowApproval.
 
 ```yaml
 Type: UInt64
@@ -51,10 +62,22 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values: `WorkflowApproval` (only)
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for `WorkflowApproval`
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowApproval
 ## NOTES
 
 ## RELATED LINKS
+
+[Deny-WorkflowApprovalRequest](./Deny-WorkflowApprovalRequest.md)
+
+[Find-WorkflowApprovalRequest](./Find-WorkflowApprovalRequest.md)
