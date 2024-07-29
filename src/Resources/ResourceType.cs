@@ -600,8 +600,8 @@ namespace AWX.Resources
         [ResourceSubPath("copy", typeof(ExecutionEnvironment), Description = "Copy an Execution Environment")]
         [ResourceSubPath("unified_job_templates", typeof(ResultSet), Description = "List Unified Job Templates for an Execution Environment")]
         ExecutionEnvironment,
-        [ResourcePath("host_metrics", typeof(ResultSet<HostMetrics>), Description = "List Host Metrics")]
-        [ResourceIdPath(typeof(HostMetrics), Description = "Retrieve a Host Metric")]
+        [ResourcePath("host_metrics", typeof(ResultSet<HostMetric>), Description = "List Host Metrics")]
+        [ResourceIdPath(typeof(HostMetric), Description = "Retrieve a Host Metric")]
         [ResourceIdPath(Method = Method.DELETE, Description = "Delete a Host Metric")]
         HostMetrics,
         [ResourcePath("metrics", typeof(ResultSet<Metrics>), Description = "Show Metrics Details")]

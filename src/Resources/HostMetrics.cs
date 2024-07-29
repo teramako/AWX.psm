@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
-    public class HostMetrics(ulong id, string hostname, string url, DateTime? firstAutomation, DateTime? lastAutomation,
+    public class HostMetric(ulong id, string hostname, string url, DateTime? firstAutomation, DateTime? lastAutomation,
                              DateTime? lastDeleted, int automatedCounter, int deletedCounter, bool deleted,
                              int? usedInInventories)
     {

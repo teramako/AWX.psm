@@ -3,9 +3,9 @@ using System.Management.Automation;
 
 namespace AWX.Cmdlets
 {
-    [Cmdlet(VerbsCommon.Get, "HostMetrics")]
-    [OutputType(typeof(HostMetrics))]
-    public class GetHostMetricsCommand : GetCmdletBase
+    [Cmdlet(VerbsCommon.Get, "HostMetric")]
+    [OutputType(typeof(HostMetric))]
+    public class GetHostMetricCommand : GetCmdletBase
     {
         protected override void ProcessRecord()
         {
@@ -19,16 +19,16 @@ namespace AWX.Cmdlets
             string path;
             if (IdSet.Count == 1)
             {
-                path = $"{HostMetrics.PATH}{IdSet.First()}/";
-                var res = GetResource<HostMetrics>(path);
+                path = $"{HostMetric.PATH}{IdSet.First()}/";
+                var res = GetResource<HostMetric>(path);
                 WriteObject(res);
             }
             else
             {
-                path = HostMetrics.PATH;
+                path = HostMetric.PATH;
                 Query.Add("id__in", string.Join(',', IdSet));
                 Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<HostMetrics>(path, Query))
+                foreach (var resultSet in GetResultSet<HostMetric>(path, Query))
                 {
                     WriteObject(resultSet.Results, true);
                 }
@@ -36,9 +36,9 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Find, "HostMetrics", DefaultParameterSetName = "All")]
-    [OutputType(typeof(HostMetrics))]
-    public class FindHostMetricsCommand : FindCmdletBase
+    [Cmdlet(VerbsCommon.Find, "HostMetric", DefaultParameterSetName = "All")]
+    [OutputType(typeof(HostMetric))]
+    public class FindHostMetricCommand : FindCmdletBase
     {
         public override ResourceType Type { get; set; }
         public override ulong Id { get; set; }
@@ -52,7 +52,7 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            foreach (var resultSet in GetResultSet<HostMetrics>(HostMetrics.PATH, Query, All))
+            foreach (var resultSet in GetResultSet<HostMetric>(HostMetric.PATH, Query, All))
             {
                 WriteObject(resultSet.Results, true);
             }
