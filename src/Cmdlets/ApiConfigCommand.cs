@@ -27,13 +27,14 @@ namespace AWX.Cmdlets
         [Parameter()]
         public FileInfo SaveAs { get; set; } = new FileInfo(ApiConfig.DefaultConfigPath);
 
-        const string motd = """
-                _              _ _     _     _____
-               / \   _ __  ___(_) |__ | | __|_   _|____      _____ _ __
-              / _ \ | '_ \/ __| | '_ \| |/ _ \| |/ _ \ \ /\ / / _ \ '__|
-             / ___ \| | | \__ \ | |_) | |  __/| | (_) \ V  V /  __/ |
-            /_/   \_\_| |_|___/_|_.__/|_|\___||_|\___/ \_/\_/ \___|_|
-            
+        const string banner = """
+                _        _    ____
+               / \      / \  |  _ \       _ __  ___ _ __ ___
+              / _ \    / _ \ | |_) |     | '_ \/ __| '_ ` _ \
+             / ___ \  / ___ \|  __/   _  | |_) \__ \ | | | | |
+            /_/   \_\/_/   \_\_|     (_) | .__/|___/_| |_| |_|
+                                         |_|
+
             """;
         private ApiConfig? config = null;
         private SecureString? GetToken()
@@ -62,7 +63,7 @@ namespace AWX.Cmdlets
                 throw new ArgumentNullException(nameof(Uri));
             }
 
-            Host.UI.WriteLine(ConsoleColor.Red, Console.BackgroundColor, motd);
+            Host.UI.WriteLine(ConsoleColor.Red, Console.BackgroundColor, banner);
 
             var secureString = GetToken();
             if (secureString == null)
