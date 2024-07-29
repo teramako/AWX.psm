@@ -1,3 +1,8 @@
 .vs/
 bin/
 obj/
+/*.dll
+/*.ps1xml
+/*.psd1
+*-Help.xml
+
