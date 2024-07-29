@@ -5,45 +5,58 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-Application
+# New-ApiConfig
 
 ## SYNOPSIS
-Retrieve Applications by the ID.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Get-Application [-Id] <UInt64[]> [<CommonParameters>]
+New-ApiConfig [-Uri] <Uri> [-SaveAs <FileInfo>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Implementation of following API:
-
-* \`/api/v2/applications/{id}/\`
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Get-Application 1
+```powershell
+PS C:\> {{ Add example code here }}
 ```
 
-Retrieve an Application of ID \`1\`.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Id
-Database ID
+### -SaveAs
+{{ Fill SaveAs Description }}
 
 ```yaml
-Type: UInt64[]
+Type: FileInfo
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Uri
+{{ Fill Uri Description }}
+
+```yaml
+Type: Uri
 Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByValue)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -52,10 +65,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.UInt64[]
+### None
 ## OUTPUTS
 
-### AWX.Resources.Application
+### AWX.ApiConfig
 ## NOTES
 
 ## RELATED LINKS

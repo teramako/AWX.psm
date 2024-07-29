@@ -5,57 +5,43 @@ online version:
 schema: 2.0.0
 ---
 
-# Find-Application
+# Find-Job
 
 ## SYNOPSIS
-Retrieve Applications from AWX/AnsibleTower
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ### All (Default)
 ```
-Find-Application [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+Find-Job [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>] [-OrderBy <String[]>]
+ [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
-Find-Application -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-Job -Id <UInt64> -Type <ResourceType> [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>]
+ [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieve and list Applications from AWX/AnsibleTower.
-
-Implementation of following API:
-
-* \`/api/v2/applications/\`
-* \`/api/v2/organizations/{id}/applications/\`
-* \`/api/v2/users/{id}/applications/\`
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Find-Application
-```
-
-### Example 2
-```
-PS C:\> Find-Application -Type Organization -Id 1
+```powershell
+PS C:\> {{ Add example code here }}
 ```
 
-Retrieve Applications associated with the Organization of ID \`1\`.
-
-\`Id\` and \`Type\` parameters can also be given from the pipeline, likes following:
-
-Get-Organization 1 | Find-Application
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -All
-Retreive all items after the specified \`-Page\`.
-This may take many HTTP requests to AWX/AnsibleTower.
+{{ Fill All Description }}
 
 ```yaml
 Type: SwitchParameter
@@ -64,14 +50,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Count
-Max item counts per a \`Get\` request.
-(Range: 1 - 200)
+{{ Fill Count Description }}
 
 ```yaml
 Type: UInt16
@@ -80,13 +65,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: 20
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-Used with \`-Type\` parameter to retreive items associated with the ID of the target type.
+{{ Fill Id Description }}
 
 ```yaml
 Type: UInt64
@@ -100,14 +85,24 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -OrderBy
-Key name list for sortng order.
-(eg.
-\`id\` , \`name\`, \`modified\`)
+### -LaunchType
+{{ Fill LaunchType Description }}
 
-To sort by descending, add \`!\` prefix.
-(eg.
-\`!id\`)
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: manual, relaunch, callback, scheduled, dependency, workflow, webhook, sync, scm
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+{{ Fill Name Description }}
 
 ```yaml
 Type: String[]
@@ -115,29 +110,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
-Default value: ["id"]
+Position: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Page
-Page number.
-
-```yaml
-Type: UInt32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: 1
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Search
-Search keywords.
+### -OrderBy
+{{ Fill OrderBy Description }}
 
 ```yaml
 Type: String[]
@@ -151,14 +131,60 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Page
+{{ Fill Page Description }}
+
+```yaml
+Type: UInt32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Search
+{{ Fill Search Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Status
+{{ Fill Status Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: new, started, pending, waiting, running, successful, failed, error, canceled
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Type
-Used with \`-Id\` parameter to retreive items associated with the ID of the target type.
+{{ Fill Type Description }}
 
 ```yaml
 Type: ResourceType
 Parameter Sets: AssociatedWith
 Aliases:
-Accepted values: Organization, User
+Accepted values: JobTemplate
 
 Required: True
 Position: Named
@@ -172,11 +198,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AWX.Resources.ResourceType
 ### System.UInt64
+### AWX.Resources.ResourceType
 ## OUTPUTS
 
-### AWX.Resources.Application
+### AWX.Resources.JobTemplateJob
 ## NOTES
 
 ## RELATED LINKS

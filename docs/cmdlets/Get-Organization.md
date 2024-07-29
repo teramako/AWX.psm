@@ -5,35 +5,33 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-Application
+# Get-Organization
 
 ## SYNOPSIS
-Retrieve Applications by the ID.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Get-Application [-Id] <UInt64[]> [<CommonParameters>]
+Get-Organization [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Implementation of following API:
-
-* \`/api/v2/applications/{id}/\`
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Get-Application 1
+```powershell
+PS C:\> {{ Add example code here }}
 ```
 
-Retrieve an Application of ID \`1\`.
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Id
-Database ID
+{{ Fill Id Description }}
 
 ```yaml
 Type: UInt64[]
@@ -55,7 +53,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.UInt64[]
 ## OUTPUTS
 
-### AWX.Resources.Application
+### AWX.Resources.Organization
 ## NOTES
 
 ## RELATED LINKS

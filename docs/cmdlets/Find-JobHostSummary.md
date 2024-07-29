@@ -5,57 +5,34 @@ online version:
 schema: 2.0.0
 ---
 
-# Find-Application
+# Find-JobHostSummary
 
 ## SYNOPSIS
-Retrieve Applications from AWX/AnsibleTower
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
-### All (Default)
 ```
-Find-Application [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
-```
-
-### AssociatedWith
-```
-Find-Application -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-JobHostSummary [-Type] <ResourceType> [-Id] <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
+ [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieve and list Applications from AWX/AnsibleTower.
-
-Implementation of following API:
-
-* \`/api/v2/applications/\`
-* \`/api/v2/organizations/{id}/applications/\`
-* \`/api/v2/users/{id}/applications/\`
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Find-Application
-```
-
-### Example 2
-```
-PS C:\> Find-Application -Type Organization -Id 1
+```powershell
+PS C:\> {{ Add example code here }}
 ```
 
-Retrieve Applications associated with the Organization of ID \`1\`.
-
-\`Id\` and \`Type\` parameters can also be given from the pipeline, likes following:
-
-Get-Organization 1 | Find-Application
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -All
-Retreive all items after the specified \`-Page\`.
-This may take many HTTP requests to AWX/AnsibleTower.
+{{ Fill All Description }}
 
 ```yaml
 Type: SwitchParameter
@@ -64,14 +41,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Count
-Max item counts per a \`Get\` request.
-(Range: 1 - 200)
+{{ Fill Count Description }}
 
 ```yaml
 Type: UInt16
@@ -80,34 +56,28 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: 20
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-Used with \`-Type\` parameter to retreive items associated with the ID of the target type.
+{{ Fill Id Description }}
 
 ```yaml
 Type: UInt64
-Parameter Sets: AssociatedWith
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
 ### -OrderBy
-Key name list for sortng order.
-(eg.
-\`id\` , \`name\`, \`modified\`)
-
-To sort by descending, add \`!\` prefix.
-(eg.
-\`!id\`)
+{{ Fill OrderBy Description }}
 
 ```yaml
 Type: String[]
@@ -116,13 +86,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: ["id"]
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-Page number.
+{{ Fill Page Description }}
 
 ```yaml
 Type: UInt32
@@ -131,13 +101,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: 1
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-Search keywords.
+{{ Fill Search Description }}
 
 ```yaml
 Type: String[]
@@ -152,16 +122,16 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-Used with \`-Id\` parameter to retreive items associated with the ID of the target type.
+{{ Fill Type Description }}
 
 ```yaml
 Type: ResourceType
-Parameter Sets: AssociatedWith
+Parameter Sets: (All)
 Aliases:
-Accepted values: Organization, User
+Accepted values: Job, Host, Group
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -176,7 +146,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.UInt64
 ## OUTPUTS
 
-### AWX.Resources.Application
+### AWX.Resources.JobHostSummary
 ## NOTES
 
 ## RELATED LINKS
