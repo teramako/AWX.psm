@@ -3,7 +3,7 @@ using System.Management.Automation;
 
 namespace AWX.Cmdlets
 {
-    public class MetricsItem(string name, string description, string type, Dictionary<string, string> labels, double value, string? sampleType)
+    public class MetricItem(string name, string description, string type, Dictionary<string, string> labels, double value, string? sampleType)
     {
         public string Name { get; } = name;
         public string Description { get; } = description;
@@ -13,9 +13,9 @@ namespace AWX.Cmdlets
         public string? SampleType { get; } = sampleType;
     };
 
-    [Cmdlet(VerbsCommon.Get, "Metrics")]
-    [OutputType(typeof(MetricsItem))]
-    public class GetMetricsCommand : APICmdletBase
+    [Cmdlet(VerbsCommon.Get, "Metric")]
+    [OutputType(typeof(MetricItem))]
+    public class GetMetricCommand : APICmdletBase
     {
         protected override void ProcessRecord()
         {
@@ -29,11 +29,11 @@ namespace AWX.Cmdlets
                 WriteObject(CreateItem(key, item), true);
             }
         }
-        private IEnumerable<MetricsItem> CreateItem(string key, Metrics.Item item)
+        private IEnumerable<MetricItem> CreateItem(string key, Metrics.Item item)
         {
             foreach (var sample in item.Samples)
             {
-                yield return new MetricsItem(key, item.HelpText, item.Type, sample.Labels, sample.Value, sample.SampleType);
+                yield return new MetricItem(key, item.HelpText, item.Type, sample.Labels, sample.Value, sample.SampleType);
             }
         }
     }
