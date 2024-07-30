@@ -27,7 +27,7 @@ Retrieve jobs for AdHocCommand.
 Retrieve (OAuth2) Applications.
 
 ### [Find-Credential](Find-Credential.md)
-{{ Fill in the Synopsis }}
+Retrieve Credentials.
 
 ### [Find-CredentialInputSource](Find-CredentialInputSource.md)
 {{ Fill in the Synopsis }}
