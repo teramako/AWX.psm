@@ -5,6 +5,10 @@ PowerShell module for AWX/AnsibleTower
 
 See [Build](./docs/build.md) document.
 
+## Settings
+
+See [Settings](./docs/settings.md) document.
+
 ## Available Commands
 
 | Name                               | Description  
