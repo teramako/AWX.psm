@@ -1,6 +1,10 @@
 # AWX.psm
 PowerShell module for AWX/AnsibleTower
 
+## Build
+
+See [Build](./docs/build.md) document.
+
 ## Available Commands
 
 | Name                               | Description  
