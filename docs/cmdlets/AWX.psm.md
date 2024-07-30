@@ -30,7 +30,7 @@ Retrieve (OAuth2) Applications.
 Retrieve Credentials.
 
 ### [Find-CredentialInputSource](Find-CredentialInputSource.md)
-{{ Fill in the Synopsis }}
+Retrieve CredentialsInputSources.
 
 ### [Find-CredentialType](Find-CredentialType.md)
 {{ Fill in the Synopsis }}
