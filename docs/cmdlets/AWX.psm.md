@@ -18,7 +18,7 @@ Approve requests for WorkflowApproval.
 Deny requests for WorkflowApproval.
 
 ### [Find-ActivityStream](Find-ActivityStream.md)
-{{ Fill in the Synopsis }}
+Retrieve ActivityStreams.
 
 ### [Find-AdHocCommandJob](Find-AdHocCommandJob.md)
 {{ Fill in the Synopsis }}
