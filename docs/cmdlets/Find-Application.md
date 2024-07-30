@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-Application
 
 ## SYNOPSIS
-Retrieve Applications from AWX/AnsibleTower
+Retrieve (OAuth2) Applications.
 
 ## SYNTAX
 
@@ -25,37 +25,35 @@ Find-Application -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Searc
 ```
 
 ## DESCRIPTION
-Retrieve and list Applications from AWX/AnsibleTower.
+Retrieve the list of Applications.
 
-Implementation of following API:
-
-* \`/api/v2/applications/\`
-* \`/api/v2/organizations/{id}/applications/\`
-* \`/api/v2/users/{id}/applications/\`
+Implementation of following API:  
+- `/api/v2/applications/`  
+- `/api/v2/organizations/{id}/applications/`  
+- `/api/v2/users/{id}/applications/`  
 
 ## EXAMPLES
 
 ### Example 1
-```
+```powershell
 PS C:\> Find-Application
 ```
 
 ### Example 2
-```
+```powershell
 PS C:\> Find-Application -Type Organization -Id 1
 ```
 
-Retrieve Applications associated with the Organization of ID \`1\`.
+Retrieve Applications associated with the Organization of ID 1.
 
-\`Id\` and \`Type\` parameters can also be given from the pipeline, likes following:
+`Id` and `Type` parameters can also be given from the pipeline, likes following:
 
-Get-Organization 1 | Find-Application
+    Get-Organization -Id 1 | Find-Application
 
 ## PARAMETERS
 
 ### -All
-Retreive all items after the specified \`-Page\`.
-This may take many HTTP requests to AWX/AnsibleTower.
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -70,8 +68,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-Max item counts per a \`Get\` request.
-(Range: 1 - 200)
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -86,7 +83,8 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-Used with \`-Type\` parameter to retreive items associated with the ID of the target type.
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
 
 ```yaml
 Type: UInt64
@@ -101,13 +99,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-Key name list for sortng order.
-(eg.
-\`id\` , \`name\`, \`modified\`)
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
 
-To sort by descending, add \`!\` prefix.
-(eg.
-\`!id\`)
+Default value: `id` (ascending order of ID)
 
 ```yaml
 Type: String[]
@@ -137,7 +133,11 @@ Accept wildcard characters: False
 ```
 
 ### -Search
-Search keywords.
+Search words. (case-insensitive)
+
+Target fields: `name`, `description`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -152,7 +152,8 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-Used with \`-Id\` parameter to retreive items associated with the ID of the target type.
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
 
 ```yaml
 Type: ResourceType
@@ -173,10 +174,22 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values:  
+- `Organization`  
+- `User`  
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for the ResourceType
+
 ## OUTPUTS
 
 ### AWX.Resources.Application
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Application](Get-Application.md)

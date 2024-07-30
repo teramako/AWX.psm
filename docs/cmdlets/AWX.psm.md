@@ -24,7 +24,7 @@ Retrieve ActivityStreams.
 Retrieve jobs for AdHocCommand.
 
 ### [Find-Application](Find-Application.md)
-Retrieve Applications from AWX/AnsibleTower
+Retrieve (OAuth2) Applications.
 
 ### [Find-Credential](Find-Credential.md)
 {{ Fill in the Synopsis }}
