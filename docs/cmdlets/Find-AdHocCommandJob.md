@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-AdHocCommandJob
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve jobs for AdHocCommand.
 
 ## SYNTAX
 
@@ -25,21 +25,34 @@ Find-AdHocCommandJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-S
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of AdHocCommand jobs.
+
+Implements following Rest API:  
+- `/api/v2/ad_hoc_commands/`  
+- `/api/v2/inventories/{id}/ad_hoc_commands/`  
+- `/api/v2/hosts/{id}/ad_hoc_commands/`  
+- `/api/v2/groups/{id}/ad_hoc_commands/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-AdHocCommandJob -Search ping
 ```
 
-{{ Add example description here }}
+Serach `ping` jobs.
+
+### Example 2
+```powershell
+PS C:\> Find-AdHocCommandJob -Count 2 | Get-JobLog
+```
+
+Retreive two of latest jobs and then get the logs.
 
 ## PARAMETERS
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -54,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -63,13 +76,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 20
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
 
 ```yaml
 Type: UInt64
@@ -84,7 +98,12 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `!id` (descending order of ID)
+
 
 ```yaml
 Type: String[]
@@ -93,13 +112,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["!id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page Number
 
 ```yaml
 Type: UInt32
@@ -108,13 +127,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `name`, `description`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -129,7 +152,9 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-{{ Fill Type Description }}
+Search words. (case-insensitive)
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: ResourceType
@@ -150,10 +175,25 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values:  
+- `Inventory`  
+- `Host`  
+- `Group`  
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for the ResourceType
+
 ## OUTPUTS
 
 ### AWX.Resources.AdHocCommand
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-AdHocCommand](Get-AdHocCommandJob.md)
+
+[Invoke-AdHocCommand](Invoke-AdHocCommand.md)

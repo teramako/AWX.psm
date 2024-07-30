@@ -21,7 +21,7 @@ Deny requests for WorkflowApproval.
 Retrieve ActivityStreams.
 
 ### [Find-AdHocCommandJob](Find-AdHocCommandJob.md)
-{{ Fill in the Synopsis }}
+Retrieve jobs for AdHocCommand.
 
 ### [Find-Application](Find-Application.md)
 Retrieve Applications from AWX/AnsibleTower
