@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-Instance
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Instances.
 
 ## SYNTAX
 
@@ -20,26 +20,42 @@ Find-Instance [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Pag
 
 ### AssociatedWith
 ```
-Find-Instance -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
+Find-Instance [-Type <ResourceType>] -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
  [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of Instances.
+
+Implementation of following API:  
+- `/api/v2/instances/`  
+- `/api/v2/instance_groups/{id}/instances/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-Instance
 ```
 
-{{ Add example description here }}
+### Example 2
+```powershell
+PS C:\> Find-Instance -Type InstanceGroup -Id 1
+```
+
+Retrieve Instances associated with the InstanceGroup of ID 1.
+
+`Id` and `Type` parameters can also be given from the pipeline, likes following:  
+    Get-InstanceGroup -Id 1 | Find-Instance
+
+and also can omit `-Type` parameter:  
+    Find-Instance -Id 1
+
 
 ## PARAMETERS
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -54,7 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -69,7 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Datebase ID of the target InstanceGroup resource.
 
 ```yaml
 Type: UInt64
@@ -84,7 +100,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `id` (ascending order of ID)
 
 ```yaml
 Type: String[]
@@ -93,13 +113,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -108,13 +128,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `hostname`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -129,7 +153,8 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-{{ Fill Type Description }}
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
 
 ```yaml
 Type: ResourceType
@@ -137,7 +162,7 @@ Parameter Sets: AssociatedWith
 Aliases:
 Accepted values: InstanceGroup
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -150,10 +175,24 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values: `InstanceGroup` (only)
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for `InstanceGroup`
+
 ## OUTPUTS
 
 ### AWX.Resources.Instance
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Instance](Get-Instance.md)
+
+[Get-InstanceGroup](Get-InstanceGroup.md)
+
+[Find-InstanceGroup](Find-InstanceGroup.md)

@@ -48,7 +48,7 @@ Retrieve Hosts.
 Retrieve HostMerics.
 
 ### [Find-Instance](Find-Instance.md)
-{{ Fill in the Synopsis }}
+Retrieve Instances.
 
 ### [Find-InstanceGroup](Find-InstanceGroup.md)
 {{ Fill in the Synopsis }}
