@@ -33,7 +33,7 @@ Retrieve Credentials.
 Retrieve CredentialsInputSources.
 
 ### [Find-CredentialType](Find-CredentialType.md)
-{{ Fill in the Synopsis }}
+Retrieve CredentialTypes.
 
 ### [Find-ExecutionEnvironment](Find-ExecutionEnvironment.md)
 {{ Fill in the Synopsis }}
