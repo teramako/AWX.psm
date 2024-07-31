@@ -57,7 +57,7 @@ Retrieve InstanceGroups.
 Retrieve Inventories.
 
 ### [Find-InventorySource](Find-InventorySource.md)
-{{ Fill in the Synopsis }}
+Retrieve InventorySources.
 
 ### [Find-InventoryUpdateJob](Find-InventoryUpdateJob.md)
 {{ Fill in the Synopsis }}
