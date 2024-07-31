@@ -60,7 +60,7 @@ Retrieve Inventories.
 Retrieve InventorySources.
 
 ### [Find-InventoryUpdateJob](Find-InventoryUpdateJob.md)
-{{ Fill in the Synopsis }}
+Retrieve jobs for InventoryUpdate.
 
 ### [Find-Job](Find-Job.md)
 {{ Fill in the Synopsis }}

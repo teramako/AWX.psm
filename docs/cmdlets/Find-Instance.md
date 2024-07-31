@@ -51,7 +51,6 @@ Retrieve Instances associated with the InstanceGroup of ID 1.
 and also can omit `-Type` parameter:  
     Find-Instance -Id 1
 
-
 ## PARAMETERS
 
 ### -All
