@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-Job
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve jobs for JobTemplate.
 
 ## SYNTAX
 
@@ -21,27 +21,45 @@ Find-Job [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>] [-Or
 
 ### AssociatedWith
 ```
-Find-Job -Id <UInt64> -Type <ResourceType> [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>]
+Find-Job [-Id <UInt64>] -Type <ResourceType> [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>]
  [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of jobs launched from JobTemplates.
+
+Implementation of following API:  
+- `/api/v2/jobs/`  
+- `/api/v2/job_templates/{id}/jobs/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-Job -Status running
 ```
 
-{{ Add example description here }}
+Retreive running jobs.
+
+### Example 2
+```powershell
+PS C:\> Find-Job -Type JobTemplate -Id 1
+```
+
+Retrieve jobs associated with the JobTemplate of ID 1
+
+`Id` and `Type` parameters can also be given from the pipeline, likes following:  
+    Get-JobTemplate -Id 1 | Find-Job
+
+and also can omit `-Type` parameter:  
+    Find-Job -Id 1
+
 
 ## PARAMETERS
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -56,7 +74,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -65,20 +83,21 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 20
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
 
 ```yaml
 Type: UInt64
 Parameter Sets: AssociatedWith
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -86,7 +105,7 @@ Accept wildcard characters: False
 ```
 
 ### -LaunchType
-{{ Fill LaunchType Description }}
+Filter with `launch_type` field
 
 ```yaml
 Type: String[]
@@ -102,7 +121,10 @@ Accept wildcard characters: False
 ```
 
 ### -Name
-{{ Fill Name Description }}
+Filter by job name.
+The names must be an exact match. (case-sensitive)
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -117,7 +139,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `id` (ascending order of ID)
 
 ```yaml
 Type: String[]
@@ -126,13 +152,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["!id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -141,13 +167,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `name`, `description`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -162,7 +192,7 @@ Accept wildcard characters: False
 ```
 
 ### -Status
-{{ Fill Status Description }}
+Filter by `status` field.
 
 ```yaml
 Type: String[]
@@ -178,7 +208,8 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-{{ Fill Type Description }}
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
 
 ```yaml
 Type: ResourceType
@@ -198,11 +229,31 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.UInt64
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values: `JobTemplate` (only)
+
+### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for `JobTemplate`
+
 ## OUTPUTS
 
 ### AWX.Resources.JobTemplateJob
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Job](Get-Job.md)
+
+[Get-JobTemplate](Get-JobTemplate.md)
+
+[Find-JobTemplate](Find-JobTemplate.md)
+
+[Invoke-JobTemplate](Invoke-JobTemplate.md)
+
+[Start-JobTemplate](Start-JobTemplate.md)
+
+[Find-UnifiedJob](Find-UnifiedJob.md)
