@@ -54,7 +54,7 @@ Retrieve Instances.
 Retrieve InstanceGroups.
 
 ### [Find-Inventory](Find-Inventory.md)
-{{ Fill in the Synopsis }}
+Retrieve Inventories.
 
 ### [Find-InventorySource](Find-InventorySource.md)
 {{ Fill in the Synopsis }}
