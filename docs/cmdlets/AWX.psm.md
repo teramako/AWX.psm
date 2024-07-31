@@ -51,7 +51,7 @@ Retrieve HostMerics.
 Retrieve Instances.
 
 ### [Find-InstanceGroup](Find-InstanceGroup.md)
-{{ Fill in the Synopsis }}
+Retrieve InstanceGroups.
 
 ### [Find-Inventory](Find-Inventory.md)
 {{ Fill in the Synopsis }}

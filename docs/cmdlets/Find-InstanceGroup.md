@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-InstanceGroup
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve InstanceGroups.
 
 ## SYNTAX
 
@@ -25,21 +25,36 @@ Find-InstanceGroup -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Sea
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of InstanceGroups.
+
+Implementation of following API:  
+- `/api/v2/instance_groups/`  
+- `/api/v2/instances/{id}/instance_groups/`  
+- `/api/v2/organizations/{id}/instance_groups/`  
+- `/api/v2/inventories/{id}/instance_groups/`  
+- `/api/v2/job_templates/{id}/instance_groups/`  
+- `/api/v2/schedules/{id}/instance_groups/`  
+- `/api/v2/workflow_job_template_nodes/{id}/instance_groups/`  
+- `/api/v2/workflow_job_nodes/{id}/instance_groups/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-InstaceGroup
 ```
 
-{{ Add example description here }}
+### Example 2
+```powershell
+PS C:\> Find-InstaceGroup -Type Instance -Id 1
+```
+
+Retrieve InstanceGroups associated with the Instance of ID 1
 
 ## PARAMETERS
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -54,7 +69,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -69,7 +84,8 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
 
 ```yaml
 Type: UInt64
@@ -84,7 +100,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `id` (ascending order of ID)
 
 ```yaml
 Type: String[]
@@ -93,13 +113,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -108,13 +128,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `name`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -129,7 +153,8 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-{{ Fill Type Description }}
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
 
 ```yaml
 Type: ResourceType
@@ -150,10 +175,31 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values:  
+- `Instance`  
+- `Organization`  
+- `Inventory`  
+- `JobTemplate`  
+- `Schedule`  
+- `WorkflowJobTemplateNode`  
+- `WorkflowJobNode`  
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for the ResourceType
+
 ## OUTPUTS
 
 ### AWX.Resources.InstanceGroup
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-InstanceGroup](Get-InstanceGroup.md)
+
+[Get-Instance](Get-Instance.md)
+
+[Find-Instance](Find-Instance.md)
