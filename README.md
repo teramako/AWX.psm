@@ -21,7 +21,7 @@ See [Settings](./docs/settings.md) document.
 | `Find-UnifiedJob`                    | Retrieve Jobs for Job, ProjectUpdate, InventoryUpdate, SystemJob, AdHocCommand and WorkflowJob.  
 | `Find-UnifiedJobTemplate`            | Retrieve Templates for JobTemplate, Project, InventorySource, SystemJobTemplate and WorkflowJobTemplate.  
 | `Get-JobLog`                         | Retrieve a Job Log for Job, ProjectUpdate, InventoryUpdate, SystemJob, AdHocCommand and WorkflowJob.  
-| `Get-JobEvent`                       | Retrieve Events for Job, ProjectUpdate, InventoryUpdate, SystemJob and AdHocCommand.  
+| `Find-JobEvent`                      | Retrieve Events for Job, ProjectUpdate, InventoryUpdate, SystemJob and AdHocCommand.  
 | `Wait-UnifiedJob`                    | Wait until a job is finished.  
 | `Stop-UnifiedJob`                    | Stop (cancel) a running job.  
 | `Get-Job`                            | Retrieve a job detail for JobTemplate.  

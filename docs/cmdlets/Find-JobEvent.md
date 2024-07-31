@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-JobEvent
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Job Events.
 
 ## SYNTAX
 
@@ -19,21 +19,39 @@ Find-JobEvent [-Type] <ResourceType> [-Id] <UInt64> [-AdHocCommandEvent] [-Order
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of Events for Job, ProjectUpdate, InventoryUpdate, SystemJob and AdHocCommand.
+
+Implementation of following API:  
+- `/api/v2/jobs/{id}/job_events/`  
+- `/api/v2/ad_hoc_commands/{id}/events/`  
+- `/api/v2/system_jobs/{id}/events/`  
+- `/api/v2/project_updates/{id}/events/`  
+- `/api/v2/inventory_updates/{id}/events/`  
+- `/api/v2/groups/{id}/job_events/`  
+- `/api/v2/hosts/{id}/ad_hoc_command_events/`  
+- `/api/v2/hosts/{id}/job_events/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-JobEvent -Type Job -Id 10
 ```
 
-{{ Add example description here }}
+Retrieve Events for JobTemplate job of ID 1
+
+### Example 2
+```powershell
+PS C:\> Find-JobEvent -Type Host -Id 1 -AdHocCommandEvent
+```
+
+Retrieve AdHocCommand (not JobTemplate job) Events associated with Host of ID 1.
 
 ## PARAMETERS
 
 ### -AdHocCommandEvent
-{{ Fill AdHocCommandEvent Description }}
+Retrieve AdHocCommand Events instead of JobTemplate's Events.
+Only affected for a **Host** Type
 
 ```yaml
 Type: SwitchParameter
@@ -48,7 +66,7 @@ Accept wildcard characters: False
 ```
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -63,7 +81,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -72,13 +90,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 20
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
 
 ```yaml
 Type: UInt64
@@ -93,7 +112,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `counter` (ascending order of `counter`)
 
 ```yaml
 Type: String[]
@@ -102,13 +125,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["counter"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -117,13 +140,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `stdout`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -138,7 +165,8 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-{{ Fill Type Description }}
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
 
 ```yaml
 Type: ResourceType
@@ -159,10 +187,52 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values:  
+- `Job`  
+- `ProjectUpdate`  
+- `InventoryUpdate`  
+- `SystemJob`  
+- `AdHocCommand`  
+- `Host`  
+- `Group`  
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for the ResourceType
+
 ## OUTPUTS
 
 ### AWX.Resources.IJobEventBase
+JobEvent objects that extend `IJobEventBase` interface.  
+- Job             : `AWX.Resources.JobEvent`  
+- ProjectUpdate   : `AWX.Resources.ProjectUpdateJobEvent`  
+- InventoryUpdate : `AWX.Resources.InventoryUpdateJobEvent`  
+- SystemJob       : `AWX.Resources.SystemJobEvent`  
+- AdHocCommand    : `AWX.Resources.AdHocCommandJobEvent`  
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Job](Get-Job.md)
+
+[Find-Job](Find-Job.md)
+
+[Get-ProjectUpdateJob](Get-ProjectUpdateJob.md)
+
+[Find-ProjectUpdateJob](Find-ProjectUpdateJob.md)
+
+[Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
+
+[Find-InventoryUpdateJob](Find-InventoryUpdateJob.md)
+
+[Get-SystemJob](Get-SystemJob.md)
+
+[Find-SystemJob](Find-SystemJob.md)
+
+[Get-AdHocCommandJob](Get-AdHocCommandJob.md)
+
+[Find-AdHocCommandJob](Find-AdHocCommandJob.md)

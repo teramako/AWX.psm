@@ -66,7 +66,7 @@ Retrieve jobs for InventoryUpdate.
 Retrieve jobs for JobTemplate.
 
 ### [Find-JobEvent](Find-JobEvent.md)
-{{ Fill in the Synopsis }}
+Retrieve Job Events.
 
 ### [Find-JobHostSummary](Find-JobHostSummary.md)
 {{ Fill in the Synopsis }}
