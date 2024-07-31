@@ -39,7 +39,7 @@ Retrieve CredentialTypes.
 Retrieve ExecutionEnvironments.
 
 ### [Find-Group](Find-Group.md)
-{{ Fill in the Synopsis }}
+Retrieve Groups.
 
 ### [Find-Host](Find-Host.md)
 {{ Fill in the Synopsis }}
