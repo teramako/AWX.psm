@@ -100,7 +100,7 @@ See [Settings](./docs/settings.md) document.
 | `Get-Host`                           | Retrieve a Host.  
 | `Find-Host`                          | Retrieve Hosts.  
 | `Get-JobHostSummary`                 | Retrieve a JobHostSummary.  
-| `Find-JobHostSummary`                | Retrieve JobHostSummares for Job, Host or Group.  
+| `Find-JobHostSummary`                | Retrieve JobHostSummaries for Job, Host or Group.  
 | `Get-Schedule`                       | Retrieve a Schedule.  
 | `Find-Schedule`                      | Retrieve Schedules.  
 | `Get-Role`                           | Retrieve a Role.  

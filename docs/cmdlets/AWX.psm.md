@@ -69,7 +69,7 @@ Retrieve jobs for JobTemplate.
 Retrieve Job Events.
 
 ### [Find-JobHostSummary](Find-JobHostSummary.md)
-{{ Fill in the Synopsis }}
+Retrieve JobHostSummaries.
 
 ### [Find-JobTemplate](Find-JobTemplate.md)
 {{ Fill in the Synopsis }}
