@@ -30,7 +30,7 @@ namespace AWX.Cmdlets
     [OutputType(typeof(JobTemplateJob))]
     public class FindJobTemplateJobCommand : FindCmdletBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.JobTemplate))]
@@ -69,11 +69,7 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch
-            {
-                ResourceType.JobTemplate => $"{JobTemplate.PATH}{Id}/jobs/",
-                _ => JobTemplateJob.PATH
-            };
+            var path = Id > 0 ? $"{JobTemplate.PATH}{Id}/jobs/" : JobTemplateJob.PATH;
             foreach (var resultSet in GetResultSet<JobTemplateJob>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
