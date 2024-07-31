@@ -45,7 +45,7 @@ Retrieve Groups.
 Retrieve Hosts.
 
 ### [Find-HostMetric](Find-HostMetric.md)
-{{ Fill in the Synopsis }}
+Retrieve HostMerics.
 
 ### [Find-Instance](Find-Instance.md)
 {{ Fill in the Synopsis }}
