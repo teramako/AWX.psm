@@ -40,7 +40,7 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Instance))]
     public class FindInstanceCommand : FindCmdletBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.InstanceGroup))]
         public override ResourceType Type { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
@@ -55,11 +55,7 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch
-            {
-                ResourceType.InstanceGroup => $"{InstanceGroup.PATH}{Id}/instances/",
-                _ => Instance.PATH
-            };
+            var path = Id > 0 ? $"{InstanceGroup.PATH}{Id}/instances/" : Instance.PATH;
             foreach (var resultSet in GetResultSet<Instance>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
