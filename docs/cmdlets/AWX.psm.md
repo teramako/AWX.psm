@@ -42,7 +42,7 @@ Retrieve ExecutionEnvironments.
 Retrieve Groups.
 
 ### [Find-Host](Find-Host.md)
-{{ Fill in the Synopsis }}
+Retrieve Hosts.
 
 ### [Find-HostMetric](Find-HostMetric.md)
 {{ Fill in the Synopsis }}
