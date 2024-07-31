@@ -143,7 +143,7 @@ Retrieve list in the specified orders.
 Use `!` prefix to sort in reverse.
 Multiple sorting fields are available by separating with a comma(`,`).
 
-Default value: `id` (ascending order of ID)
+Default value: `!id` (descending order of ID)
 
 ```yaml
 Type: String[]
