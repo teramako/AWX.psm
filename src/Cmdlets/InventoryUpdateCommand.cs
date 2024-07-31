@@ -31,9 +31,7 @@ namespace AWX.Cmdlets
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.ProjectUpdate),
-                     nameof(ResourceType.InventorySource),
-                     nameof(ResourceType.Group),
-                     nameof(ResourceType.Host))]
+                     nameof(ResourceType.InventorySource))]
         public override ResourceType Type { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
