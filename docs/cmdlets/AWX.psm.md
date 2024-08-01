@@ -102,7 +102,7 @@ Retrieve Roles for the target resource.
 Retrieve Organizations.
 
 ### [Find-Project](Find-Project.md)
-{{ Fill in the Synopsis }}
+Retrieve Projects.
 
 ### [Find-ProjectUpdateJob](Find-ProjectUpdateJob.md)
 {{ Fill in the Synopsis }}
