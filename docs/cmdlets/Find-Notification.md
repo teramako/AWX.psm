@@ -186,7 +186,6 @@ Acceptable values:
 - `InventoryUpdate`  
 - `AdHocCommand`  
 
-
 ### System.UInt64
 Input by `Id` property in the pipeline object.
 

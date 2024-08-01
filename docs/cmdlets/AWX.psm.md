@@ -84,16 +84,16 @@ Retrieve Notifications.
 Retrieve NotificationTemplates.
 
 ### [Find-NotificationTemplateForApproval](Find-NotificationTemplateForApproval.md)
-{{ Fill in the Synopsis }}
+Retrieve Approval NotificationTemplates.
 
 ### [Find-NotificationTemplateForError](Find-NotificationTemplateForError.md)
-{{ Fill in the Synopsis }}
+Retrieve Error NotificationTemplates.
 
 ### [Find-NotificationTemplateForStarted](Find-NotificationTemplateForStarted.md)
-{{ Fill in the Synopsis }}
+Retrieve Started NotificationTemplates.
 
 ### [Find-NotificationTemplateForSuccess](Find-NotificationTemplateForSuccess.md)
-{{ Fill in the Synopsis }}
+Retrieve Success NotificationTemplates.
 
 ### [Find-ObjectRole](Find-ObjectRole.md)
 {{ Fill in the Synopsis }}

@@ -107,10 +107,10 @@ See [Settings](./docs/settings.md) document.
 | `Find-Role`                          | Retrieve Roles.  
 | `Get-NotificationTemplate`           | Retrieve a NotificationTemplate.  
 | `Find-NotificationTemplate`          | Retrieve NotificationTemplates.  
-| `Find-NotificationTemplateApprovals` | Retrieve Approval NotificationTemplates for a WorkflowJobTemplate.  
-| `Find-NotificationTemplateStarted`   | Retrieve Started NotificationTemplates for Organization and Templates.
-| `Find-NotificationTemplateSuccess`   | Retrieve Success NotificationTemplates for Organization and Templates.
-| `Find-NotificationTemplateError`     | Retrieve Error NotificationTemplates for Organization and Templates.
+| `Find-NotificationTemplateApprovals` | Retrieve Approval NotificationTemplates.  
+| `Find-NotificationTemplateStarted`   | Retrieve Started NotificationTemplates.  
+| `Find-NotificationTemplateSuccess`   | Retrieve Success NotificationTemplates.  
+| `Find-NotificationTemplateError`     | Retrieve Error NotificationTemplates.  
 | `Get-Notification`                   | Retrieve a Notification.  
 | `Find-Notification`                  | Retrieve Notifications.  
 | `Get-Label`                          | Retrieve a Label.  
