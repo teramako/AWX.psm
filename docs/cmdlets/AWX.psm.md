@@ -117,7 +117,7 @@ Retrieve Schedules.
 Retrieve jobs for SystemJobTemplate.
 
 ### [Find-SystemJobTemplate](Find-SystemJobTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve SystemJobTemplates.
 
 ### [Find-Team](Find-Team.md)
 {{ Fill in the Synopsis }}
