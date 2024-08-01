@@ -111,7 +111,7 @@ Retrieve jobs for ProjectUpdate.
 Retrieve Roles all or granted to the target resource.
 
 ### [Find-Schedule](Find-Schedule.md)
-{{ Fill in the Synopsis }}
+Retrieve Schedules.
 
 ### [Find-SystemJob](Find-SystemJob.md)
 {{ Fill in the Synopsis }}
