@@ -21,7 +21,7 @@ Find-Job [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>] [-Or
 
 ### AssociatedWith
 ```
-Find-Job [-Id <UInt64>] -Type <ResourceType> [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>]
+Find-Job [-Type <ResourceType>] -Id <UInt64> [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>]
  [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
@@ -54,7 +54,6 @@ Retrieve jobs associated with the JobTemplate of ID 1
 
 and also can omit `-Type` parameter:  
     Find-Job -Id 1
-
 
 ## PARAMETERS
 
@@ -97,7 +96,7 @@ Type: UInt64
 Parameter Sets: AssociatedWith
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -217,7 +216,7 @@ Parameter Sets: AssociatedWith
 Aliases:
 Accepted values: JobTemplate
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)

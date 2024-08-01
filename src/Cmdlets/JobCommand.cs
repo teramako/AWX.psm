@@ -31,10 +31,10 @@ namespace AWX.Cmdlets
     public class FindJobTemplateJobCommand : FindCmdletBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        public override ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.JobTemplate))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
 
         [Parameter(Position = 0)]
         public string[]? Name { get; set; }
