@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Invoke-SystemJobTemplate
+# Start-SystemJobTemplate
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}
@@ -14,13 +14,13 @@ schema: 2.0.0
 
 ### Id
 ```
-Invoke-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>]
+Start-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>]
  [<CommonParameters>]
 ```
 
 ### Template
 ```
-Invoke-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <IDictionary>]
+Start-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <IDictionary>]
  [<CommonParameters>]
 ```
 
@@ -89,10 +89,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+
 ### AWX.Resources.SystemJobTemplate
+
 ## OUTPUTS
 
-### AWX.Resources.SystemJob
+### AWX.Resources.SystemJob+Detail
+
 ## NOTES
 
 ## RELATED LINKS
