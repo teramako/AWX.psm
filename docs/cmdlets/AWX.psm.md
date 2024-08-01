@@ -99,7 +99,7 @@ Retrieve Success NotificationTemplates.
 Retrieve Roles for the target resource.
 
 ### [Find-Organization](Find-Organization.md)
-{{ Fill in the Synopsis }}
+Retrieve Organizations.
 
 ### [Find-Project](Find-Project.md)
 {{ Fill in the Synopsis }}

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-Organization
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Organizations.
 
 ## SYNTAX
 
@@ -26,21 +26,38 @@ Find-Organization -Type <ResourceType> -Id <UInt64> [-Admin] [[-Name] <String[]>
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of Organizations.
+
+Implementation of following API:  
+- `/api/v2/organizations/`  
+- `/api/v2/users/{id}/organizations/`  
+- `/api/v2/users/{id}/admin_of_organizations/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-Organization
 ```
 
-{{ Add example description here }}
+### Example 2
+```powershell
+PS C:\> Find-Organization -Type User -Id 1
+```
+
+Retrieve Organizations which the User of ID 1 belong to.
+
+### Example 3
+```powershell
+PS C:\> Find-JobTemplate -Type User -Id 1 -Admin
+```
+
+Retrieve Organizations administrered by the User of ID 1.
 
 ## PARAMETERS
 
 ### -Admin
-{{ Fill Admin Description }}
+Filter to Organizations administerted by the target User.
 
 ```yaml
 Type: SwitchParameter
@@ -49,13 +66,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -70,7 +87,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -79,13 +96,14 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 20
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
 
 ```yaml
 Type: UInt64
@@ -100,7 +118,10 @@ Accept wildcard characters: False
 ```
 
 ### -Name
-{{ Fill Name Description }}
+Filter by Organization name.
+The names must be an exact match. (case-sensitive)
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -115,7 +136,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `id` (ascending order of ID)
 
 ```yaml
 Type: String[]
@@ -124,13 +149,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -139,13 +164,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `name`, `description`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -160,7 +189,8 @@ Accept wildcard characters: False
 ```
 
 ### -Type
-{{ Fill Type Description }}
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
 
 ```yaml
 Type: ResourceType
@@ -181,10 +211,20 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values: `User` (only)
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for `User`
+
 ## OUTPUTS
 
 ### AWX.Resources.Organization
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Organization](Get-Organization.md)
