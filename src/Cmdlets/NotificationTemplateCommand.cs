@@ -40,7 +40,7 @@ namespace AWX.Cmdlets
     [OutputType(typeof(NotificationTemplate))]
     public class FindNotificationTemplateCommand : FindCmdletBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization))]
         public override ResourceType Type { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
@@ -55,11 +55,7 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch
-            {
-                ResourceType.Organization => $"{Organization.PATH}{Id}/notification_templates/",
-                _ => NotificationTemplate.PATH
-            };
+            var path = Id > 0 ? $"{Organization.PATH}{Id}/notification_templates/" : NotificationTemplate.PATH;
             foreach (var resultSet in GetResultSet<NotificationTemplate>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
