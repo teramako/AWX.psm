@@ -53,7 +53,7 @@ namespace AWX.Cmdlets
         public override ulong Id { get; set; }
 
         [Parameter()]
-        public override string[] OrderBy { get; set; } = ["id"];
+        public override string[] OrderBy { get; set; } = ["!id"];
 
         protected override void BeginProcessing()
         {
