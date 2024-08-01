@@ -75,7 +75,7 @@ Retrieve JobHostSummaries.
 Retrieve JobTemplates.
 
 ### [Find-Label](Find-Label.md)
-{{ Fill in the Synopsis }}
+Retrieve Labels.
 
 ### [Find-Notification](Find-Notification.md)
 {{ Fill in the Synopsis }}
