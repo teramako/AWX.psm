@@ -120,7 +120,7 @@ Retrieve jobs for SystemJobTemplate.
 Retrieve SystemJobTemplates.
 
 ### [Find-Team](Find-Team.md)
-{{ Fill in the Synopsis }}
+Retrieve Teams.
 
 ### [Find-Token](Find-Token.md)
 {{ Fill in the Synopsis }}
