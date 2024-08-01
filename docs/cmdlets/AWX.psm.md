@@ -78,7 +78,7 @@ Retrieve JobTemplates.
 Retrieve Labels.
 
 ### [Find-Notification](Find-Notification.md)
-{{ Fill in the Synopsis }}
+Retrieve Notifications.
 
 ### [Find-NotificationTemplate](Find-NotificationTemplate.md)
 {{ Fill in the Synopsis }}
