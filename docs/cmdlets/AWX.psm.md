@@ -114,7 +114,7 @@ Retrieve Roles all or granted to the target resource.
 Retrieve Schedules.
 
 ### [Find-SystemJob](Find-SystemJob.md)
-{{ Fill in the Synopsis }}
+Retrieve jobs for SystemJobTemplate.
 
 ### [Find-SystemJobTemplate](Find-SystemJobTemplate.md)
 {{ Fill in the Synopsis }}
