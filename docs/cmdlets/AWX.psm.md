@@ -105,7 +105,7 @@ Retrieve Organizations.
 Retrieve Projects.
 
 ### [Find-ProjectUpdateJob](Find-ProjectUpdateJob.md)
-{{ Fill in the Synopsis }}
+Retrieve jobs for ProjectUpdate.
 
 ### [Find-Role](Find-Role.md)
 {{ Fill in the Synopsis }}
