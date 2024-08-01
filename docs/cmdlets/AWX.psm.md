@@ -108,7 +108,7 @@ Retrieve Projects.
 Retrieve jobs for ProjectUpdate.
 
 ### [Find-Role](Find-Role.md)
-{{ Fill in the Synopsis }}
+Retrieve Roles all or granted to the target resource.
 
 ### [Find-Schedule](Find-Schedule.md)
 {{ Fill in the Synopsis }}
