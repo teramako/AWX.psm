@@ -81,7 +81,7 @@ Retrieve Labels.
 Retrieve Notifications.
 
 ### [Find-NotificationTemplate](Find-NotificationTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve NotificationTemplates.
 
 ### [Find-NotificationTemplateForApproval](Find-NotificationTemplateForApproval.md)
 {{ Fill in the Synopsis }}
