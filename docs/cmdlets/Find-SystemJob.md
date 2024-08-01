@@ -20,7 +20,7 @@ Find-SystemJob [-Status <String[]>] [-OrderBy <String[]>] [-Search <String[]>] [
 
 ### AssociatedWith
 ```
-Find-SystemJob -Type <ResourceType> -Id <UInt64> [-Status <String[]>] [-OrderBy <String[]>]
+Find-SystemJob [-Type <ResourceType>] -Id <UInt64> [-Status <String[]>] [-OrderBy <String[]>]
  [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
@@ -154,7 +154,7 @@ Parameter Sets: AssociatedWith
 Aliases:
 Accepted values: SystemJobTemplate
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)

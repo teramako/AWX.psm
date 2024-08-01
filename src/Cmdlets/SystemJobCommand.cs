@@ -29,7 +29,7 @@ namespace AWX.Cmdlets
     [OutputType(typeof(SystemJob))]
     public class FindSystemJobCommand : FindCmdletBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.SystemJobTemplate))]
         public override ResourceType Type { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
@@ -53,11 +53,7 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch
-            {
-                ResourceType.SystemJobTemplate => $"{SystemJobTemplate.PATH}{Id}/jobs/",
-                _ => SystemJob.PATH
-            };
+            var path = Id > 0 ? $"{SystemJobTemplate.PATH}{Id}/jobs/" : SystemJob.PATH;
             foreach (var resultSet in GetResultSet<SystemJob>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
