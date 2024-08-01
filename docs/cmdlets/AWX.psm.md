@@ -96,7 +96,7 @@ Retrieve Started NotificationTemplates.
 Retrieve Success NotificationTemplates.
 
 ### [Find-ObjectRole](Find-ObjectRole.md)
-{{ Fill in the Synopsis }}
+Retrieve Roles for the target resource.
 
 ### [Find-Organization](Find-Organization.md)
 {{ Fill in the Synopsis }}

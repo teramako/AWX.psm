@@ -104,7 +104,8 @@ See [Settings](./docs/settings.md) document.
 | `Get-Schedule`                         | Retrieve a Schedule.  
 | `Find-Schedule`                        | Retrieve Schedules.  
 | `Get-Role`                             | Retrieve a Role.  
-| `Find-Role`                            | Retrieve Roles.  
+| `Find-Role`                            | Retrieve Roles all or granted to the target resource.  
+| `Find-ObjectRole`                      | Retrieve Roles for the target resource.  
 | `Get-NotificationTemplate`             | Retrieve a NotificationTemplate.  
 | `Find-NotificationTemplate`            | Retrieve NotificationTemplates.  
 | `Find-NotificationTemplateForApproval` | Retrieve Approval NotificationTemplates.  
