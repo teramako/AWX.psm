@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-WorkflowApprovalRequest
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve request jobs for WorkflowApproval.
 
 ## SYNTAX
 
@@ -25,21 +25,25 @@ Find-WorkflowApprovalRequest -Id <UInt64> [-Status <JobStatus[]>] [-OrderBy <Str
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the list of WorkflowApproval request jobs.
+
+Implementation of following API:  
+- `/api/v2/workflow_approvals/`  
+- `/api/v2/workflow_approval_templates/{id}/approvals/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-WorkflowApprovalRequest -Status pending
 ```
 
-{{ Add example description here }}
+Retrieve WorkflowApprovals in the pending status.
 
 ## PARAMETERS
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -54,7 +58,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -63,13 +67,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 20
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Filter by ID number of WorkflowApprovalTemplate.
 
 ```yaml
 Type: UInt64
@@ -84,7 +88,11 @@ Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `!id` (descending order of ID)
 
 ```yaml
 Type: String[]
@@ -93,13 +101,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["!id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -108,13 +116,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `name`, `description`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -129,7 +141,7 @@ Accept wildcard characters: False
 ```
 
 ### -Status
-{{ Fill Status Description }}
+Filter by status.
 
 ```yaml
 Type: JobStatus[]
@@ -150,10 +162,24 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values: `WorkflowApprovalTemplate` (only)
+
 ### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for `WorkflowApprovalTemplate`
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowApproval
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-WorkflowApprovalRequest](Get-WorkflowApprovalRequest.md)
+
+[Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
+
+[Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)

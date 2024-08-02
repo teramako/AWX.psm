@@ -135,7 +135,7 @@ Retrieve Unified Job Templates.
 Retrieve Users.
 
 ### [Find-WorkflowApprovalRequest](Find-WorkflowApprovalRequest.md)
-{{ Fill in the Synopsis }}
+Retrieve request jobs for WorkflowApproval.
 
 ### [Find-WorkflowJob](Find-WorkflowJob.md)
 {{ Fill in the Synopsis }}
