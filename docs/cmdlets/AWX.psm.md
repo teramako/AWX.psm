@@ -126,10 +126,10 @@ Retrieve Teams.
 Retrieve (OAuth2) AccessTokens.
 
 ### [Find-UnifiedJob](Find-UnifiedJob.md)
-{{ Fill in the Synopsis }}
+Retrieve Unified Jobs.
 
 ### [Find-UnifiedJobTemplate](Find-UnifiedJobTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve Unified Job Templates.
 
 ### [Find-User](Find-User.md)
 {{ Fill in the Synopsis }}

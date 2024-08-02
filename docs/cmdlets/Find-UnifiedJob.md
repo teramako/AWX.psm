@@ -8,7 +8,7 @@ schema: 2.0.0
 # Find-UnifiedJob
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Unified Jobs.
 
 ## SYNTAX
 
@@ -18,21 +18,22 @@ Find-UnifiedJob [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-P
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Jobs which are Job, ProjectUpdate, InventoryUpdate, SystemJob, AdHocCommand or WorkflowJob.
+
+Implementation of following API:  
+- `/api/v2/unified_jobs/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Find-UnifiedJob
 ```
-
-{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -All
-{{ Fill All Description }}
+Retrieve resources from all pages.
 
 ```yaml
 Type: SwitchParameter
@@ -47,7 +48,7 @@ Accept wildcard characters: False
 ```
 
 ### -Count
-{{ Fill Count Description }}
+Number to retrieve per page.
 
 ```yaml
 Type: UInt16
@@ -56,13 +57,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 20
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -OrderBy
-{{ Fill OrderBy Description }}
+Retrieve list in the specified orders.
+Use `!` prefix to sort in reverse.
+Multiple sorting fields are available by separating with a comma(`,`).
+
+Default value: `!id` (descending order of ID)
 
 ```yaml
 Type: String[]
@@ -71,13 +76,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: ["!id"]
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number.
 
 ```yaml
 Type: UInt32
@@ -86,13 +91,17 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Search
-{{ Fill Search Description }}
+Search words. (case-insensitive)
+
+Target fields: `name`, `description`, `job__playbook`
+
+Multiple words are available by separating with a comma(`,`).
 
 ```yaml
 Type: String[]
@@ -115,6 +124,28 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### AWX.Resources.IUnifiedJob
+Unified Job objects which are following instances implemented `IUnifiedJob`:  
+- `Job`             : JobTemplate's job  
+- `ProjectUpdate`   : Project Update job  
+- `InventoryUpdate` : Inventory Update job  
+- `SystemJob`       : SystemJobTemplate's job  
+- `AdHocCommand`    : AdHocCommand job  
+- `WorkflowJob`     : WorkflowJobTemplate's job  
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Job](Find-Job.md)
+
+[Find-ProjectUpdateJob](Find-ProjectUpdateJob.md)
+
+[Find-InventoryUpdateJob](Find-InventoryUpdateJob.md)
+
+[Find-SystemJob](Find-SystemJob.md)
+
+[Find-AdHocCommandJob](Find-AdHocCommandJob.md)
+
+[Find-WorkflowJob](Find-WorkflowJob.md)
+
+[Find-UnifiedJobTemplate](Find-UnifiedJobTemplate.md)
