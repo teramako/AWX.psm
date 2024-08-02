@@ -150,7 +150,7 @@ Retrieve WorkflowJobNodes linked to the target WorkflowJobNode.
 Retrieve WorkflowJobTemplates.
 
 ### [Find-WorkflowJobTemplateNode](Find-WorkflowJobTemplateNode.md)
-{{ Fill in the Synopsis }}
+Retrieve WorkflowJobTemplateNodes.
 
 ### [Find-WorkflowJobTemplateNodeFor](Find-WorkflowJobTemplateNodeFor.md)
 {{ Fill in the Synopsis }}
