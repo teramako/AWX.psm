@@ -46,7 +46,7 @@ See [Settings](./docs/settings.md) document.
 | `Find-WorkflowJob`                     | Retrieve jobs for WorkflowJobTemplate.  
 | `Get-WorkflowJobNode`                  | Retrieve a node for WorkflowJob.  
 | `Find-WorkflowJobNode`                 | Retrieve nodes for WorkflowJob.  
-| `Find-WorkflowJobNodeFor`              | Retrieve nodes  
+| `Find-WorkflowJobNodeFor`              | Retrieve WorkflowJobNodes linked to the target WorkflowJobNode.  
 | `Get-WorkflowJobTemplate`              | Retrieve a WorkflowJobTemplate.  
 | `Find-WorkflowJobTemplate`             | Retrieve WorkflowJobTemplates.  
 | `Get-WorkflowJobTemplateNode`          | Retrieve a WorkflowJobTemplate.  
