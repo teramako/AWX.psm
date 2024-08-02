@@ -138,7 +138,7 @@ Retrieve Users.
 Retrieve request jobs for WorkflowApproval.
 
 ### [Find-WorkflowJob](Find-WorkflowJob.md)
-{{ Fill in the Synopsis }}
+Retrieve jobs for WorkflowJobTemplate.
 
 ### [Find-WorkflowJobNode](Find-WorkflowJobNode.md)
 {{ Fill in the Synopsis }}
