@@ -20,7 +20,7 @@ Find-WorkflowJobTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Count <UIn
 
 ### AssociatedWith
 ```
-Find-WorkflowJobTemplate -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
+Find-WorkflowJobTemplate [-Type <ResourceType>] -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
  [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
@@ -137,7 +137,7 @@ Parameter Sets: AssociatedWith
 Aliases:
 Accepted values: Organization
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)

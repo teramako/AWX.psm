@@ -31,7 +31,7 @@ namespace AWX.Cmdlets
     [OutputType(typeof(WorkflowJobTemplate))]
     public class FindWorkflowJobTemplateCommand : FindCmdletBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization))]
         public override ResourceType Type { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
@@ -46,11 +46,7 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch
-            {
-                ResourceType.Organization => $"{Organization.PATH}{Id}/workflow_job_templates/",
-                _ => WorkflowJobTemplate.PATH
-            };
+            var path = Id > 0 ? $"{Organization.PATH}{Id}/workflow_job_templates/" : WorkflowJobTemplate.PATH;
             foreach (var resultSet in GetResultSet<WorkflowJobTemplate>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
