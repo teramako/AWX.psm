@@ -153,7 +153,7 @@ Retrieve WorkflowJobTemplates.
 Retrieve WorkflowJobTemplateNodes.
 
 ### [Find-WorkflowJobTemplateNodeFor](Find-WorkflowJobTemplateNodeFor.md)
-{{ Fill in the Synopsis }}
+Retrieve WorkflowJobTemplateNodes linked to the target WorkflowJobTemplateNode.
 
 ### [Get-ActivityStream](Get-ActivityStream.md)
 {{ Fill in the Synopsis }}
