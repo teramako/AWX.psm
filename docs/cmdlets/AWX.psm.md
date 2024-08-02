@@ -132,7 +132,7 @@ Retrieve Unified Jobs.
 Retrieve Unified Job Templates.
 
 ### [Find-User](Find-User.md)
-{{ Fill in the Synopsis }}
+Retrieve Users.
 
 ### [Find-WorkflowApprovalRequest](Find-WorkflowApprovalRequest.md)
 {{ Fill in the Synopsis }}
