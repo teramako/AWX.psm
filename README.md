@@ -49,9 +49,9 @@ See [Settings](./docs/settings.md) document.
 | `Find-WorkflowJobNodeFor`              | Retrieve WorkflowJobNodes linked to the target WorkflowJobNode.  
 | `Get-WorkflowJobTemplate`              | Retrieve a WorkflowJobTemplate.  
 | `Find-WorkflowJobTemplate`             | Retrieve WorkflowJobTemplates.  
-| `Get-WorkflowJobTemplateNode`          | Retrieve a WorkflowJobTemplate.  
-| `Find-WorkflowJobTemplateNode`         | Retrieve WorkflowJobTemplates.  
-| `Find-WorkflowJobTemplateNodeFor`      | Retrieve WorkflowJobTemplates.  
+| `Get-WorkflowJobTemplateNode`          | Retrieve a WorkflowJobTemplateNode.  
+| `Find-WorkflowJobTemplateNode`         | Retrieve WorkflowJobTemplateNodes.  
+| `Find-WorkflowJobTemplateNodeFor`      | Retrieve WorkflowJobTemplateNodes linked to the target WorkflowJobTemplateNode.  
 | `Invoke-WorkflowJobTemplate`           | Invoke (update) a WorkflowJobTemplate and wait until the job is finished.  
 | `Start-WorkflowJobTemplate`            | Invoke (update) a WorkflowJobTemplate.  
 | `Get-WorkflowApprovalRequest`          | Retrieve a request job for WorkflowApproval.  
