@@ -141,7 +141,7 @@ Retrieve request jobs for WorkflowApproval.
 Retrieve jobs for WorkflowJobTemplate.
 
 ### [Find-WorkflowJobNode](Find-WorkflowJobNode.md)
-{{ Fill in the Synopsis }}
+Retrieve nodes for WorkflowJob.
 
 ### [Find-WorkflowJobNodeFor](Find-WorkflowJobNodeFor.md)
 {{ Fill in the Synopsis }}
