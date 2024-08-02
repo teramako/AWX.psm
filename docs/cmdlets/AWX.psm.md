@@ -123,7 +123,7 @@ Retrieve SystemJobTemplates.
 Retrieve Teams.
 
 ### [Find-Token](Find-Token.md)
-{{ Fill in the Synopsis }}
+Retrieve (OAuth2) AccessTokens.
 
 ### [Find-UnifiedJob](Find-UnifiedJob.md)
 {{ Fill in the Synopsis }}
