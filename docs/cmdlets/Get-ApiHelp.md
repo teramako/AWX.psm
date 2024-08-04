@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ApiHelp
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get and show Ansible's API Help.
 
 ## SYNTAX
 
@@ -17,21 +17,45 @@ Get-ApiHelp [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve API Document and show for the specified URL path using AWX/AnsibleTower Rest API by `OPTIONS` method.
+
+See the following URL for a list of API URL paths:  
+- `https://ansible.readthedocs.io/projects/awx/en/latest/rest_api/api_ref.html`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
-```
+PS C:\> Get-ApiHelp /api/v2/jobs/
 
-{{ Add example description here }}
+Name                : Job List
+Description         : List Jobs:
+
+                      Make a GET request to this resource to retrieve the list of jobs.
+
+(snip)
+
+Renders             : application/json
+                      text/html
+Parses              : application/json
+Actions             : GET
+Types               : job
+SearchFields        : description
+                      name
+RelatedSearchFields : job_host_summaries
+                      modified_by
+(snip)
+                      schedule
+                      instance_group
+ObjectRoles         :
+MaxPageSize         : 200
+
+```
 
 ## PARAMETERS
 
 ### -Path
-{{ Fill Path Description }}
+URL path of the Rest API.
 
 ```yaml
 Type: String

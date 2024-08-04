@@ -165,7 +165,7 @@ Retrieve AdHocCommand jobs by the specified ID(s).
 Get loaded config data currently.
 
 ### [Get-ApiHelp](Get-ApiHelp.md)
-{{ Fill in the Synopsis }}
+Get and show Ansible's API Help.
 
 ### [Get-Application](Get-Application.md)
 Retrieve Applications by the ID.
