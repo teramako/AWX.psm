@@ -159,7 +159,7 @@ Retrieve WorkflowJobTemplateNodes linked to the target WorkflowJobTemplateNode.
 Retrieves ActivityStreams by the specified ID(s).
 
 ### [Get-AdHocCommandJob](Get-AdHocCommandJob.md)
-{{ Fill in the Synopsis }}
+Retrieve AdHocCommand jobs by the specified ID(s).
 
 ### [Get-ApiConfig](Get-ApiConfig.md)
 {{ Fill in the Synopsis }}
