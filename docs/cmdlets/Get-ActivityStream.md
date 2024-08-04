@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ActivityStream
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieves ActivityStreams by the specified ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,31 @@ Get-ActivityStream [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retreive ActivityStreams by the specified ID.
+
+Implements following Rest API:  
+- `/api/v2/activity_stream/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-ActivityStream -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve an ActivityStream for Database ID 1.
+
+### Example 2
+```powershell
+PS C:\> 1..4 | Get-ActivityStream
+```
+
+Retrieve ActivityStreams with ID numbers 1 though 4.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more ActivityStreams.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +61,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.ActivityStream
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-ActivityStream](Find-ActivityStream.md)
+
