@@ -162,7 +162,7 @@ Retrieves ActivityStreams by the specified ID(s).
 Retrieve AdHocCommand jobs by the specified ID(s).
 
 ### [Get-ApiConfig](Get-ApiConfig.md)
-{{ Fill in the Synopsis }}
+Get loaded config data currently.
 
 ### [Get-ApiHelp](Get-ApiHelp.md)
 {{ Fill in the Synopsis }}

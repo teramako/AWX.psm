@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ApiConfig
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get loaded config data currently.
 
 ## SYNTAX
 
@@ -17,16 +17,15 @@ Get-ApiConfig [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get this module's config using currently.
+The config has AWX/AnsibleTower URL, file path and token value.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-ApiConfig
 ```
-
-{{ Add example description here }}
 
 ## PARAMETERS
 
@@ -42,3 +41,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[New-ApiConfig](New-ApiConfig.md)
+
+[Switch-ApiConfig](Switch-ApiConfig.md)
