@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-NotificationTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve NotificationTemplates by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,41 @@ Get-NotificationTemplate [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve NotificationTemplates by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/notification_templates/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-NotificationTemplate 1 | Format-List
+
+Id                        : 1
+Type                      : NotificationTemplate
+Created                   : 2024/06/08 22:38:16
+Modified                  : 2024/06/08 23:40:23
+Name                      : TestNotification
+Description               : Test
+Organization              : 2
+OrganizationName          : TestOrg
+NotificationType          : Slack
+NotificationConfiguration : {[token, $encrypted$], [channels, ["#proj-ansible"]], [hex_color, ]}
+StartMessage              : NMessage { Body = , Message =  }
+SuccessMessage            : NMessage { Body = , Message =  }
+ErrorMessage              : NMessage { Body = , Message =  }
+ApprovedMessage           : NMessage { Body = , Message =  }
+DeniedMessage             : NMessage { Body = , Message =  }
+RunningMessage            : NMessage { Body = , Message =  }
 ```
 
-{{ Add example description here }}
+Retrieve a NotificationTemplate for Database ID 1 and display as List format.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more NotificationTemplates.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +71,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.NotificationTemplate
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-NotificationTemplate](Find-NotificationTemplate.md)

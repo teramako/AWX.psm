@@ -234,7 +234,7 @@ Retrieve Metrics.
 Retrieve Notifications by the ID(s).
 
 ### [Get-NotificationTemplate](Get-NotificationTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve NotificationTemplates by the ID(s).
 
 ### [Get-Organization](Get-Organization.md)
 {{ Fill in the Synopsis }}
