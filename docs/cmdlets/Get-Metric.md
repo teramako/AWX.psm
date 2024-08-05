@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Metric
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Metrics.
 
 ## SYNTAX
 
@@ -17,16 +17,29 @@ Get-Metric [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Metrics.
+
+Implements following Rest API:  
+- `/api/v2/metrics/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
-```
+PS C:\> Get-Metric
 
-{{ Add example description here }}
+Description                                                                                 Type SampleType                Value Labels
+-----------                                                                                 ---- ----------                ----- ------
+AWX System Information                                                                     gauge                               1 external_logger_enabled False…
+Number of organizations                                                                    gauge                               2
+Number of users                                                                            gauge                               3
+
+(snip)
+
+Number of active tasks in the worker pool when last task was submitted                     gauge                               1 node awx_1
+Highest number of workers in worker pool in last collection interval, about 20s            gauge                               4 node awx_1
+Fraction of time (in last collection interval) dispatcher was able to receive messages     gauge               0.997828014517918 node awx_1
+```
 
 ## PARAMETERS
 

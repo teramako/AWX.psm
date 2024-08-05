@@ -228,7 +228,7 @@ Retrieve Labels by the ID(s).
 Retrieve the current user.
 
 ### [Get-Metric](Get-Metric.md)
-{{ Fill in the Synopsis }}
+Retrieve Metrics.
 
 ### [Get-Notification](Get-Notification.md)
 {{ Fill in the Synopsis }}
