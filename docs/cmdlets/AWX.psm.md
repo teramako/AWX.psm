@@ -201,7 +201,7 @@ Retrieve Instances by the ID.
 Retrieve InstanceGroups by the ID.
 
 ### [Get-Inventory](Get-Inventory.md)
-{{ Fill in the Synopsis }}
+Retrieve Inventories by the ID.
 
 ### [Get-InventorySource](Get-InventorySource.md)
 {{ Fill in the Synopsis }}
