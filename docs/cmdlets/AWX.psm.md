@@ -255,7 +255,7 @@ Retrieve Roles by the ID(s).
 Retrieve Schedules by the ID(s).
 
 ### [Get-Setting](Get-Setting.md)
-{{ Fill in the Synopsis }}
+Retrieve Settings.
 
 ### [Get-SystemJob](Get-SystemJob.md)
 {{ Fill in the Synopsis }}

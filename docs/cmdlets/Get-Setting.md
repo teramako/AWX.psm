@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Setting
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Settings.
 
 ## SYNTAX
 
@@ -17,21 +17,50 @@ Get-Setting [[-Name] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Settings of the specified name or retreive a list of its names when ommited.
+
+Implements following Rest API:  
+- `/api/v2/settings/`  
+- `/api/v2/settings/{category_slug}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Setting
+
+Url                                      Slug                   Name
+---                                      ----                   ----
+/api/v2/settings/all/                    all                    All
+/api/v2/settings/authentication/         authentication         Authentication
+/api/v2/settings/azuread-oauth2/         azuread-oauth2         Azure AD OAuth2
+(snip)
+/api/v2/settings/system/                 system                 System
+/api/v2/settings/tacacsplus/             tacacsplus             TACACS+
+/api/v2/settings/ui/                     ui                     UI
 ```
 
-{{ Add example description here }}
+Retreive list of Settings name.
 
+### Example 2
+```powershell
+PS C:\> Get-Setting -name github
+
+Key                                 Value
+---                                 -----
+SOCIAL_AUTH_GITHUB_CALLBACK_URL     http://localhost:8013/sso/complete/github/
+SOCIAL_AUTH_GITHUB_KEY
+SOCIAL_AUTH_GITHUB_SECRET
+SOCIAL_AUTH_GITHUB_ORGANIZATION_MAP
+SOCIAL_AUTH_GITHUB_TEAM_MAP
+
+```
+
+Retreive list of Settings name.
 ## PARAMETERS
 
 ### -Name
-{{ Fill Name Description }}
+The setting name
 
 ```yaml
 Type: String
