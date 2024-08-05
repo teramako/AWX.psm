@@ -243,7 +243,7 @@ Retrieve Organizations by the ID(s).
 Retrieve some basic information about the instance.
 
 ### [Get-Project](Get-Project.md)
-{{ Fill in the Synopsis }}
+Retrieve Projects by the ID(s).
 
 ### [Get-ProjectUpdateJob](Get-ProjectUpdateJob.md)
 {{ Fill in the Synopsis }}

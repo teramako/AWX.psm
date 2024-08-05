@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Project
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Projects by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-Project [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Projects by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/projects/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Project -Id 6
+
+Id    Type Name         Description     Status Modified            LastJobRun         NextJobRun Options Note
+--    ---- ----         -----------     ------ --------            ----------         ---------- ------- ----
+ 6 Project Demo Project             Successful 2023/11/04 16:20:27 2024/07/02 0:01:13            None    {[Scm, [git]https://github.com/ansible/ansible-tower-samples], [Branch, ]}
 ```
 
-{{ Add example description here }}
+Retrieve a Project for Database ID 6.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Projects.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Project
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Project](Find-Project.md)
