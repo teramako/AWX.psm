@@ -240,7 +240,7 @@ Retrieve NotificationTemplates by the ID(s).
 Retrieve Organizations by the ID(s).
 
 ### [Get-Ping](Get-Ping.md)
-{{ Fill in the Synopsis }}
+Retrieve some basic information about the instance.
 
 ### [Get-Project](Get-Project.md)
 {{ Fill in the Synopsis }}
