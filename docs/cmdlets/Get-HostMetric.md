@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-HostMetric
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve HostMetrics by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-HostMetric [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve HostMetrics by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/host_metrics/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-HostMetric -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve a HostMetric for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more HostMetrics.
 
 ```yaml
 Type: UInt64[]
@@ -51,6 +54,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
 
 ## OUTPUTS
 
@@ -59,3 +63,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-HostMetric](Find-HostMetric.md)

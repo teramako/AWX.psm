@@ -192,7 +192,7 @@ Retrieve Groups by the ID.
 Retrieve Hosts by the ID.
 
 ### [Get-HostMetric](Get-HostMetric.md)
-{{ Fill in the Synopsis }}
+Retrieve HostMetrics by the ID.
 
 ### [Get-Instance](Get-Instance.md)
 {{ Fill in the Synopsis }}
