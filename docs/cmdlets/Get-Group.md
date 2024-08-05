@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Group
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Groups by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-Group [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Groups by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/groups/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Group -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve a Group for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Groups.
 
 ```yaml
 Type: UInt64[]

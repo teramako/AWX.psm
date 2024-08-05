@@ -186,7 +186,7 @@ Retrieve CredentialTypes by the ID.
 Retrieve ExecutionEnvironments by the ID.
 
 ### [Get-Group](Get-Group.md)
-{{ Fill in the Synopsis }}
+Retrieve Groups by the ID.
 
 ### [Get-Host](Get-Host.md)
 {{ Fill in the Synopsis }}
