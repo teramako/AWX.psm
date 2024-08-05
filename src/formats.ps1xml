@@ -2091,9 +2091,9 @@
       </TableControl>
     </View>
     <View>
-      <Name>HostMetrics</Name>
+      <Name>HostMetric</Name>
       <ViewSelectedBy>
-        <TypeName>AWX.Resources.HostMetrics</TypeName>
+        <TypeName>AWX.Resources.HostMetric</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>
@@ -2153,9 +2153,9 @@
       </TableControl>
     </View>
     <View>
-      <Name>Metrics</Name>
+      <Name>Metric</Name>
       <ViewSelectedBy>
-        <TypeName>AWX.Cmdlets.MetricsItem</TypeName>
+        <TypeName>AWX.Cmdlets.MetricItem</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>
