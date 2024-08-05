@@ -222,7 +222,7 @@ Retrieve job logs.
 Retrieve JobTemplates by the ID(s).
 
 ### [Get-Label](Get-Label.md)
-{{ Fill in the Synopsis }}
+Retrieve Labels by the ID(s).
 
 ### [Get-Me](Get-Me.md)
 {{ Fill in the Synopsis }}
