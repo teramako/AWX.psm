@@ -213,7 +213,7 @@ Retrieve InventoryUpdate job details by ID(s).
 Retrieve JobTemplate's job details by ID(s).
 
 ### [Get-JobHostSummary](Get-JobHostSummary.md)
-{{ Fill in the Synopsis }}
+Retrieve JobHostSummaries by ID(s).
 
 ### [Get-JobLog](Get-JobLog.md)
 {{ Fill in the Synopsis }}
