@@ -195,7 +195,7 @@ Retrieve Hosts by the ID.
 Retrieve HostMetrics by the ID.
 
 ### [Get-Instance](Get-Instance.md)
-{{ Fill in the Synopsis }}
+Retrieve Instances by the ID.
 
 ### [Get-InstanceGroup](Get-InstanceGroup.md)
 {{ Fill in the Synopsis }}
