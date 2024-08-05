@@ -177,7 +177,7 @@ Retrieve various sitewide configuration settings.
 Retrieve Credentials by the ID.
 
 ### [Get-CredentialInputSource](Get-CredentialInputSource.md)
-{{ Fill in the Synopsis }}
+Retrieve CredentialInputSources by the ID.
 
 ### [Get-CredentialType](Get-CredentialType.md)
 {{ Fill in the Synopsis }}
