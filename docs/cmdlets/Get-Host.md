@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Host
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Hosts by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,25 @@ Get-Host [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Hosts by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/hosts/{id}/`  
+
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Host -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve a Host for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Hosts.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +55,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Host
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Host](Find-Host.md)

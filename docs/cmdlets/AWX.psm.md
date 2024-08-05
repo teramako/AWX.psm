@@ -189,7 +189,7 @@ Retrieve ExecutionEnvironments by the ID.
 Retrieve Groups by the ID.
 
 ### [Get-Host](Get-Host.md)
-{{ Fill in the Synopsis }}
+Retrieve Hosts by the ID.
 
 ### [Get-HostMetric](Get-HostMetric.md)
 {{ Fill in the Synopsis }}
