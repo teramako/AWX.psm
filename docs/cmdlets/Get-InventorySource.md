@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-InventorySource
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve InventorySources by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-InventorySource [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve InventorySources by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/inventory_sources/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-InventorySource -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve an InventorySource for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more InventorySources.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +54,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.InventorySource
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-InventorySource](Find-InventorySource.md)

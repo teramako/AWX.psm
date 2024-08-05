@@ -204,7 +204,7 @@ Retrieve InstanceGroups by the ID.
 Retrieve Inventories by the ID.
 
 ### [Get-InventorySource](Get-InventorySource.md)
-{{ Fill in the Synopsis }}
+Retrieve InventorySources by the ID.
 
 ### [Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
 {{ Fill in the Synopsis }}
