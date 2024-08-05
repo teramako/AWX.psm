@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-CredentialType
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve CredentialTypes by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-CredentialType [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve CredentialTypes by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/credential_types/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-CredentialType -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve a CredentialType for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more CredentialType.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +54,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.CredentialType
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-CredentialType](Find-CredentialType.md)

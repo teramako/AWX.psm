@@ -180,7 +180,7 @@ Retrieve Credentials by the ID.
 Retrieve CredentialInputSources by the ID.
 
 ### [Get-CredentialType](Get-CredentialType.md)
-{{ Fill in the Synopsis }}
+Retrieve CredentialTypes by the ID.
 
 ### [Get-ExecutionEnvironment](Get-ExecutionEnvironment.md)
 {{ Fill in the Synopsis }}
