@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ProjectUpdateJob
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve ProjectUpdate job details by ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,29 @@ Get-ProjectUpdateJob [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve ProjectUpdate job details by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/project_updates/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-ProjectUpdateJob -Id 10
+
+Id          Type Name         JobType LaunchType     Status Finished           Elapsed LaunchedBy               Template             Note
+--          ---- ----         ------- ----------     ------ --------           ------- ----------               --------             ----
+10 ProjectUpdate Demo Project     Run       Sync Successful 2024/07/11 9:27:49    1.39 [project][6]Demo Project [6][git]Demo Project {[Branch, ], [Revision, ****], [Url, https://***]}
+
 ```
 
-{{ Add example description here }}
+Retrieve a ProjectUpdate job job for Database ID 10.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more ProjectUpdate jobs.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +59,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.ProjectUpdateJob+Detail
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-ProjectUpdateJob](Find-ProjectUpdateJob.md)

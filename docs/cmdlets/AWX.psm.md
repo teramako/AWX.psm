@@ -246,7 +246,7 @@ Retrieve some basic information about the instance.
 Retrieve Projects by the ID(s).
 
 ### [Get-ProjectUpdateJob](Get-ProjectUpdateJob.md)
-{{ Fill in the Synopsis }}
+Retrieve ProjectUpdate job details by ID(s).
 
 ### [Get-Role](Get-Role.md)
 {{ Fill in the Synopsis }}
