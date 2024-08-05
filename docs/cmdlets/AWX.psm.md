@@ -174,7 +174,7 @@ Retrieve Applications by the ID.
 Retrieve various sitewide configuration settings.
 
 ### [Get-Credential](Get-Credential.md)
-{{ Fill in the Synopsis }}
+Retrieve Credentials by the ID.
 
 ### [Get-CredentialInputSource](Get-CredentialInputSource.md)
 {{ Fill in the Synopsis }}
