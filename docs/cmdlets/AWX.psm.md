@@ -171,7 +171,7 @@ Get and show Ansible's API Help.
 Retrieve Applications by the ID.
 
 ### [Get-Config](Get-Config.md)
-{{ Fill in the Synopsis }}
+Retrieve various sitewide configuration settings.
 
 ### [Get-Credential](Get-Credential.md)
 {{ Fill in the Synopsis }}

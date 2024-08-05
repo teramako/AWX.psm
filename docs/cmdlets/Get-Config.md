@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Config
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve various sitewide configuration settings.
 
 ## SYNTAX
 
@@ -17,16 +17,17 @@ Get-Config [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve site configuration settings and general information.
+
+Implements following Rest API:  
+- `/api/v2/config/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Config
 ```
-
-{{ Add example description here }}
 
 ## PARAMETERS
 
