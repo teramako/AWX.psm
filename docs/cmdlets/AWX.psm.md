@@ -231,7 +231,7 @@ Retrieve the current user.
 Retrieve Metrics.
 
 ### [Get-Notification](Get-Notification.md)
-{{ Fill in the Synopsis }}
+Retrieve Notifications by the ID(s).
 
 ### [Get-NotificationTemplate](Get-NotificationTemplate.md)
 {{ Fill in the Synopsis }}
