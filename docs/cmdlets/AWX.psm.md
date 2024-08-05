@@ -216,7 +216,7 @@ Retrieve JobTemplate's job details by ID(s).
 Retrieve JobHostSummaries by ID(s).
 
 ### [Get-JobLog](Get-JobLog.md)
-{{ Fill in the Synopsis }}
+Retrieve job logs.
 
 ### [Get-JobTemplate](Get-JobTemplate.md)
 {{ Fill in the Synopsis }}
