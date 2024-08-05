@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-InstanceGroup
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve InstanceGroups by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-InstanceGroup [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve InstanceGroups by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/instance_groups/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-InstanceGroup -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve an InstanceGroup for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more InstanceGroups.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +54,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.InstanceGroup
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-InstanceGroup](Find-InstanceGroup.md)

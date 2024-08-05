@@ -198,7 +198,7 @@ Retrieve HostMetrics by the ID.
 Retrieve Instances by the ID.
 
 ### [Get-InstanceGroup](Get-InstanceGroup.md)
-{{ Fill in the Synopsis }}
+Retrieve InstanceGroups by the ID.
 
 ### [Get-Inventory](Get-Inventory.md)
 {{ Fill in the Synopsis }}
