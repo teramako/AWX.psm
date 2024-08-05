@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ExecutionEnvironment
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve ExecutionEnvironments by the ID.
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-ExecutionEnvironment [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve ExecutionEnvironments by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/execution_environments/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-ExecutionEnvironment -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve an ExecutionEnvironment for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more ExecutionEnvironments.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +54,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.ExecutionEnvironment
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-ExecutionEnvironment](Find-ExecutionEnvironment.md)
