@@ -237,7 +237,7 @@ Retrieve Notifications by the ID(s).
 Retrieve NotificationTemplates by the ID(s).
 
 ### [Get-Organization](Get-Organization.md)
-{{ Fill in the Synopsis }}
+Retrieve Organizations by the ID(s).
 
 ### [Get-Ping](Get-Ping.md)
 {{ Fill in the Synopsis }}

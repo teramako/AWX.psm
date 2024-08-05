@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Organization
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Organizations by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,40 @@ Get-Organization [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Organizations by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/organizations/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Organization -Id 1 | Format-List
+
+Id                 : 1
+Type               : Organization
+Created            : 2023/11/04 16:20:27
+Modified           : 2023/11/04 16:20:27
+Name               : Default
+Description        :
+MaxHosts           : 0
+CustomVirtualenv   :
+InventoryCount     : 1
+TeamCount          : 0
+UserCount          : 1
+JobTemplateCount   : 2
+AdminCount         : 0
+ProjectCount       : 1
+DefaultEnvironment :
 ```
 
-{{ Add example description here }}
+Retrieve an Organization for Database ID 1 and display as List format.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Organizations.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +70,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Organization
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Organization](Find-Organization.md)
