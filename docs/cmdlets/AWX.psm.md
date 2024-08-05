@@ -225,7 +225,7 @@ Retrieve JobTemplates by the ID(s).
 Retrieve Labels by the ID(s).
 
 ### [Get-Me](Get-Me.md)
-{{ Fill in the Synopsis }}
+Retrieve the current user.
 
 ### [Get-Metric](Get-Metric.md)
 {{ Fill in the Synopsis }}

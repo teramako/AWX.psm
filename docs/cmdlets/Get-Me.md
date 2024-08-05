@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Me
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve the current user.
 
 ## SYNTAX
 
@@ -17,16 +17,21 @@ Get-Me [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve the current user.
+
+Implements following Rest API:  
+- `/api/v2/me/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
-```
+PS C:\> Get-Me
 
-{{ Add example description here }}
+Id Type Username Email           FirstName LastName IsSuperuser IsSystemAuditor Created             Modified            LastLogin           LdapDn ExternalAccount
+-- ---- -------- -----           --------- -------- ----------- --------------- -------             --------            ---------           ------ ---------------
+ 1 User admin    admin@localhost                           True           False 2023/11/04 16:20:25 2024/08/02 16:26:10 2024/08/02 16:26:10
+```
 
 ## PARAMETERS
 
@@ -42,3 +47,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-User](Get-User.md)
+
+[Find-User](Find-User.md)
