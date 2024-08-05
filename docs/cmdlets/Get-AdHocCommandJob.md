@@ -22,7 +22,6 @@ Retrieve AdHocCommand jobs by the specified ID(s).
 Implements following Rest API:  
 - `/api/v2/ad_hoc_commands/{id}/`  
 
-
 ## EXAMPLES
 
 ### Example 1

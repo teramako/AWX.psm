@@ -207,7 +207,7 @@ Retrieve Inventories by the ID.
 Retrieve InventorySources by the ID.
 
 ### [Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
-{{ Fill in the Synopsis }}
+Retrieve InventoryUpdate jobs by the ID.
 
 ### [Get-Job](Get-Job.md)
 {{ Fill in the Synopsis }}
