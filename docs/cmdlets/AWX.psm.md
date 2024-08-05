@@ -219,7 +219,7 @@ Retrieve JobHostSummaries by ID(s).
 Retrieve job logs.
 
 ### [Get-JobTemplate](Get-JobTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve JobTemplates by the ID(s).
 
 ### [Get-Label](Get-Label.md)
 {{ Fill in the Synopsis }}

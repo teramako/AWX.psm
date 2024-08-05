@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-JobTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve JobTemplates by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,24 @@ Get-JobTemplate [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve JobTemplates by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/job_template/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-JobTemplate -Id 1
 ```
 
-{{ Add example description here }}
+Retrieve a JobTemplate for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more JobTemplates.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +54,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.JobTemplate
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-JobTemplate](Find-JobTemplate.md)
