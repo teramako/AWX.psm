@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Role
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Roles by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-Role [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Roles by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/roles/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Role -Id 1
+
+Id Type Name                 Description                          ResourceId ResourceType ResourceName
+-- ---- ----                 -----------                          ---------- ------------ ------------
+ 1 Role System Administrator Can manage all aspects of the system
 ```
 
-{{ Add example description here }}
+Retrieve a Role for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Roles.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Role
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Role](Find-Role.md)
