@@ -252,7 +252,7 @@ Retrieve ProjectUpdate job details by ID(s).
 Retrieve Roles by the ID(s).
 
 ### [Get-Schedule](Get-Schedule.md)
-{{ Fill in the Synopsis }}
+Retrieve Schedules by the ID(s).
 
 ### [Get-Setting](Get-Setting.md)
 {{ Fill in the Synopsis }}

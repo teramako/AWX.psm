@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Schedule
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Schedules by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,54 @@ Get-Schedule [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Schedules by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/schedules/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Schedule -Id 1 | Format-List
+
+Id                     : 1
+Type                   : Schedule
+Created                : 2023/11/04 16:19:08
+Modified               : 2023/11/04 16:19:08
+Name                   : Cleanup Job Schedule
+Description            : Automatically Generated Schedule
+Enabled                : True
+Rrule                  : DTSTART:20231104T071908Z RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=SU
+Dtstart                :
+Dtend                  :
+NextRun                : 2024/08/11 16:19:08
+Timezone               :
+Until                  :
+UnifiedJobTemplate     : 1
+UnifiedJobTemplateName : Cleanup Job Details
+UnifiedJobType         : SystemJob
+ExtraData              : {[days, 120]}
+Inventory              :
+ScmBranch              :
+JobType                :
+JobTags                :
+SkipTags               :
+Limit                  :
+DiffMode               :
+Verbosity              :
+ExecutionEnvironment   :
+Forks                  :
+JobSliceCount          :
+Timeout                :
 ```
 
-{{ Add example description here }}
+Retrieve a Schedule for Database ID 1 and display as List format.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Schedules.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +84,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Schedule
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Schedule](Find-Schedule.md)
