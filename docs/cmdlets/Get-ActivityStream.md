@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ActivityStream
 
 ## SYNOPSIS
-Retrieves ActivityStreams by the specified ID(s).
+Retrieves ActivityStreams by ID(s).
 
 ## SYNTAX
 

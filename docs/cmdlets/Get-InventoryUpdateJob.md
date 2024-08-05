@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-InventoryUpdateJob
 
 ## SYNOPSIS
-Retrieve InventoryUpdate jobs by the ID.
+Retrieve InventoryUpdate job details by ID(s).
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-InventoryUpdateJob [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieve InventoryUpdate jobs by the specified ID(s).
+Retrieve InventoryUpdate job details by the specified ID(s).
 
 Implements following Rest API:  
 - `/api/v2/inventory_updates/{id}/`  

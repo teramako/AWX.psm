@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Inventory
 
 ## SYNOPSIS
-Retrieve Inventories by the ID.
+Retrieve Inventories by the ID(s).
 
 ## SYNTAX
 

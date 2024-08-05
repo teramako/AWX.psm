@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-HostMetric
 
 ## SYNOPSIS
-Retrieve HostMetrics by the ID.
+Retrieve HostMetrics by the ID(s).
 
 ## SYNTAX
 

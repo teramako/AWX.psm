@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-CredentialInputSource
 
 ## SYNOPSIS
-Retrieve CredentialInputSources by the ID.
+Retrieve CredentialInputSources by the ID(s).
 
 ## SYNTAX
 

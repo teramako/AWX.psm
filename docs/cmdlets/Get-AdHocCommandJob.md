@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-AdHocCommandJob
 
 ## SYNOPSIS
-Retrieve AdHocCommand jobs by the specified ID(s).
+Retrieve AdHocCommand job details by ID(s).
 
 ## SYNTAX
 

@@ -156,10 +156,10 @@ Retrieve WorkflowJobTemplateNodes.
 Retrieve WorkflowJobTemplateNodes linked to the target WorkflowJobTemplateNode.
 
 ### [Get-ActivityStream](Get-ActivityStream.md)
-Retrieves ActivityStreams by the specified ID(s).
+Retrieves ActivityStreams by ID(s).
 
 ### [Get-AdHocCommandJob](Get-AdHocCommandJob.md)
-Retrieve AdHocCommand jobs by the specified ID(s).
+Retrieve AdHocCommand job details by ID(s).
 
 ### [Get-ApiConfig](Get-ApiConfig.md)
 Get loaded config data currently.
@@ -168,46 +168,46 @@ Get loaded config data currently.
 Get and show Ansible's API Help.
 
 ### [Get-Application](Get-Application.md)
-Retrieve Applications by the ID.
+Retrieve Applications by the ID(s).
 
 ### [Get-Config](Get-Config.md)
 Retrieve various sitewide configuration settings.
 
 ### [Get-Credential](Get-Credential.md)
-Retrieve Credentials by the ID.
+Retrieve Credentials by the ID(s).
 
 ### [Get-CredentialInputSource](Get-CredentialInputSource.md)
-Retrieve CredentialInputSources by the ID.
+Retrieve CredentialInputSources by the ID(s).
 
 ### [Get-CredentialType](Get-CredentialType.md)
-Retrieve CredentialTypes by the ID.
+Retrieve CredentialTypes by the ID(s).
 
 ### [Get-ExecutionEnvironment](Get-ExecutionEnvironment.md)
-Retrieve ExecutionEnvironments by the ID.
+Retrieve ExecutionEnvironments by the ID(s).
 
 ### [Get-Group](Get-Group.md)
-Retrieve Groups by the ID.
+Retrieve Groups by the ID(s).
 
 ### [Get-Host](Get-Host.md)
-Retrieve Hosts by the ID.
+Retrieve Hosts by the ID(s).
 
 ### [Get-HostMetric](Get-HostMetric.md)
-Retrieve HostMetrics by the ID.
+Retrieve HostMetrics by the ID(s).
 
 ### [Get-Instance](Get-Instance.md)
-Retrieve Instances by the ID.
+Retrieve Instances by the ID(s).
 
 ### [Get-InstanceGroup](Get-InstanceGroup.md)
-Retrieve InstanceGroups by the ID.
+Retrieve InstanceGroups by the ID(s).
 
 ### [Get-Inventory](Get-Inventory.md)
-Retrieve Inventories by the ID.
+Retrieve Inventories by the ID(s).
 
 ### [Get-InventorySource](Get-InventorySource.md)
-Retrieve InventorySources by the ID.
+Retrieve InventorySources by the ID(s).
 
 ### [Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
-Retrieve InventoryUpdate jobs by the ID.
+Retrieve InventoryUpdate job details by ID(s).
 
 ### [Get-Job](Get-Job.md)
 Retrieve JobTemplate's job details by ID(s).

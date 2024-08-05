@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Group
 
 ## SYNOPSIS
-Retrieve Groups by the ID.
+Retrieve Groups by the ID(s).
 
 ## SYNTAX
 
@@ -54,9 +54,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Group
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Group](Find-Group.md)

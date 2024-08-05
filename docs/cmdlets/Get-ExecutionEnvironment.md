@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-ExecutionEnvironment
 
 ## SYNOPSIS
-Retrieve ExecutionEnvironments by the ID.
+Retrieve ExecutionEnvironments by the ID(s).
 
 ## SYNTAX
 

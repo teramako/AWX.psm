@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Application
 
 ## SYNOPSIS
-Retrieve Applications by the ID.
+Retrieve Applications by the ID(s).
 
 ## SYNTAX
 
@@ -33,7 +33,7 @@ Retrieve an Application of ID \`1\`.
 ## PARAMETERS
 
 ### -Id
-Database ID
+List of database IDs for one or more Applications.
 
 ```yaml
 Type: UInt64[]

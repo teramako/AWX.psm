@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Host
 
 ## SYNOPSIS
-Retrieve Hosts by the ID.
+Retrieve Hosts by the ID(s).
 
 ## SYNTAX
 

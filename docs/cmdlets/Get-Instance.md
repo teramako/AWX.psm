@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Instance
 
 ## SYNOPSIS
-Retrieve Instances by the ID.
+Retrieve Instances by the ID(s).
 
 ## SYNTAX
 

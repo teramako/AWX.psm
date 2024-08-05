@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-InstanceGroup
 
 ## SYNOPSIS
-Retrieve InstanceGroups by the ID.
+Retrieve InstanceGroups by the ID(s).
 
 ## SYNTAX
 

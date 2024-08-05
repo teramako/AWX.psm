@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-InventorySource
 
 ## SYNOPSIS
-Retrieve InventorySources by the ID.
+Retrieve InventorySources by the ID(s).
 
 ## SYNTAX
 

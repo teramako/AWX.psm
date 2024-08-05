@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Credential
 
 ## SYNOPSIS
-Retrieve Credentials by the ID.
+Retrieve Credentials by the ID(s).
 
 ## SYNTAX
 

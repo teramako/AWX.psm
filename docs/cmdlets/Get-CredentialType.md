@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-CredentialType
 
 ## SYNOPSIS
-Retrieve CredentialTypes by the ID.
+Retrieve CredentialTypes by the ID(s).
 
 ## SYNTAX
 
