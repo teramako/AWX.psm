@@ -175,7 +175,6 @@ Acceptable values:
 - `JobTemplate`  
 - `WorkflowJobTemplate`  
 
-
 ### System.UInt64
 Input by `Id` property in the pipeline object.
 

@@ -71,4 +71,3 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-ActivityStream](Find-ActivityStream.md)
-

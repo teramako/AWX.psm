@@ -51,7 +51,6 @@ Retrieve WorkflowJobTemplates associated with the Organization of ID 1
 and also can omit `-Type` parameter:  
     Find-WorkflowJobTemplate -Id 1
 
-
 ## PARAMETERS
 
 ### -All

@@ -22,7 +22,6 @@ Retrieve Hosts by the specified ID(s).
 Implements following Rest API:  
 - `/api/v2/hosts/{id}/`  
 
-
 ## EXAMPLES
 
 ### Example 1
