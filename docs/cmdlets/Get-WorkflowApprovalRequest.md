@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-WorkflowApprovalRequest
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve request jobs for WorkflowApproval by ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-WorkflowApprovalRequest [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve JobTemplates by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/workflow_approvals/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-WorkflowApprovalRequest -Id 10
+
+Id             Type Name            Status TimedOut Expire Remaining By       Finished            Elapsed LaunchedBy     WorkflowJob      WorkflowJobTemplate ApprovalTemplate
+--             ---- ----            ------ -------- ------ --------- --       --------            ------- ----------     -----------      ------------------- ----------------
+10 WorkflowApproval Sample-Approval Failed    False                  [1]admin 2024/07/25 15:46:16  54.573 [user][1]admin [20]ApprovedFlow [13]ApprovedFlow    [12]Sample-Approval
 ```
 
-{{ Add example description here }}
+Retrieve a WorkflowApproval for Database ID 10.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more WorkflowApproval.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,17 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowApproval+Detail
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-WorkflowApprovalRequest](Find-WorkflowApprovalRequest.md)
+
+[Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
+
+[Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)

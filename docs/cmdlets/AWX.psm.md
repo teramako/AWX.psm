@@ -273,7 +273,7 @@ Retrieve (OAuth2) AccessTokens by the ID(s).
 Retrieve Users by the ID(s).
 
 ### [Get-WorkflowApprovalRequest](Get-WorkflowApprovalRequest.md)
-{{ Fill in the Synopsis }}
+Retrieve request jobs for WorkflowApproval by ID(s).
 
 ### [Get-WorkflowApprovalTemplate](Get-WorkflowApprovalTemplate.md)
 {{ Fill in the Synopsis }}
