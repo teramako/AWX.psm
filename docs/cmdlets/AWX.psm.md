@@ -267,7 +267,7 @@ Retrieve SystemJobTemplates by the ID(s).
 Retrieve Teams by the ID(s).
 
 ### [Get-Token](Get-Token.md)
-{{ Fill in the Synopsis }}
+Retrieve (OAuth2) AccessTokens by the ID(s).
 
 ### [Get-User](Get-User.md)
 {{ Fill in the Synopsis }}

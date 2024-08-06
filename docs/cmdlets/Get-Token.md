@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Token
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve (OAuth2) AccessTokens by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-Token [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve OAuth2 Access Tokens by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/tokens/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Token -Id 1
+
+Id              Type Description               Created             Modified            Expires             User Username Application ApplicationName Scope
+--              ---- -----------               -------             --------            -------             ---- -------- ----------- --------------- -----
+ 1 OAuth2AccessToken Admin PersonalAccessToken 2024/05/18 15:29:33 2024/05/18 15:29:33 3023/09/19 15:29:33    1 admin                                write
 ```
 
-{{ Add example description here }}
+Retrieve an AccessToken for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Tokens.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.OAuth2AccessToken
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Token](Find-Token.md)
