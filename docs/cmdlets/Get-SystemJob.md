@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-SystemJob
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve SystemJob details by ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-SystemJob [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve SystemJob details by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/system_job/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-SystemJob -Id 10
+
+Id      Type Name                              JobType LaunchType     Status Finished            Elapsed LaunchedBy                            Template                    Note
+--      ---- ----                              ------- ----------     ------ --------            ------- ----------                            --------                    ----
+10 SystemJob Cleanup Expired Sessions cleanup_sessions  Scheduled Successful 2024/07/06 22:01:18   2.494 [schedule][4]Cleanup Expired Sessions [4]Cleanup Expired Sessions {[ExtraVars, ], [Stdout, Expired Sessions deleted 16…
 ```
 
-{{ Add example description here }}
+Retrieve a SystemJob for Database ID 10.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more SystemJobs.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.SystemJob+Detail
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-SystemJob](Find-SystemJob.md)

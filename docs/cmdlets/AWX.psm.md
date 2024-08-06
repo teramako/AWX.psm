@@ -258,7 +258,7 @@ Retrieve Schedules by the ID(s).
 Retrieve Settings.
 
 ### [Get-SystemJob](Get-SystemJob.md)
-{{ Fill in the Synopsis }}
+Retrieve SystemJob details by ID(s).
 
 ### [Get-SystemJobTemplate](Get-SystemJobTemplate.md)
 {{ Fill in the Synopsis }}
