@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-WorkflowJob
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve WorkflowJob details by ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-WorkflowJob [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve WorkflowJob details by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/workflow_jobs/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-WorkflowJob -Id 20
+
+Id        Type Name         JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template         Note
+--        ---- ----         ------- ----------     ------ --------            ------- ----------     --------         ----
+20 WorkflowJob TestWorkflow             Manual Successful 2024/07/22 12:53:23   4.276 [user][1]admin [13]TestWorkflow {[Labels, test], [Inventory, [2]], [Limit, ], [Branch, ]…}
 ```
 
-{{ Add example description here }}
+Retrieve a WorkflowJob detail for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more jobs.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowJob+Detail
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-WorkflowJob](Find-WorkflowJob.md)

@@ -279,7 +279,7 @@ Retrieve request jobs for WorkflowApproval by ID(s).
 Retrieve WorkflowApprovalTemplates by the ID(s).
 
 ### [Get-WorkflowJob](Get-WorkflowJob.md)
-{{ Fill in the Synopsis }}
+Retrieve WorkflowJob details by ID(s).
 
 ### [Get-WorkflowJobNode](Get-WorkflowJobNode.md)
 {{ Fill in the Synopsis }}
