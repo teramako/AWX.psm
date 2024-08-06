@@ -303,7 +303,7 @@ Invoke (update) an InventorySource and wait until the job is finished.
 Invoke (launch) a JobTemplate and wait unti the job is finished.
 
 ### [Invoke-ProjectUpdate](Invoke-ProjectUpdate.md)
-{{ Fill in the Synopsis }}
+Invoke (update) a Project and wait until the job is finished.
 
 ### [Invoke-SystemJobTemplate](Invoke-SystemJobTemplate.md)
 {{ Fill in the Synopsis }}
