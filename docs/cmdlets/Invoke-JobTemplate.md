@@ -8,7 +8,7 @@ schema: 2.0.0
 # Invoke-JobTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (launch) a JobTemplate and wait unti the job is finished.
 
 ## SYNTAX
 
@@ -25,21 +25,52 @@ Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Launch the specified JobTemplate and wait until the job is finished.
+
+Implementation of following API:  
+- `/api/v2/job_templates/{id}/launch/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> > Invoke-Jobtemplate -Id 7
+[7] Demo Job Template -
+             Inventory : [1] Demo Inventory
+            Extra vars : ---
+             Diff Mode : False
+              Job Type : Run
+             Verbosity : 0 (Normal)
+           Credentials : [1] Demo Credential
+                 Forks : 0
+       Job Slice Count : 1
+               Timeout : 0
+====== [100] Demo Job Template ======
+
+PLAY [Hello World Sample] ******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Hello Message] ***********************************************************
+ok: [localhost] => {
+    "msg": "Hello World!"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+ Id Type Name              JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template             Note
+ -- ---- ----              ------- ----------     ------ --------            ------- ----------     --------             ----
+100 Job Demo Job Template     Run     Manual Successful 2024/08/06 15:19:01   1.983 [user][1]admin [7]Demo Job Template {[Playbook, hello_world.yml], [Artifacts, {}], [Labels, ]}
 ```
 
-{{ Add example description here }}
+Launch JobTemplate ID 7, and wait unti for the job is finished.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+JobTemplate ID to be launched.
 
 ```yaml
 Type: UInt64
@@ -54,7 +85,8 @@ Accept wildcard characters: False
 ```
 
 ### -IntervalSeconds
-{{ Fill IntervalSeconds Description }}
+Interval to confirm job completion (seconds).
+Default is 5 seconds.
 
 ```yaml
 Type: Int32
@@ -63,13 +95,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -JobTemplate
-{{ Fill JobTemplate Description }}
+JobTempalte object to be launched.
 
 ```yaml
 Type: JobTemplate
@@ -84,7 +116,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Further limit selected hosts to an additional pattern.
 
 ```yaml
 Type: String
@@ -99,7 +131,10 @@ Accept wildcard characters: False
 ```
 
 ### -SuppressJobLog
-{{ Fill SuppressJobLog Description }}
+Suppress display job log.
+
+Note:  
+Use `-InformationVariable` parameter, if want to store logs to a variable.
 
 ```yaml
 Type: SwitchParameter
@@ -119,10 +154,22 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+JobTemplate ID to be launched.
+
 ### AWX.Resources.JobTemplate
+JobTemplate object to be launched.
+
 ## OUTPUTS
 
 ### AWX.Resources.JobTemplateJob
+The result job object of lanched the JobTemplate.
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Start-JobTemplate](Start-JobTemplate.md)
+
+[Get-JobTemplate](Get-JobTemplate.md)
+
+[Find-JobTemplate](Find-JobTemplate.md)

@@ -300,7 +300,7 @@ Execute Ansible's (low-level) Rest API.
 Invoke (update) an InventorySource and wait until the job is finished.
 
 ### [Invoke-JobTemplate](Invoke-JobTemplate.md)
-{{ Fill in the Synopsis }}
+Invoke (launch) a JobTemplate and wait unti the job is finished.
 
 ### [Invoke-ProjectUpdate](Invoke-ProjectUpdate.md)
 {{ Fill in the Synopsis }}
