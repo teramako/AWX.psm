@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Team
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Teams by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-Team [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Teams by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/teams/{id}/`  
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Team -Id 1
+
+Id Type Name      Description Created             Modified            OrganizationName
+-- ---- ----      ----------- -------             --------            ----------------
+ 1 Team TestTeam1 Sample Team 2024/06/03 18:17:55 2024/06/03 18:17:55 SampleOrg
 ```
 
-{{ Add example description here }}
+Retrieve a Team for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more JobTemplates.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.Team
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-Team](Find-Team.md)

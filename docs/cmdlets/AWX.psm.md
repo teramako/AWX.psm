@@ -264,7 +264,7 @@ Retrieve SystemJob details by ID(s).
 Retrieve SystemJobTemplates by the ID(s).
 
 ### [Get-Team](Get-Team.md)
-{{ Fill in the Synopsis }}
+Retrieve Teams by the ID(s).
 
 ### [Get-Token](Get-Token.md)
 {{ Fill in the Synopsis }}
