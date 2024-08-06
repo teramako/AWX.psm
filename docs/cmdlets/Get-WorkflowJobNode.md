@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-WorkflowJobNode
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve nodes for WorkflowJob by ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-WorkflowJobNode [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve nodes for WorkflowJob by specified ID(s).
+
+Implementation of following API:  
+- `/api/v2/workflow_job_nodes/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-WorkflowJobNode -Id 10
+
+Id            Type WorkflowJob       DoNotRun Modified           Job JobType JobName  JobStatus JobElapsed SuccessNodes FailureNodes AlwaysNodes
+--            ---- -----------       -------- --------           --- ------- -------  --------- ---------- ------------ ------------ -----------
+10 WorkflowJobNode [151]TestWorkflow    False 2024/07/11 9:27:45 152     Job Test_1  Successful      2.033 {}           {}           {11}
 ```
 
-{{ Add example description here }}
+Retrieve a node in WorkflowJob for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more nodes in WorkflowJob.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowJobNode
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-WorkflowJobNode](Find-WorkflowJobNode.md)

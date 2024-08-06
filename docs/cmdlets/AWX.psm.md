@@ -282,7 +282,7 @@ Retrieve WorkflowApprovalTemplates by the ID(s).
 Retrieve WorkflowJob details by ID(s).
 
 ### [Get-WorkflowJobNode](Get-WorkflowJobNode.md)
-{{ Fill in the Synopsis }}
+Retrieve nodes for WorkflowJob by ID(s).
 
 ### [Get-WorkflowJobTemplate](Get-WorkflowJobTemplate.md)
 {{ Fill in the Synopsis }}
