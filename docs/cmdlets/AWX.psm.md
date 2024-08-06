@@ -312,7 +312,7 @@ Invoke (launch) a SystemJobTemplate and wait unti the job is finished.
 Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 
 ### [New-ApiConfig](New-ApiConfig.md)
-{{ Fill in the Synopsis }}
+Create config file that should be used by this module.
 
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 {{ Fill in the Synopsis }}

@@ -13,7 +13,7 @@ See [Settings](./docs/settings.md) document.
 
 | Name                                 | Description  
 |:-------------------------------------|:---------------------------------------------------------------------------|  
-| `New-ApiConfig`                        | Create config file that should be set up to use this module, at first.  
+| `New-ApiConfig`                        | Create a configuration file, which should be the first step in using this module.  
 | `Get-ApiConfig`                        | Get loaded config data currently.  
 | `Switch-ApiConfig`                     | Switch to anothor config.  
 | `Invoke-API`                           | Execute Ansible's (low-level) Rest API.  
