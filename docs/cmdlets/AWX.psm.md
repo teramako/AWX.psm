@@ -291,7 +291,7 @@ Retrieve WorkflowJobTemplates by the ID(s).
 Retrieve nodes for WorkflowJobTemplate by ID(s).
 
 ### [Invoke-AdHocCommand](Invoke-AdHocCommand.md)
-{{ Fill in the Synopsis }}
+Invoke (launch) an AdHocCommand and wait until the job is finished.
 
 ### [Invoke-API](Invoke-API.md)
 {{ Fill in the Synopsis }}
