@@ -297,7 +297,7 @@ Invoke (launch) an AdHocCommand and wait until the job is finished.
 Execute Ansible's (low-level) Rest API.
 
 ### [Invoke-InventoryUpdate](Invoke-InventoryUpdate.md)
-{{ Fill in the Synopsis }}
+Invoke (update) an InventorySource and wait until the job is finished.
 
 ### [Invoke-JobTemplate](Invoke-JobTemplate.md)
 {{ Fill in the Synopsis }}

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Invoke-InventoryUpdate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (update) an InventorySource and wait until the job is finished.
 
 ## SYNTAX
 
@@ -48,21 +48,59 @@ Invoke-InventoryUpdate [-Inventory] <Inventory> [-Check]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Update InventorySources and wait until the job is finished.
+Multiple InventorySources in the Inventory may be udpated, when an Inventory is specified bye `-Inventory` parameter.
+
+Implementation of following API:  
+- `/api/v2/inventory_sources/{id}/update/`  
+- `/api/v2/inventries/{id}/update_inventory_sources/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Invoke-InventoryUpdate -Id 11
+====== [100] TestInventory - test_source ======
+ansible-inventory [core 2.15.12]
+  config file = /runner/project/ansible.cfg
+
+(snip)
+
+Parsed /runner/project/inventory/hosts.ini inventory source with ini plugin
+    2.718 INFO     Processing JSON output...
+    2.718 INFO     Loaded 1 groups, 2 hosts
+    2.719 WARNING  loading into database...
+    2.727 WARNING  group updates took 2 queries for 1 groups
+    2.731 WARNING  host updates took 2 queries for 2 hosts
+    2.731 WARNING  Group-group updates took 0 queries for 0 group-group relationships
+    2.737 WARNING  Group-host updates took 3 queries for 1 group-host relationships
+    2.745 WARNING  update computed fields took 8 queries
+    2.746 WARNING  Inventory import completed for test_source in 0.0s
+    2.746 WARNING  Inventory import required 26 queries taking 0.005s
+
+ Id            Type Name                        JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template        Note
+ --            ---- ----                        ------- ----------     ------ --------            ------- ----------     --------        ----
+100 InventoryUpdate TestInventory - test_source             Manual Successful 2024/08/06 14:51:07   2.751 [user][1]admin [11]test_source {[Inventory, [2]TestInventory], [Source, Scm], [SourcePath, inventory/hosts.ini]}
 ```
 
-{{ Add example description here }}
+Update an InventorySource ID 11, and wait until for the job is finished.
+
+### Example 2
+```powershell
+PS C:\> Get-Inventory -Id 2 | Invoke-InventoryUpdate -Check
+
+Id            Type CanUpdate
+--            ---- ---------
+11 InventorySource      True
+17 InventorySource      True
+```
+
+Check wheter InventorySources in the Inventory ID 2 can be updated.
 
 ## PARAMETERS
 
 ### -Check
-{{ Fill Check Description }}
+Check wheter InventorySource(s) can be updated.
 
 ```yaml
 Type: SwitchParameter
@@ -77,7 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+InventorySource ID to be updated.
 
 ```yaml
 Type: UInt64
@@ -92,7 +130,8 @@ Accept wildcard characters: False
 ```
 
 ### -IntervalSeconds
-{{ Fill IntervalSeconds Description }}
+Interval to confirm job completion (seconds).
+Default is 5 seconds.
 
 ```yaml
 Type: Int32
@@ -101,13 +140,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Inventory
-{{ Fill Inventory Description }}
+Inventory object containing the InventorySource to be updated.
 
 ```yaml
 Type: Inventory
@@ -122,7 +161,7 @@ Accept wildcard characters: False
 ```
 
 ### -InventorySource
-{{ Fill InventorySource Description }}
+InventorySource object to be updated.
 
 ```yaml
 Type: InventorySource
@@ -137,7 +176,7 @@ Accept wildcard characters: False
 ```
 
 ### -SuppressJobLog
-{{ Fill SuppressJobLog Description }}
+Suppress display job log.
 
 ```yaml
 Type: SwitchParameter
@@ -157,12 +196,28 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+InventorySource ID
+
 ### AWX.Resources.InventorySource
+InventorySource object
+
 ### AWX.Resources.Inventory
+Inventory object containing the InventorySources to be updated.
+
 ## OUTPUTS
 
 ### AWX.Resources.InventoryUpdateJob
+The result job object of updated the InventorySource.
+
 ### System.Management.Automation.PSObject
+Results of checked wheter the InventorySources can be updated.
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Start-InventoryUpdate](Start-InventoryUpdate.md)
+
+[Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
+
+[Find-InventoryUpdateJob](Find-InventoryUpdateJob.md)
