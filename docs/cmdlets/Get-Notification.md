@@ -42,7 +42,6 @@ NotificationType     : Slack
 Recipients           : ['#proj-ansible']
 Subject              : The approval node "Approval" was approved. http://*******
 Body                 :
-
 ```
 
 Retrieve a Notification for Database ID 1 and display as List format.

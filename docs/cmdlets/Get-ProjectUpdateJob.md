@@ -31,7 +31,6 @@ PS C:\> Get-ProjectUpdateJob -Id 10
 Id          Type Name         JobType LaunchType     Status Finished           Elapsed LaunchedBy               Template             Note
 --          ---- ----         ------- ----------     ------ --------           ------- ----------               --------             ----
 10 ProjectUpdate Demo Project     Run       Sync Successful 2024/07/11 9:27:49    1.39 [project][6]Demo Project [6][git]Demo Project {[Branch, ], [Revision, ****], [Url, https://***]}
-
 ```
 
 Retrieve a ProjectUpdate job for Database ID 10.
