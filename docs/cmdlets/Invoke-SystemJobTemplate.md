@@ -8,7 +8,7 @@ schema: 2.0.0
 # Invoke-SystemJobTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (launch) a SystemJobTemplate and wait unti the job is finished.
 
 ## SYNTAX
 
@@ -25,21 +25,55 @@ Invoke-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <I
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Launch the specified SystemJobTemplate and wait until the job is finished.
+
+Implementation of following API:  
+- `/api/v2/system_job_templates/{id}/launch/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Invoke-SystemJobTemplate -Id 4
+====== [110] Cleanup Expired Sessions ======
+Expired Sessions deleted 2
+
+
+ Id      Type Name                              JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template                    Note
+ --      ---- ----                              ------- ----------     ------ --------            ------- ----------     --------                    ----
+110 SystemJob Cleanup Expired Sessions cleanup_sessions     Manual Successful 2024/08/06 15:56:27   1.793 [user][1]admin [4]Cleanup Expired Sessions {[ExtraVars, {}], [Stdout, Expired Sessions deleted 2…
+
 ```
 
-{{ Add example description here }}
+Launch JobTemplate ID 4, and wait unti for the job is finished.
+
+### Example 2
+```powershell
+PS C:\> Invoke-SystemJobTemplate -Id 2 -ExtraVars @{ dry_run = $true }
+====== [120] Cleanup Activity Stream ======
+would skip "update-2024-05-18T06:21:07.998340+00:00-pk=23" id: 23
+would skip "create-2024-05-18T06:29:33.680642+00:00-pk=24" id: 24
+
+(snip)
+
+Removed 0 items
+
+
+ Id      Type Name                                   JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template                   Note
+ --      ---- ----                                   ------- ----------     ------ --------            ------- ----------     --------                   ----
+120 SystemJob Cleanup Activity Stream cleanup_activitystream     Manual Successful 2024/08/06 16:04:30   2.171 [user][1]admin [2]Cleanup Activity Stream {[ExtraVars, {"dry_run": true}], *** }
+```
+
+Launch SystemJobTemplate ID 2(Cleanup ActivityStream) as dry-run mode.
 
 ## PARAMETERS
 
 ### -ExtraVars
-{{ Fill ExtraVars Description }}
+Variables to be passed to the system job task as command line parameters.
+
+For excample:  
+- `@{ dry_run: $true }` : for `cleanup_jobs` and `cleanup_activitystream`  
+- `@{ days: 90 }'`      : for `cleanup_jobs` and `cleanup_activitystream`
 
 ```yaml
 Type: IDictionary
@@ -54,7 +88,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+SystemJobTemplate ID to be launched.
 
 ```yaml
 Type: UInt64
@@ -69,7 +103,7 @@ Accept wildcard characters: False
 ```
 
 ### -SystemJobTemplate
-{{ Fill SystemJobTemplate Description }}
+SystemJobTempalte object to be launched.
 
 ```yaml
 Type: SystemJobTemplate
@@ -89,10 +123,22 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+SystemJobTemplate ID to be launched.
+
 ### AWX.Resources.SystemJobTemplate
+SystemJobTemplate object to be launched.
+
 ## OUTPUTS
 
 ### AWX.Resources.SystemJob
+The result job object of lanched the SystemJobTemplate.
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Start-SystemJobTemplate](Start-SystemJobTemplate.md)
+
+[Get-SystemJob](Get-SystemJob.md)
+
+[Find-SystemJob](Find-SystemJob)

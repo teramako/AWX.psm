@@ -306,7 +306,7 @@ Invoke (launch) a JobTemplate and wait unti the job is finished.
 Invoke (update) a Project and wait until the job is finished.
 
 ### [Invoke-SystemJobTemplate](Invoke-SystemJobTemplate.md)
-{{ Fill in the Synopsis }}
+Invoke (launch) a SystemJobTemplate and wait unti the job is finished.
 
 ### [Invoke-WorkflowJobTemplate](Invoke-WorkflowJobTemplate.md)
 {{ Fill in the Synopsis }}
