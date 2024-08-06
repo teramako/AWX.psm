@@ -288,7 +288,7 @@ Retrieve nodes for WorkflowJob by ID(s).
 Retrieve WorkflowJobTemplates by the ID(s).
 
 ### [Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
-{{ Fill in the Synopsis }}
+Retrieve nodes for WorkflowJobTemplate by ID(s).
 
 ### [Invoke-AdHocCommand](Invoke-AdHocCommand.md)
 {{ Fill in the Synopsis }}
