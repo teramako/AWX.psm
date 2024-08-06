@@ -315,7 +315,7 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 Create config file that should be used by this module.
 
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
-{{ Fill in the Synopsis }}
+Invoke (launch) an AdHocCommand.
 
 ### [Start-InventoryUpdate](Start-InventoryUpdate.md)
 {{ Fill in the Synopsis }}

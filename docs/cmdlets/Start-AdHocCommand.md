@@ -8,7 +8,7 @@ schema: 2.0.0
 # Start-AdHocCommand
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (launch) an AdHocCommand.
 
 ## SYNTAX
 
@@ -37,21 +37,33 @@ Start-AdHocCommand [-InventoryId] <UInt64> [-ModuleName] <String> [[-ModuleArgs]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Launch an AdHocCommand.
+This command only sends a request to launch an AdHocCommand, not wait for the job is completed.
+So, the returned job object will be non-completed status.
+Use `Wait-UnifiedJob` command to wait for the job to complete later.
+
+Implementation of following API:  
+- `/api/v2/inventories/{id}/ad_hoc_commands/`  
+- `/api/v2/groups/{id}/ad_hoc_commands/`  
+- `/api/v2/hosts/{id}/ad_hoc_commands/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-Group -Id 1 | Start-AdHocCommand -ModuleName ping -Credential 1
+
+ Id         Type Name JobType LaunchType Status Finished Elapsed LaunchedBy     Template Note
+ --         ---- ---- ------- ---------- ------ -------- ------- ----------     -------- ----
+120 AdHocCommand ping     run     Manual    New                0 [user][1]admin ping     {[ModuleArgs, ], [Limit, TestGroup], [Inventory, [2]TestInventory]}
 ```
 
-{{ Add example description here }}
+Launch `ping` ansible module to the Group ID 1.
 
 ## PARAMETERS
 
 ### -Check
-{{ Fill Check Description }}
+Luanch as `Check` mode.
 
 ```yaml
 Type: SwitchParameter
@@ -60,13 +72,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Credential
-{{ Fill Credential Description }}
+Credential ID of Machine type for executing command to the remote hosts.
 
 ```yaml
 Type: UInt64
@@ -81,7 +93,7 @@ Accept wildcard characters: False
 ```
 
 ### -Group
-{{ Fill Group Description }}
+Group to be executed.
 
 ```yaml
 Type: Group
@@ -96,7 +108,7 @@ Accept wildcard characters: False
 ```
 
 ### -Host
-{{ Fill Host Description }}
+Host to be executed.
 
 ```yaml
 Type: Host
@@ -111,7 +123,7 @@ Accept wildcard characters: False
 ```
 
 ### -Inventory
-{{ Fill Inventory Description }}
+Inventory to be executed.
 
 ```yaml
 Type: Inventory
@@ -126,7 +138,7 @@ Accept wildcard characters: False
 ```
 
 ### -InventoryId
-{{ Fill InventoryId Description }}
+Inventory ID to be executed.
 
 ```yaml
 Type: UInt64
@@ -141,7 +153,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Further limit selected hosts to an additional pattern.
 
 ```yaml
 Type: String
@@ -156,7 +168,11 @@ Accept wildcard characters: False
 ```
 
 ### -ModuleArgs
-{{ Fill ModuleArgs Description }}
+The action's (`-ModuleName`) options in space separated `k=v` format or JSON format.
+
+e.g.)  
+- `opt1=val1 opt=2=val2`  
+- `{"opt1": "val1", "opt2": "val2"}`
 
 ```yaml
 Type: String
@@ -171,7 +187,7 @@ Accept wildcard characters: False
 ```
 
 ### -ModuleName
-{{ Fill ModuleName Description }}
+Name of the action to execute.
 
 ```yaml
 Type: String
@@ -191,12 +207,28 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### AWX.Resources.Host
+Host object to be executed.
+
 ### AWX.Resources.Group
+Group object to be executed.
+
 ### AWX.Resources.Inventory
+Inventory object to be executed.
+
 ### System.UInt64
 ## OUTPUTS
 
 ### AWX.Resources.AdHocCommand
+AdHocCommand job object (non-completed status)
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Invoke-AdHocCommand](Start-AdHocCommand.md)
+
+[Get-AdHocCommand](Get-AdHocCommand.md)
+
+[Find-AdHocCommand](Find-AdHocCommand.md)
+
+[Wait-UnifiedJob](Wait-UnifiedJob.md)
