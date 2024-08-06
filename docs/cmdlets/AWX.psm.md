@@ -309,7 +309,7 @@ Invoke (update) a Project and wait until the job is finished.
 Invoke (launch) a SystemJobTemplate and wait unti the job is finished.
 
 ### [Invoke-WorkflowJobTemplate](Invoke-WorkflowJobTemplate.md)
-{{ Fill in the Synopsis }}
+Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 
 ### [New-ApiConfig](New-ApiConfig.md)
 {{ Fill in the Synopsis }}

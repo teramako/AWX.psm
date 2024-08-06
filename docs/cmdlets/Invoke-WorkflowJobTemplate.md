@@ -8,7 +8,7 @@ schema: 2.0.0
 # Invoke-WorkflowJobTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 
 ## SYNTAX
 
@@ -26,21 +26,39 @@ Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Launch a WorkflowJobTemplate and wait until the job is finished.
+
+Implementation of following API:  
+- `/api/v2/workflow_job_templates/{id}/launch/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Invoke-WorkflowJobTemplate -Id 13
+[13] TestWorkflow - Workflow Demo
+             Inventory : [2] TestInventory
+                Labels : [1] test
+            Extra vars : ---
+====== [111] Test_1 ======
+
+(snip)
+
+====== [112] Demo Job Template ======
+
+(snip)
+
+ Id        Type Name         JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template         Note
+ --        ---- ----         ------- ----------     ------ --------            ------- ----------     --------         ----
+110 WorkflowJob TestWorkflow             Manual Successful 2024/08/06 16:21:10   4.202 [user][1]admin [13]TestWorkflow {[Labels, test], [Inventory, [2]], [Limit, ], [Branch, ]…}
 ```
 
-{{ Add example description here }}
+Launch WorkflowJobTemplate ID 13, and wait unti for the job is finished.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+WorkflowJobTemplate ID to be launched.
 
 ```yaml
 Type: UInt64
@@ -55,7 +73,8 @@ Accept wildcard characters: False
 ```
 
 ### -IntervalSeconds
-{{ Fill IntervalSeconds Description }}
+Interval to confirm job completion (seconds).
+Default is 5 seconds.
 
 ```yaml
 Type: Int32
@@ -64,13 +83,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 5
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Inventory
-{{ Fill Inventory Description }}
+Inventory ID
 
 ```yaml
 Type: UInt64
@@ -85,7 +104,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Further limit selected hosts to an additional pattern.
 
 ```yaml
 Type: String
@@ -100,7 +119,10 @@ Accept wildcard characters: False
 ```
 
 ### -SuppressJobLog
-{{ Fill SuppressJobLog Description }}
+Suppress display job log.
+
+Note:  
+Use `-InformationVariable` parameter, if want to store logs to a variable.
 
 ```yaml
 Type: SwitchParameter
@@ -109,13 +131,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -WorkflowJobTemplate
-{{ Fill WorkflowJobTemplate Description }}
+WorkflowJobTempalte object to be launched.
 
 ```yaml
 Type: WorkflowJobTemplate
@@ -135,10 +157,22 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+WorkflowJobTemplate ID to be launched.
+
 ### AWX.Resources.WorkflowJobTemplate
+WorkflowJobTemplate object to be launched.
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowJob
+The result job object of lanched the WorkflowJobTemplate.
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Start-WorkflowJobTemplate](Start-WorkflowJobTemplate.md)
+
+[Get-WorkflowJob](Get-WorkflowJob.md)
+
+[Find-WorkflowJob](Find-WorkflowJob.md)
