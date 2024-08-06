@@ -34,7 +34,7 @@ Id          Type Name         JobType LaunchType     Status Finished           E
 
 ```
 
-Retrieve a ProjectUpdate job job for Database ID 10.
+Retrieve a ProjectUpdate job for Database ID 10.
 
 ## PARAMETERS
 
