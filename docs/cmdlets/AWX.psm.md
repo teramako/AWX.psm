@@ -261,7 +261,7 @@ Retrieve Settings.
 Retrieve SystemJob details by ID(s).
 
 ### [Get-SystemJobTemplate](Get-SystemJobTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve SystemJobTemplates by the ID(s).
 
 ### [Get-Team](Get-Team.md)
 {{ Fill in the Synopsis }}
