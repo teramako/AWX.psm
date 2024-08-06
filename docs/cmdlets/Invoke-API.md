@@ -8,7 +8,7 @@ schema: 2.0.0
 # Invoke-API
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Execute Ansible's (low-level) Rest API.
 
 ## SYNTAX
 
@@ -25,21 +25,48 @@ Invoke-API [-Method] <Method> [-Path] <String> [[-QueryString] <String>] -SenDat
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Make GET, POST, PUT, PATCH, DELETE or OPTIONS request to specified Path, and get the response.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Invoke-API GET /api/v2/ping/ -AsRawString
+{"ha":false,"version":"23.3.1","active_node":"awx_1", ... }
 ```
 
-{{ Add example description here }}
+Make `GET` request to `/api/v2/ping/` and get response as String
+
+### Example 2
+```powershell
+PS C:\> Invoke-API PATCH /api/v2/users/2/ -SenData @{ last_name = "mako" }
+
+Id Type Username Email              FirstName LastName IsSuperuser IsSystemAuditor Created            Modified            LastLogin           LdapDn ExternalAccount
+-- ---- -------- -----              --------- -------- ----------- --------------- -------            --------            ---------           ------ ---------------
+ 2 User teramako teramako@gmail.com tera      mako           False           False 2024/05/21 0:13:43 2024/06/10 22:48:18 2024/06/10 22:48:18
+```
+
+Make `PATCH` request to `/api/v2/users/2/` for change `last_name` field.
 
 ## PARAMETERS
 
+### -AsRawString
+Returns response data as raw string instead of deserializing to object.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Method
-{{ Fill Method Description }}
+HTTP method to make request.
 
 ```yaml
 Type: Method
@@ -55,7 +82,7 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-{{ Fill Path Description }}
+URL path to make request.
 
 ```yaml
 Type: String
@@ -70,7 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -QueryString
-{{ Fill QueryString Description }}
+URL query to make request.
 
 ```yaml
 Type: String
@@ -85,7 +112,8 @@ Accept wildcard characters: False
 ```
 
 ### -SenData
-{{ Fill SenData Description }}
+Data to be sent to the API.
+When value is not String, it will be deserialized to JSON string.
 
 ```yaml
 Type: Object
@@ -99,30 +127,20 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -AsRawString
-{{ Fill AsRawString Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### System.Object
+Data to be sent to the API.
+When value is not String, it will be deserialized to JSON string.
+
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-ApiHelp](Get-ApiHelp.md)

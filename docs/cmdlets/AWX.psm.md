@@ -294,7 +294,7 @@ Retrieve nodes for WorkflowJobTemplate by ID(s).
 Invoke (launch) an AdHocCommand and wait until the job is finished.
 
 ### [Invoke-API](Invoke-API.md)
-{{ Fill in the Synopsis }}
+Execute Ansible's (low-level) Rest API.
 
 ### [Invoke-InventoryUpdate](Invoke-InventoryUpdate.md)
 {{ Fill in the Synopsis }}
