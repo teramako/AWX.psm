@@ -276,7 +276,7 @@ Retrieve Users by the ID(s).
 Retrieve request jobs for WorkflowApproval by ID(s).
 
 ### [Get-WorkflowApprovalTemplate](Get-WorkflowApprovalTemplate.md)
-{{ Fill in the Synopsis }}
+Retrieve WorkflowApprovalTemplates by the ID(s).
 
 ### [Get-WorkflowJob](Get-WorkflowJob.md)
 {{ Fill in the Synopsis }}

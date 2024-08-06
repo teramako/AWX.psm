@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-WorkflowApprovalTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve WorkflowApprovalTemplates by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-WorkflowApprovalTemplate [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve WorkflowApprovalTemplates by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/workflow_approval_templates/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-WorkflowApprovalTemplate -Id 12
+
+Id                     Type Name            Description   Status Modified            LastJobRun          NextJobRun Options Note
+--                     ---- ----            -----------   ------ --------            ----------          ---------- ------- ----
+12 WorkflowApprovalTemplate Sample-Approval Before Launch Failed 2024/07/25 14:44:57 2024/07/25 15:46:16                    {[Timeout, 0], [WorkflowTemplate, [20]ApprovedFlow]}
 ```
 
-{{ Add example description here }}
+Retrieve a JobTemplate for Database ID 12.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more WorkflowApprovalTemplates.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
+One or more database IDs.
+
 ## OUTPUTS
 
 ### AWX.Resources.WorkflowApprovalTemplate
 ## NOTES
+
+To get the ID number of the WorkflowApprovalTemplate, see `Template ID` column in the nodes from `Find-WorkflowJobTemplateNode` command or `ApprovalTemplate` column in the jobs from `Find-WorkflowApprovalRequest` command.
 
 ## RELATED LINKS
