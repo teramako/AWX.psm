@@ -270,7 +270,7 @@ Retrieve Teams by the ID(s).
 Retrieve (OAuth2) AccessTokens by the ID(s).
 
 ### [Get-User](Get-User.md)
-{{ Fill in the Synopsis }}
+Retrieve Users by the ID(s).
 
 ### [Get-WorkflowApprovalRequest](Get-WorkflowApprovalRequest.md)
 {{ Fill in the Synopsis }}

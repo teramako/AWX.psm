@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-User
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieve Users by the ID(s).
 
 ## SYNTAX
 
@@ -17,21 +17,28 @@ Get-User [-Id] <UInt64[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieve Users by the specified ID(s).
+
+Implements following Rest API:  
+- `/api/v2/users/{id}/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-User -Id 1
+
+Id Type Username Email           FirstName LastName IsSuperuser IsSystemAuditor Created             Modified            LastLogin           LdapDn ExternalAccount
+-- ---- -------- -----           --------- -------- ----------- --------------- -------             --------            ---------           ------ ---------------
+ 1 User admin    admin@localhost                           True           False 2023/11/04 16:20:25 2024/08/02 16:26:10 2024/08/02 16:26:10
 ```
 
-{{ Add example description here }}
+Retrieve a User for Database ID 1.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+List of database IDs for one or more Users.
 
 ```yaml
 Type: UInt64[]
@@ -51,9 +58,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64[]
-## OUTPUTS
+One or more database IDs.
 
 ### AWX.Resources.User
+## OUTPUTS
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Find-User](Find-User.md)
