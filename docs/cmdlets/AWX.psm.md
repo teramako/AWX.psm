@@ -318,7 +318,7 @@ Create config file that should be used by this module.
 Invoke (launch) an AdHocCommand.
 
 ### [Start-InventoryUpdate](Start-InventoryUpdate.md)
-{{ Fill in the Synopsis }}
+Invoke (update) InventorySources.
 
 ### [Start-JobTemplate](Start-JobTemplate.md)
 {{ Fill in the Synopsis }}
