@@ -3,7 +3,7 @@
 Create Documents with platyPS
 #>
 param(
-    [string] $Locale,
+    [string] $Locale = "en-US",
     [switch] $New
 )
 Import-Module platyPS
@@ -17,10 +17,10 @@ if ($null -eq $module)
     $module = Get-Module $moduleName
 }
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
-$OutputFolder = "$PSScriptRoot\cmdlets"
-if ($Locale)
-{
-    $OutputFolder += "\$Locale"
+$OutputFolder = if ($Locale) {
+    "$PSScriptRoot\$Locale\cmdlets"
+} else {
+    "$PSScriptRoot\cmdlets"
 }
 
 ## See: https://github.com/Powershell/platyPS/issues/595
@@ -149,6 +149,10 @@ function Repair-PlatyPSMarkdown {
     return
 }
 
+if (-not (Test-Path -Path $OutputFolder -PathType Container)) {
+    New-Item -Path $OutputFolder -ItemType Directory
+    $New = $true
+}
 
 if ($New) {
     New-MarkdownAboutHelp -OutputFolder $OutputFolder -AboutName $module.Name
@@ -166,7 +170,7 @@ if ($New) {
         RefreshModulePage = $true;
         AlphabeticParamsOrder = $false;
         ExcludeDontShow = $true;
-        UpdateInputOutput = $true;
+        UpdateInputOutput = $false;
         Encoding = $Utf8NoBomEncoding;
     }
     $resultFiles = Update-MarkdownHelpModule @UpdateParams
@@ -187,6 +191,7 @@ $externalHelpDir = if (-not (Test-Path -Path $externalHelpDirPath -PathType Cont
 $externalHelpParams = @{
     Path = $OutputFolder;
     OutputPath = $externalHelpDir;
+    Encoding = $Utf8NoBomEncoding;
     Force = $true;
 }
 New-ExternalHelp @externalHelpParams
