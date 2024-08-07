@@ -8,7 +8,7 @@ schema: 2.0.0
 # Start-SystemJobTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (launch) a SystemJobTemplate.
 
 ## SYNTAX
 
@@ -25,21 +25,39 @@ Start-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <ID
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Launch a SystemJobTemplate.
+
+This command only sends a request to start SystemJobTemplate, not wait for the job is completed.
+So, the returned job object will be non-completed status.
+Use `Wait-UnifiedJob` command to wait for the job to complete later.
+
+Implementation of following API:  
+- `/api/v2/system_job_templates/{id}/launch/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Start-SystemJobTemplate -Id 4
+====== [110] Cleanup Expired Sessions ======
+Expired Sessions deleted 2
+
+
+ Id      Type Name                              JobType LaunchType  Status Finished            Elapsed LaunchedBy     Template                    Note
+ --      ---- ----                              ------- ----------  ------ --------            ------- ----------     --------                    ----
+110 SystemJob Cleanup Expired Sessions cleanup_sessions     Manual Pending 2024/08/06 15:56:27   1.793 [user][1]admin [4]Cleanup Expired Sessions {[ExtraVars, {}], [Stdout, Expired Sessions deleted 2…
 ```
 
-{{ Add example description here }}
+Launch JobTemplate ID 4.
 
 ## PARAMETERS
 
 ### -ExtraVars
-{{ Fill ExtraVars Description }}
+Variables to be passed to the system job task as command line parameters.
+
+For excample:  
+- `@{ dry_run: $true }` : for `cleanup_jobs` and `cleanup_activitystream`  
+- `@{ days: 90 }'`      : for `cleanup_jobs` and `cleanup_activitystream`
 
 ```yaml
 Type: IDictionary
@@ -54,7 +72,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+SystemJobTemplate ID to be launched.
 
 ```yaml
 Type: UInt64
@@ -69,7 +87,7 @@ Accept wildcard characters: False
 ```
 
 ### -SystemJobTemplate
-{{ Fill SystemJobTemplate Description }}
+SystemJobTempalte object to be launched.
 
 ```yaml
 Type: SystemJobTemplate
@@ -89,13 +107,24 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+SystemJobTemplate ID to be launched.
 
 ### AWX.Resources.SystemJobTemplate
+SystemJobTemplate object to be launched.
 
 ## OUTPUTS
 
 ### AWX.Resources.SystemJob+Detail
+The result job object of lanched the SystemJobTemplate (non-completed status).
 
 ## NOTES
 
 ## RELATED LINKS
+
+[Invoke-SystemJobTemplate](Invoke-SystemJobTemplate.md)
+
+[Get-SystemJob](Get-SystemJob.md)
+
+[Find-SystemJob](Find-SystemJob)
+
+[Wait-UnifiedJob](Wait-UnifiedJob.md)

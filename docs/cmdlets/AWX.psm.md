@@ -327,7 +327,7 @@ Invoke (launch) a JobTemplate.
 Invoke (update) Project.
 
 ### [Start-SystemJobTemplate](Start-SystemJobTemplate.md)
-{{ Fill in the Synopsis }}
+Invoke (launch) a SystemJobTemplate.
 
 ### [Start-WorkflowJobTemplate](Start-WorkflowJobTemplate.md)
 {{ Fill in the Synopsis }}
