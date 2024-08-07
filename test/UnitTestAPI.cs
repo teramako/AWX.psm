@@ -1,12 +1,5 @@
 using System.Net;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Management.Automation;
 using System.Web;
-using System.Text.Json.Nodes;
-using System.Reflection;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace API_Test
 {
@@ -265,7 +258,204 @@ namespace API_Test
             }
             Assert.AreEqual(expectCount, c);
         }
-
+        [TestMethod]
+        public async Task Get_3_ListFromApplication()
+        {
+            var app = await Application.Get(1);
+            Console.WriteLine($"ActivityStream for ([{app.Id}][{app.Type}] {app.Name})");
+            await foreach(var activity in ActivityStream.FindFromApplication(app.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromToken()
+        {
+            var token = await OAuth2AccessToken.Get(1);
+            Console.WriteLine($"ActivityStream for ([{token.Id}][{token.Type}] {token.Description})");
+            await foreach(var activity in ActivityStream.FindFromToken(token.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromOrganization()
+        {
+            var org = await Organization.Get(1);
+            Console.WriteLine($"ActivityStream for ([{org.Id}][{org.Type}] {org.Name})");
+            await foreach(var activity in ActivityStream.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromUser()
+        {
+            var user = await User.Get(1);
+            Console.WriteLine($"ActivityStream for ([{user.Id}][{user.Type}] {user.Username})");
+            await foreach(var activity in ActivityStream.FindFromUser(user.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromProject()
+        {
+            var proj = await Project.Get(8);
+            Console.WriteLine($"ActivityStream for ([{proj.Id}][{proj.Type}] {proj.Name})");
+            await foreach(var activity in ActivityStream.FindFromProject(proj.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_8_ListFromTeam()
+        {
+            var team = await Team.Get(1);
+            Console.WriteLine($"ActivityStream for ([{team.Id}][{team.Type}] {team.Name})");
+            await foreach(var activity in ActivityStream.FindFromTeam(team.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_9_ListFromCredential()
+        {
+            var cred = await Credential.Get(1);
+            Console.WriteLine($"ActivityStream for ([{cred.Id}][{cred.Type}] {cred.Name})");
+            await foreach(var activity in ActivityStream.FindFromCredential(cred.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_10_ListFromCredentialType()
+        {
+            var credType = await CredentialType.Get(29);
+            Console.WriteLine($"ActivityStream for ([{credType.Id}][{credType.Type}] {credType.Name})");
+            await foreach(var activity in ActivityStream.FindFromCredentialType(credType.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_11_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(1);
+            Console.WriteLine($"ActivityStream for ([{inventory.Id}][{inventory.Type}] {inventory.Name})");
+            await foreach(var activity in ActivityStream.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_12_ListFromInventorySource()
+        {
+            var inventorySource = await InventorySource.Get(11);
+            Console.WriteLine($"ActivityStream for ([{inventorySource.Id}][{inventorySource.Type}] {inventorySource.Name})");
+            await foreach(var activity in ActivityStream.FindFromInventorySource(inventorySource.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_13_ListFromGroup()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"ActivityStream for ([{group.Id}][{group.Type}] {group.Name})");
+            await foreach(var activity in ActivityStream.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_14_ListFromHost()
+        {
+            var host = await Host.Get(2);
+            Console.WriteLine($"ActivityStream for ([{host.Id}][{host.Type}] {host.Name})");
+            await foreach(var activity in ActivityStream.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_15_ListFromJobTemplate()
+        {
+            var jt = await JobTemplate.Get(9);
+            Console.WriteLine($"ActivityStream for ([{jt.Id}][{jt.Type}] {jt.Name})");
+            await foreach(var activity in ActivityStream.FindFromJobTemplate(jt.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_16_ListFromJobTemplateJob()
+        {
+            var job = await JobTemplateJob.Get(40);
+            Console.WriteLine($"ActivityStream for ([{job.Id}][{job.Type}] {job.Name})");
+            await foreach(var activity in ActivityStream.FindFromJob(job.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_17_ListFromAdHoCommand()
+        {
+            var cmd = await AdHocCommand.Get(69);
+            Console.WriteLine($"ActivityStream for ([{cmd.Id}][{cmd.Type}] {cmd.Name})");
+            await foreach(var activity in ActivityStream.FindFromAdHocCommand(cmd.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_18_ListFromWorkflowJobTemplate()
+        {
+            var wjt = await WorkflowJobTemplate.Get(13);
+            Console.WriteLine($"ActivityStream for ([{wjt.Id}][{wjt.Type}] {wjt.Name})");
+            await foreach(var activity in ActivityStream.FindFromWorkflowJobTemplate(wjt.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_19_ListFromWorkflowJob()
+        {
+            var wjt = await WorkflowJob.Get(51);
+            Console.WriteLine($"ActivityStream for ([{wjt.Id}][{wjt.Type}] {wjt.Name})");
+            await foreach(var activity in ActivityStream.FindFromWorkflowJob(wjt.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
+        [TestMethod]
+        public async Task Get_20_ListFromExecutionEnvironment()
+        {
+            var ee = await ExecutionEnvironment.Get(1);
+            Console.WriteLine($"ActivityStream for ([{ee.Id}][{ee.Type}] {ee.Name})");
+            await foreach(var activity in ActivityStream.FindFromExecutionEnvironment(ee.Id))
+            {
+                Assert.IsInstanceOfType<ActivityStream>(activity);
+                Console.WriteLine($"[{activity.Timestamp}] {activity.Operation}@{activity.SummaryFields.Actor?.Username} [{activity.Object1}, {activity.Object2}]");
+            }
+        }
     }
     [TestClass]
     public class Test_Application
@@ -320,6 +510,24 @@ namespace API_Test
             }
             Assert.AreEqual(expectCount, c);
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(Application app in Application.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Application>(app);
+                Console.WriteLine($"{app.Id,5:d}: {app.Name} {app.Description}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var app in Application.FindFromUser(1, null))
+            {
+                Assert.IsInstanceOfType<Application>(app);
+                Console.WriteLine($"{app.Id,5:d}: {app.Name} {app.Description}");
+            }
+        }
 
     }
 
@@ -357,6 +565,46 @@ namespace API_Test
                 DumpToken(token);
                 DumpSummary(token.SummaryFields);
                 Console.WriteLine();
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromApplication()
+        {
+            await foreach(var token in OAuth2AccessToken.FindFromApplication(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var token in OAuth2AccessToken.FindFromUser(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListPersonalTokensFromUser()
+        {
+            await foreach(var token in OAuth2AccessToken.FindPersonalTokensFromUser(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListAuthorizedTokensFromUser()
+        {
+            await foreach(var token in OAuth2AccessToken.FindAuthorizedTokensFromUser(1))
+            {
+                Assert.IsInstanceOfType<OAuth2AccessToken>(token);
+                Console.WriteLine($"[{token.Id}] {token.Scope} User:[{token.User}]{token.SummaryFields.User.Username}]" +
+                    (token.Application > 0 ? $" App:[{token.Application}]{token.SummaryFields.Application?.Name}" : ""));
             }
         }
     }
@@ -425,6 +673,15 @@ namespace API_Test
             }
             Assert.IsTrue(c <= expectCount);
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInstanceGroup()
+        {
+            await foreach(var inst in Instance.FindFromInstanceGroup(1))
+            {
+                Assert.IsInstanceOfType<Instance>(inst);
+                Console.WriteLine($"[{inst.Id}] {inst.Hostname} {inst.NodeType} {inst.NodeState}");
+            }
+        }
     }
     [TestClass]
     public class Test_InstanceGroup
@@ -486,6 +743,71 @@ namespace API_Test
             }
             Assert.IsTrue(c <= expectCount);
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInstance()
+        {
+            await foreach (var ig in InstanceGroup.FindFromInstance(1))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromOranization()
+        {
+            await foreach (var ig in InstanceGroup.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromInventory()
+        {
+            await foreach (var ig in InstanceGroup.FindFromInventory(2))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromJobTemplate()
+        {
+            await foreach (var ig in InstanceGroup.FindFromJobTemplate(7))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromSchedule()
+        {
+            await foreach (var ig in InstanceGroup.FindFromSchedule(8))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_8_ListFromWorkflowJobTemplateNode()
+        {
+            await foreach (var ig in InstanceGroup.FindFromWorkflowJobTemplateNode(4))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_9_ListFromWorkflowJobNode()
+        {
+            await foreach (var ig in InstanceGroup.FindFromWorkflowJobNode(7))
+            {
+                Assert.IsInstanceOfType<InstanceGroup>(ig);
+                Console.WriteLine($"[{ig.Id}] {ig.Name} Instances = {ig.Instances}");
+            }
+        }
     }
     [TestClass]
     public class Test_Organization
@@ -504,7 +826,7 @@ namespace API_Test
                 Console.WriteLine($"  {key} [{val?.Id}] {val?.Name} - {val?.Description}");
             }
             Console.WriteLine($"RelatedFieldCounts:");
-            Console.WriteLine($"  {summary.RelatedFieldCouns}");
+            Console.WriteLine($"  {summary.RelatedFieldCounts}");
         }
         private static void DumpResource(Organization org)
         {
@@ -524,7 +846,7 @@ namespace API_Test
             Assert.IsInstanceOfType<Organization>(org);
             DumpResource(org);
             DumpSummary(org.SummaryFields);
-            Util.DumpObject(org);
+            // Util.DumpObject(org);
         }
         [TestMethod]
         public async Task Get_2_List()
@@ -541,6 +863,24 @@ namespace API_Test
                 DumpSummary(org.SummaryFields);
             }
             Assert.IsTrue(c <= expectCount);
+        }
+        [TestMethod]
+        public async Task Get_3_ListAdministeredFromUser()
+        {
+            await foreach (var org in Organization.FindAdministeredByUser(8))
+            {
+                Assert.IsInstanceOfType<Organization>(org);
+                Console.WriteLine($"[{org.Id}] {org.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach (var org in Organization.FindFromUser(8))
+            {
+                Assert.IsInstanceOfType<Organization>(org);
+                Console.WriteLine($"[{org.Id}] {org.Name}");
+            }
         }
 
     }
@@ -646,7 +986,42 @@ namespace API_Test
             var user = await User.GetMe();
             Assert.IsInstanceOfType<User>(user);
             DumpResource(user);
-            DumpSummary(user.SummaryFields);
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromOrganization()
+        {
+            await foreach(var user in User.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromTeam()
+        {
+            await foreach(var user in User.FindFromTeam(1))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListOwnersFromCredential()
+        {
+            await foreach(var user in User.FindOwnerFromCredential(1))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromRole()
+        {
+            await foreach(var user in User.FindFromRole(1))
+            {
+                Assert.IsInstanceOfType<User>(user);
+                Console.WriteLine($"[{user.Id}] {user.Username} {user.Email}");
+            }
         }
     }
     [TestClass]
@@ -719,6 +1094,40 @@ namespace API_Test
                 DumpResource(proj);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(var proj in Project.FindFromOrganization(1))
+            {
+                Assert.IsInstanceOfType<Project>(proj);
+                Console.WriteLine($"[{proj.Id}] {proj.Name} {proj.ScmType}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var proj in Project.FindFromUser(1))
+            {
+                Assert.IsInstanceOfType<Project>(proj);
+                Console.WriteLine($"[{proj.Id}] {proj.Name} {proj.ScmType}");
+            }
+
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromTeam()
+        {
+            await foreach(var proj in Project.FindFromTeam(1))
+            {
+                Assert.IsInstanceOfType<Project>(proj);
+                Console.WriteLine($"[{proj.Id}] {proj.Name} {proj.ScmType}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_GetInventoryFiles()
+        {
+            var files = await Project.GetInventoryFiles(8);
+            Console.WriteLine(string.Join('\n', files));
+        }
     }
 
     [TestClass]
@@ -778,6 +1187,16 @@ namespace API_Test
                 DumpSummary(job.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromProject()
+        {
+            await foreach(var job in ProjectUpdateJob.FindFromProject(8))
+            {
+                Assert.IsInstanceOfType<ProjectUpdateJob>(job);
+                Console.WriteLine($"[{job.Id}] {job.Name} {job.Finished}");
+                Console.WriteLine($"  {job.ScmType} {job.ScmRevision}");
+            }
+        }
     }
     [TestClass]
     public class Test_Team
@@ -824,6 +1243,72 @@ namespace API_Test
                 DumpResource(team);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(var team in Team.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromUser()
+        {
+            await foreach(var team in Team.FindFromUser(2))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromProject()
+        {
+            await foreach(var team in Team.FindFromProject(8))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_FindOwnerFromCredential()
+        {
+            await foreach(var team in Team.FindOwnerFromCredential(4))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_FindFromRole()
+        {
+            await foreach(var team in Team.FindFromRole(73))
+            {
+                Assert.IsInstanceOfType<Team>(team);
+                Console.WriteLine($"[{team.Id}] {team.Name}");
+                foreach(var role in team.SummaryFields.ObjectRoles.Values)
+                {
+                    Console.WriteLine($"  {role.Name}: {role.Description}");
+                }
+            }
+
+        }
     }
     [TestClass]
     public class Test_Credential
@@ -867,19 +1352,127 @@ namespace API_Test
         }
 
         [TestMethod]
-        public async Task Get_1_Single()
+        public async Task Get_01_Single()
         {
             var cred = await Credential.Get(2);
             Assert.IsInstanceOfType<Credential>(cred);
             DumpResource(cred);
         }
         [TestMethod]
-        public async Task Get_2_List()
+        public async Task Get_02_List()
         {
             var query = HttpUtility.ParseQueryString("page_size=10&order_by=id");
             await foreach(var cred in Credential.Find(query, false))
             {
                 DumpResource(cred);
+            }
+        }
+        [TestMethod]
+        public async Task Get_03_ListFromOrganization()
+        {
+            await foreach(var cred in Credential.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_04_ListGalaxyFromOrganization()
+        {
+            await foreach(var cred in Credential.FindGalaxyFromOrganization(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_05_ListFromUser()
+        {
+            await foreach(var cred in Credential.FindFromUser(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_06_ListFromTeam()
+        {
+            await foreach(var cred in Credential.FindFromTeam(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_07_ListFromCredentialType()
+        {
+            await foreach(var cred in Credential.FindFromCredentialType(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_08_ListFromInventorySource()
+        {
+            await foreach(var cred in Credential.FindFromInventorySource(17))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_09_ListFromInventoryUpdate()
+        {
+            await foreach(var cred in Credential.FindFromInventoryUpdateJob(75))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_10_ListFromJobTemplate()
+        {
+            await foreach(var cred in Credential.FindFromJobTemplate(7))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_11_ListFromJob()
+        {
+            await foreach(var cred in Credential.FindFromJobTemplateJob(4))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_12_ListFromSchedule()
+        {
+            await foreach(var cred in Credential.FindFromSchedule(6))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_13_ListFromWorkflowJobTemplateNode()
+        {
+            await foreach(var cred in Credential.FindFromWorkflowJobTemplateNode(1))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_14_ListFromWorkflowJobNode()
+        {
+            await foreach(var cred in Credential.FindFromWorkflowJobNode(8))
+            {
+                Assert.IsInstanceOfType<Credential>(cred);
+                Console.WriteLine($"[{cred.Id}][{cred.CredentialType}] {cred.Name}");
             }
         }
     }
@@ -979,6 +1572,25 @@ namespace API_Test
             await foreach(var inventory in Inventory.Find(query, false))
             {
                 DumpResource(inventory);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            await foreach(var inventory in Inventory.FindFromOrganization(2))
+            {
+                Assert.IsInstanceOfType<Inventory>(inventory);
+                Console.WriteLine($"[{inventory.Id}] {inventory.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListInputInventires()
+        {
+            Console.WriteLine("Inventory [4]'s Inpput Inventories:");
+            await foreach(var inventory in Inventory.FindInputInventoires(4))
+            {
+                Assert.IsInstanceOfType<Inventory>(inventory);
+                Console.WriteLine($"[{inventory.Id}] {inventory.Name}");
             }
         }
     }
@@ -1085,6 +1697,50 @@ namespace API_Test
                 DumpResource(res);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromProject()
+        {
+            var proj = await Project.Get(8);
+            Console.WriteLine($"Scm InventorySources for ([{proj.Type}][{proj.Id}] {proj.Name})");
+            await foreach(var res in InventorySource.FindFromProject(8))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(4);
+            Console.WriteLine($"InventorySources for ([{inventory.Type}][{inventory.Id}] {inventory.Name})");
+            await foreach(var res in InventorySource.FindFromInventory(4))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromGroup()
+        {
+            var group = await Group.Get(4);
+            Console.WriteLine($"InventorySources for ([{group.Type}][{group.Id}] {group.Name})");
+            await foreach(var res in InventorySource.FindFromGroup(4))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"InventorySources for ([{host.Type}][{host.Id}] {host.Name})");
+            await foreach(var res in InventorySource.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<InventorySource>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name}");
+            }
+        }
     }
     [TestClass]
     public class Test_InventoryUpdate
@@ -1124,7 +1780,7 @@ namespace API_Test
         public async Task Get_1_Single()
         {
             var res = await InventoryUpdateJob.Get(46);
-            Assert.IsInstanceOfType<InventoryUpdateJob>(res);
+            Assert.IsInstanceOfType<InventoryUpdateJob.Detail>(res);
             Assert.IsInstanceOfType<IUnifiedJob>(res);
             DumpResource(res);
         }
@@ -1134,6 +1790,28 @@ namespace API_Test
             await foreach(var res in InventoryUpdateJob.Find(HttpUtility.ParseQueryString("order_by=id")))
             {
                 DumpResource(res);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromProjectUpdate()
+        {
+            var projectUpdateJob = await ProjectUpdateJob.Get(76);
+            Console.WriteLine($"InventoryUpdateJobs for ([{projectUpdateJob.Id}][{projectUpdateJob.Type}] {projectUpdateJob.Name})");
+            await foreach(var res in InventoryUpdateJob.FindFromProjectUpdate(projectUpdateJob.Id))
+            {
+                Assert.IsInstanceOfType<InventoryUpdateJob>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name} {res.Status} {res.Finished}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromInventorySource()
+        {
+            var inventorySource = await InventorySource.Get(11);
+            Console.WriteLine($"InventoryUpdateJobs for ([{inventorySource.Id}][{inventorySource.Type}] {inventorySource.Name})");
+            await foreach(var res in InventoryUpdateJob.FindFromInventorySource(inventorySource.Id))
+            {
+                Assert.IsInstanceOfType<InventoryUpdateJob>(res);
+                Console.WriteLine($"[{res.Id}] {res.Name} {res.Status} {res.Finished}");
             }
         }
     }
@@ -1178,6 +1856,61 @@ namespace API_Test
                 DumpResource(group);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(2);
+            Console.WriteLine($"Groups in [{inventory.Type}][{inventory.Id}] {inventory.Name}");
+            await foreach(var group in Group.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListOnlyRootFromInventory()
+        {
+            var inventory = await Inventory.Get(2);
+            Console.WriteLine($"Groups in [{inventory.Type}][{inventory.Id}] {inventory.Name}");
+            await foreach(var group in Group.FindOnlyRootFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromInventorySource()
+        {
+            var inventorySOurce = await InventorySource.Get(11);
+            Console.WriteLine($"Groups in [{inventorySOurce.Type}][{inventorySOurce.Id}] {inventorySOurce.Name}");
+            await foreach(var group in Group.FindFromInventorySource(inventorySOurce.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListAllFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"Groups in [{host.Type}][{host.Id}] {host.Name}");
+            await foreach(var group in Group.FindAllFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_ListFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"Groups in [{host.Type}][{host.Id}] {host.Name}");
+            await foreach(var group in Group.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<Group>(group);
+                Console.WriteLine($"[{group.Id}] {group.Name}");
+            }
+        }
     }
     [TestClass]
     public class Test_Host
@@ -1211,6 +1944,9 @@ namespace API_Test
             {
                 Console.WriteLine($"  [{job.Id}] {job.Name} {job.Status} {job.Finished}");
             }
+            if (summary.LastJob != null) {
+                Console.WriteLine($"LastJob: [{summary.LastJob.Id}] {summary.LastJob.Name} [{summary.LastJob.JobTemplateId}]{summary.LastJob.JobTemplateName}");
+            }
             Console.WriteLine();
 
         }
@@ -1228,6 +1964,50 @@ namespace API_Test
             await foreach(var host in Host.Find(query, false))
             {
                 DumpResource(host);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(2);
+            Console.WriteLine($"Hosts in [{inventory.Type}][{inventory.Id}] {inventory.Name}");
+            await foreach(var host in Host.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromInventorySource()
+        {
+            var inventorySOurce = await InventorySource.Get(11);
+            Console.WriteLine($"Hosts in [{inventorySOurce.Type}][{inventorySOurce.Id}] {inventorySOurce.Name}");
+            await foreach(var host in Host.FindFromInventorySource(inventorySOurce.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListAllFromHost()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"Groups in [{group.Type}][{group.Id}] {group.Name}");
+            await foreach(var host in Host.FindAllFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_ListFromHost()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"Groups in [{group.Type}][{group.Id}] {group.Name}");
+            await foreach(var host in Host.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<Host>(host);
+                Console.WriteLine($"[{host.Id}] {host.Name}");
             }
         }
     }
@@ -1252,7 +2032,7 @@ namespace API_Test
         {
             Console.WriteLine("-----SummaryFields-----");
             Console.WriteLine($"Organization  : [{summary.Organization.Id}] {summary.Organization.Name}");
-            Console.WriteLine($"Inventory     : [{summary.Inventory.Id}][{summary.Inventory.Kind}] {summary.Inventory.Name}");
+            Console.WriteLine($"Inventory     : [{summary.Inventory?.Id}][{summary.Inventory?.Kind}] {summary.Inventory?.Name}");
             Console.WriteLine($"Project       : [{summary.Project.Id}][{summary.Project.ScmType}] {summary.Project.Name}");
             Console.WriteLine($"LastJob       : [{summary.LastJob?.Id}] {summary.LastJob?.Name} {summary.LastJob?.Status} {summary.LastJob?.Finished}");
             Console.WriteLine($"LastUpdate    : [{summary.LastUpdate?.Id}] {summary.LastUpdate?.Name} {summary.LastUpdate?.Status}");
@@ -1264,7 +2044,7 @@ namespace API_Test
                 Console.WriteLine($"  {key} [{val?.Id}] {val?.Name} - {val?.Description}");
             }
             Console.WriteLine($"Caps               : {summary.UserCapabilities}");
-            Console.WriteLine($"ResolvedEnv   : [{summary.ResolvedEnvironment?.Id}] {summary.ResolvedEnvironment?.Name}");
+            Console.WriteLine($"ResolvedEnv   : [{summary.ExecutionEnvironment?.Id}] {summary.ExecutionEnvironment?.Name}");
             Console.WriteLine($"RecentJobs    : ({summary.RecentJobs.Length})");
             foreach (var job in summary.RecentJobs)
             {
@@ -1288,6 +2068,28 @@ namespace API_Test
             await foreach(var jt in JobTemplate.Find(query, false))
             {
                 DumpResource(jt);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            var org = await Organization.Get(2);
+            Console.WriteLine($"JobTemplates in ({org.Type})[{org.Id}] {org.Name}");
+            await foreach (var jt in JobTemplate.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<JobTemplate>(jt);
+                Console.WriteLine($"[{jt.Id}] {jt.Name} {jt.Status}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_listFromInventory()
+        {
+            var inv = await Inventory.Get(2);
+            Console.WriteLine($"JobTemplates in ({inv.Type})[{inv.Id}] {inv.Name}");
+            await foreach (var jt in JobTemplate.FindFromInventory(inv.Id))
+            {
+                Assert.IsInstanceOfType<JobTemplate>(jt);
+                Console.WriteLine($"[{jt.Id}] {jt.Name} {jt.Status}");
             }
         }
     }
@@ -1370,6 +2172,18 @@ namespace API_Test
             }
         }
         [TestMethod]
+        public async Task Get_3_ListFromJobtemplate()
+        {
+            var jt = await JobTemplate.Get(9);
+            Console.WriteLine($"Jobs in ({jt.Type})[{jt.Id}] {jt.Name}");
+            await foreach (var job in JobTemplateJob.FindFromJobTemplate(jt.Id))
+            {
+                Assert.IsInstanceOfType<JobTemplateJob>(job);
+                Console.WriteLine($"[{job.Id}] {job.Status} {job.Finished} {job.LaunchedBy}");
+            }
+        }
+
+        [TestMethod]
         public async Task JobLogTest_Text()
         {
             var apiResult = await RestAPI.GetAsync<string>($"/api/v2/jobs/{jobId}/stdout/", AcceptType.Text);
@@ -1437,17 +2251,190 @@ namespace API_Test
             Console.WriteLine($"Role        : {{{summary.Role.Count}}}");
             Console.WriteLine();
         }
+
         [TestMethod]
-        public async Task Get_1_Jobs()
+        public async Task Get_1_FindFromJob()
         {
+            var job = await JobTemplateJob.Get(40);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
             var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
-            await foreach (var job in JobTemplateJob.Find(HttpUtility.ParseQueryString("order_by=-id&page_size=1"), false))
+            await foreach(var je in JobEvent.FindFromJob(job.Id, eventQuery))
             {
-                Console.WriteLine($"{job.Id} {job.Name}");
-                await foreach(var e in JobEvent.Find(job, eventQuery, false))
+                Assert.IsInstanceOfType<JobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
                 {
-                    DumpResource(e);
+                    Console.WriteLine(je.Stdout);
                 }
+            }
+        }
+        [TestMethod]
+        public async Task Get_2_FindFromGroup()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"JobEvents in ({group.Type})[{group.Id}] {group.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=job,counter");
+            await foreach(var je in JobEvent.FindFromGroup(group.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<JobEvent>(je);
+                Console.WriteLine($"{je.Job} [{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_FindFromHost()
+        {
+            var host = await Host.Get(2);
+            Console.WriteLine($"JobEvents in ({host.Type})[{host.Id}] {host.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=job,counter");
+            await foreach(var je in JobEvent.FindFromHost(host.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<JobEvent>(je);
+                Console.WriteLine($"{je.Job} [{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ProjectUpdate()
+        {
+            var job = await ProjectUpdateJob.Get(76);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
+            await foreach(var je in ProjectUpdateJobEvent.FindFromProjectUpdateJob(job.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<ProjectUpdateJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventLevel} {je.EventDisplay} {je.Task}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_InventoryUpdate()
+        {
+            var job = await InventoryUpdateJob.Get(43);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
+            await foreach(var je in InventoryUpdateJobEvent.FindFromInventoryUpdateJob(job.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<InventoryUpdateJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventDisplay}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_6_SystemJob()
+        {
+            var job = await SystemJob.Get(80);
+            Console.WriteLine($"JobEvents in ({job.Type})[{job.Id}] {job.Name}");
+            var eventQuery = HttpUtility.ParseQueryString("order_by=counter");
+            await foreach(var je in SystemJobEvent.FindFromSystemJob(job.Id, eventQuery))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<SystemJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventDisplay}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+        [TestMethod]
+        public async Task Get_7_AdHocCommandEvent()
+        {
+            var cmd = await AdHocCommand.Get(69);
+            Console.WriteLine($"AdHocCommand in ({cmd.Type})[{cmd.Id}] {cmd.Name} {cmd.Status}");
+            await foreach(var je in AdHocCommandJobEvent.FindFromAdHocCommand(cmd.Id))
+            {
+                Assert.IsInstanceOfType<IJobEventBase>(je);
+                Assert.IsInstanceOfType<AdHocCommandJobEvent>(je);
+                Console.WriteLine($"[{je.Id}][{je.Counter}] {je.EventDisplay}");
+                if (!string.IsNullOrEmpty(je.Stdout))
+                {
+                    Console.WriteLine(je.Stdout);
+                }
+            }
+        }
+    }
+
+    [TestClass]
+    public class Test_JobHostSummary
+    {
+        private static void DumpResource(JobHostSummary res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} [{res.Host}]{res.HostName} [Job:{res.Job}]");
+            Console.WriteLine($"  OK        : {res.OK}");
+            Console.WriteLine($"  Changed   : {res.Changed}");
+            Console.WriteLine($"  Failed    : {res.Failures}");
+            Console.WriteLine($"  Skiped    : {res.Skipped}");
+            Console.WriteLine($"  Ignored   : {res.Ignored}");
+            Console.WriteLine($"  Proecessed: {res.Processed}");
+            Console.WriteLine($"  Dark      : {res.Dark}");
+        }
+        private static void DumpSummary(JobHostSummary.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"Job         : [{summary.Job.Id}] {summary.Job.Name}");
+            Console.WriteLine($"JobTemplate : [{summary.Job.JobTemplateId}] {summary.Job.JobTemplateName}");
+            Console.WriteLine($"Host        : [{summary.Host?.Id}] {summary.Host?.Name}");
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            var res = await JobHostSummary.Get(1);
+            Assert.IsInstanceOfType<JobHostSummary>(res);
+            DumpResource(res);
+            DumpSummary(res.SummaryFields);
+        }
+        [TestMethod]
+        public async Task Get_2_ListFromGroup()
+        {
+            var group = await Group.Get(1);
+            Console.WriteLine($"JobHostSummaries in ({group.Type})[{group.Id}] {group.Name}");
+            await foreach(var summary in JobHostSummary.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<JobHostSummary>(summary);
+                Console.WriteLine($"{summary.Job} [{summary.Id}][{summary.Host}] {summary.HostName}");
+                Console.WriteLine($"  OK={summary.OK} Changed={summary.Changed} Failures={summary.Failures}");
+                Console.WriteLine($"  Rescued{summary.Rescued} Skipped={summary.Skipped}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromHost()
+        {
+            var host = await Host.Get(2);
+            Console.WriteLine($"JobHostSummaries in ({host.Type})[{host.Id}] {host.Name}");
+            await foreach(var summary in JobHostSummary.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<JobHostSummary>(summary);
+                Console.WriteLine($"{summary.Job} [{summary.Id}][{summary.Host}] {summary.HostName}");
+                Console.WriteLine($"  OK={summary.OK} Changed={summary.Changed} Failures={summary.Failures}");
+                Console.WriteLine($"  Rescued{summary.Rescued} Skipped={summary.Skipped}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromJob()
+        {
+            var job = await JobTemplateJob.Get(4);
+            Console.WriteLine($"JobHostSummaries in ({job.Type})[{job.Id}] {job.Name}");
+            await foreach(var summary in JobHostSummary.FindFromJob(job.Id))
+            {
+                Assert.IsInstanceOfType<JobHostSummary>(summary);
+                Console.WriteLine($"{summary.Job} [{summary.Id}][{summary.Host}] {summary.HostName}");
+                Console.WriteLine($"  OK={summary.OK} Changed={summary.Changed} Failures={summary.Failures}");
+                Console.WriteLine($"  Rescued{summary.Rescued} Skipped={summary.Skipped}");
             }
         }
     }
@@ -1488,6 +2475,39 @@ namespace API_Test
             await foreach (var res in AdHocCommand.Find(query, false))
             {
                 DumpResource(res);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromInventory()
+        {
+            var inventory = await Inventory.Get(1);
+            Console.WriteLine($"AdHocCommands in ({inventory.Type})[{inventory.Id}] {inventory.Name}");
+            await foreach(var cmd in AdHocCommand.FindFromInventory(inventory.Id))
+            {
+                Assert.IsInstanceOfType<AdHocCommand>(cmd);
+                Console.WriteLine($"[{cmd.Id}] {cmd.Name}[{cmd.Status}] {cmd.Finished}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_4_ListFromFroup()
+        {
+            var group = await Group.Get(5);
+            Console.WriteLine($"AdHocCommands in ({group.Type})[{group.Id}] {group.Name}");
+            await foreach(var cmd in AdHocCommand.FindFromGroup(group.Id))
+            {
+                Assert.IsInstanceOfType<AdHocCommand>(cmd);
+                Console.WriteLine($"[{cmd.Id}] {cmd.Name}[{cmd.Status}] {cmd.Finished}");
+            }
+        }
+        [TestMethod]
+        public async Task Get_5_ListFromHost()
+        {
+            var host = await Host.Get(3);
+            Console.WriteLine($"AdHocCommands in ({host.Type})[{host.Id}] {host.Name}");
+            await foreach(var cmd in AdHocCommand.FindFromHost(host.Id))
+            {
+                Assert.IsInstanceOfType<AdHocCommand>(cmd);
+                Console.WriteLine($"[{cmd.Id}] {cmd.Name}[{cmd.Status}] {cmd.Finished}");
             }
         }
     }
@@ -2003,6 +3023,17 @@ namespace API_Test
                 DumpSummary(res.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            var org = await Organization.Get(2);
+            Console.WriteLine($"WorkflowJobTemplate in ({org.Type})[{org.Id}]{org.Name}");
+            await foreach(var wjt in WorkflowJobTemplate.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<WorkflowJobTemplate>(wjt);
+                Console.WriteLine($"[{wjt.Id}] {wjt.Name} [{wjt.Status}]");
+            }
+        }
     }
 
     [TestClass]
@@ -2041,6 +3072,17 @@ namespace API_Test
                 Assert.IsInstanceOfType<WorkflowJob>(res);
                 DumpResource(res);
                 DumpSummary(res.SummaryFields);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromWorkflowJobTemplate()
+        {
+            var wjt = await WorkflowJobTemplate.Get(13);
+            Console.WriteLine($"WorkflowJobTemplate in ({wjt.Type})[{wjt.Id}]{wjt.Name}");
+            await foreach(var job in WorkflowJob.FindFromWorkflowJobTemplate(wjt.Id))
+            {
+                Assert.IsInstanceOfType<WorkflowJob>(job);
+                Console.WriteLine($"[{job.Id}] {job.Name} [{job.Status}] [{job.Finished}]");
             }
         }
     }
@@ -2099,7 +3141,7 @@ namespace API_Test
         static void DumpSummary(WorkflowJobNode.Summary summary)
         {
             Console.WriteLine("-----SummaryFields-----");
-            Console.WriteLine($"Job             : [{summary.Job.Id}][{summary.Job.Type}] {summary.Job.Status} {summary.Job.Name}");
+            Console.WriteLine($"Job             : [{summary.Job?.Id}][{summary.Job?.Type}] {summary.Job?.Status} {summary.Job?.Name}");
             Console.WriteLine($"WorkflowJob     : [{summary.WorkflowJob.Id}] {summary.WorkflowJob.Name}");
             Console.WriteLine($"UnifiedTemplate : [{summary.UnifiedJobTemplate.Id}][{summary.UnifiedJobTemplate.UnifiedJobType}] {summary.UnifiedJobTemplate.Name}");
             Console.WriteLine();
@@ -2122,6 +3164,58 @@ namespace API_Test
                 DumpResource(res);
                 DumpSummary(res.SummaryFields);
             }
+        }
+    }
+
+    [TestClass]
+    public class Test_CredentialInputSource
+    {
+        static void DumpResource(CredentialInputSource res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Description}");
+            Console.WriteLine($"  InputFieldName  : {res.InputFieldName}");
+            Console.WriteLine($"  SourceCredential: {res.SourceCredential}");
+            Console.WriteLine($"  TargetCredential: {res.TargetCredential}");
+        }
+        static void DumpSummary(CredentialInputSource.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"SourceCredential: {summary.SourceCredential}");
+            Console.WriteLine($"TargetCredential: {summary.TargetCredential}");
+            Console.WriteLine($"CreatedBy       : {summary.CreatedBy}");
+            Console.WriteLine($"ModifiedBy      : {summary.ModifiedBy}");
+            Console.WriteLine($"Caps            : {summary.UserCapabilities}");
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            var res = await CredentialInputSource.Get(1);
+            Assert.IsInstanceOfType<CredentialInputSource>(res);
+            DumpResource(res);
+            DumpSummary(res.SummaryFields);
+        }
+        [TestMethod]
+        public async Task Get_2_List()
+        {
+            var query = HttpUtility.ParseQueryString("page_size=10&order_by=id");
+            await foreach (var res in CredentialInputSource.Find(query, false))
+            {
+                Assert.IsInstanceOfType<CredentialInputSource>(res);
+                DumpResource(res);
+                DumpSummary(res.SummaryFields);
+            }
+        }
+        [TestMethod]
+        public async Task Get_3_ListFromCredential()
+        {
+            var cred = await Credential.Get(7);
+            Console.WriteLine($"Credential for ([{cred.Id}][{cred.Type}] {cred.Name})");
+            await foreach (var cis in CredentialInputSource.FindFromCredential(cred.Id))
+            {
+                Assert.IsInstanceOfType<CredentialInputSource>(cis);
+                Console.WriteLine($"[{cis.Id}] Source:{cis.SourceCredential} Target:{cis.TargetCredential}");
+            }
+
         }
     }
 
@@ -2159,8 +3253,104 @@ namespace API_Test
                 DumpSummary(res.SummaryFields);
             }
         }
+        [TestMethod]
+        public async Task Get_3_ListFromOrganization()
+        {
+            var org = await Organization.Get(2);
+            Console.WriteLine($"ActivityStream for ([{org.Id}][{org.Type}] {org.Name})");
+            await foreach (var exeEnv in ExecutionEnvironment.FindFromOrganization(org.Id))
+            {
+                Assert.IsInstanceOfType<ExecutionEnvironment>(exeEnv);
+                Console.WriteLine($"[{exeEnv.Id}] {exeEnv.Name} {exeEnv.Image}");
+            }
+        }
     }
 
+    [TestClass]
+    public class Test_Metrics
+    {
+        [TestMethod]
+        public async Task Get_Metrics()
+        {
+            var apiResult = await RestAPI.GetAsync<Metrics>(Metrics.PATH);
+            foreach (var (key, value) in apiResult.Contents)
+            {
+                Console.WriteLine($"{key}:");
+                Console.WriteLine($"    {value}");
+            }
+        }
+    }
+
+    [TestClass]
+    public class Test_WorkflowApprovalTemplate
+    {
+        static void DumpResource(WorkflowApprovalTemplate res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Name} {res.Description}");
+            Console.WriteLine($"Timeout: {res.Timeout}");
+        }
+        static void DumpSummary(WorkflowApprovalTemplate.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"WorkflowJobTemplate: {summary.WorkflowJobTemplate}");
+            Console.WriteLine();
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            await foreach(var approval in WorkflowApproval.Find(HttpUtility.ParseQueryString("order_by=-id&page_size=1"), false))
+            {
+                Console.WriteLine($"WorkflowApproval: [{approval.Id}]{approval.Name}");
+                Console.WriteLine($"Workflow: [{approval.SummaryFields.WorkflowJobTemplate.Id}]{approval.SummaryFields.WorkflowApprovalTemplate.Name}");
+                var res = await WorkflowApprovalTemplate.Get(approval.UnifiedJobTemplate);
+                Assert.IsInstanceOfType<WorkflowApprovalTemplate>(res);
+                DumpResource(res);
+                DumpSummary(res.SummaryFields);
+            }
+        }
+    }
+
+    [TestClass]
+    public class Test_WorkflowApproval
+    {
+        static void DumpResource(WorkflowApproval res)
+        {
+            Console.WriteLine($"{res.Id} {res.Type} {res.Name} {res.Description}");
+            Console.WriteLine($"  {res.Status} {res.Finished}");
+        }
+        static void DumpSummary(WorkflowApproval.Summary summary)
+        {
+            Console.WriteLine("-----SummaryFields-----");
+            Console.WriteLine($"WorkflowJobTemplate     : {summary.WorkflowJobTemplate}");
+            Console.WriteLine($"WorkflowApprovalTemplate: {summary.WorkflowApprovalTemplate}");
+            Console.WriteLine($"WorkflowJob             : {summary.WorkflowJob}");
+            Console.WriteLine($"SourceWorkflowJob       : {summary.SourceWorkflowJob}");
+            Console.WriteLine();
+        }
+        [TestMethod]
+        public async Task Get_1_Single()
+        {
+            var query = HttpUtility.ParseQueryString("order_by=-id&page_size=1");
+            await foreach(var res in WorkflowApproval.Find(query, false))
+            {
+                var detail = await WorkflowApproval.Get(res.Id);
+                Assert.IsInstanceOfType<WorkflowApproval.Detail>(detail);
+                DumpResource(detail);
+                DumpSummary(detail.SummaryFields);
+            }
+        }
+        [TestMethod]
+        public async Task Get_2_Find()
+        {
+            var query = HttpUtility.ParseQueryString("order_by=-id&page_size=2");
+            await foreach(var res in WorkflowApproval.Find(query, false))
+            {
+                Assert.IsInstanceOfType<WorkflowApproval>(res);
+                DumpResource(res);
+                DumpSummary(res.SummaryFields);
+            }
+        }
+    }
 
     [TestClass]
     public class Test_Config

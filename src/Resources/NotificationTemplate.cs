@@ -35,7 +35,7 @@ namespace AWX.Resources
         NotificationType NotificationType { get; }
         [JsonPropertyName("notification_configuration")]
         OrderedDictionary NotificationConfiguration { get; }
-        NotificationMessages? Messages { get; }
+        Messages? Messages { get; }
     }
 
     public class NotificationTemplate(ulong id,
@@ -50,22 +50,35 @@ namespace AWX.Resources
                                       ulong organization,
                                       NotificationType notificationType,
                                       OrderedDictionary notificationConfiguration,
-                                      NotificationMessages? messages)
+                                      Messages? messages)
                 : INotificationTemplate, IResource<NotificationTemplate.Summary>
     {
         public const string PATH = "/api/v2/notification_templates/";
+        /// <summary>
+        /// Retrieve a Notification Template.<br/>
+        /// API Path: <c>/api/v2/notification_templates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<NotificationTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<NotificationTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Notification Templates.<br/>
+        /// API Path: <c>/api/v2/notification_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<NotificationTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<NotificationTemplate>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var notificationTemplate in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return notificationTemplate;
                 }
             }
         }
@@ -90,36 +103,26 @@ namespace AWX.Resources
         public ulong Organization { get; } = organization;
         public NotificationType NotificationType { get; } = notificationType;
         public OrderedDictionary NotificationConfiguration { get; } = notificationConfiguration;
-        public NotificationMessages? Messages { get; } = messages;
+        public Messages? Messages { get; } = messages;
     }
 
-    public class NotificationMessages(NotificationMessage error,
-                                      NotificationMessage started,
-                                      NotificationMessage success,
-                                      NotificationWorkflowApprovalMessages workflowApproval)
-    {
-        public NotificationMessage Error { get; } = error;
-        public NotificationMessage Started { get; } = started;
-        public NotificationMessage Success { get; } = success;
-        [JsonPropertyName("workflow_approval")]
-        public NotificationWorkflowApprovalMessages WorkflowApproval { get; } = workflowApproval;
-    }
+    public record Messages(
+        NMessage Error,
+        NMessage Started,
+        NMessage Success,
+        [property: JsonPropertyName("workflow_approval")]
+        ApprovalMessages WorkflowApproval
+    );
 
-    public class NotificationWorkflowApprovalMessages(NotificationMessage denied,
-                                                      NotificationMessage running,
-                                                      NotificationMessage approved,
-                                                      NotificationMessage timedOut)
-    {
-        public NotificationMessage Denied { get; } = denied;
-        public NotificationMessage Running { get; } = running;
-        public NotificationMessage Approved { get; } = approved;
-        [JsonPropertyName("timed_out")]
-        public NotificationMessage TimedOut { get; } = timedOut;
-    }
+    public record ApprovalMessages(
+        NMessage Denied,
+        NMessage Running,
+        NMessage Approved,
+        NMessage TimedOut
+    );
 
-    public class NotificationMessage(string body, string? message)
-    {
-        public string Body { get; } = body;
-        public string? Message { get; } = message;
-    }
+    public record NMessage(
+        string Body,
+        string? Message
+    );
 }

@@ -78,21 +78,56 @@ namespace AWX.Resources
         : IInstance, IResource<Instance.Summary>
     {
         public const string PATH = "/api/v2/instances/";
+        /// <summary>
+        /// Retrieve an Instance.<br/>
+        /// API Path: <c>/api/v2/instances/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Instance> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Instance>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Instances.<br/>
+        /// API Path: <c>/api/v2/instances/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Instance> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<Instance>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var instance in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return instance;
                 }
             }
         }
+        /// <summary>
+        /// List instances for an Instance Group<br/>
+        /// API Path: <c>/api/v2/instance_groups/<paramref name="instanceGroupId"/>/instances/</c>
+        /// </summary>
+        /// <param name="instanceGroupId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Instance> FindFromInstanceGroup(ulong instanceGroupId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{InstanceGroup.PATH}{instanceGroupId}/instances/";
+            await foreach (var result in RestAPI.GetResultSetAsync<Instance>(path, query, getAll))
+            {
+                foreach (var instance in result.Contents.Results)
+                {
+                    yield return instance;
+                }
+            }
+        }
+
         public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
         public ulong Id { get; } = id;

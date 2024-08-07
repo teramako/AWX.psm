@@ -119,7 +119,7 @@ namespace AWX.Resources
                                     JobStatus status, ulong? executionEnvironment, string controllerNode, bool failed,
                                     DateTime? started, DateTime? finished, DateTime? canceledOn, double elapsed,
                                     string jobExplanation, string executionNode, LaunchedBy launchedBy,
-                                    string workUnitId, InventorySourceSource source, string sourcePath,
+                                    string? workUnitId, InventorySourceSource source, string sourcePath,
                                     string sourceVars, string scmBranch, ulong? credential, string enabledVar,
                                     string enabledValue, string hostFilter, bool overwrite, bool overwriteVars,
                                     string? customVirtualenv, int timeout, int verbosity, string limit, ulong inventory,
@@ -131,32 +131,121 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/inventory_updates/";
 
-        public static async Task<InventoryUpdateJob> Get(ulong id)
+        /// <summary>
+        /// Retrieve an Inventory Update.<br/>
+        /// API Path: <c>/api/v2/inventory_updates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static new async Task<Detail> Get(ulong id)
         {
-            var apiResult = await RestAPI.GetAsync<InventoryUpdateJob>($"{PATH}{id}/");
+            var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Inventory Updates.<br/>
+        /// API Path: <c>/api/v2/inventory_updates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<InventoryUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return inventoryUpdateJob;
                 }
             }
         }
+        /// <summary>
+        /// List Inventory Updadates for a Project Update.<br/>
+        /// API Path: <c>/api/v2/project_update/<paramref name="projectUpdateId"/>/scm_inventory_updates/</c>
+        /// </summary>
+        /// <param name="projectUpdateId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventoryUpdateJob> FindFromProjectUpdate(ulong projectUpdateId,
+                                                                                       NameValueCollection? query = null,
+                                                                                       bool getAll = false)
+        {
+            var path = $"{ProjectUpdateJob.PATH}{projectUpdateId}/scm_inventory_updates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            {
+                foreach(var inventoryUpdateJob in result.Contents.Results)
+                {
+                    yield return inventoryUpdateJob;
+                }
+            }
+        }
+        /// <summary>
+        /// List Inventory Updadates for an Inventory Source.<br/>
+        /// API Path: <c>/api/v2/nventory_sources/<paramref name="inventorySourceId"/>/inventory_updates/</c>
+        /// </summary>
+        /// <param name="inventorySourceId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventoryUpdateJob> FindFromInventorySource(ulong inventorySourceId,
+                                                                                         NameValueCollection? query = null,
+                                                                                         bool getAll = false)
+        {
+            var path = $"{Resources.InventorySource.PATH}{inventorySourceId}/inventory_updates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            {
+                foreach(var inventoryUpdateJob in result.Contents.Results)
+                {
+                    yield return inventoryUpdateJob;
+                }
+            }
+        }
+
+
         public record Summary(
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
             [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
+            CredentialSummary? Credential,
+            ScheduleSummary? Schedule,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("inventory_source")] InventorySourceSummary InventorySource,
             [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            CredentialSummary[] Credentials);
+            CredentialSummary[] Credentials,
+            [property: JsonPropertyName("source_project")] ProjectSummary? SourceProject);
 
+        public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
+                            DateTime created, DateTime? modified, string name, string description,
+                            ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
+                            ulong? executionEnvironment, string controllerNode, bool failed, DateTime? started,
+                            DateTime? finished, DateTime? canceledOn, double elapsed, string jobArgs, string jobCwd,
+                            Dictionary<string, string> jobEnv, string jobExplanation, string executionNode,
+                            LaunchedBy launchedBy, string resultTraceback, bool eventProcessingFinished,
+                            string? workUnitId, InventorySourceSource source, string sourcePath, string sourceVars,
+                            string scmBranch, ulong? credential, string enabledVar, string enabledValue,
+                            string hostFilter, bool overwrite, bool overwriteVars, string? customVirtualenv, int timeout,
+                            int verbosity, string limit, ulong inventory, ulong inventorySource, bool licenseError,
+                            bool orgHostLimitError, ulong? sourceProjectUpdate, ulong? instanceGroup, string scmRevision,
+                            ulong? sourceProject)
+            : InventoryUpdateJob(id, type, url, related, summaryFields, created, modified, name, description, unifiedJobTemplate,
+                                 launchType, status, executionEnvironment, controllerNode, failed, started, finished, canceledOn,
+                                 elapsed, jobExplanation, executionNode, launchedBy, workUnitId, source, sourcePath, sourceVars,
+                                 scmBranch, credential, enabledVar, enabledValue, hostFilter, overwrite, overwriteVars,
+                                 customVirtualenv, timeout, verbosity, limit, inventory, inventorySource, licenseError,
+                                 orgHostLimitError, sourceProjectUpdate, instanceGroup, scmRevision),
+              IInventoryUpdateJob, IJobDetail
+        {
+            public string JobArgs { get; } = jobArgs;
+            public string JobCwd { get; } = jobCwd;
+            public Dictionary<string, string> JobEnv { get; } = jobEnv;
+            public string ResultTraceback { get; } = resultTraceback;
+            public bool EventProcessingFinished { get; } = eventProcessingFinished;
+            [JsonPropertyName("source_project")]
+            public ulong? SourceProject { get; } = sourceProject;
+        }
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
@@ -188,4 +277,9 @@ namespace AWX.Resources
         public ulong? InstanceGroup { get; } = instanceGroup;
         public string ScmRevision {  get; } = scmRevision;
     }
+
+    public record CanUpdateInventorySource(
+        [property: JsonPropertyName("inventory_source")] ulong? InventorySource,
+        [property: JsonPropertyName("can_update")] bool CanUpdate
+    );
 }

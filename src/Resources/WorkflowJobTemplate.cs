@@ -74,11 +74,24 @@ namespace AWX.Resources
           IWorkflowJobTemplate, IUnifiedJobTemplate, IResource<WorkflowJobTemplate.Summary>
     {
         public new const string PATH = "/api/v2/workflow_job_templates/";
+        /// <summary>
+        /// Retrieve a Workflow Job Template.<br/>
+        /// API Path: <c>/api/v2/workflow_job_templates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<WorkflowJobTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJobTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Workflow Job Templates.<br/>
+        /// API Path: <c>/api/v2/workflow_job_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<WorkflowJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(PATH, query, getAll))
@@ -89,7 +102,31 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Workflow Job Templates for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/workflow_job_templates/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<WorkflowJobTemplate> FindFromOrganization(ulong organizationId,
+                                                                                       NameValueCollection? query = null,
+                                                                                       bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/workflow_job_templates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(path, query, getAll))
+            {
+                foreach (var jobTemplate in result.Contents.Results)
+                {
+                    yield return jobTemplate;
+                }
+            }
+        }
+
         public record Summary(
+            NameDescriptionSummary? Organization,
+            InventorySummary? Inventory,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
@@ -97,7 +134,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<NameSummary> Labels,
-            [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs);
+            [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs);
 
 
         public RelatedDictionary Related { get; } = related;
@@ -123,5 +160,30 @@ namespace AWX.Resources
         public bool AskTagsOnLaunch { get; } = askTagsOnLaunch;
         public string? SkipTags { get; } = skipTags;
         public string? JobTags { get; } = jobTags;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public JobTemplateAskOnLaunch AskOnLaunch
+        {
+            get
+            {
+                return (AskInventoryOnLaunch ? JobTemplateAskOnLaunch.Inventory : 0) |
+                       (AskScmBranchOnLaunch ? JobTemplateAskOnLaunch.ScmBranch : 0) |
+                       (AskLabelsOnLaunch ? JobTemplateAskOnLaunch.Labels : 0) |
+                       (AskVariablesOnLaunch ? JobTemplateAskOnLaunch.Variables : 0) |
+                       (AskLimitOnLaunch ? JobTemplateAskOnLaunch.Limit : 0) |
+                       (AskTagsOnLaunch ? JobTemplateAskOnLaunch.JobTags : 0) |
+                       (AskSkipTagsOnLaunch ? JobTemplateAskOnLaunch.SkipTags : 0);
+            }
+        }
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public JobTemplateOptions Options
+        {
+            get
+            {
+                return (SurveyEnabled ? JobTemplateOptions.Survey : 0) |
+                       (!string.IsNullOrEmpty(WebhookService) ? JobTemplateOptions.Webhook : 0) |
+                       (AllowSimultaneous ? JobTemplateOptions.Simultaneous : 0);
+            }
+        }
     }
 }

@@ -42,14 +42,90 @@ namespace AWX.Resources
           IAdHocCommand, IResource<AdHocCommand.Summary>
     {
         public new const string PATH = "/api/v2/ad_hoc_commands/";
-        public static async Task<Detail> Get(ulong id)
+        /// <summary>
+        /// Retrieve an Ad Hoc Command.<br/>
+        /// API Path: <c>/api/v2/ad_hoc_commands/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static new async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Ad Hoc Commands.<br/>
+        /// API Path: <c>/api/v2/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<AdHocCommand> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(PATH, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+        /// <summary>
+        /// List Ad Hoc Commands for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<AdHocCommand> FindFromInventory(ulong inventoryId,
+                                                                             NameValueCollection? query = null,
+                                                                             bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/ad_hoc_commands/";
+            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+        /// <summary>
+        /// List Ad Hoc Commands for a Group.<br/>
+        /// API Path: <c>/api/v2/groups/<paramref name="groupId"/>/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<AdHocCommand> FindFromGroup(ulong groupId,
+                                                                         NameValueCollection? query = null,
+                                                                         bool getAll = false)
+        {
+            var path = $"{Group.PATH}{groupId}/ad_hoc_commands/";
+            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+        /// <summary>
+        /// List Ad Hoc Commands for a Host.
+        /// API Path: <c>/api/v2/hosts/<paramref name="hostId"/>/ad_hoc_commands/</c>
+        /// </summary>
+        /// <param name="hostId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<AdHocCommand> FindFromHost(ulong hostId,
+                                                                        NameValueCollection? query = null,
+                                                                        bool getAll = false)
+        {
+            var path = $"{Host.PATH}{hostId}/ad_hoc_commands/";
+            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -86,6 +162,7 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
+            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
             [JsonPropertyName("host_status_counts")]
             public Dictionary<string, int> HostStatusCounts { get; } = hostStatusCounts;

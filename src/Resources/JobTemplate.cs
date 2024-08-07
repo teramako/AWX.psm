@@ -3,6 +3,41 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    [Flags]
+    public enum JobTemplateAskOnLaunch
+    {
+        None = 0,
+        JobType    = 1 << 0,
+        Inventory  = 1 << 1,
+        ScmBranch  = 1 << 2,
+        ExecutionEnvironment = 1 << 3,
+        Credentials = 1 << 4,
+        Labels = 1 << 5,
+        Variables = 1 << 6,
+        Forks = 1 << 7,
+        Limit = 1 << 8,
+        Verbosity = 1 << 9,
+        JobSliceCount = 1 << 10,
+        Timeout = 1 << 11,
+        DiffMode = 1 << 12,
+        InstanceGroups = 1 << 13,
+        JobTags = 1 << 14,
+        SkipTags = 1 << 15,
+    }
+
+    [Flags]
+    public enum JobTemplateOptions
+    {
+        None = 0,
+        Survey = 1 << 0,
+        Become = 1 << 1,
+        ProvisioningCallback = 1 << 2,
+        Webhook = 1 << 3,
+        Simultaneous = 1 << 4,
+        FactCache = 1 << 5,
+        PreventInstanceGroupFallback = 1 << 6
+    }
+
     public interface IJobTemplate
     {
         /// <summary>
@@ -25,7 +60,7 @@ namespace AWX.Resources
         /// <summary>
         /// Inventory ID.
         /// </summary>
-        ulong Inventory { get; }
+        ulong? Inventory { get; }
         /// <summary>
         /// Project ID.
         /// </summary>
@@ -124,10 +159,9 @@ namespace AWX.Resources
     }
 
 
-    [ResourceType(ResourceType.JobTemplate)]
     public class JobTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,
                              JobTemplate.Summary summaryFields, DateTime created, DateTime? modified, string name,
-                             string description, JobType jobType, ulong inventory, ulong project, string playbook,
+                             string description, JobType jobType, ulong? inventory, ulong project, string playbook,
                              string scmBranch, int forks, string limit, JobVerbosity verbosity, string extraVars,
                              string jobTags, bool forceHandlers, string startAtTask, int timeout, bool useFactCache,
                              ulong organization, DateTime? lastJobRun, bool lastJobFailed, DateTime? nextJobRun,
@@ -146,11 +180,24 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/job_templates/";
 
+        /// <summary>
+        /// Retrieve a Job Template.<br/>
+        /// API Path: <c>/api/v2/job_templates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<JobTemplate> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<JobTemplate>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Job Templates.<br/>
+        /// API Path: <c>/api/v2/job_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<JobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<JobTemplate>(PATH, query, getAll))
@@ -161,26 +208,69 @@ namespace AWX.Resources
                 }
             }
         }
-    public record Summary(
-        NameDescriptionSummary Organization,
-        InventorySummary Inventory,
-        ProjectSummary Project,
-        [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-        [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-        [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-        [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-        [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
-        [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-        ListSummary<NameSummary> Labels,
-        [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment,
-        [property: JsonPropertyName("recent_jobs")] JobTemplateRecentJobSummary[] RecentJobs,
-        JobTemplateCredentialSummary[] Credentials);
+        /// <summary>
+        /// List Job Templates for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/job_templates/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobTemplate> FindFromOrganization(ulong organizationId,
+                                                                               NameValueCollection? query = null,
+                                                                               bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/job_templates/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(path, query, getAll))
+            {
+                foreach(var jobTemplate in result.Contents.Results)
+                {
+                    yield return jobTemplate;
+                }
+            }
+        }
+        /// <summary>
+        /// List Job Templates for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/job_templates/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobTemplate> FindFromInventory(ulong inventoryId,
+                                                                            NameValueCollection? query = null,
+                                                                            bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/job_templates/";
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(path, query, getAll))
+            {
+                foreach(var jobTemplate in result.Contents.Results)
+                {
+                    yield return jobTemplate;
+                }
+            }
+        }
+
+        public record Summary(
+            NameDescriptionSummary Organization,
+            InventorySummary? Inventory,
+            ProjectSummary Project,
+            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
+            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
+            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
+            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
+            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
+            [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
+            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
+            ListSummary<NameSummary> Labels,
+            [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs,
+            JobTemplateCredentialSummary[] Credentials);
 
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
         public JobType JobType { get; } = jobType;
-        public ulong Inventory { get; } = inventory;
+        public ulong? Inventory { get; } = inventory;
         public ulong Project { get; } = project;
         public string Playbook { get; } = playbook;
         public string ScmBranch { get; } = scmBranch;
@@ -223,5 +313,43 @@ namespace AWX.Resources
         public string WebhookService { get; } = webhookService;
         public ulong? WebhookCredential { get; } = webhookCredential;
         public bool PreventInstanceGroupFallback { get; } = preventInstanceGroupFallback;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public JobTemplateAskOnLaunch AskOnLaunch
+        {
+            get
+            {
+                return (AskJobTypeOnLaunch ? JobTemplateAskOnLaunch.JobType: 0) |
+                       (AskInventoryOnLaunch ? JobTemplateAskOnLaunch.Inventory : 0) |
+                       (AskScmBranchOnLaunch ? JobTemplateAskOnLaunch.ScmBranch : 0) |
+                       (AskExecutionEnvironmentOnLaunch ? JobTemplateAskOnLaunch.ExecutionEnvironment : 0) |
+                       (AskCredentialOnLaunch ? JobTemplateAskOnLaunch.Credentials : 0) |
+                       (AskLabelsOnLaunch ? JobTemplateAskOnLaunch.Labels : 0) |
+                       (AskVariablesOnLaunch ? JobTemplateAskOnLaunch.Variables : 0) |
+                       (AskForksOnLaunch ? JobTemplateAskOnLaunch.Forks : 0) |
+                       (AskLimitOnLaunch ? JobTemplateAskOnLaunch.Limit : 0) |
+                       (AskVerbosityOnLaunch ? JobTemplateAskOnLaunch.Verbosity : 0) |
+                       (AskJobSliceCountOnLaunch ? JobTemplateAskOnLaunch.JobSliceCount : 0) |
+                       (AskTimeoutOnLaunch ? JobTemplateAskOnLaunch.Timeout : 0) |
+                       (AskDiffModeOnLaunch ? JobTemplateAskOnLaunch.DiffMode : 0) |
+                       (AskInstanceGroupsOnLaunch ? JobTemplateAskOnLaunch.InstanceGroups : 0) |
+                       (AskTagsOnLaunch ? JobTemplateAskOnLaunch.JobTags : 0) |
+                       (AskSkipTagsOnLaunch ? JobTemplateAskOnLaunch.SkipTags : 0);
+            }
+        }
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public JobTemplateOptions Options
+        {
+            get
+            {
+                return (SurveyEnabled ? JobTemplateOptions.Survey : 0) |
+                       (BecomeEnabled ? JobTemplateOptions.Become : 0) |
+                       (!string.IsNullOrEmpty(HostConfigKey) ? JobTemplateOptions.ProvisioningCallback : 0) |
+                       (!string.IsNullOrEmpty(WebhookService) ? JobTemplateOptions.Webhook : 0) |
+                       (AllowSimultaneous ? JobTemplateOptions.Simultaneous : 0) |
+                       (UseFactCache ? JobTemplateOptions.FactCache : 0) |
+                       (PreventInstanceGroupFallback ? JobTemplateOptions.PreventInstanceGroupFallback : 0);
+            }
+        }
     }
 }

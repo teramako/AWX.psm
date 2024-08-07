@@ -62,9 +62,6 @@ namespace AWX.Resources
 
     }
 
-    [ResourceType(ResourceType.Job,
-        Description = "JobTemplate's Job",
-        CanAggregate = false)]
     public class JobTemplateJob(ulong id, ResourceType type, string url, RelatedDictionary related,
                                 JobTemplateJob.Summary summaryFields, DateTime created, DateTime? modified, string name,
                                 string description, ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
@@ -83,11 +80,24 @@ namespace AWX.Resources
           IJobTemplateJob, IResource<JobTemplateJob.Summary>
     {
         public new const string PATH = "/api/v2/jobs/";
-        public static async Task<Detail> Get(ulong id)
+        /// <summary>
+        /// Retrieve a Job.<br/>
+        /// API Path: <c>/api/v2/jobs/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static new async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Jobs.<br/>
+        /// API Path: <c>/api/v2/jobs/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<JobTemplateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<JobTemplateJob>(PATH, query, getAll))
@@ -98,6 +108,28 @@ namespace AWX.Resources
                 }
             }
         }
+        /// <summary>
+        /// List Jobs for a Job Template.<br/>
+        /// API Path: <c>/api/v2/job_templates/<paramref name="jobTemplateId"/>/jobs/</c>
+        /// </summary>
+        /// <param name="jobTemplateId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<JobTemplateJob> FindFromJobTemplate(ulong jobTemplateId,
+                                                                                 NameValueCollection? query = null,
+                                                                                 bool getAll = false)
+        {
+            var path = $"{Resources.JobTemplate.PATH}{jobTemplateId}/jobs/";
+            await foreach(var result in RestAPI.GetResultSetAsync<JobTemplateJob>(path, query, getAll))
+            {
+                foreach (var job in result.Contents.Results)
+                {
+                    yield return job;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
@@ -110,6 +142,8 @@ namespace AWX.Resources
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<NameSummary> Labels,
+            [property: JsonPropertyName("source_workflow_job")] WorkflowJobSummary? SourceWorkflowJob,
+            [property: JsonPropertyName("ancestor_job")] AncestorJobSummary? AncestorJob,
             JobTemplateCredentialSummary[] Credentials);
 
 
@@ -183,6 +217,7 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
+            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
 
 
@@ -194,6 +229,43 @@ namespace AWX.Resources
 
             [JsonPropertyName("custom_virtualenv")]
             public string? CustomVirtualenv { get; } = customVirtualenv;
+        }
+        public class LaunchResult(ulong job, Dictionary<string, object?> ignoredFields, ulong id, ResourceType type,
+                                  string url, RelatedDictionary related, Summary summaryFields, DateTime created,
+                                  DateTime? modified, string name, string description, JobType jobType, ulong inventory,
+                                  ulong project, string playbook, string scmBranch, byte forks, string limit,
+                                  JobVerbosity verbosity, string extraVars, string jobTags, bool forceHandlers,
+                                  string skipTags, string startAtTask, ushort timeout, bool useFactCache,
+                                  ulong organization, ulong unifiedJobTemplate, JobLaunchType launchType,
+                                  JobStatus status, ulong? executionEnvironment, bool failed, DateTime? started,
+                                  DateTime? finished, DateTime? canceledOn, double elapsed, string jobArgs,
+                                  string jobCwd, Dictionary<string, string> jobEnv, string jobExplanation,
+                                  string executionNode, string controllerNode, string resultTraceback,
+                                  bool eventProcessingFinished, LaunchedBy launchedBy, string workUnitId,
+                                  ulong jobTemplate, string[] passwordsNeededToStart, bool allowSimultaneous,
+                                  OrderedDictionary artifacts, string scmRevision, ulong? instanceGroup, bool diffMode,
+                                  int jobSliceNumber, int jobSliceCount, string webhookService, uint? webhookCredential,
+                                  string webhookGuid)
+            : JobTemplateJob(id, type, url, related, summaryFields, created, modified, name, description,
+                             unifiedJobTemplate, launchType, status, executionEnvironment, failed, started,
+                             finished, canceledOn, elapsed, jobExplanation, executionNode, controllerNode,
+                             launchedBy, workUnitId, jobType, inventory, project, playbook, scmBranch, forks,
+                             limit, verbosity, extraVars, jobTags, forceHandlers, skipTags, startAtTask, timeout,
+                             useFactCache, organization, jobTemplate, passwordsNeededToStart, allowSimultaneous,
+                             artifacts, scmRevision, instanceGroup, diffMode, jobSliceNumber, jobSliceCount,
+                             webhookService, webhookCredential, webhookGuid),
+               IJobTemplateJob, IJobDetail, IResource<Summary>
+        {
+            public ulong Job { get; } = job;
+            [JsonPropertyName("ignored_fields")]
+            public Dictionary<string, object?> IgnoredFields { get; } = ignoredFields;
+
+            public string JobArgs { get; } = jobArgs;
+            public string JobCwd { get; } = jobCwd;
+            public Dictionary<string, string> JobEnv { get; } = jobEnv;
+            public string ResultTraceback { get; } = resultTraceback;
+            [JsonPropertyName("event_processing_finished")]
+            public bool EventProcessingFinished { get; } = eventProcessingFinished;
         }
     }
 }

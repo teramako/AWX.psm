@@ -53,26 +53,62 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/project_updates/";
 
-        public static async Task<Detail> Get(ulong id)
+        /// <summary>
+        /// Retrieve a Project Update.<br/>
+        /// API Path: <c>/api/v2/project_updates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static new async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Project Updages.<br/>
+        /// API Path: <c>/api/v2/project_updates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<ProjectUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var projectUpdateJob in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return projectUpdateJob;
                 }
             }
         }
+        /// <summary>
+        /// List Project Updates for a Project.<br/>
+        /// API Path: <c>/api/v2/projects/<paramref name="projectId"/>/project_updates/</c>
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<ProjectUpdateJob> FindFromProject(ulong projectId,
+                                                                               NameValueCollection? query = null,
+                                                                               bool getAll = false)
+        {
+            var path = $"{Resources.Project.PATH}{projectId}/project_updates/";
+            await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(path, query, getAll))
+            {
+                foreach(var projectUpdateJob in result.Contents.Results)
+                {
+                    yield return projectUpdateJob;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
             ProjectSummary Project,
             CredentialSummary? Credential,
+            ScheduleSummary? Schedule,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
@@ -100,6 +136,7 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
+            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
 
             [JsonPropertyName("host_status_counts")]
@@ -131,4 +168,9 @@ namespace AWX.Resources
         public JobType JobType { get; } = jobType;
         public string JobTags { get; } = jobTags;
     }
+
+    public record CanUpdateProject(
+        ulong? Project,
+        [property: JsonPropertyName("can_update")] bool CanUpdate
+    );
 }

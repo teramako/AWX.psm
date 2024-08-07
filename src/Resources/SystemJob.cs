@@ -21,19 +21,6 @@ namespace AWX.Resources
         string ResultStdout { get; }
 
     }
-    public interface IJobDetail
-    {
-        [JsonPropertyName("job_args")]
-        string JobArgs { get; }
-        [JsonPropertyName("job_cwd")]
-        string JobCwd { get; }
-        [JsonPropertyName("job_env")]
-        Dictionary<string, string> JobEnv { get; }
-        [JsonPropertyName("result_traceback")]
-        string ResultTraceback { get; }
-        [JsonPropertyName("event_processing_finished")]
-        bool EventProcessingFinished { get; }
-    }
 
     public class SystemJob(ulong id, ResourceType type, string url, RelatedDictionary related,
                            SystemJob.Summary summaryFields, DateTime created, DateTime? modified, string name,
@@ -47,18 +34,31 @@ namespace AWX.Resources
           ISystemJob, IResource<SystemJob.Summary>
     {
         public new const string PATH = "/api/v2/system_jobs/";
-        public static async Task<Detail> Get(ulong id)
+        /// <summary>
+        /// Retrieve a System Job Template.<br/>
+        /// API Path: <c>/api/v2/system_job_templates/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static new async Task<Detail> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Detail>($"{PATH}{id}/");
             return apiResult.Contents;
         }
-        public new static async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
+        /// <summary>
+        /// List System Job Templates.<br/>
+        /// API Path: <c>/api/v2/system_job_templates/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static new async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var systemJob in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return systemJob;
                 }
             }
         }
@@ -88,6 +88,7 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
+            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
         }
 

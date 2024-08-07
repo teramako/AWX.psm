@@ -32,6 +32,7 @@ namespace AWX
                 _client = new HttpClient()
                 {
                     BaseAddress = config.Origin,
+                    DefaultRequestVersion = HttpVersion.Version11,
                 };
                 _client.DefaultRequestHeaders.Add("Accept", "application/json");
                 if (!string.IsNullOrEmpty(config.Token))
@@ -55,14 +56,16 @@ namespace AWX
             {
                 client.BaseAddress = uri;
             }
-            else if (client.BaseAddress.Equals(uri))
+            else if (client.BaseAddress.Scheme != uri.Scheme || client.BaseAddress.Authority != uri.Authority)
             {
-                client = new HttpClient() { BaseAddress = uri };
+                client = new HttpClient() {
+                    BaseAddress = uri,
+                    DefaultRequestVersion = HttpVersion.Version11,
+                };
                 Client = client;
             }
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestVersion = HttpVersion.Version11;
             if (!string.IsNullOrEmpty(config.Token))
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {config.Token}");
@@ -70,15 +73,17 @@ namespace AWX
         }
         private static async Task<RestAPIException> CreateException(HttpResponseMessage response, string contentType)
         {
+            var msg1 = $"{response.StatusCode:d} ({response.ReasonPhrase}): ";
+            var msg2 = (response.RequestMessage != null && response.RequestMessage.RequestUri != null)
+                       ? $" on {response.RequestMessage.Method} {response.RequestMessage.RequestUri.PathAndQuery}"
+                       : string.Empty;
             switch (contentType)
             {
                 case JsonContentType:
                     var error = await response.Content.ReadAsStringAsync();
-                    return new RestAPIException($"{response.StatusCode:d} ({response.ReasonPhrase}): {error}",
-                                                response);
+                    return new RestAPIException($"{msg1}{error}{msg2}", response);
                 default:
-                    return new RestAPIException($"{response.StatusCode:d} {response.ReasonPhrase}: {contentType}",
-                                                response);
+                    return new RestAPIException($"{msg1}{contentType}{msg2}", response);
             }
 
         }
@@ -252,7 +257,10 @@ namespace AWX
         /// <returns><see cref="StringContent"/></returns>
         private static StringContent GetStringContent(object? data)
         {
-            ArgumentNullException.ThrowIfNull(data);
+            if (data == null)
+            {
+                return new StringContent(string.Empty);
+            }
             switch (data)
             {
                 case string stringData:

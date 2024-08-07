@@ -13,26 +13,39 @@ namespace AWX.Resources
                 : IResource<Role.Summary>
     {
         public const string PATH = "/api/v2/roles/";
+        /// <summary>
+        /// Retrieve a Role.<br/>
+        /// API Path: <c>/api/v2/roles/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Role> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Role>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Roles.<br/>
+        /// API Path: <c>/api/v2/roles/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<Role> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var role in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return role;
                 }
             }
         }
         public record Summary(
-            [property: JsonPropertyName("resource_name")] string ResourceName,
-            [property: JsonPropertyName("resource_type")] string ResourceType,
-            [property: JsonPropertyName("resource_type_display_name")] string ResourceTypeDisplayName,
-            [property: JsonPropertyName("resource_id")] ulong ResourceId);
+            [property: JsonPropertyName("resource_name")] string? ResourceName,
+            [property: JsonPropertyName("resource_type")] ResourceType? ResourceType,
+            [property: JsonPropertyName("resource_type_display_name")]string? ResourceTypeDisplayName,
+            [property: JsonPropertyName("resource_id")] ulong? ResourceId);
 
 
         public ulong Id { get; } = id;

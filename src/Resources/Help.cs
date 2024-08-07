@@ -1,13 +1,10 @@
-using System.Collections.Specialized;
-using System.Text.Json.Serialization;
-
 namespace AWX.Resources
 {
     public class ApiHelp(string name,
                          string description,
                          string[] renders,
                          string[] parses,
-                         OrderedDictionary? actions,
+                         Dictionary<string, Dictionary<string, object?>>? actions,
                          string[]? types,
                          string[]? searchFields,
                          string[]? relatedSearchFields,
@@ -18,7 +15,7 @@ namespace AWX.Resources
         public string Description { get; } = description ?? string.Empty;
         public string[] Renders { get; } = renders;
         public string[] Parses { get; } = parses;
-        public OrderedDictionary? Actions { get; } = actions;
+        public Dictionary<string, Dictionary<string, object?>>? Actions { get; } = actions;
         public string[]? Types { get; } = types;
 
         public string[]? SearchFields { get; } = searchFields;

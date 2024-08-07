@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace AWX.Resources
 {
@@ -87,14 +82,14 @@ namespace AWX.Resources
                                  bool Failed);
     public record HostRecentJobSummary(ulong Id,
                                        string Name,
-                                       string Type,
+                                       ResourceType Type,
                                        JobStatus Status,
                                        DateTime? Finished);
-    public record JobTemplateRecentJobSummary(ulong Id,
-                                              JobStatus Status,
-                                              DateTime? Finished,
-                                              [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
-                                              string Type);
+    public record RecentJobSummary(ulong Id,
+                                   JobStatus Status,
+                                   DateTime? Finished,
+                                   [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
+                                   ResourceType Type);
     public record JobSummary(ulong Id,
                              string Name,
                              string Description,
@@ -111,6 +106,10 @@ namespace AWX.Resources
                                ResourceType Type,
                                [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
                                [property: JsonPropertyName("job_template_name")] string JobTemplateName);
+
+    public record WorkflowJobSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed, double Elapsed);
+
+    public record AncestorJobSummary(ulong Id, string Name, ResourceType Type, string Url);
 
     public record LastJobHostSummary(ulong Id, bool Failed);
 
@@ -146,6 +145,9 @@ namespace AWX.Resources
                                  [property: JsonPropertyName("scm_type")] string ScmType,
                                  [property: JsonPropertyName("allow_override")] bool AllowOverride)
         : NameDescriptionSummary(Id, Name, Description);
+    public record ProjectUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
+        : NameDescriptionSummary(Id, Name, Description);
+
     public record UnifiedJobTemplateSummary(ulong Id,
                                      string Name,
                                      string Description,
@@ -162,4 +164,6 @@ namespace AWX.Resources
                                   string Description,
                                   [property: JsonPropertyName("next_run")] DateTime NextRun);
     public record RecentNotificationSummary(ulong Id, JobStatus Status, DateTime Created, string Error);
+
+    public record WorkflowApprovalTemplateSummary(ulong Id, string Name, string Description, int Timeout);
 }

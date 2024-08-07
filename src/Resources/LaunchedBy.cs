@@ -8,7 +8,7 @@ namespace AWX.Resources
         public string Url { get; } = url;
         public override string ToString()
         {
-            return $"[{Type}]{Name}";
+            return $"[{Type}][{Id}]{Name}";
         }
     }
 }

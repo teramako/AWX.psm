@@ -18,7 +18,6 @@ namespace AWX.Resources
         string Password { get; }
     }
 
-    [ResourceType(ResourceType.User)]
     public class User(ulong id,
                       ResourceType type,
                       string url,
@@ -41,7 +40,8 @@ namespace AWX.Resources
     {
         public const string PATH = "/api/v2/users/";
         /// <summary>
-        /// Retrieve information about the current User.
+        /// Retrieve information about the current User.<br/>
+        /// API Path: <c>/api/v2/me/</c>
         /// </summary>
         /// <returns></returns>
         public static async Task<User> GetMe()
@@ -50,7 +50,8 @@ namespace AWX.Resources
             return apiResult.Contents.Results.Single();
         }
         /// <summary>
-        /// Retrieve a User for the <paramref name="id"/>
+        /// Retrieve a User.<br/>
+        /// API Path: <c>/api/v2/users/<paramref name="id"/>/</c>
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -59,16 +60,108 @@ namespace AWX.Resources
             var apiResult = await RestAPI.GetAsync<User>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Users.<br/>
+        /// API Path: <c>/api/v2/users/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<User> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync<User>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var user in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return user;
                 }
             }
         }
+        /// <summary>
+        /// List Users for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/users/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindFromOrganization(ulong organizationId,
+                                                                        NameValueCollection? query = null,
+                                                                        bool getAll = false)
+        {
+            var path = $"{Organization.PATH}{organizationId}/users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+        /// <summary>
+        /// List Users for a Team.<br/>
+        /// API Path: <c>/api/v2/teams/<paramref name="teamId"/>/users/</c>
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindFromTeam(ulong teamId,
+                                                                NameValueCollection? query = null,
+                                                                bool getAll = false)
+        {
+            var path = $"{Team.PATH}{teamId}/users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+        /// <summary>
+        /// List Users for a Credential.<br/>
+        /// API Path: <c>/api/v2/credentials/<paramref name="credentialId"/>/owner_users/</c>
+        /// </summary>
+        /// <param name="credentialId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindOwnerFromCredential(ulong credentialId,
+                                                                           NameValueCollection? query = null,
+                                                                           bool getAll = false)
+        {
+            var path = $"{Credential.PATH}{credentialId}/owner_users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+        /// <summary>
+        /// List Users for a Role.<br/>
+        /// API Path: <c>/api/v2/roles/<paramref name="roleId"/>/users/</c>
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<User> FindFromRole(ulong roleId,
+                                                                NameValueCollection? query = null,
+                                                                bool getAll = false)
+        {
+            var path = $"{Role.PATH}{roleId}/users/";
+            await foreach (var result in RestAPI.GetResultSetAsync<User>(path, query, getAll))
+            {
+                foreach (var user in result.Contents.Results)
+                {
+                    yield return user;
+                }
+            }
+        }
+
         public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
         public ulong Id { get; } = id;

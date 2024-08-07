@@ -17,7 +17,7 @@ namespace AWX.Cmdlets
                     // skip already processed
                     continue;
                 }
-                var res = GetResource<JobTemplateJob.Detail>($"{JobTemplateJob.PATH}{Id}/");
+                var res = GetResource<JobTemplateJob.Detail>($"{JobTemplateJob.PATH}{id}/");
                 if (res != null)
                 {
                     WriteObject(res);
@@ -30,11 +30,11 @@ namespace AWX.Cmdlets
     [OutputType(typeof(JobTemplateJob))]
     public class FindJobTemplateJobCommand : FindCmdletBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        public override ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.JobTemplate))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
 
         [Parameter(Position = 0)]
         public string[]? Name { get; set; }
@@ -61,11 +61,19 @@ namespace AWX.Cmdlets
             {
                 Query.Add("status__in", string.Join(',', Status));
             }
+            if (LaunchType != null)
+            {
+                Query.Add("launch_type__in", string.Join(',', LaunchType));
+            }
             SetupCommonQuery();
         }
-        protected override void EndProcessing()
+        protected override void ProcessRecord()
         {
-            Find<JobTemplateJob>(JobTemplateJob.PATH);
+            var path = Id > 0 ? $"{JobTemplate.PATH}{Id}/jobs/" : JobTemplateJob.PATH;
+            foreach (var resultSet in GetResultSet<JobTemplateJob>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
         }
     }
 }

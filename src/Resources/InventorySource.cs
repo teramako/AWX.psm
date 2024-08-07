@@ -56,6 +56,15 @@ namespace AWX.Resources
         Insights,
     }
 
+    [Flags]
+    public enum InventorySourceOptions
+    {
+        None = 0,
+        Overwrite = 1 << 0,
+        OverwriteVars = 1 << 1,
+        UpdateOnLaunch = 1 << 2,
+    }
+
     public interface IInventorySource
     {
         /// <summary>
@@ -178,21 +187,119 @@ namespace AWX.Resources
     {
         public new const string PATH = "/api/v2/inventory_sources/";
 
+        /// <summary>
+        /// Retrieve an Inventory Source.<br/>
+        /// API Path: <c>/api/v2/inventory_sources/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<InventorySource> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<InventorySource>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Inventory Sources.<br/>
+        /// API Path: <c>/api/v2/inventory_sources/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<InventorySource> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(PATH, query, getAll))
             {
-                foreach (var inventory in result.Contents.Results)
+                foreach (var inventorySource in result.Contents.Results)
                 {
-                    yield return inventory;
+                    yield return inventorySource;
                 }
             }
         }
+        /// <summary>
+        /// List Inventory Sources for a Project.<br/>
+        /// API Path: <c>/api/v2/projects/<paramref name="projectId"/>/scm_inventory_sources/</c>
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventorySource> FindFromProject(ulong projectId,
+                                                                              NameValueCollection? query = null,
+                                                                              bool getAll = false)
+        {
+            var path = $"{Project.PATH}{projectId}/scm_inventory_sources/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(path, query, getAll))
+            {
+                foreach (var inventorySource in result.Contents.Results)
+                {
+                    yield return inventorySource;
+                }
+            }
+        }
+        /// <summary>
+        /// List Inventory Sources for an Inventory.<br/>
+        /// API Path: <c>/api/v2/inventories/<paramref name="inventoryId"/>/inventory_sources/</c>
+        /// </summary>
+        /// <param name="inventoryId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventorySource> FindFromInventory(ulong inventoryId,
+                                                                                NameValueCollection? query = null,
+                                                                                bool getAll = false)
+        {
+            var path = $"{Resources.Inventory.PATH}{inventoryId}/inventory_sources/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(path, query, getAll))
+            {
+                foreach (var inventorySource in result.Contents.Results)
+                {
+                    yield return inventorySource;
+                }
+            }
+        }
+        /// <summary>
+        /// List Inventory Sources for an Group.<br/>
+        /// API Path: <c>/api/v2/groups/<paramref name="groupId"/>/inventory_sources/</c>
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventorySource> FindFromGroup(ulong groupId,
+                                                                            NameValueCollection? query = null,
+                                                                            bool getAll = false)
+        {
+            var path = $"{Group.PATH}{groupId}/inventory_sources/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(path, query, getAll))
+            {
+                foreach (var inventorySource in result.Contents.Results)
+                {
+                    yield return inventorySource;
+                }
+            }
+        }
+        /// <summary>
+        /// List Inventory Sources for an Host.<br/>
+        /// API Path: <c>/api/v2/hosts/<paramref name="hostId"/>/inventory_sources/</c>
+        /// </summary>
+        /// <param name="hostId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<InventorySource> FindFromHost(ulong hostId,
+                                                                           NameValueCollection? query = null,
+                                                                           bool getAll = false)
+        {
+            var path = $"{Host.PATH}{hostId}/inventory_sources/";
+            await foreach(var result in RestAPI.GetResultSetAsync<InventorySource>(path, query, getAll))
+            {
+                foreach (var inventorySource in result.Contents.Results)
+                {
+                    yield return inventorySource;
+                }
+            }
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             InventorySummary Inventory,
@@ -233,5 +340,16 @@ namespace AWX.Resources
         public bool LastUpdateFailed { get; } = lastUpdateFailed;
         [JsonPropertyName("last_updated")]
         public DateTime? LastUpdated { get; } = lastUpdated;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public InventorySourceOptions Options
+        {
+            get
+            {
+                return (Overwrite ? InventorySourceOptions.Overwrite : 0) |
+                       (OverwriteVars ? InventorySourceOptions.OverwriteVars : 0) |
+                       (UpdateOnLaunch ? InventorySourceOptions.UpdateOnLaunch : 0);
+            }
+        }
     }
 }

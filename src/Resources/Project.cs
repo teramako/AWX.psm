@@ -3,6 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    [Flags]
+    public enum ProjectOptions
+    {
+        None = 0,
+        ScmClean = 1 << 0,
+        ScmDeleteOnUpdate = 1 << 1,
+        ScmTrackSubmodules = 1 << 2,
+        ScmUpdateOnLaunch = 1 << 3,
+        AllowOverride = 1 << 4
+    }
+
     public interface IProject
     {
         /// <summary>
@@ -106,21 +117,108 @@ namespace AWX.Resources
         public new const string PATH = "/api/v2/projects/";
 
 
+        /// <summary>
+        /// Retrieve a Project.<br/>
+        /// API Path: <c>/api/v2/projects/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<Project> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<Project>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Projects.<br/>
+        /// API Path: <c>/api/v2/projects/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<Project> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<Project>(PATH, query, getAll))
             {
-                foreach (var app in result.Contents.Results)
+                foreach (var project in result.Contents.Results)
                 {
-                    yield return app;
+                    yield return project;
                 }
             }
         }
+        /// <summary>
+        /// List Projects for an Organization.<br/>
+        /// API Path: <c>/api/v2/organizations/<paramref name="organizationId"/>/projects/</c>
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Project> FindFromOrganization(ulong organizationId,
+                                                                           NameValueCollection? query = null,
+                                                                           bool getAll = false)
+        {
+            var path = $"{Resources.Organization.PATH}{organizationId}/projects/";
+            await foreach (var result in RestAPI.GetResultSetAsync<Project>(path, query, getAll))
+            {
+                foreach (var project in result.Contents.Results)
+                {
+                    yield return project;
+                }
+            }
+        }
+        /// <summary>
+        /// List Projects for a User.<br/>
+        /// API Path: <c>/api/v2/users/<paramref name="userId"/>/projects/</c>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Project> FindFromUser(ulong userId,
+                                                                   NameValueCollection? query = null,
+                                                                   bool getAll = false)
+        {
+            var path = $"{User.PATH}{userId}/projects/";
+            await foreach (var result in RestAPI.GetResultSetAsync<Project>(path, query, getAll))
+            {
+                foreach (var project in result.Contents.Results)
+                {
+                    yield return project;
+                }
+            }
+        }
+        /// <summary>
+        /// List Projects for a Team.<br/>
+        /// API Path: <c>/api/v2/teams/<paramref name="teamId"/>/projects/</c>
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Project> FindFromTeam(ulong teamId,
+                                                                   NameValueCollection? query = null,
+                                                                   bool getAll = false)
+        {
+            var path = $"{Team.PATH}{teamId}/projects/";
+            await foreach (var result in RestAPI.GetResultSetAsync<Project>(path, query, getAll))
+            {
+                foreach (var project in result.Contents.Results)
+                {
+                    yield return project;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get inventory files and directories.
+        /// </summary>
+        /// <returns>Array of inventory files and directories available with in the project, not comprehensive</returns>
+        public static async Task<string[]> GetInventoryFiles(ulong projectId)
+        {
+            var apiResult = await RestAPI.GetAsync<string[]>($"{PATH}{projectId}/inventories/");
+            return apiResult.Contents;
+        }
+
         public record Summary(
             NameDescriptionSummary Organization,
             [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
@@ -159,5 +257,27 @@ namespace AWX.Resources
         public bool LastUpdateFailed { get; } = lastUpdateFailed;
         [JsonPropertyName("last_updated")]
         public DateTime? LastUpdated { get; } = lastUpdated;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+        public ProjectOptions Options
+        {
+            get
+            {
+                return (ScmClean ? ProjectOptions.ScmClean : 0) |
+                       (ScmDeleteOnUpdate ? ProjectOptions.ScmDeleteOnUpdate : 0) |
+                       (ScmTrackSubmodules ? ProjectOptions.ScmTrackSubmodules : 0) |
+                       (ScmUpdateOnLaunch ? ProjectOptions.ScmUpdateOnLaunch : 0) |
+                       (AllowOverride ? ProjectOptions.AllowOverride : 0);
+            }
+        }
+
+        /// <summary>
+        /// Get inventory files and directories.
+        /// </summary>
+        /// <returns>Array of inventory files and directories available with in this project, not comprehensive</returns>
+        public async Task<string[]> GetInventoryFiles()
+        {
+            return await GetInventoryFiles(Id);
+        }
     }
 }

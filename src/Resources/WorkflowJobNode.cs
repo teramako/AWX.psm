@@ -32,7 +32,7 @@ namespace AWX.Resources
         [JsonPropertyName("job_slice_count")]
         int? JobSliceCount { get; }
         int? Timeout { get; }
-        ulong Job { get; }
+        ulong? Job { get; }
         [JsonPropertyName("workflow_job")]
         ulong WorkflowJob { get; }
         [JsonPropertyName("unified_job_template")]
@@ -78,7 +78,7 @@ namespace AWX.Resources
                                  int? forks,
                                  int? jobSliceCount,
                                  int? timeout,
-                                 ulong job,
+                                 ulong? job,
                                  ulong workflowJob,
                                  ulong unifiedJobTemplate,
                                  ulong[] successNodes,
@@ -90,23 +90,36 @@ namespace AWX.Resources
                 : IWorkflowJobNode, IResource<WorkflowJobNode.Summary>
     {
         public const string PATH = "/api/v2/workflow_job_nodes/";
+        /// <summary>
+        /// Retrieve a Workflow Job Node.<br/>
+        /// API Path: <c>/api/v2/workflow_job_nodes/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static async Task<WorkflowJobNode> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJobNode>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Workflow Job Nodes.<br/>
+        /// API Path: <c>/api/v2/workflow_job_nodes/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<WorkflowJobNode> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobNode>(PATH, query, getAll))
             {
-                foreach (var res in result.Contents.Results)
+                foreach (var jobNode in result.Contents.Results)
                 {
-                    yield return res;
+                    yield return jobNode;
                 }
             }
         }
         public record Summary(
-            JobSummary Job,
+            JobSummary? Job,
             [property: JsonPropertyName("workflow_job")] NameDescriptionSummary WorkflowJob,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate);
 
@@ -131,7 +144,7 @@ namespace AWX.Resources
         public int? Forks { get; } = forks;
         public int? JobSliceCount { get; } = jobSliceCount;
         public int? Timeout { get; } = timeout;
-        public ulong Job { get; } = job;
+        public ulong? Job { get; } = job;
         public ulong WorkflowJob { get; } = workflowJob;
         public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public ulong[] SuccessNodes { get; } = successNodes;

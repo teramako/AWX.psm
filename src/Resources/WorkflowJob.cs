@@ -55,21 +55,56 @@ namespace AWX.Resources
           IWorkflowJob, IResource<WorkflowJob.Summary>
     {
         public new const string PATH = "/api/v2/workflow_jobs/";
-        public static async Task<WorkflowJob> Get(ulong id)
+        /// <summary>
+        /// Retrieve a Workflow Job.<br/>
+        /// API Path: <c>/api/v2/workflow_jobs/<paramref name="id"/>/</c>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static new async Task<WorkflowJob> Get(ulong id)
         {
             var apiResult = await RestAPI.GetAsync<WorkflowJob>($"{PATH}{id}/");
             return apiResult.Contents;
         }
+        /// <summary>
+        /// List Workflow Jobs.<br/>
+        /// API Path: <c>/api/v2/workflow_jobs/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static new async IAsyncEnumerable<WorkflowJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJob>(PATH, query, getAll))
             {
-                foreach (var res in result.Contents.Results)
+                foreach (var workflowJob in result.Contents.Results)
                 {
-                    yield return res;
+                    yield return workflowJob;
                 }
             }
         }
+        /// <summary>
+        /// List Workflow Jobs for a Workflow Job Templates.<br/>
+        /// API Path: <c>/api/v2/workflow_job_templates/<paramref name="wjtId"/>/workflow_jobs/</c>
+        /// </summary>
+        /// <param name="wjtId"></param>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<WorkflowJob> FindFromWorkflowJobTemplate(ulong wjtId,
+                                                                                      NameValueCollection? query = null,
+                                                                                      bool getAll = false)
+        {
+            var path = $"{Resources.WorkflowJobTemplate.PATH}{wjtId}/workflow_jobs/";
+            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJob>(path, query, getAll))
+            {
+                foreach (var workflowJob in result.Contents.Results)
+                {
+                    yield return workflowJob;
+                }
+            }
+        }
+
         public record Summary(
             [property: JsonPropertyName("workflow_job_template")] NameDescriptionSummary WorkflowJobTemplate,
             ScheduleSummary? Schedule,
@@ -96,5 +131,53 @@ namespace AWX.Resources
         public string WebhookGuid { get; } = webhookGuid;
         public string? SkipTags { get; } = skipTags;
         public string? JobTags { get; } = jobTags;
+
+        public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
+                            DateTime created, DateTime? modified, string name, string description,
+                            ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
+                            ulong? executionEnvironment, bool failed, DateTime? started, DateTime? finished,
+                            DateTime? canceledOn, double elapsed, string jobArgs, string jobCwd,
+                            Dictionary<string, string> jobEnv, string jobExplanation, string resultTraceback,
+                            LaunchedBy launchedBy, string? workUnitId, ulong workflowJobTemplate, string extraVars,
+                            bool allowSimultaneous, ulong? jobTemplate, bool isSlicedJob, ulong? inventory,
+                            string? limit, string? scmBranch, string webhookService, ulong? webhookCredential,
+                            string webhookGuid, string? skipTags, string? jobTags)
+            : WorkflowJob(id, type, url, related, summaryFields, created, modified, name, description, unifiedJobTemplate,
+                          launchType, status, executionEnvironment, failed, started, finished, canceledOn, elapsed,
+                          jobExplanation, launchedBy, workUnitId, workflowJobTemplate, extraVars, allowSimultaneous,
+                          jobTemplate, isSlicedJob, inventory, limit, scmBranch, webhookService, webhookCredential,
+                          webhookGuid, skipTags, jobTags),
+              IWorkflowJob, IJobDetail, IResource<Summary>
+        {
+            public string JobArgs { get; } = jobArgs;
+            public string JobCwd { get; } = jobCwd;
+            public Dictionary<string, string> JobEnv { get; } = jobEnv;
+            public string ResultTraceback { get; } = resultTraceback;
+        }
+        public class LaunchResult(ulong workflowJob, Dictionary<string, object?> ignoredFields, ulong id,
+                                  ResourceType type, string url, RelatedDictionary related,
+                                  Summary summaryFields, DateTime created, DateTime? modified, string name,
+                                  string description, ulong unifiedJobTemplate, JobLaunchType launchType,
+                                  JobStatus status, ulong? executionEnvironment, bool failed, DateTime? started,
+                                  DateTime? finished, DateTime? canceledOn, double elapsed, string jobArgs,
+                                  string jobCwd, Dictionary<string, string> jobEnv, string jobExplanation,
+                                  string resultTraceback, LaunchedBy launchedBy, string? workUnitId,
+                                  ulong workflowJobTemplate, string extraVars, bool allowSimultaneous,
+                                  ulong? jobTemplate, bool isSlicedJob, ulong? inventory, string? limit,
+                                  string? scmBranch, string webhookService, ulong? webhookCredential, string webhookGuid,
+                                  string? skipTags, string? jobTags)
+            : Detail(id, type, url, related, summaryFields, created, modified, name, description, unifiedJobTemplate,
+                     launchType, status, executionEnvironment, failed, started, finished, canceledOn, elapsed, jobArgs,
+                     jobCwd, jobEnv, jobExplanation, resultTraceback, launchedBy, workUnitId, workflowJobTemplate,
+                     extraVars, allowSimultaneous, jobTemplate, isSlicedJob, inventory, limit, scmBranch,
+                     webhookService, webhookCredential, webhookGuid, skipTags, jobTags),
+              IWorkflowJob, IJobDetail, IResource<Summary>
+
+        {
+            [JsonPropertyName("workflow_job")]
+            public ulong WorkflowJob { get; } = workflowJob;
+            [JsonPropertyName("ignored_fields")]
+            public Dictionary<string, object?> IgnoredFields { get; } = ignoredFields;
+        }
     }
 }

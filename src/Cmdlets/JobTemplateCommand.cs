@@ -1,7 +1,7 @@
 using AWX.Resources;
 using System.Collections;
 using System.Management.Automation;
-using System.Web;
+using System.Text;
 
 namespace AWX.Cmdlets
 {
@@ -34,7 +34,8 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
-        [ValidateSet(nameof(ResourceType.JobTemplate))]
+        [ValidateSet(nameof(ResourceType.Organization),
+                     nameof(ResourceType.Inventory))]
         public override ResourceType Type { get; set; }
 
         [Parameter(Position = 0)]
@@ -53,26 +54,29 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Find<JobTemplate>(JobTemplate.PATH);
+            var path = Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{Id}/job_templates/",
+                ResourceType.Inventory => $"{Inventory.PATH}{Id}/job_templates/",
+                _ => JobTemplate.PATH
+            };
+            foreach (var resultSet in GetResultSet<JobTemplate>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
         }
     }
 
-    [Cmdlet(VerbsLifecycle.Invoke, "JobTemplate")]
-    public class StartJobTemplateCommand : APICmdletBase
+    public abstract class LaunchJobTemplateCommandBase : InvokeJobBase
     {
-        [Parameter(Mandatory = true, ParameterSetName = "Id")]
+        [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true)]
+        [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true, Position = 0)]
         public JobTemplate? JobTemplate { get; set; }
 
         [Parameter()]
         public string? Limit { get; set; }
 
-        [Parameter()]
-        [ValidateRange(5, int.MaxValue)]
-        public int IntervalSeconds { get; set; } = 5;
-
-        private readonly Dictionary<ulong, JobTask> jobTasks = [];
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -82,149 +86,154 @@ namespace AWX.Cmdlets
             }
             return dict;
         }
+        private void ShowJobTemplateInfo(JobTemplateLaunchRequirements requirements)
+        {
+            var jt = requirements.JobTemplateData;
+            var def = requirements.Defaults;
+            WriteHost($"[{jt.Id}] {jt.Name} - {jt.Description}\n");
+            var fmt = "{0,22} : {1}\n";
+            if (def.Inventory.Id != null)
+            {
+                WriteHost(string.Format(fmt, "Inventory", $"[{def.Inventory.Id}] {def.Inventory.Name}"),
+                            foregroundColor: requirements.AskInventoryOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
+            {
+                var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
+
+                WriteHost(string.Format(fmt, "Limit", $"{limitVal}"),
+                            foregroundColor: requirements.AskLimitOnLaunch ? Limit == null ? ConsoleColor.Magenta : ConsoleColor.Green : null);
+            }
+            if (!string.IsNullOrEmpty(def.ScmBranch))
+            {
+                WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
+                            foregroundColor: requirements.AskScmBranchOnLaunch? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            if (def.Labels != null && def.Labels.Length > 0)
+            {
+                WriteHost(string.Format(fmt, "Labels", string.Join(", ", def.Labels.Select(l => $"[{l.Id}] {l.Name}"))),
+                            foregroundColor: requirements.AskLabelsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            if (!string.IsNullOrEmpty(def.JobTags))
+            {
+                WriteHost(string.Format(fmt, "Job tags", def.JobTags),
+                            foregroundColor: requirements.AskTagsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            if (!string.IsNullOrEmpty(def.SkipTags))
+            {
+                WriteHost(string.Format(fmt, "Skip tags", def.SkipTags),
+                            foregroundColor: requirements.AskSkipTagsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            if (!string.IsNullOrEmpty(def.ExtraVars))
+            {
+                var sb = new StringBuilder();
+                var lines = def.ExtraVars.Split('\n');
+                sb.Append(string.Format(fmt, "Extra vars", lines[0]));
+                foreach (var line in lines[1..])
+                {
+                    sb.AppendLine("".PadLeft(25) + line);
+                }
+                WriteHost(sb.ToString(),
+                            foregroundColor: requirements.AskVariablesOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            WriteHost(string.Format(fmt, "Diff Mode", def.DiffMode),
+                            foregroundColor: requirements.AskDiffModeOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            WriteHost(string.Format(fmt, "Job Type", def.JobType),
+                            foregroundColor: requirements.AskJobTypeOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            WriteHost(string.Format(fmt, "Verbosity", $"{def.Verbosity:d} ({def.Verbosity})"),
+                            foregroundColor: requirements.AskVerbosityOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            if (def.Credentials != null)
+            {
+                WriteHost(string.Format(fmt, "Credentials", string.Join(", ", def.Credentials.Select(c => $"[{c.Id}] {c.Name}"))),
+                            foregroundColor: requirements.AskCredentialOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            if (def.ExecutionEnvironment.Id != null)
+            {
+                WriteHost(string.Format(fmt, "ExecutionEnvironment", $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"),
+                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            }
+            WriteHost(string.Format(fmt, "Forks", def.Forks),
+                            foregroundColor: requirements.AskForksOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            WriteHost(string.Format(fmt, "Job Slice Count", def.JobSliceCount),
+                            foregroundColor: requirements.AskJobSliceCountOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            WriteHost(string.Format(fmt, "Timeout", def.Timeout),
+                            foregroundColor: requirements.AskTimeoutOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+        }
+        protected JobTemplateJob.LaunchResult? Launch(ulong id)
+        {
+            var requirements = GetResource<JobTemplateLaunchRequirements>($"{JobTemplate.PATH}{id}/launch/");
+            if (requirements == null)
+            {
+                return null;
+            }
+            ShowJobTemplateInfo(requirements);
+            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", CreateSendData());
+            var launchResult = apiResult.Contents;
+            WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
+            if (launchResult.IgnoredFields.Count > 0)
+            {
+                foreach (var (key, val) in launchResult.IgnoredFields)
+                {
+                    WriteWarning($"Ignored field: {key} ({val})");
+                }
+            }
+            return launchResult;
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Invoke, "JobTemplate")]
+    [OutputType(typeof(JobTemplateJob))]
+    public class InvokeJobTemplateCommand : LaunchJobTemplateCommandBase
+    {
+        [Parameter()]
+        [ValidateRange(5, int.MaxValue)]
+        public int IntervalSeconds { get; set; } = 5;
+
+        [Parameter()]
+        public SwitchParameter SuppressJobLog { get; set; }
+
         protected override void ProcessRecord()
         {
             if (JobTemplate != null)
             {
                 Id = JobTemplate.Id;
             }
-            var launchResult = CreateResource<JobTemplateLaunchResult>($"/api/v2/job_templates/{Id}/launch/", CreateSendData());
-            if (launchResult == null)
+            try
             {
-                return;
+                var launchResult = Launch(Id);
+                if (launchResult != null)
+                {
+                    JobManager.Add(launchResult);
+                }
             }
-            WriteVerbose($"Launch JobTemplate:{Id} => Job:[{launchResult.Job}]");
-            // launchJobs.Add(launchResult.Job);
-            jobTasks.Add(launchResult.Job, new JobTask(launchResult));
+            catch (RestAPIException) {}
         }
         protected override void EndProcessing()
         {
-            var start = DateTime.Now;
-            var rootProgress = new ProgressRecord(0, "Launch Job", "Waiting...")
-            {
-                SecondsRemaining = IntervalSeconds
-            };
-            do
-            {
-                for(var i = 1; i <= IntervalSeconds; i++)
-                {
-                    Sleep(1000);
-                    var elapsed = DateTime.Now - start;
-                    rootProgress.PercentComplete = i * 100 / IntervalSeconds;
-                    rootProgress.SecondsRemaining = IntervalSeconds - i;
-                    rootProgress.StatusDescription = $"Waiting... Elapsed: {elapsed:hh\\:mm\\:ss\\.ff}";
-                    WriteProgress(rootProgress);
-                }
-                using var task = UnifiedJob.Get(jobTasks.Keys.ToArray());
-                var tasks = jobTasks.Values.Select(jobTask => jobTask.GetLogAsync()).ToArray();
-                task.Wait();
-                Task.WaitAll(tasks);
-
-                // Remove Progressbar
-                rootProgress.RecordType = ProgressRecordType.Completed;
-                WriteProgress(rootProgress);
-
-                foreach (var t in tasks)
-                {
-                    var jobTask = t.Result;
-                    var color = Console.ForegroundColor;
-                    if (tasks.Length > 1)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine($"====== {jobTask.Job.Name} ======");
-                        Console.ForegroundColor = color;
-                    }
-                    Console.Write(jobTask.CurrentLog);
-                }
-                foreach (var job in task.Result)
-                {
-                    jobTasks[job.Id].Job = job;
-                    switch (job.Status)
-                    {
-                        case JobStatus.New:
-                        case JobStatus.Pending:
-                        case JobStatus.Waiting:
-                        case JobStatus.Running:
-                            break;
-                        default:
-                            jobTasks.Remove(job.Id);
-                            WriteObject(job, false);
-                            break;
-                    }
-                }
-
-            } while(jobTasks.Count != 0);
+            WaitJobs("Launch JobTemplate", IntervalSeconds, SuppressJobLog);
         }
-        private Sleep? _sleep;
-        protected void Sleep(int milliseconds)
-        {
-            using (_sleep = new Sleep())
-            {
-                _sleep.Do(milliseconds);
-            }
-        }
-        protected override void StopProcessing()
-        {
-            _sleep?.Stop();
-        }
+
     }
 
-    class JobTask(IUnifiedJob job)
+    [Cmdlet(VerbsLifecycle.Start, "JobTemplate")]
+    [OutputType(typeof(JobTemplateJob.LaunchResult))]
+    public class StartJobTemplateCommand : LaunchJobTemplateCommandBase
     {
-        public ulong Id { get { return Job.Id; } }
-        public IUnifiedJob Job {
-            get { return _job; }
-            set { 
-                if (_job.Id != value.Id)
+        protected override void ProcessRecord()
+        {
+            if (JobTemplate != null)
+            {
+                Id = JobTemplate.Id;
+            }
+            try
+            {
+                var launchResult = Launch(Id);
+                if (launchResult != null)
                 {
-                    _job = value;
+                    WriteObject(launchResult, false);
                 }
             }
-        }
-        private IUnifiedJob _job = job;
-        public string CurrentLog { get; private set; } = string.Empty;
-        protected uint JobLogStartNext { get; private set; } = 0;
-
-        public async Task<JobTask> GetLogAsync()
-        {
-            if (Job.Type == ResourceType.SystemJob)
-            {
-                CurrentLog = ((ISystemJob)Job).ResultStdout;
-                // throw new NotImplementedException($"Geting SystemJob is not implemented now.");
-            }
-            else
-            {
-                var query = HttpUtility.ParseQueryString("format=json");
-                query.Add("start_line", $"{JobLogStartNext}");
-                var apiResult = await RestAPI.GetAsync<JobLog>($"{Job.Url}stdout/?{query}");
-                var log = apiResult.Contents;
-                JobLogStartNext = log.Range.End;
-                CurrentLog = log.Content;
-            }
-            return this;
+            catch (RestAPIException) {}
         }
     }
-
-    /*
-    class JobProgress
-    {
-        public ulong Id { get; private set; }
-        public ResourceType Type { get; private set; }
-        bool Finished = false;
-        bool Completed = false;
-        Dictionary<ulong, JobProgress>? Children = null;
-        int StartNext = 0;
-        public ProgressRecord Progress { get; }
-        public JobProgress(ulong id, int parentId = 0, UnifiedJob? job = null)
-        {
-            Id = id;
-            var recordeId = (int)id >> 32;
-            Progress = new ProgressRecord(recordeId, $"Wait Job {id}", $"Start")
-            {
-                ParentActivityId = parentId
-            };
-
-        }
-    }
-    */
 }

@@ -12,7 +12,6 @@ namespace AWX.Cmdlets
     [Cmdlet(VerbsLifecycle.Invoke, "API", DefaultParameterSetName = "NonSendData")]
     public class InvokeAPICommand : APICmdletBase
     {
-
         [Parameter(Mandatory = true, Position = 0)]
         public Method Method { get; set; }
 
@@ -27,7 +26,7 @@ namespace AWX.Cmdlets
         public object? SenData { get; set; }
 
         [Parameter()]
-        public SwitchParameter AsJson { get; set; }
+        public SwitchParameter AsRawString { get; set; }
 
         private string pathAndQuery = string.Empty;
 
@@ -66,11 +65,24 @@ namespace AWX.Cmdlets
                     task = RestAPI.GetAsync<string>(pathAndQuery);
                     break;
                 case Method.POST:
+                    task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
+                    break;
+                case Method.PUT:
                     if (SenData == null)
                     {
                         throw new ArgumentNullException(nameof(SenData));
                     }
-                    task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
+                    task = RestAPI.PutJsonAsync<string>(pathAndQuery, SenData);
+                    break;
+                case Method.PATCH:
+                    if (SenData == null)
+                    {
+                        throw new ArgumentNullException(nameof(SenData));
+                    }
+                    task = RestAPI.PatchJsonAsync<string>(pathAndQuery, SenData);
+                    break;
+                case Method.DELETE:
+                    task = RestAPI.DeleteAsync(pathAndQuery);
                     break;
                 case Method.OPTIONS:
                     task = RestAPI.OptionsJsonAsync<string>(pathAndQuery);
@@ -82,25 +94,30 @@ namespace AWX.Cmdlets
             task.Wait();
             var result = task.Result;
             WriteVerboseResponse(result.Response);
-            if (result.Response.ContentType == "application/json")
+            if (!AsRawString && result.Response.ContentType == "application/json")
             {
-                var json = JsonSerializer.Deserialize<JsonElement>(result.Contents, Json.DeserializeOptions);
-                try
+                if (APIPath.TryGetTypeFromPath(pathAndQuery, Method, out var type))
                 {
-                    var obj = Json.ObjectToInferredType(json, true);
-                    if (AsJson)
+                    if (type != typeof(string))
                     {
-                        WriteObject(JsonSerializer.Serialize(obj, Json.SerializeOptions), false);
+                        var obj = JsonSerializer.Deserialize(result.Contents, type, Json.DeserializeOptions);
+                        WriteObject(obj, true);
+                        return;
                     }
-                    else
-                    {
-                        WriteObject(obj, false);
-                    }
-                    return;
                 }
-                catch (Exception ex)
+                else
                 {
-                    WriteWarning($"Could not convert to inferred type. Fallback to string: {ex.Message}");
+                    var json = JsonSerializer.Deserialize<JsonElement>(result.Contents, Json.DeserializeOptions);
+                    try
+                    {
+                        var obj = Json.ObjectToInferredType(json, true);
+                        WriteObject(obj, false);
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteWarning($"Could not convert to inferred type. Fallback to string: {ex.Message}");
+                    }
                 }
             }
             WriteObject(result.Contents);
@@ -109,11 +126,8 @@ namespace AWX.Cmdlets
 
     class ApiPathCompleter : IArgumentCompleter
     {
-        private readonly Type resourceType = typeof(ResourceType);
-        public IEnumerable<CompletionResult> CompleteArgument(string commandName,
-                                                              string parameterName,
-                                                              string wordToComplete,
-                                                              CommandAst commandAst,
+        public IEnumerable<CompletionResult> CompleteArgument(string commandName, string parameterName,
+                                                              string wordToComplete, CommandAst commandAst,
                                                               IDictionary fakeBoundParameters)
         {
             var paths = wordToComplete.Split('/');
@@ -126,91 +140,159 @@ namespace AWX.Cmdlets
             switch (paths.Length)
             {
                 case <= 3:
-                    {
-                        // /api/v2/
-                        foreach (var path in new string[] { "v2", "o" })
-                        {
-                            yield return new CompletionResult($"/api/{path}/");
-                        }
-
-                        break;
-                    }
+                    foreach (var item in Complete()) { yield return item; }
+                    break;
                 case 4:
-                    {
-                        // 0   1  2   3
-                        //  /api/v2/___
-                        string p3 = paths[3];
-                        foreach (var field in resourceType.GetFields())
-                        {
-                            foreach (var attr in field.GetCustomAttributes<ResourcePathAttribute>(false))
-                            {
-                                if (method != attr.Method)
-                                {
-                                    var subPaths = field.GetCustomAttributes<ResourceSubPathAttribute>(false)
-                                                        .Where(attr => attr.Method == method)
-                                                        .ToArray();
-                                    if (subPaths.Length == 0)
-                                        continue;
-                                }
-                                if (attr.PathName.StartsWith(p3))
-                                {
-                                    var text = $"/api/v2/{attr.PathName}/";
-                                    yield return new CompletionResult(text,
-                                                                      attr.PathName,
-                                                                      CompletionResultType.ParameterValue,
-                                                                      attr.Description);
-                                    break;
-                                }
-                            }
-
-                        }
-                        break;
-                    }
+                    foreach (var item in Complete(method, paths[3])) { yield return item; }
+                    break;
+                case 5:
+                    foreach (var item in Complete(method, paths[3], paths[4])) { yield return item; }
+                    break;
                 case 6:
+                    foreach (var item in Complete(method, paths[3], paths[4], paths[5])) { yield return item; }
+                    break;
+            }
+        }
+        private static IEnumerable<CompletionResult> Complete()
+        {
+            string[] paths = ["v2", "o"];
+            foreach (var path in paths)
+            {
+                yield return new CompletionResult($"/api/{path}/");
+            }
+        }
+        private static IEnumerable<CompletionResult> Complete(Method method, string p3)
+        {
+            foreach (var field in typeof(ResourceType).GetFields())
+            {
+                foreach (var attr in field.GetCustomAttributes<ResourcePathAttribute>(false))
+                {
+                    if (attr.Virtual || method != attr.Method)
                     {
-                        // 0   1  2   3    4   5
-                        //  /api/v2/___/{id}/___
-                        string p3 = paths[3];
-                        string p4 = paths[4];
-                        string p5 = paths[5];
-                        ResourcePathAttribute? p3Attr = null;
-                        FieldInfo? resourceField = null;
-
-                        foreach (var field in resourceType.GetFields())
+                        if (!field.GetCustomAttributes<ResourceSubPathBase>(false)
+                                  .Where(attr => attr.Method == method)
+                                  .Any())
                         {
-                            var attr = field.GetCustomAttribute<ResourcePathAttribute>(false);
-                            if (attr == null) continue;
-                            if (attr.PathName == p3)
-                            {
-                                resourceField = field;
-                                p3Attr = attr;
-                                break;
-                            }
+                            continue;
                         }
-
-                        if (!ulong.TryParse(p4, out _)) break;
-                        if (p3Attr == null) break;
-                        if (resourceField == null) break;
-
-                        foreach (var subPathAttr in resourceField.GetCustomAttributes<ResourceSubPathAttribute>(false))
-                        {
-                            if (subPathAttr.PathName.StartsWith(p5))
-                            {
-                                if (method != subPathAttr.Method) continue;
-                                var text = $"/api/v2/{p3}/{p4}/{subPathAttr.PathName}/";
-                                var tooltip = string.IsNullOrEmpty(subPathAttr.Description)
-                                              ? $"{method} {resourceField.Name}"
-                                              : subPathAttr.Description;
-                                yield return new CompletionResult(text,
-                                                                  subPathAttr.PathName,
-                                                                  CompletionResultType.ParameterValue,
-                                                                  tooltip);
-                            }
-
-                        }
+                    }
+                    if (attr.PathName.StartsWith(p3))
+                    {
+                        var text = $"/api/v2/{attr.PathName}/";
+                        var tooltip = string.IsNullOrEmpty(attr.Description)
+                                      ? $"{method} {field.Name}"
+                                      : attr.Description;
+                        yield return new CompletionResult(text, attr.PathName, CompletionResultType.ParameterValue,
+                                                          tooltip);
                         break;
                     }
+                }
+
             }
+        }
+        private static IEnumerable<CompletionResult> Complete(Method method, string p3, string p4)
+        {
+            ResourcePathAttribute? p3Attr = null;
+            FieldInfo? resourceField = null;
+
+            foreach (var field in typeof(ResourceType).GetFields())
+            {
+                var attr = field.GetCustomAttributes<ResourcePathAttribute>(false).FirstOrDefault();
+                if (attr == null) continue;
+                if (attr.PathName == p3)
+                {
+                    resourceField = field;
+                    p3Attr = attr;
+                    break;
+                }
+            }
+            if (p3Attr == null) yield break;
+            if (resourceField == null) yield break;
+            var p4IsId = ulong.TryParse(p4, out _);
+
+            var subPathAttrs = resourceField.GetCustomAttributes<ResourceSubPathBase>(false)
+                                            .Where(attr => attr.Method == method)
+                                            .ToArray();
+            if (subPathAttrs.Length == 0) yield break;
+
+            foreach (var subAttr in subPathAttrs)
+            {
+                var tooltip = string.IsNullOrEmpty(subAttr.Description)
+                              ? $"{method} {resourceField.Name}"
+                              : subAttr.Description;
+                string completeionText;
+                string listItemText;
+                switch (subAttr)
+                {
+                    case ResourceIdPathAttribute:
+                        if (!p4IsId) continue;
+                        // TODO: 最終的にはID番号の補完もしたい
+                        completeionText = $"/api/v2/{p3}/{p4}/";
+                        listItemText = $"{p3}/{p4}/";
+                        yield return new CompletionResult(completeionText, listItemText,
+                                                          CompletionResultType.ParameterValue, tooltip);
+                        yield break;
+                    case ResourceSubPathAttribute subPathAttr:
+                        if (p4IsId && subPathAttr.IsSubPathOfId)
+                        {
+                            completeionText = $"/api/v2/{p3}/{p4}/{subPathAttr.PathName}";
+                            listItemText = $"{p3}/{p4}/{subPathAttr.PathName}";
+                        }
+                        else if (!p4IsId && !subPathAttr.IsSubPathOfId)
+                        {
+                            completeionText = $"/api/v2/{p3}/{subPathAttr.PathName}/";
+                            listItemText = $"{p3}/{subPathAttr.PathName}/";
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        yield return new CompletionResult(completeionText, listItemText,
+                                                          CompletionResultType.ParameterValue, tooltip);
+                        break;
+                    default:
+                        continue;
+                }
+            }
+        }
+        private static IEnumerable<CompletionResult> Complete(Method method, string p3, string p4, string p5)
+        {
+            ResourcePathAttribute? p3Attr = null;
+            FieldInfo? resourceField = null;
+
+            foreach (var field in typeof(ResourceType).GetFields())
+            {
+                var attr = field.GetCustomAttributes<ResourcePathAttribute>(false).FirstOrDefault();
+                if (attr == null) continue;
+                if (attr.PathName == p3)
+                {
+                    resourceField = field;
+                    p3Attr = attr;
+                    break;
+                }
+            }
+
+            if (p3Attr == null) yield break;
+            if (resourceField == null) yield break;
+            var p4IsId = ulong.TryParse(p4, out _);
+
+            foreach (var subPathAttr in resourceField.GetCustomAttributes<ResourceSubPathAttribute>(false)
+                                                     .Where(attr => attr.Method == method))
+            {
+                if (p4IsId != subPathAttr.IsSubPathOfId) continue;
+                var compWord = p4IsId ? p5 : $"{p4}/{p5}";
+                if (subPathAttr.PathName.StartsWith(compWord))
+                {
+                    var text = $"/api/v2/{p3}/{p4}/{subPathAttr.PathName}/";
+                    var tooltip = string.IsNullOrEmpty(subPathAttr.Description)
+                                  ? $"{method} {resourceField.Name}"
+                                  : subPathAttr.Description;
+                    yield return new CompletionResult(text, subPathAttr.PathName, CompletionResultType.ParameterValue,
+                                                      tooltip);
+                }
+
+            }
+
         }
     }
 }

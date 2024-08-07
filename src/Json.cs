@@ -44,10 +44,15 @@ namespace AWX
                             var fieldInfo = typeof(ResourceType).GetField(key);
                             if (fieldInfo != null)
                             {
-                                var attr = fieldInfo.GetCustomAttributes<ResourcePathAttribute>(false).First();
+                                var attr = fieldInfo.GetCustomAttributes<ResourcePathAttribute>(false).FirstOrDefault();
                                 if (attr != null && attr.Type != null)
                                 {
-                                    var obj = val.Deserialize(attr.Type, DeserializeOptions);
+                                    var resourceType = attr.Type;
+                                    if (resourceType.IsGenericType && resourceType.IsSubclassOf(typeof(ResultSetBase)))
+                                    {
+                                        resourceType = resourceType.GenericTypeArguments[0];
+                                    }
+                                    var obj = val.Deserialize(resourceType, DeserializeOptions);
                                     if (obj != null)
                                     {
                                         return obj;
@@ -442,110 +447,6 @@ namespace AWX
             }
         }
 
-/*        public class SummaryFieldsConverter : JsonConverter<Dictionary<string, object>>
-        {
-            public override Dictionary<string, object>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                var dict = new Dictionary<string, object>();
-                while (reader.Read())
-                {
-                    if (reader.TokenType == JsonTokenType.EndObject)
-                    {
-                        return dict;
-                    }
-                    if (reader.TokenType != JsonTokenType.PropertyName)
-                    {
-                        throw new JsonException($"TokenType is not PropertyName: {reader.TokenType}");
-                    }
-                    string? propertyName = reader.GetString() ?? throw new JsonException("PropertyName is null");
-                    reader.Read();
-                    object? val = null;
-                    switch (propertyName)
-                    {
-                        case "user":
-                        case "actor":
-                        case "created_by":
-                        case "modifed_by":
-                            val = reader.TokenType == JsonTokenType.StartArray ?
-                                    JsonSerializer.Deserialize<UserSummary[]>(ref reader, options) :
-                                    JsonSerializer.Deserialize<UserSummary>(ref reader, options);
-                            break;
-                        case "o_auth2_access_token":
-                            val = JsonSerializer.Deserialize<OAuth2AccessTokenSummary>(ref reader, options);
-                            break;
-                        case "user_capabilities":
-                            val = JsonSerializer.Deserialize<UserCapability>(ref reader, options);
-                            break;
-                        case "organization":
-                        case "job_template":
-                        case "credential_type":
-                        case "notification_template":
-                            val = JsonSerializer.Deserialize<NameDescriptionSummary>(ref reader, options);
-                            break;
-                        case "object_roles":
-                            val = JsonSerializer.Deserialize<Dictionary<string, RoleSummary>>(ref reader, options);
-                            break;
-                        case "related_field_counts":
-                            val = JsonSerializer.Deserialize<Dictionary<string, int>>(ref reader, options);
-                            break;
-                        case "tokens":
-                            val = JsonSerializer.Deserialize<ListSummary<TokenSummary>>(ref reader, options);
-                            break;
-                        case "credential":
-                            val = JsonSerializer.Deserialize<CredentialSummary>(ref reader, options);
-                            break;
-                        case "credentials":
-                            val = JsonSerializer.Deserialize<CredentialSummary[]>(ref reader, options);
-                            break;
-                        case "last_job":
-                            val = JsonSerializer.Deserialize<LastJobSummary>(ref reader, options);
-                            break;
-                        case "last_update":
-                            val = JsonSerializer.Deserialize<LastUpdateSummary>(ref reader, options);
-                            break;
-                        case "inventory":
-                            val = JsonSerializer.Deserialize<InventorySummary>(ref reader, options);
-                            break;
-                        case "project":
-                        case "source_project":
-                            val = JsonSerializer.Deserialize<ProjectSummary>(ref reader, options);
-                            break;
-                        case "recent_jobs":
-                            val = JsonSerializer.Deserialize<HostRecentJobSummary>(ref reader, options);
-                            break;
-                        case "labels":
-                            val = JsonSerializer.Deserialize<ListSummary<NameSummary>>(ref reader, options);
-                            break;
-                        case "unified_job_template":
-                            val = JsonSerializer.Deserialize<UnifiedJobTemplateSummary>(ref reader, options);
-                            break;
-                        case "instance_group":
-                            val = JsonSerializer.Deserialize<InstanceGroupSummary>(ref reader, options);
-                            break;
-                        case "resource_name":
-                        case "resource_type":
-                        case "resource_type_display_name":
-                            val = reader.GetString();
-                            break;
-                        case "resource_id":
-                            val = reader.GetUInt64();
-                            break;
-                        default:
-                            break;
-                    }
-                    if (val != null)
-                        dict.Add(propertyName, val);
-
-                }
-                throw new JsonException($"End unexpectly: {reader.TokenType}");
-            }
-
-            public override void Write(Utf8JsonWriter writer, Dictionary<string, object> value, JsonSerializerOptions options)
-            {
-                JsonSerializer.Serialize(writer, value, options);
-            }
-        }
-*/
         public class CapabilityConverter : JsonConverter<Capability>
         {
             public override Capability Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

@@ -4,25 +4,29 @@ using System.Web;
 
 namespace AWX.Resources
 {
-    public interface IUnifiedJob
+    public interface IUnifiedJobSummary
     {
         ulong Id { get; }
         ResourceType Type { get; }
         string Url { get; }
+        string Name { get; }
+        JobStatus Status { get; }
+        double Elapsed { get; }
+        bool Failed { get; }
+    }
+
+    public interface IUnifiedJob : IUnifiedJobSummary
+    {
         DateTime Created { get; }
         DateTime? Modified { get; }
-        string Name { get; }
         [JsonPropertyName("launch_type")]
         JobLaunchType LaunchType { get; }
-        JobStatus Status { get; }
         [JsonPropertyName("execution_environment")]
         ulong? ExecutionEnvironment { get; }
-        bool Failed { get; }
         DateTime? Started { get; }
         DateTime? Finished { get; }
         [JsonPropertyName("canceled_on")]
         DateTime? CanceledOn { get; }
-        double Elapsed { get; }
         [JsonPropertyName("job_explanation")]
         string JobExplanation { get; }
         /*
@@ -92,7 +96,7 @@ namespace AWX.Resources
         /// </summary>
         /// <param name="id">Unified Job ID</param>
         /// <returns></returns>
-        public static async Task<IUnifiedJob> Get(long id)
+        public static async Task<IUnifiedJob> Get(ulong id)
         {
             var query = HttpUtility.ParseQueryString($"id={id}&page_size=1");
             var apiResult = await RestAPI.GetAsync<ResultSet>($"{PATH}?{query}");
@@ -108,6 +112,13 @@ namespace AWX.Resources
             var apiResult = await RestAPI.GetAsync<ResultSet>($"{PATH}?{query}");
             return apiResult.Contents.Results.OfType<IUnifiedJob>().ToArray();
         }
+        /// <summary>
+        /// List Unified Jobs.<br/>
+        /// API Path: <c>/api/v2/unified_jobs/</c>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="getAll"></param>
+        /// <returns></returns>
         public static async IAsyncEnumerable<IUnifiedJob> Find(NameValueCollection? query, bool getAll = false)
         {
             await foreach (var result in RestAPI.GetResultSetAsync(PATH, query, getAll))

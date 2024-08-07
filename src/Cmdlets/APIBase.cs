@@ -7,13 +7,102 @@ using System.Web;
 
 namespace AWX.Cmdlets
 {
+    public abstract class InvokeJobBase : APICmdletBase
+    {
+        protected readonly JobProgressManager JobManager = [];
+        private Sleep? _sleep;
+        protected void Sleep(int milliseconds)
+        {
+            using (_sleep = new Sleep())
+            {
+                _sleep.Do(milliseconds);
+            }
+        }
+        protected void WriteJobIndicator(JobProgress jp, bool suppressJobLog)
+        {
+            WriteHost($"====== [{jp.Id}] {jp.Job?.Name} ======\n",
+                      foregroundColor: ConsoleColor.Magenta,
+                      tags: ["Ansible", "Indicator", $"job-{jp.Id}"],
+                      dontshow: suppressJobLog);
+        }
+        private ulong lastShownJob = 0;
+        protected void WriteJobLog(JobProgress jp, bool suppressJobLog)
+        {
+            if (string.IsNullOrWhiteSpace(jp.CurrentLog))
+            {
+                return;
+            }
+            if (lastShownJob != jp.Id)
+            {
+                WriteJobIndicator(jp, suppressJobLog);
+            }
+            WriteHost(jp.CurrentLog,
+                      tags: ["Ansible", "JobLog", $"job-{jp.Id}"],
+                      dontshow: suppressJobLog);
+            lastShownJob = jp.Id;
+        }
+
+        protected void WaitJobs(string activityId,
+                                int intervalSeconds,
+                                bool suppressJobLog)
+        {
+            if (JobManager.Count == 0)
+            {
+                return;
+            }
+            JobManager.Start(activityId, intervalSeconds);
+            do
+            {
+                UpdateAllProgressRecordType(ProgressRecordType.Processing);
+                for(var i = 1; i <= intervalSeconds; i++)
+                {
+                    Sleep(1000);
+                    JobManager.UpdateProgress(i);
+                    WriteProgress(JobManager.RootProgress);
+                }
+                JobManager.UpdateJob();
+                // Remove Progressbar
+                UpdateAllProgressRecordType(ProgressRecordType.Completed);
+
+                ShowJobLog(suppressJobLog);
+
+                WriteObject(JobManager.CleanCompleted(), true);
+            } while(JobManager.Count > 0);
+        }
+
+        private void UpdateAllProgressRecordType(ProgressRecordType type)
+        {
+            JobManager.RootProgress.RecordType = type;
+            WriteProgress(JobManager.RootProgress);
+            foreach (var jp in JobManager.GetAll())
+            {
+                jp.Progress.RecordType = type;
+                WriteProgress(jp.Progress);
+            }
+        }
+
+        protected void ShowJobLog(bool suppressJobLog)
+        {
+            var jpList = JobManager.GetJobLog();
+            foreach (var jp in jpList)
+            {
+                if (jp == null) continue;
+                WriteJobLog(jp, suppressJobLog);
+            }
+        }
+
+        protected override void StopProcessing()
+        {
+            _sleep?.Stop();
+        }
+    }
+
     public abstract class GetCmdletBase : APICmdletBase
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromRemainingArguments = true, ValueFromPipeline = true)]
         [PSDefaultValue(Value = 1, Help = "The resource ID")]
         public ulong[] Id { get; set; } = [];
 
-        protected bool CanAggregate { get; }
         protected readonly HashSet<ulong> IdSet  = [];
         protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
     }
@@ -34,6 +123,16 @@ namespace AWX.Cmdlets
         public abstract ulong Id { get; set; }
 
         /// <summary>
+        /// <c>"search"</c> query parameter for API.
+        /// <br/>
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/searching.html">
+        /// 5. Searching — Automation Controller API Guide
+        /// </a>
+        /// </summary>
+        [Parameter()]
+        public string[]? Search { get; set; }
+
+        /// <summary>
         /// <c>"order_by"</c> query parameter for API.
         /// <br/>
         /// To sort in reverse (Descending), add <c>"!"</c> prefix instead of <c>"-"</c>.
@@ -43,16 +142,6 @@ namespace AWX.Cmdlets
         /// </a>
         /// </summary>
         public abstract string[] OrderBy { get; set; }
-
-        /// <summary>
-        /// <c>"search"</c> query parameter for API.
-        /// <br/>
-        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/searching.html">
-        /// 5. Searching — Automation Controller API Guide
-        /// </a>
-        /// </summary>
-        [Parameter(Position = 1)]
-        public string[]? Search { get; set; }
 
         /// <summary>
         /// Max size of per page.
@@ -130,6 +219,30 @@ namespace AWX.Cmdlets
             Console.ForegroundColor = currentColor;
         }
         /// <summary>
+        /// Write message to the console as Information
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="foregroundColor"></param>
+        /// <param name="backgroundColor"></param>
+        /// <param name="tags"></param>
+        /// <param name="dontshow">Follow the <c>$InformationPreference</c> value, don't output to console forcely.</param>
+        protected void WriteHost (string message,
+                                  ConsoleColor? foregroundColor = null,
+                                  ConsoleColor? backgroundColor = null,
+                                  string[]? tags = null,
+                                  bool dontshow = false)
+        {
+            var msg = new HostInformationMessage() {
+                Message = message,
+                ForegroundColor = foregroundColor,
+                BackgroundColor = backgroundColor,
+                NoNewLine = true
+            };
+            List<string> infoTags = dontshow ? [] : ["PSHOST"];
+            if (tags != null) { infoTags.AddRange(tags); }
+            WriteInformation(msg, infoTags.ToArray());
+        }
+        /// <summary>
         /// Send a request to retrieve a resource.
         /// (HTTP method: <c>GET</c>)
         /// </summary>
@@ -153,7 +266,30 @@ namespace AWX.Cmdlets
             {
                 WriteApiError(ex);
             }
+            catch(AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                }
+                else
+                {
+                    throw;
+                }
+            }
             return null;
+        }
+        protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string path,
+                                                                              NameValueCollection? query = null,
+                                                                              bool getAll = false)
+            where TValue : class
+        {
+            var pathAndQuery = path + (query == null ? "" : $"?{query}");
+            foreach (var resultSet in GetResultSet<TValue>(pathAndQuery, getAll))
+            {
+                yield return resultSet;
+            }
         }
         /// <summary>
         /// Send requests to retrieve resource list.
@@ -163,13 +299,13 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="getAll"></param>
         /// <returns>Returns successed responses</returns>
-        protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string pathAndQuery, bool getAll)
+        protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string pathAndQuery, bool getAll = false)
             where TValue : class
         {
             string nextPathAndQuery = pathAndQuery;
             do
             {
-                WriteVerboseRequest(pathAndQuery, Method.GET);
+                WriteVerboseRequest(nextPathAndQuery, Method.GET);
                 RestAPIResult<ResultSet<TValue>>? result;
                 try
                 {
@@ -183,6 +319,16 @@ namespace AWX.Cmdlets
                     WriteVerboseResponse(ex.Response);
                     WriteApiError(ex);
                     break;
+                }
+                catch(AggregateException aex)
+                {
+                    if (aex.InnerException is RestAPIException ex)
+                    {
+                        WriteVerboseResponse(ex.Response);
+                        WriteApiError(ex);
+                        break;
+                    }
+                    throw;
                 }
                 var resultSet = result.Contents;
 
@@ -199,7 +345,8 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? CreateResource<TValue>(string pathAndQuery, object sendData)
+        /// <exception cref="RestAPIException"/>
+        protected virtual RestAPIResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.POST);
@@ -209,15 +356,24 @@ namespace AWX.Cmdlets
                 apiTask.Wait();
                 RestAPIResult<TValue> result = apiTask.Result;
                 WriteVerboseResponse(result.Response);
-                return result.Contents;
+                return result;
             }
             catch(RestAPIException ex)
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
-
+                throw;
             }
-            return null;
+            catch(AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send a request to replace the resource.

@@ -5,7 +5,6 @@ namespace AWX.Resources
     /// /api/v2/settings/
     /// </code>
     /// </summary>
-    [ResourceType(ResourceType.Setting)]
     public class Setting
     {
         public Setting(string url, string slug, string name)

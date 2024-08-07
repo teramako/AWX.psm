@@ -46,8 +46,8 @@ namespace AWX.Cmdlets
         /// <summary>
         /// 同一ジョブを重複して取得しないための HashSet
         /// </summary>
-        private readonly HashSet<ulong> jobIdSet = [];
-        private readonly List<Job> jobs = [];
+        private readonly HashSet<ulong> _jobIdSet = [];
+        private readonly List<Job> _jobs = [];
 
         class Job(ulong id, ResourceType type)
         {
@@ -67,16 +67,23 @@ namespace AWX.Cmdlets
             {
                 foreach(var node in resultSet.Results)
                 {
+                    if (node.Job == null || node.SummaryFields.Job == null)
+                    {
+                        continue;
+                    }
+                    var jobId = (ulong)node.Job;
                     var type = node.SummaryFields.Job.Type;
                     switch (type)
                     {
                         case ResourceType.WorkflowJob:
-                            GetJobsFromWorkflowJob(node.Job);
+                            GetJobsFromWorkflowJob(jobId);
+                            break;
+                        case ResourceType.WorkflowApproval:
                             break;
                         default:
-                            if (jobIdSet.Add(node.Id))
+                            if (_jobIdSet.Add(node.Id))
                             {
-                                jobs.Add(new Job(node.Job, type));
+                                _jobs.Add(new Job(jobId, type));
                             }
                             break;
                     }
@@ -110,9 +117,9 @@ namespace AWX.Cmdlets
                     GetJobsFromWorkflowJob(Id);
                     break;
                 default:
-                    if (jobIdSet.Add(Id))
+                    if (_jobIdSet.Add(Id))
                     {
-                        jobs.Add(new Job(Id, Type));
+                        _jobs.Add(new Job(Id, Type));
                     }
                     break;
             }
@@ -140,7 +147,7 @@ namespace AWX.Cmdlets
             }
             else
             {
-                foreach (var log in StdoutLogs(jobs))
+                foreach (var log in StdoutLogs(_jobs))
                 {
                     WriteObject(log);
                 }
@@ -150,6 +157,7 @@ namespace AWX.Cmdlets
         {
             foreach (var job in jobs)
             {
+                WriteHost($"==> [{job.Id}] {job.Type}\n", foregroundColor: ConsoleColor.Magenta);
                 var path = GetStdoutPath(job.Id, job.Type);
                 if (job.Type == ResourceType.SystemJob)
                 {
@@ -173,7 +181,7 @@ namespace AWX.Cmdlets
         }
         private IEnumerable<FileInfo> DownloadLogs(DirectoryInfo dir)
         {
-            var unifiedJobsTask = UnifiedJob.Get(jobs.Select(job => job.Id).ToArray());
+            var unifiedJobsTask = UnifiedJob.Get(_jobs.Select(job => job.Id).ToArray());
             unifiedJobsTask.Wait();
             foreach (var unifiedJob in unifiedJobsTask.Result)
             {

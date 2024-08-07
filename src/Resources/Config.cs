@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
-    [ResourceType(ResourceType.Config)]
     public class Config(string timeZone,
                         Config.ConfigLicenseInfo licenseInfo,
                         string version,

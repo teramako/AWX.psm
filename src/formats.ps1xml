@@ -1,0 +1,2295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Format.xsd">
+  <ViewDefinitions>
+    <View>
+      <Name>ApiHelp</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.ApiHelp</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem><PropertyName>Name</PropertyName></ListItem>
+              <ListItem>
+                <Label>Description</Label>
+                <ScriptBlock>
+                  if ($Host.UI.SupportsVirtualTerminal) {
+                    $md = $_.Description | ConvertFrom-Markdown -AsVT100EncodedString;
+                    $md.VT100EncodedString
+                  } else {
+                    $_.Description
+                  }
+                </ScriptBlock>
+              </ListItem>
+              <ListItem><Label>Renders</Label><ScriptBlock>$_.Renders -join "`n"</ScriptBlock></ListItem>
+              <ListItem><Label>Parses</Label><ScriptBlock>$_.Parses -join "`n"</ScriptBlock></ListItem>
+              <ListItem><Label>Actions</Label><ScriptBlock>$_.Actions.Keys -join "`n"</ScriptBlock></ListItem>
+              <ListItem><Label>Types</Label><ScriptBlock>$_.Types -join "`n"</ScriptBlock></ListItem>
+              <ListItem><Label>SearchFields</Label><ScriptBlock>$_.SearchFields -join "`n"</ScriptBlock></ListItem>
+              <ListItem><Label>RelatedSearchFields</Label><ScriptBlock>($_.RelatedSearchFields | ForEach-Object { $_ -replace "__search$","" }) -join "`n"</ScriptBlock></ListItem>
+              <ListItem><Label>ObjectRoles</Label><ScriptBlock>$_.ObjectRoles -join "`n"</ScriptBlock></ListItem>
+              <ListItem><PropertyName>MaxPageSize</PropertyName></ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>UnifiedJobTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobTemplate</TypeName>
+        <TypeName>AWX.Resources.Project</TypeName>
+        <TypeName>AWX.Resources.InventorySource</TypeName>
+        <TypeName>AWX.Resources.SystemJobTemplate</TypeName>
+        <TypeName>AWX.Resources.WorkflowJobTemplate</TypeName>
+        <TypeName>AWX.Resources.WorkflowApprovalTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- LastJobRun -->
+          <TableColumnHeader/><!-- NextJobRun -->
+          <TableColumnHeader/><!-- Options -->
+          <TableColumnHeader/><!-- Note -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Note</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Application</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Application</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- ClientType -->
+          <TableColumnHeader/><!-- AuthorizationGrantType -->
+          <TableColumnHeader/><!-- OrganizationName -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ClientType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AuthorizationGrantType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OrganizationName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Token</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.OAuth2AccessToken</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- Expires -->
+          <TableColumnHeader><!-- User -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Username -->
+          <TableColumnHeader><!-- Application -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- ApplicationName -->
+          <TableColumnHeader/><!-- Scope -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Expires</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>User</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Username</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Application</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ApplicationName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Scope</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Instance</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Instance</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Hostname -->
+          <TableColumnHeader><!-- Enabled -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- NodeType -->
+          <TableColumnHeader/><!-- NodeState -->
+          <TableColumnHeader/><!-- Version -->
+          <TableColumnHeader><!-- Capacity -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Cpu -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Memory -->
+            <Label>Memory(GB)</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobsRunning -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobsTotal -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Hostname</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Enabled</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NodeType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NodeState</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Version</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Capacity</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Cpu</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.Memory / 1GB</ScriptBlock>
+                <FormatString>0.00</FormatString>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobsRunning</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobsTotal</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>InstanceGroup</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.InstanceGroup</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader><!-- Instances -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobsRunning -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobsTotal -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Instances</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobsRunning</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobsTotal</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Organization</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Organization</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- MaxHosts -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- InventryCount -->
+            <Label>Inventories</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- TeamCount -->
+            <Label>Teams</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UserCount -->
+            <Label>Users</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobTemplateCount -->
+            <Label>JobTemplates</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- AdminCount-->
+            <Label>Admins</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ProjectCount -->
+            <Label>Projects</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- DefaultEnvironmentName -->
+            <Label>DefaultEnvironment</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>MaxHosts</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InventoryCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TeamCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UserCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobTemplateCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AdminCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ProjectCount</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>DefaultEnvironmentName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>User</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.User</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Username -->
+          <TableColumnHeader/><!-- Email -->
+          <TableColumnHeader/><!-- FirstName -->
+          <TableColumnHeader/><!-- LastName-->
+          <TableColumnHeader><!-- IsSuperuser -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- IsSystemAuditor -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modifed -->
+          <TableColumnHeader/><!-- LastLogin -->
+          <TableColumnHeader/><!-- LdapDn -->
+          <TableColumnHeader/><!-- ExternalAccount -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Username</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Email</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>FirstName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>IsSuperuser</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>IsSystemAuditor</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastLogin</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LdapDn</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ExternalAccount</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Project</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Project</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LocalPath -->
+          <TableColumnHeader/><!-- ScmType -->
+          <TableColumnHeader/><!-- ScmUrl -->
+          <TableColumnHeader/><!-- ScmBranch -->
+          <TableColumnHeader/><!-- LastUpdated -->
+          <TableColumnHeader/><!-- NextJobRun -->
+          <TableColumnHeader/><!-- Options -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LocalPath</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmUrl</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmBranch</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastUpdated</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Team</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Team</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- OrganizationName -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OrganizationName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Credential</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Credential</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created  -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- OrganizationName -->
+            <Label>Organization</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Kind -->
+          <TableColumnHeader><!-- CredentialTypeName -->
+            <Label>CredentialTypeName</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Managed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OrganizationName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Kind</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>CredentialTypeName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Managed</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>CredentialType</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.CredentialType</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- Kind -->
+          <TableColumnHeader/><!-- Namespace -->
+          <TableColumnHeader><!-- Managed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Kind</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Namespace</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Managed</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Inventory</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Inventory</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Kind -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- OrganizationName -->
+          <TableColumnHeader><!-- Total_hosts -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Total_groups-->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Kind</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OrganizationName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TotalHosts</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TotalGroups</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>InventorySource</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.InventorySource</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LastUpdated -->
+          <TableColumnHeader><!-- InventoryName -->
+            <Label>Inventory</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- SourceProjectName -->
+            <Label>SourceProject</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Source -->
+          <TableColumnHeader/><!-- SourcePath -->
+          <TableColumnHeader/><!-- Options -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastUpdated</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InventoryName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SourceProjectName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Source</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SourcePath</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Group</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Group</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- InventoryName -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- Variables -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InventoryName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Variables</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Host</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Host</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Enabled -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- InventoryName -->
+          <TableColumnHeader/><!-- Created -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Groups -->
+            <Label>Groups</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Enabled</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InventoryName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Created</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.Groups -join ", "</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>JobTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- JobType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- ProjectName -->
+          <TableColumnHeader/><!-- ScmBranch -->
+          <TableColumnHeader/><!-- Playbook -->
+          <TableColumnHeader/><!-- LastJobRun -->
+          <TableColumnHeader/><!-- NextJobRun -->
+          <TableColumnHeader/><!-- Options -->
+          <TableColumnHeader><!-- Labels -->
+            <Label>Labels</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- AskOnLaunch-->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ProjectName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmBranch</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Playbook</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.Labels.Name -join ","</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AskOnLaunch</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>UnifiedJob</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobTemplateJob</TypeName>
+        <TypeName>AWX.Resources.ProjectUpdateJob</TypeName>
+        <TypeName>AWX.Resources.InventoryUpdateJob</TypeName>
+        <TypeName>AWX.Resources.AdHocCommand</TypeName>
+        <TypeName>AWX.Resources.SystemJob</TypeName>
+        <TypeName>AWX.Resources.WorkflowJob</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader><!-- JobType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- LaunchType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Finished -->
+          <TableColumnHeader><!-- Elapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LaunchedBy -->
+          <TableColumnHeader/><!-- Template -->
+          <TableColumnHeader/><!-- Note -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Finished</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Elapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchedBy</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Template</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Note</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>JobEvent</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobEvent</TypeName>
+        <TypeName>AWX.Resources.ProjectUpdateJobEvent</TypeName>
+        <TypeName>AWX.Resources.InventoryUpdateJobEvent</TypeName>
+        <TypeName>AWX.Resources.SystemJobEvent</TypeName>
+        <TypeName>AWX.Resources.AdHocCommandJobEvent</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Job -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Counter -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Event -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- HostName -->
+          <TableColumnHeader/><!-- Play -->
+          <TableColumnHeader/><!-- Role -->
+          <TableColumnHeader/><!-- Task -->
+          <TableColumnHeader/><!-- TaskEnd -->
+          <TableColumnHeader/><!-- Stdout -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Job</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Counter</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Event</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>HostName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Play</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Role</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Task</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TaskEnd</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Stdout</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>JobHostSummary</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobHostSummary</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Job -->
+            <Label>Job</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobStatus -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobElapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobTemplate -->
+            <Label>JobTemplate</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Host -->
+            <Label>Host</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Changed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Dark -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Failures -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- OK -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Processed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Skipped -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Failed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Ignored -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Rescued -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.Job,$_.JobName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobStatus</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobElapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.JobTemplate,$_.JobTemplateName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.Host,$_.HostName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Changed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Dark</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Failures</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>OK</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Processed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Skipped</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Failed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Ignored</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Rescued</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>SystemJobTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.SystemJobTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- JobType -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LastJobRun-->
+          <TableColumnHeader/><!-- NextJobRun -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Schedule</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Schedule</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Enabled -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- NextRun -->
+          <TableColumnHeader/><!-- Dtstart -->
+          <TableColumnHeader/><!-- Dtend -->
+          <TableColumnHeader/><!-- Until -->
+          <TableColumnHeader><!-- UnifiedJobType -->
+            <Label>TemplateJobType</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Template -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Enabled</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Dtstart</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Dtend</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Until</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Template</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Role</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Role</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!--  ResourceId -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ResourceType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- ResourceName -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ResourceId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ResourceType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ResourceName</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>NotificationTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.NotificationTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- NotificationType -->
+          <TableColumnHeader/><!-- NotificationConfiguration-->
+          <TableColumnHeader/><!-- Messages -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NotificationType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NotificationConfiguration</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Messages</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Notification</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Notification</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- NotificationType -->
+          <TableColumnHeader/><!-- Template -->
+          <TableColumnHeader/><!-- Recipients -->
+          <TableColumnHeader/><!-- Subject -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NotificationType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Template</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Recipients</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Subject</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Label</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Label</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Organization -->
+            <Label>Organization</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.Organization,$_.OrganizationName</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>ActivityStream</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.ActivityStream</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Timestamp -->
+          <TableColumnHeader><!-- Operation -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Object1 -->
+          <TableColumnHeader/><!-- Object2 -->
+          <TableColumnHeader/><!-- ObjectAssociation -->
+          <TableColumnHeader/><!-- ObjectType -->
+          <TableColumnHeader/><!-- Actor -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Timestamp</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Operation</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Object1</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Object2</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ObjectAssociation</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ObjectType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Actor</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>WorkflowJobTemplate</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.WorkflowJobTemplate</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name-->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader/><!-- InventoryName -->
+          <TableColumnHeader/><!-- ScmBranch -->
+          <TableColumnHeader/><!-- Limit -->
+          <TableColumnHeader/><!-- LastJobRun -->
+          <TableColumnHeader/><!-- NextJobRun -->
+          <TableColumnHeader/><!-- Options -->
+          <TableColumnHeader><!-- Labels -->
+            <Label>Labels</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- AskOnLaunch-->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InventoryName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ScmBranch</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Limit</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>NextJobRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Options</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$_.Labels.Name -join ","</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AskOnLaunch</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>WorkflowJobTemplateNode</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.WorkflowJobTemplateNode</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- WorkflowJobTemplate -->
+            <Label>WorkflowJobTemplate</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplate -->
+            <Label>Template ID</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplateType -->
+            <Label>Template Type</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplateName -->
+            <Label>Template Name</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- SuccessNodes -->
+          <TableColumnHeader/><!-- FailureNodes -->
+          <TableColumnHeader/><!-- AlwaysNodes -->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJobTemplate,$_.WorkflowJobTemplateName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplate</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplateType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplateName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SuccessNodes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>FailureNodes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AlwaysNodes</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>WorkflowJobNode</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.WorkflowJobNode</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- WorkflowJob -->
+            <Label>WorkflowJob</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- DoNotRun -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Job -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UnifiedJobTemplateType -->
+            <Label>JobType</Label>
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- JobName -->
+          <TableColumnHeader><!-- JobStatus -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- JobElapsed-->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- SuccessNodes -->
+          <TableColumnHeader/><!-- FailureNodes-->
+          <TableColumnHeader/><!-- AlwaysNodes-->
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJob,$_.WorkflowJobName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>DoNotRun</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Job</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UnifiedJobTemplateType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobStatus</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>JobElapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SuccessNodes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>FailureNodes</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AlwaysNodes</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>CredentialInputSource</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.CredentialInputSource</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- InputFieldName -->
+          <TableColumnHeader/><!-- Metadata -->
+          <TableColumnHeader>
+            <Label>TargetCredential</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>SourceCredential</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>InputFieldName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Metadata</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}][{1}]{2}" -f $_.TargetCredential,$_.TargetCredentialKind,$_.TargetCredentialName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}][{1}]{2}" -f $_.SourceCredential,$_.SourceCredentialKind,$_.SourceCredentialName</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>ExecutionEnvironment</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.ExecutionEnvironment</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader/><!-- Modified -->
+          <TableColumnHeader><!-- Managed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Image -->
+          <TableColumnHeader/>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Modified</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Managed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Image</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Pull</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>HostMetric</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.HostMetric</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Hostname -->
+          <TableColumnHeader/><!-- FirstAutomation -->
+          <TableColumnHeader/><!-- LastAutomation -->
+          <TableColumnHeader/><!-- LastDeleted-->
+          <TableColumnHeader><!-- AutomatedCounter -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- DeletedCounter -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Deleted-->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- UsedInInventories -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Hostname</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>FirstAutomation</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastAutomation</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LastDeleted</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AutomatedCounter</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>DeletedCounter</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Deleted</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>UsedInInventories</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>Metric</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Cmdlets.MetricItem</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader/><!-- Description -->
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- SampleType -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Value -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Labels -->
+            <Label>Labels</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SampleType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Value</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>($_.Labels | Format-Table -HideTableHeaders | Out-String).Trim()</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>WorkflowApproval</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.WorkflowApproval</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <AutoSize/>
+        <TableHeaders>
+          <TableColumnHeader><!-- Id -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- Type -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Name -->
+          <TableColumnHeader><!-- Status -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- TimedOut -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ApprovalExpiration -->
+            <Label>Expire</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ApprovalExpiration - Now -->
+            <Label>Remaining</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- ApprovedOrDeniedBy -->
+            <Label>By</Label>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- Finished -->
+          <TableColumnHeader><!-- Elapsed -->
+            <Alignment>Right</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader/><!-- LaunchedBy -->
+          <TableColumnHeader><!-- WorkflowJob -->
+            <Label>WorkflowJob</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- WorkflowJobTemplate -->
+            <Label>WorkflowJobTemplate</Label>
+          </TableColumnHeader>
+          <TableColumnHeader><!-- WorkflowApprovalTemplate -->
+            <Label>ApprovalTemplate</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Status</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>TimedOut</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ApprovalExpiration</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>if ($_.ApprovalExpiration) { $_.ApprovalExpiration - [datetime]::Now }</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>$user=$_.ApprovedOrDeniedBy; if($user){"[{0}]{1}" -f $user.Id,$user.Username}</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Finished</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Elapsed</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>LaunchedBy</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJob.Id,$_.WorkflowJob.Name</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowJobTemplate.Id,$_.WorkflowJobTemplate.Name</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>"[{0}]{1}" -f $_.WorkflowApprovalTemplate.Id,$_.WorkflowApprovalTemplate.Name</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
