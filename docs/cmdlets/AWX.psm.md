@@ -330,7 +330,7 @@ Invoke (update) Project.
 Invoke (launch) a SystemJobTemplate.
 
 ### [Start-WorkflowJobTemplate](Start-WorkflowJobTemplate.md)
-{{ Fill in the Synopsis }}
+Invoke (update) a WorkflowJobTemplate.
 
 ### [Stop-UnifiedJob](Stop-UnifiedJob.md)
 {{ Fill in the Synopsis }}
