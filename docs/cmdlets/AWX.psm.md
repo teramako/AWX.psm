@@ -339,5 +339,5 @@ Stop (cancel) a running job.
 Switch to anothor config.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
-{{ Fill in the Synopsis }}
+Wait until jobs are finished.
 
