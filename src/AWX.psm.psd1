@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) teramako. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell Module for AWX of AnsibleTower'
+Description = 'PowerShell module to operate AWX/AnsibleTower using Rest API.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '7.3'
@@ -98,10 +98,10 @@ PrivateData = @{
         # Tags = @()
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/teramako/AWX.psm/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/teramako/AWX.psm'
 
         # A URL to an icon representing this module.
         # IconUri = ''
