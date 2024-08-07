@@ -54,7 +54,7 @@ Use [`Switch-ApiConfig`](./cmdlets/Switch-ApiConfig.md) command
 Onece the above registration is completed, only module importing is required thereafter.
 
 ```powershell
-Import-Module path\to\dir\AWX.psm.psd1
+Import-Module path\to\dir\AWX.psm
 ```
 
 You may/can put the AWX.psm module directory(`path\to\dir\`) into `$env:PSModulePath`,
@@ -66,7 +66,7 @@ Some commands (such as `Get-Host` and `Get-Credential`) conflict with PowerShell
 You may need to run `Import-Module` command with `-Prefix` parameter.
 
 ```powershell
-Import-Module -Prefix AWX path\to\dir\AWX.psm.psd1
+Import-Module -Prefix AWX path\to\dir\AWX.psm
 ```
 In this case, **ALL** imported commands will be added `AWX` prefix (_verb-`AWX`Noun_).
 You can run `Get-Host` as PowerShell native command, `Get-AWXHost` as AWX.psm's command.

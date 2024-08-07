@@ -12,7 +12,7 @@ $module = Get-Module $moduleName
 if ($null -eq $module)
 {
     # $ModulePath = Resolve-Path -RelativeBasePath $PSScriptRoot -Path ..\src\bin\Debug\net8.0\AWX.psm.psd1;
-    $ModulePath = Resolve-Path -RelativeBasePath $PSScriptRoot -Path ../AWX.psm.psd1
+    $ModulePath = Resolve-Path -RelativeBasePath $PSScriptRoot -Path ..\out\AWX.psm
     Import-Module $ModulePath -Force
     $module = Get-Module $moduleName
 }
@@ -178,11 +178,11 @@ if ($New) {
 
 if ($resultFiles.Count -gt 0) {
     Repair-PlatyPSMarkdown -Path $resultFiles
-    Write-Output $resultFiles
 }
 
 
-$externalHelpDirPath = Join-Path $PSScriptRoot ..\$Locale
+# $externalHelpDirPath = Join-Path $PSScriptRoot ..\out\$Locale
+$externalHelpDirPath = Join-Path $module.ModuleBase $Locale
 $externalHelpDir = if (-not (Test-Path -Path $externalHelpDirPath -PathType Container)) {
     New-Item -Path $externalHelpDirPath -ItemType Directory
 } else {

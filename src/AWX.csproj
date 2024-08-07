@@ -17,12 +17,13 @@
 
   <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
     <PropertyGroup>
-      <DestDir>..</DestDir>
+      <DestDir>..\out\$(AssemblyName)\</DestDir>
       <DllFile>$(OutDir)$(AssemblyName).dll</DllFile>
     </PropertyGroup>
     <ItemGroup>
       <PowerShellModules Include="*.psd1;*.ps1xml" />
     </ItemGroup>
+    <MakeDir Directories="$(DestDir)" />
     <Message Text="Copy built file: $(DllFile)" Importance="high" />
     <Copy SourceFiles="$(DllFile)" DestinationFolder="$(DestDir)" />
     <Message Text="Copy *.psd1 and *.ps1xml files: @(PowerShellModules)" Importance="high" />

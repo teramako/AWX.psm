@@ -19,6 +19,8 @@ cd path\to\project
 dotnet build .\src\AWX.csproj -t:PSM -p:Configuration=Release
 ```
 
+module files are created into `out` directory
+
 ## Update documents
 
 ```powershell
