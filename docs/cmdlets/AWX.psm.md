@@ -336,7 +336,7 @@ Invoke (update) a WorkflowJobTemplate.
 Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
-{{ Fill in the Synopsis }}
+Switch to anothor config.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 {{ Fill in the Synopsis }}
