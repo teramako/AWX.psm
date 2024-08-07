@@ -17,6 +17,7 @@
 
   <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
     <PropertyGroup>
+      <PowerShellExe>pwsh</PowerShellExe>
       <DestDir>..\out\$(AssemblyName)\</DestDir>
       <DllFile>$(OutDir)$(AssemblyName).dll</DllFile>
     </PropertyGroup>
@@ -24,10 +25,15 @@
       <PowerShellModules Include="*.psd1;*.ps1xml" />
     </ItemGroup>
     <MakeDir Directories="$(DestDir)" />
+
     <Message Text="Copy built file: $(DllFile)" Importance="high" />
     <Copy SourceFiles="$(DllFile)" DestinationFolder="$(DestDir)" />
+
     <Message Text="Copy *.psd1 and *.ps1xml files: @(PowerShellModules)" Importance="high" />
     <Copy SourceFiles="@(PowerShellModules)" DestinationFolder="$(DestDir)" />
+
+    <Message Text="Update Module Version: $(Version)" Importance="high" />
+    <Exec Command="$(PowerShellExe) -NoProfile -Command &quot;&amp; { Update-ModuleManifest -Path $(DestDir)$(AssemblyName).psd1 -ModuleVersion $(Version) }&quot;" />
   </Target>
 
   <Target Name="docs" DependsOnTargets="PSM">
