@@ -42,7 +42,6 @@ Expired Sessions deleted 2
  Id      Type Name                              JobType LaunchType     Status Finished            Elapsed LaunchedBy     Template                    Note
  --      ---- ----                              ------- ----------     ------ --------            ------- ----------     --------                    ----
 110 SystemJob Cleanup Expired Sessions cleanup_sessions     Manual Successful 2024/08/06 15:56:27   1.793 [user][1]admin [4]Cleanup Expired Sessions {[ExtraVars, {}], [Stdout, Expired Sessions deleted 2…
-
 ```
 
 Launch JobTemplate ID 4, and wait unti for the job is finished.

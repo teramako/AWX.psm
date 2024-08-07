@@ -69,7 +69,6 @@ PS C:\> Invoke-ProjectUpdate -Id 8 -Check
 Id    Type CanUpdate
 --    ---- ---------
  8 Project      True
-
 ```
 
 Check wheter Project ID 8 can be updated.

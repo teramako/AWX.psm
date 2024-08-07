@@ -1,5 +1,5 @@
 # AWX.psm
-PowerShell module for AWX/AnsibleTower
+PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## Build
 

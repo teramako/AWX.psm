@@ -8,7 +8,7 @@ Locale: en-US
 
 # AWX.psm Module
 ## Description
-{{ Fill in the Description }}
+PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
