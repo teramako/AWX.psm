@@ -324,7 +324,7 @@ Invoke (update) InventorySources.
 Invoke (launch) a JobTemplate.
 
 ### [Start-ProjectUpdate](Start-ProjectUpdate.md)
-{{ Fill in the Synopsis }}
+Invoke (update) Project.
 
 ### [Start-SystemJobTemplate](Start-SystemJobTemplate.md)
 {{ Fill in the Synopsis }}
