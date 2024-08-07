@@ -8,7 +8,7 @@ schema: 2.0.0
 # Start-JobTemplate
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Invoke (launch) a JobTemplate.
 
 ## SYNTAX
 
@@ -24,21 +24,68 @@ Start-JobTemplate [-JobTemplate] <JobTemplate> [-Limit <String>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Launch a JobTemplate.
+
+This command only sends a request to start JobTemplate, not wait for the job is completed.
+So, the returned job object will be non-completed status.
+Use `Wait-UnifiedJob` command to wait for the job to complete later.
+
+Implementation of following API:  
+- `/api/v2/job_templates/{id}/launch/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> > Start-Jobtemplate -Id 7
+
+ Id Type Name              JobType LaunchType  Status Finished            Elapsed LaunchedBy     Template             Note
+ -- ---- ----              ------- ----------  ------ --------            ------- ----------     --------             ----
+101 Job Demo Job Template     Run     Manual  Pending 2024/08/06 15:19:01   1.983 [user][1]admin [7]Demo Job Template {[Playbook, hello_world.yml], [Artifacts, {}], [Labels, ]}
 ```
 
-{{ Add example description here }}
+Launch JobTemplate ID 7.
+
+### Example 2
+```powershell
+PS C:\> > Start-Jobtemplate -Id 7 | Wait-UnifiedJob
+[7] Demo Job Template -
+             Inventory : [1] Demo Inventory
+            Extra vars : ---
+             Diff Mode : False
+              Job Type : Run
+             Verbosity : 0 (Normal)
+           Credentials : [1] Demo Credential
+                 Forks : 0
+       Job Slice Count : 1
+               Timeout : 0
+====== [102] Demo Job Template ======
+
+PLAY [Hello World Sample] ******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Hello Message] ***********************************************************
+ok: [localhost] => {
+    "msg": "Hello World!"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+ Id Type Name              JobType LaunchType     Status Finished           Elapsed LaunchedBy     Template             Note
+ -- ---- ----              ------- ----------     ------ --------           ------- ----------     --------             ----
+102 Job Demo Job Template     Run     Manual Successful 2024/08/07 9:53:56   1.968 [user][1]admin [7]Demo Job Template {[Playbook, hello_world.yml], [Artifacts, {}], [Labels, ]}
+```
+
+Launch JobTemplate ID 7, and wait unti for the job is finished.
+This is almost same as `Invoke-JobTemplate` command.
 
 ## PARAMETERS
 
 ### -Id
-{{ Fill Id Description }}
+JobTemplate ID to be launched.
 
 ```yaml
 Type: UInt64
@@ -53,7 +100,7 @@ Accept wildcard characters: False
 ```
 
 ### -JobTemplate
-{{ Fill JobTemplate Description }}
+JobTempalte object to be launched.
 
 ```yaml
 Type: JobTemplate
@@ -68,7 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Further limit selected hosts to an additional pattern.
 
 ```yaml
 Type: String
@@ -88,10 +135,24 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+JobTemplate ID to be launched.
+
 ### AWX.Resources.JobTemplate
+JobTemplate object to be launched.
+
 ## OUTPUTS
 
 ### AWX.Resources.JobTemplateJob+LaunchResult
+The result job object of lanched the JobTemplate (non-completed status)
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Invoke-JobTemplate](Invoke-JobTemplate.md)
+
+[Get-JobTemplate](Get-JobTemplate.md)
+
+[Find-JobTemplate](Find-JobTemplate.md)
+
+[Wait-UnifiedJob](Wait-UnifiedJob.md)

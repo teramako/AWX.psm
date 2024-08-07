@@ -1,9 +1,9 @@
 ---
 Module Name: AWX.psm
-Module Guid: {{ Update Module Guid }}
+Module Guid: a60acf94-7e42-4b77-bf97-1cdaf17b822b
 Download Help Link: {{ Update Download Link }}
 Help Version: {{ Update Help Version }}
-Locale: {{ Update Locale }}
+Locale: en-US
 ---
 
 # AWX.psm Module
@@ -321,7 +321,7 @@ Invoke (launch) an AdHocCommand.
 Invoke (update) InventorySources.
 
 ### [Start-JobTemplate](Start-JobTemplate.md)
-{{ Fill in the Synopsis }}
+Invoke (launch) a JobTemplate.
 
 ### [Start-ProjectUpdate](Start-ProjectUpdate.md)
 {{ Fill in the Synopsis }}
