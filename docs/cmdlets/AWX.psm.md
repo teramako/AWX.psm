@@ -333,7 +333,7 @@ Invoke (launch) a SystemJobTemplate.
 Invoke (update) a WorkflowJobTemplate.
 
 ### [Stop-UnifiedJob](Stop-UnifiedJob.md)
-{{ Fill in the Synopsis }}
+Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 {{ Fill in the Synopsis }}
