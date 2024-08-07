@@ -11,6 +11,8 @@ See [Settings](./docs/settings.md) document.
 
 ## Available Commands
 
+See [Cmdlet documents directory(en-US)](./docs/en-US/cmdlets/) for more details
+
 | Name                                 | Description  
 |:-------------------------------------|:---------------------------------------------------------------------------|  
 | `New-ApiConfig`                        | Create a configuration file, which should be the first step in using this module.  
