@@ -26,22 +26,30 @@ namespace AWX.Resources
         public string[] ProjectLocalPaths { get; } = projectLocalPaths;
         public string[] CustomVirtualenvs { get; } = customVirtualenvs;
 
-        public class ConfigLicenseInfo(string licenseType, bool validKey, string subscriptionName, string productName)
+        public record ConfigLicenseInfo(string LicenseType, bool ValidKey, string SubscriptionName, string ProductName)
         {
-            public string LicenseType { get; } = licenseType;
-            public bool ValidKey { get; } = validKey;
-            public string SubscriptionName { get; } = subscriptionName;
-            public string ProductName { get; } = productName;
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                sb.Append("{ ");
+                if (PrintMembers(sb)) sb.Append(' ');
+                sb.Append('}');
+                return sb.ToString();
+            }
         }
         public class ConfigAnalyticsCollectors : Dictionary<string, ConfigValue>
         {
         }
-        public class ConfigValue(string name, string version, string description)
+        public record ConfigValue(string Name, string Version, string Description)
         {
-            public string Name { get; } = name;
-            public string Version { get; } = version;
-            public string Description { get; } = description;
-
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                sb.Append("{ ");
+                if (PrintMembers(sb)) sb.Append(' ');
+                sb.Append('}');
+                return sb.ToString();
+            }
         }
     }
 }
