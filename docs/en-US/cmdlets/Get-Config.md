@@ -20,13 +20,25 @@ Get-Config [<CommonParameters>]
 Retrieve site configuration settings and general information.
 
 Implements following Rest API:  
-- `/api/v2/config/`  
+- `/api/v2/config/`
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
 PS C:\> Get-Config
+
+TimeZone              : UTC
+LicenseInfo           : { LicenseType = open, ValidKey = True, SubscriptionName = OPEN, ProductName = AWX }
+Version               : 23.3.1
+Eula                  :
+ConfigAnalyticsStatus :
+AnalyticsCollectors   : {[config, { ... }], [counts, { ... }], [cred_type_counts, { ... }], [events_table, { ... }]…}
+BecomeMethods         : {sudo Sudo, su Su, pbrun Pbrun, pfexec Pfexec…}
+UiNext                : True
+ProjectBaseDir        : /var/lib/awx/projects/
+ProjectLocalPaths     : {}
+CustomVirtualenvs     : {}
 ```
 
 ## PARAMETERS
