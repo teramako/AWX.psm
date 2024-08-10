@@ -6,7 +6,39 @@ using System.Web;
 namespace AWX.Cmdlets
 {
     /// <summary>
-    /// Transform <c>-Filter</c> parameter values to <see cref="NameValueCollection"/>
+    /// Transform <c>-Filter</c> parameter values to <see cref="NameValueCollection"/>.
+    /// <br/>
+    /// Convertable values are one or more of the following items:<br/>
+    /// <list type="bullet">
+    ///     <item>
+    ///         <term><see cref="Filter"/></term>
+    ///         <description>
+    ///             <c>[AWX.Cmdlets.Filter]::new("name", "value")</c>,
+    ///             <c>[AWX.Cmdlets.Filter]::new("name", "value", "startswith", $true, $true)</c>
+    ///         </description>
+    ///     </item>
+    ///     <item>
+    ///         <term><c>IDictionary</c>(<c>Hashtable</c>)</term>
+    ///         <description>
+    ///             <c>@{ name = "name"; value = "value" }</c>,
+    ///             <c>@{ name = "name"; value = "value"; type = "startswith"; or = $true; not = $true }</c>
+    ///         </description>
+    ///     </item>
+    ///     <item>
+    ///         <term><c>string</c></term>
+    ///         <description>
+    ///             <c>name=value</c>,
+    ///             <c>or__not__name__startswith=value</c>,
+    ///             <c>name1=value1&amp;name2=value2</c>
+    ///         </description>
+    ///     </item>
+    ///     <item>
+    ///         <term><c>NameValueCollection</c></term>
+    ///         <description>
+    ///             <c>[Web.HttpUtility]::ParseQueryString("...")</c>
+    ///         </description>
+    ///     </item>
+    /// </list>
     /// </summary>
     public class FilterArgumentTransformationAttribute : ArgumentTransformationAttribute
     {
