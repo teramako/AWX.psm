@@ -133,6 +133,18 @@ namespace AWX.Cmdlets
         public string[]? Search { get; set; }
 
         /// <summary>
+        /// Filtering for various fields for API.
+        /// The value is transformed to from one or more various types into a <see cref="NameValueCollection"/>.
+        /// <br/>
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/filtering.html">
+        /// 6. Filtering — Automation Controller API Guide</a>
+        /// </summary>
+        /// <seealso cref="FilterArgumentTransformationAttribute"/>
+        [Parameter()]
+        [FilterArgumentTransformation]
+        public NameValueCollection? Filter { get; set; }
+
+        /// <summary>
         /// <c>"order_by"</c> query parameter for API.
         /// <br/>
         /// To sort in reverse (Descending), add <c>"!"</c> prefix instead of <c>"-"</c>.
@@ -182,6 +194,7 @@ namespace AWX.Cmdlets
         ///     <item><see cref="OrderBy">OrderBy</see> to <c>order_by</c></item>
         ///     <item><see cref="Count">Count</see> to <c>page_size</c></item>
         ///     <item><see cref="Page">Page</see> to <c>page</c></item>
+        ///     <item><see cref="Filter">Filter</see> to various fields</item>
         /// </list>
         /// </summary>
         protected virtual void SetupCommonQuery()
@@ -197,6 +210,10 @@ namespace AWX.Cmdlets
             }
             Query.Add("page_size", $"{Count}");
             Query.Add("page", $"{Page}");
+            if (Filter != null)
+            {
+                Query.Add(Filter);
+            }
         }
 
         protected virtual void Find<T>(string path) where T : class
