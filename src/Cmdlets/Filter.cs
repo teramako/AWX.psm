@@ -66,7 +66,7 @@ namespace AWX.Cmdlets
         /// <Summary>
         /// Greater than or equal to comparsion. (Alias to <c>GreaterThanOrEqual</c>)
         /// </Summary>
-        GE = 11,
+        GTE = 11,
         /// <Summary>
         /// Less than comparsion.
         /// </Summary>
@@ -82,7 +82,7 @@ namespace AWX.Cmdlets
         /// <Summary>
         /// Less than or equal to comparsion. (Alias to <c>LessThanOrEqual</c>)
         /// </Summary>
-        LE = 13,
+        LTE = 13,
         /// <Summary>
         /// Check whether the given field or related object is null: expects a boolean value
         /// </Summary>
@@ -214,9 +214,9 @@ namespace AWX.Cmdlets
                 case FilterLookupType.Regex: return "regex";
                 case FilterLookupType.IRegex: return "iregex";
                 case FilterLookupType.GreaterThan: return "gt";
-                case FilterLookupType.GreaterThanOrEqual: return "ge";
+                case FilterLookupType.GreaterThanOrEqual: return "gte";
                 case FilterLookupType.LessThan: return "lt";
-                case FilterLookupType.LessThanOrEqual: return "le";
+                case FilterLookupType.LessThanOrEqual: return "lte";
                 case FilterLookupType.IsNull: return "isnull";
                 case FilterLookupType.In: return "in";
                 default: return "";
