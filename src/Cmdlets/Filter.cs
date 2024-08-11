@@ -109,27 +109,7 @@ namespace AWX.Cmdlets
             Not = not;
             Type = type;
             Name = name;
-            if (value != null)
-            {
-                switch (value)
-                {
-                    case string str:
-                        Value = str;
-                        break;
-                    case DateTime datetime:
-                        Value = datetime.ToString("o");
-                        break;
-                    case bool boolean:
-                        Value = boolean ? "True" : "False";
-                        break;
-                    case IList list:
-                        Value = string.Join(',', list);
-                        break;
-                    default:
-                        Value = $"{value}";
-                        break;
-                }
-            }
+            Value = value;
         }
         public static Filter Parse(string str)
         {
@@ -154,7 +134,7 @@ namespace AWX.Cmdlets
                         query.Name = $"{dict[keyObj]}";
                         continue;
                     case "value":
-                        query.Value = $"{dict[keyObj]}";
+                        query.Value = dict[keyObj];
                         continue;
                     case "type":
                         {
@@ -246,7 +226,34 @@ namespace AWX.Cmdlets
             }
         }
         private string _name = string.Empty;
-        public string? Value { get; set; }
+        public object? Value {
+            get { return _value; }
+            set
+            {
+                switch (value)
+                {
+                    case null:
+                        _value = string.Empty;
+                        return;
+                    case string str:
+                        _value = str;
+                        return;
+                    case bool boolean:
+                        _value = boolean ? "True" : "False";
+                        return;
+                    case DateTime datetime:
+                        _value = datetime.ToString("o");
+                        return;
+                    case IList list:
+                        _value = string.Join(',', list);
+                        return;
+                    default:
+                        _value = $"{value}";
+                        return;
+                }
+            }
+        }
+        private object? _value = null;
         public FilterLookupType Type { get; set; } = FilterLookupType.Exact;
         public bool Or { get; set; } = false;
         public bool Not { get; set; } = false;
@@ -261,6 +268,11 @@ namespace AWX.Cmdlets
             if (!string.IsNullOrEmpty(lookup))
                 sb.Append($"__{lookup}");
             return sb.ToString();
+        }
+
+        public string GetValue()
+        {
+            return $"{Value}";
         }
 
         public override string ToString()

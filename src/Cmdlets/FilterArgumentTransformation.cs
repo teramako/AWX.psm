@@ -51,24 +51,24 @@ namespace AWX.Cmdlets
                 switch (item)
                 {
                     case Filter filter:
-                        queries.Add(filter.GetKey(), filter.Value);
+                        queries.Add(filter.GetKey(), filter.GetValue());
                         continue;
                     case IDictionary dict:
                         {
                             var f = Filter.Parse(dict);
-                            queries.Add(f.GetKey(), f.Value);
+                            queries.Add(f.GetKey(), f.GetValue());
                         }
                         continue;
                     case NameValueCollection nvc:
                         foreach (var f in GetQueries(nvc))
                         {
-                            queries.Add(f.GetKey(), f.Value);
+                            queries.Add(f.GetKey(), f.GetValue());
                         }
                         continue;
                     case string str:
                         foreach (var f in GetQueries(HttpUtility.ParseQueryString(str)))
                         {
-                            queries.Add(f.GetKey(), f.Value);
+                            queries.Add(f.GetKey(), f.GetValue());
                         }
                         continue;
                     default:
