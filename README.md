@@ -5,11 +5,11 @@ PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## Build
 
-See [Build](./docs/build.md) document.
+See [Build](./docs/en-US/build.md) document.
 
 ## Settings
 
-See [Settings](./docs/settings.md) document.
+See [Settings](./docs/en-US/settings.md) document.
 
 ## Available Commands
 
