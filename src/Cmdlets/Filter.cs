@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Management.Automation;
 using System.Text;
 
 namespace AWX.Cmdlets
@@ -230,6 +231,10 @@ namespace AWX.Cmdlets
             get { return _value; }
             set
             {
+                if (value is PSObject pso)
+                {
+                    value = pso.BaseObject;
+                }
                 switch (value)
                 {
                     case null:
