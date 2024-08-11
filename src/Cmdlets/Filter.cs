@@ -247,6 +247,8 @@ namespace AWX.Cmdlets
                         _value = boolean ? "True" : "False";
                         return;
                     case DateTime datetime:
+                        if (datetime.Kind == DateTimeKind.Unspecified)
+                            datetime = datetime.ToUniversalTime().ToLocalTime();
                         _value = datetime.ToString("o");
                         return;
                     case IList list:
