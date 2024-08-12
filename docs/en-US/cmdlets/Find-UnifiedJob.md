@@ -20,8 +20,9 @@ Find-UnifiedJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCo
 
 ### AssociatedWith
 ```
-Find-UnifiedJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-UnifiedJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
