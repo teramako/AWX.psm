@@ -12,8 +12,15 @@ Retrieve Unified Jobs.
 
 ## SYNTAX
 
+### All (Default)
 ```
 Find-UnifiedJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>]
+ [-Page <UInt32>] [-All] [<CommonParameters>]
+```
+
+### AssociatedWith
+```
+Find-UnifiedJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
  [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
@@ -21,7 +28,18 @@ Find-UnifiedJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCo
 Retrieve Jobs which are Job, ProjectUpdate, InventoryUpdate, SystemJob, AdHocCommand or WorkflowJob.
 
 Implementation of following API:  
-- `/api/v2/unified_jobs/`
+- `/api/v2/unified_jobs/`  
+- `/api/v2/hosts/{id}/ad_hoc_commands/`  
+- `/api/v2/groups/{id}/ad_hoc_commands/`  
+- `/api/v2/schedules/{id}/jobs/`  
+- `/api/v2/instances/{id}/jobs/`  
+- `/api/v2/instance_groups/{id}/jobs/`  
+- `/api/v2/job_templates/{id}/jobs/`  
+- `/api/v2/workflow_job_templates/{id}/workflow_jobs/`  
+- `/api/v2/projects/{id}/project_updates/`  
+- `/api/v2/inventory_sources/{id}/inventory_updates/`  
+- `/api/v2/system_job_templates/{id}/jobs/`  
+- `/api/v2/inventories/{id}/ad_hoc_commands/`
 
 ## EXAMPLES
 
@@ -84,6 +102,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Id
+Datebase ID of the target resource.
+Use in conjection with the `-Type` parameter.
+
+```yaml
+Type: UInt64
+Parameter Sets: AssociatedWith
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -OrderBy
 Retrieve list in the specified orders.
 Use `!` prefix to sort in reverse.
@@ -137,12 +171,49 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Type
+Resource type name of the target.
+Use in conjection with the `-Id` parameter.
+
+```yaml
+Type: ResourceType
+Parameter Sets: AssociatedWith
+Aliases:
+Accepted values: JobTemplate, WorkflowJobTemplate, Project, InventorySource, SystemJobTemplate, Inventory, Host, Group, Schedule, Instance, InstanceGroup
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### None
+### AWX.Resources.ResourceType
+Input by `Type` property in the pipeline object.
+
+Acceptable values:  
+- `Group`  
+- `Host`  
+- `Instance`  
+- `InstanceGroup`  
+- `Inventory`  
+- `InventorySource`  
+- `JobTemplate`  
+- `Project`  
+- `Schedule`  
+- `SystemJobTemplate`  
+- `WorkflowJobTemplate`
+
+### System.UInt64
+Input by `Id` property in the pipeline object.
+
+Database ID for the ResourceType
+
 ## OUTPUTS
 
 ### AWX.Resources.IUnifiedJob

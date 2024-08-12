@@ -11,7 +11,7 @@ namespace AWX.Resources
         string ControllerNode { get; }
 
         [JsonPropertyName("job_type")]
-        string JobType { get; }
+        JobType JobType { get; }
         ulong Inventory { get; }
         string Limit { get; }
         ulong Credential { get; }
@@ -34,7 +34,7 @@ namespace AWX.Resources
                               JobLaunchType launchType, JobStatus status, ulong? executionEnvironment, bool failed,
                               DateTime? started, DateTime? finished, DateTime? canceledOn, double elapsed,
                               string jobExplanation, LaunchedBy launchedBy, string? workUnitId, string executionNode,
-                              string controllerNode, string jobType, ulong inventory, string limit, ulong credential,
+                              string controllerNode, JobType jobType, ulong inventory, string limit, ulong credential,
                               string moduleName, string moduleArgs, byte forks, JobVerbosity verbosity, string extraVars,
                               bool becomeEnabled, bool diffMode)
         : UnifiedJob(id, type, url, created, modified, name, launchType, status, executionEnvironment, failed,
@@ -147,7 +147,7 @@ namespace AWX.Resources
                             JobLaunchType launchType, JobStatus status, ulong? executionEnvironment, bool failed,
                             DateTime? started, DateTime? finished, DateTime? canceledOn, double elapsed,
                             string jobExplanation, LaunchedBy launchedBy, string? workUnitId, string executionNode,
-                            string controllerNode, string jobType, ulong inventory, string limit, ulong credential,
+                            string controllerNode, JobType jobType, ulong inventory, string limit, ulong credential,
                             string moduleName, string moduleArgs, byte forks, JobVerbosity verbosity, string extraVars,
                             bool becomeEnabled, bool diffMode, string jobArgs, string jobCwd,
                             Dictionary<string, string> jobEnv, string resultTraceback, bool eventProcessingFinished,
@@ -171,7 +171,7 @@ namespace AWX.Resources
         public Summary SummaryFields { get; } = summaryFields;
         public string ExecutionNode { get; } = executionNode;
         public string ControllerNode { get; } = controllerNode;
-        public string JobType { get; } = jobType;
+        public JobType JobType { get; } = jobType;
         public ulong Inventory { get; } = inventory;
         public string Limit { get; } = limit;
         public ulong Credential { get; } = credential;

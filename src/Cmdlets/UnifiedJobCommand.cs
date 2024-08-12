@@ -4,11 +4,24 @@ using System.Management.Automation;
 
 namespace AWX.Cmdlets
 {
-    [Cmdlet(VerbsCommon.Find, "UnifiedJob")]
+    [Cmdlet(VerbsCommon.Find, "UnifiedJob", DefaultParameterSetName = "All")]
     [OutputType(typeof(IUnifiedJob))]
     public class FindUnifiedJobCommand : FindCmdletBase
     {
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
+        [ValidateSet(nameof(ResourceType.JobTemplate),
+                     nameof(ResourceType.WorkflowJobTemplate),
+                     nameof(ResourceType.Project),
+                     nameof(ResourceType.InventorySource),
+                     nameof(ResourceType.SystemJobTemplate),
+                     nameof(ResourceType.Inventory),
+                     nameof(ResourceType.Host),
+                     nameof(ResourceType.Group),
+                     nameof(ResourceType.Schedule),
+                     nameof(ResourceType.Instance),
+                     nameof(ResourceType.InstanceGroup))]
         public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
 
         [Parameter()]
@@ -43,16 +56,65 @@ namespace AWX.Cmdlets
                 nextPathAndQuery = string.IsNullOrEmpty(resultSet?.Next) ? string.Empty : resultSet.Next;
             } while (getAll && !string.IsNullOrEmpty(nextPathAndQuery));
         }
+        private void WriteResultSet(string path)
+        {
+            foreach (var resultSet in GetResultSet(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
+        private void WriteResultSet<T>(string path) where T : class
+        {
+            foreach (var resultSet in GetResultSet<T>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
         protected override void BeginProcessing()
         {
             SetupCommonQuery();
         }
         protected override void ProcessRecord()
         {
-            foreach (var resultSet in GetResultSet(UnifiedJob.PATH, Query, All))
+            switch (Type)
             {
-                WriteObject(resultSet.Results, true);
-            }
+                case ResourceType.JobTemplate:
+                    WriteResultSet<JobTemplateJob>($"{JobTemplate.PATH}{Id}/jobs/");
+                    break;
+                case ResourceType.WorkflowApprovalTemplate:
+                    WriteResultSet<WorkflowJob>($"{WorkflowJobTemplate.PATH}{Id}/workflow_jobs/");
+                    break;
+                case ResourceType.Project:
+                    WriteResultSet<ProjectUpdateJob>($"{Project.PATH}{Id}/project_updates/");
+                    break;
+                case ResourceType.InventorySource:
+                    WriteResultSet<InventoryUpdateJob>($"{InventorySource.PATH}{Id}/inventory_updates/");
+                    break;
+                case ResourceType.SystemJobTemplate:
+                    WriteResultSet<SystemJob>($"{SystemJob.PATH}{Id}/jobs/");
+                    break;
+                case ResourceType.Inventory:
+                    WriteResultSet<AdHocCommand>($"{Inventory.PATH}{Id}/ad_hoc_commands/");
+                    break;
+                case ResourceType.Host:
+                    WriteResultSet<AdHocCommand>($"{Host.PATH}{Id}/ad_hoc_commands/");
+                    break;
+                case ResourceType.Group:
+                    WriteResultSet<AdHocCommand>($"{Group.PATH}{Id}/ad_hoc_commands/");
+                    break;
+                case ResourceType.Schedule:
+                    WriteResultSet($"{Schedule.PATH}{Id}/jobs/");
+                    break;
+                case ResourceType.Instance:
+                    WriteResultSet($"{Instance.PATH}{Id}/jobs/");
+                    break;
+                case ResourceType.InstanceGroup:
+                    WriteResultSet($"{InstanceGroup.PATH}{Id}/jobs/");
+                    break;
+                default:
+                    WriteResultSet(UnifiedJob.PATH);
+                    break;
+            };
         }
     }
 
