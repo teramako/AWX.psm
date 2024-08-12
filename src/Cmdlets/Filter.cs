@@ -252,7 +252,12 @@ namespace AWX.Cmdlets
                         _value = datetime.ToString("o");
                         return;
                     case IList list:
-                        _value = string.Join(',', list);
+                        var strList = new string[list.Count];
+                        for (var i = 0; i < list.Count; i++)
+                        {
+                            strList[i] = $"{list[i]}";
+                        }
+                        _value = string.Join(',', strList);
                         return;
                     default:
                         _value = $"{value}";
