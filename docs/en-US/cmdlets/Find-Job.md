@@ -31,7 +31,7 @@ Retrieve the list of jobs launched from JobTemplates.
 
 Implementation of following API:  
 - `/api/v2/jobs/`  
-- `/api/v2/job_templates/{id}/jobs/`  
+- `/api/v2/job_templates/{id}/jobs/`
 
 ## EXAMPLES
 

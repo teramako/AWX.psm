@@ -31,7 +31,7 @@ Retrieve the list of WorkflowApproval request jobs.
 
 Implementation of following API:  
 - `/api/v2/workflow_approvals/`  
-- `/api/v2/workflow_approval_templates/{id}/approvals/`  
+- `/api/v2/workflow_approval_templates/{id}/approvals/`
 
 ## EXAMPLES
 

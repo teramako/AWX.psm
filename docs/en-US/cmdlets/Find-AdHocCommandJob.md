@@ -32,7 +32,7 @@ Implements following Rest API:
 - `/api/v2/ad_hoc_commands/`  
 - `/api/v2/inventories/{id}/ad_hoc_commands/`  
 - `/api/v2/hosts/{id}/ad_hoc_commands/`  
-- `/api/v2/groups/{id}/ad_hoc_commands/`  
+- `/api/v2/groups/{id}/ad_hoc_commands/`
 
 ## EXAMPLES
 
@@ -203,7 +203,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Inventory`  
 - `Host`  
-- `Group`  
+- `Group`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

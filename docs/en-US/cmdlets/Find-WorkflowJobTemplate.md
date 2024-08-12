@@ -30,7 +30,7 @@ Retrieve the list of WorkflowJobTemplates.
 
 Implementation of following API:  
 - `/api/v2/workflow_job_templates/`  
-- `/api/v2/organizations/{id}/workflow_job_templates/`  
+- `/api/v2/organizations/{id}/workflow_job_templates/`
 
 ## EXAMPLES
 

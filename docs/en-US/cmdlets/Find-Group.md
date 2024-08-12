@@ -35,7 +35,7 @@ Implementation of following API:
 - `/api/v2/groups/{id}/children/`  
 - `/api/v2/inventory_sources/{id}/groups/`  
 - `/api/v2/hosts/{id}/groups/`  
-- `/api/v2/hosts/{id}/all_groups/`  
+- `/api/v2/hosts/{id}/all_groups/`
 
 ## EXAMPLES
 
@@ -254,7 +254,7 @@ Acceptable values:
 - `Inventory`  
 - `Group`  
 - `InventorySource`  
-- `Host`  
+- `Host`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

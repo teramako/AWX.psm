@@ -36,7 +36,7 @@ Implementation of following API:
 - `/api/v2/job_templates/{id}/instance_groups/`  
 - `/api/v2/schedules/{id}/instance_groups/`  
 - `/api/v2/workflow_job_template_nodes/{id}/instance_groups/`  
-- `/api/v2/workflow_job_nodes/{id}/instance_groups/`  
+- `/api/v2/workflow_job_nodes/{id}/instance_groups/`
 
 ## EXAMPLES
 
@@ -207,7 +207,7 @@ Acceptable values:
 - `JobTemplate`  
 - `Schedule`  
 - `WorkflowJobTemplateNode`  
-- `WorkflowJobNode`  
+- `WorkflowJobNode`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

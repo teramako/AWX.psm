@@ -31,7 +31,7 @@ Retrieve the list of jobs launched from WorkflowJobTemplates or sliced JobTempla
 Implementation of following API:  
 - `/api/v2/workflow_jobs/`  
 - `/api/v2/workflow_job_templates/{id}/workflow_jobs/`  
-- `/api/v2/job_templates/{id}/slice_workflow_jobs/`  
+- `/api/v2/job_templates/{id}/slice_workflow_jobs/`
 
 ## EXAMPLES
 
@@ -197,7 +197,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `WorkflowJobTemplate`  
-- `JobTemplate`  
+- `JobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

@@ -30,7 +30,7 @@ Retrieve the list of ExecutionEnvironment.
 
 Implementation of following API:  
 - `/api/v2/execution_environments/`  
-- `/api/v2/organizations/{id}/execution_environments/`  
+- `/api/v2/organizations/{id}/execution_environments/`
 
 ## EXAMPLES
 

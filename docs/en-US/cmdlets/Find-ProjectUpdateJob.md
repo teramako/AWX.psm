@@ -31,7 +31,7 @@ Retrieve the list of ProjectUpdate jobs.
 
 Implementation of following API:  
 - `/api/v2/project_updates/`  
-- `/api/v2/projects/{id}/project_updates/`  
+- `/api/v2/projects/{id}/project_updates/`
 
 ## EXAMPLES
 

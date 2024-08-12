@@ -22,7 +22,7 @@ Find-CredentialType [-Kind <CredentialTypeKind[]>] [-OrderBy <String[]>] [-Searc
 Retrieve the list of CredentialTypes.
 
 Implementation of following API:  
-- `/api/v2/credential_types/`  
+- `/api/v2/credential_types/`
 
 ## EXAMPLES
 

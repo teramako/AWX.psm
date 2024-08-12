@@ -31,7 +31,7 @@ Retrieve the list of Applications.
 Implementation of following API:  
 - `/api/v2/applications/`  
 - `/api/v2/organizations/{id}/applications/`  
-- `/api/v2/users/{id}/applications/`  
+- `/api/v2/users/{id}/applications/`
 
 ## EXAMPLES
 
@@ -201,7 +201,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `Organization`  
-- `User`  
+- `User`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

@@ -23,7 +23,7 @@ Retrieve the list of Approval NotificationTemplates enabled in the Organization 
 
 Implementation of following API:  
 - `/api/v2/organizations/{id}/notification_templates_approvals/`  
-- `/api/v2/workflow_job_templates/{id}/notification_templates_approvals/`  
+- `/api/v2/workflow_job_templates/{id}/notification_templates_approvals/`
 
 ## EXAMPLES
 
@@ -184,7 +184,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `Organization`  
-- `WorkflowJobTemplate`  
+- `WorkflowJobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

@@ -29,20 +29,19 @@ Find-Credential -Type <ResourceType> -Id <UInt64> [-Kind <String>] [-Galaxy] [-O
 ## DESCRIPTION
 Retrieve the list of Credentials.
 
-Implementation of following API:
-
-- `/api/v2/credentials/`
-- `/api/v2/organizations/{id}/credentials/`
-- `/api/v2/organizations/{id}/galaxy_credentials/`
-- `/api/v2/users/{id}/credentials/`
-- `/api/v2/teams/{id}/credentials/`
-- `/api/v2/credential_types/{id}/credentials/`
-- `/api/v2/inventory_sources/{id}/credentials/`
-- `/api/v2/inventory_updates/{id}/credentials/`
-- `/api/v2/job_templates/{id}/credentials/`
-- `/api/v2/jobs/{id}/credentials/`
-- `/api/v2/schedules/{id}/credentials/`
-- `/api/v2/workflow_job_template_nodes/{id}/credentials/`
+Implementation of following API:  
+- `/api/v2/credentials/`  
+- `/api/v2/organizations/{id}/credentials/`  
+- `/api/v2/organizations/{id}/galaxy_credentials/`  
+- `/api/v2/users/{id}/credentials/`  
+- `/api/v2/teams/{id}/credentials/`  
+- `/api/v2/credential_types/{id}/credentials/`  
+- `/api/v2/inventory_sources/{id}/credentials/`  
+- `/api/v2/inventory_updates/{id}/credentials/`  
+- `/api/v2/job_templates/{id}/credentials/`  
+- `/api/v2/jobs/{id}/credentials/`  
+- `/api/v2/schedules/{id}/credentials/`  
+- `/api/v2/workflow_job_template_nodes/{id}/credentials/`  
 - `/api/v2/workflow_job_nodes/{id}/credentials/`
 
 ## EXAMPLES
@@ -269,7 +268,7 @@ Acceptable values:
 - `Job`  
 - `Schedule`  
 - `WorkflowJobTemplateNode`  
-- `WorkflowJobNode`  
+- `WorkflowJobNode`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

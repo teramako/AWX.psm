@@ -30,7 +30,7 @@ Retrieve the list of CrdentialInputSources.
 
 Implementation of following API:  
 - `/api/v2/credential_input_sources/`  
-- `/api/v2/credentials/{id}/input_sources/`  
+- `/api/v2/credentials/{id}/input_sources/`
 
 ## EXAMPLES
 

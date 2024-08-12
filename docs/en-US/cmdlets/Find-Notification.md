@@ -36,7 +36,7 @@ Implementation of following API:
 - `/api/v2/system_jobs/{id}/notifications/`  
 - `/api/v2/project_updates/{id}/notifications/`  
 - `/api/v2/inventory_updates/{id}/job_templates/`  
-- `/api/v2/ad_hoc_commands/{id}/job_templates/`  
+- `/api/v2/ad_hoc_commands/{id}/job_templates/`
 
 ## EXAMPLES
 
@@ -207,7 +207,7 @@ Acceptable values:
 - `SystemJob`  
 - `ProjectUpdate`  
 - `InventoryUpdate`  
-- `AdHocCommand`  
+- `AdHocCommand`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

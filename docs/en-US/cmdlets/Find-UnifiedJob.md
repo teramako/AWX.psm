@@ -21,7 +21,7 @@ Find-UnifiedJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCo
 Retrieve Jobs which are Job, ProjectUpdate, InventoryUpdate, SystemJob, AdHocCommand or WorkflowJob.
 
 Implementation of following API:  
-- `/api/v2/unified_jobs/`  
+- `/api/v2/unified_jobs/`
 
 ## EXAMPLES
 
@@ -152,7 +152,7 @@ Unified Job objects which are following instances implemented `IUnifiedJob`:
 - `InventoryUpdate` : Inventory Update job  
 - `SystemJob`       : SystemJobTemplate's job  
 - `AdHocCommand`    : AdHocCommand job  
-- `WorkflowJob`     : WorkflowJobTemplate's job  
+- `WorkflowJob`     : WorkflowJobTemplate's job
 
 ## NOTES
 

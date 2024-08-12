@@ -31,7 +31,7 @@ Retrieve all Roles or the Roles granted to the target (User or Team) if specifie
 Implementation of following API:  
 - `/api/v2/roles/`  
 - `/api/v2/users/{id}/roles/`  
-- `/api/v2/teams/{id}/roles/`  
+- `/api/v2/teams/{id}/roles/`
 
 ## EXAMPLES
 
@@ -197,7 +197,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `User`  
-- `Team`  
+- `Team`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

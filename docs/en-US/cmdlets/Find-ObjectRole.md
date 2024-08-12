@@ -29,7 +29,7 @@ Implementation of following API:
 - `/api/v2/credentials/{id}/object_roles/`  
 - `/api/v2/inventories/{id}/object_roles/`  
 - `/api/v2/job_templates/{id}/object_roles/`  
-- `/api/v2/workflow_job_templates/{id}/object_roles/`  
+- `/api/v2/workflow_job_templates/{id}/object_roles/`
 
 ## EXAMPLES
 
@@ -196,7 +196,7 @@ Acceptable values:
 - `Credential`  
 - `Inventory`  
 - `JobTemplate`  
-- `WorkflowJobTemplate`  
+- `WorkflowJobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

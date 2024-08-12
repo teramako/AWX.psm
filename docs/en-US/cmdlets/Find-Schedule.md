@@ -34,7 +34,7 @@ Implementation of following API:
 - `/api/v2/inventory_sources/{id}/schedules/`  
 - `/api/v2/job_templates/{id}/schedules/`  
 - `/api/v2/system_job_templates/{id}/schedules/`  
-- `/api/v2/workflow_job_templates/{id}/schedules/`  
+- `/api/v2/workflow_job_templates/{id}/schedules/`
 
 ## EXAMPLES
 
@@ -203,7 +203,7 @@ Acceptable values:
 - `InventorySource`  
 - `JobTemplate`  
 - `SystemJobTemplate`  
-- `WorkflowJobTemplate`  
+- `WorkflowJobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

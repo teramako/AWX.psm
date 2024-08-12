@@ -21,7 +21,7 @@ Find-UnifiedJobTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Filter <Nam
 Retrieve Unified Job Templates which are JobTemplate, Project, InventorySource, SystemJobTemplate or WorkflowJobTemplate.
 
 Implementation of following API:  
-- `/api/v2/unified_job_templates/`  
+- `/api/v2/unified_job_templates/`
 
 ## EXAMPLES
 
@@ -151,7 +151,7 @@ Unified Job Template objects which are following instances implemented `IUnified
 - `Project`  
 - `InventorSource`  
 - `SystemJobTemplate`  
-- `WorkflowJobTemplate`  
+- `WorkflowJobTemplate`
 
 ## NOTES
 

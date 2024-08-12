@@ -31,7 +31,7 @@ Retrieve the list of OAuth2 Access Tokens.
 Implementation of following API:  
 - `/api/v2/tokens/`  
 - `/api/v2/applications/{id}/tokens/`  
-- `/api/v2/users/{id}/tokens/`  
+- `/api/v2/users/{id}/tokens/`
 
 ## EXAMPLES
 
@@ -213,7 +213,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `OAuth2Application`  
-- `User`  
+- `User`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

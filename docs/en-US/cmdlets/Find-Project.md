@@ -32,7 +32,7 @@ Implementation of following API:
 - `/api/v2/projects/`  
 - `/api/v2/organizations/{id}/projects/`  
 - `/api/v2/users/{id}/projects/`  
-- `/api/v2/teams/{id}/projects/`  
+- `/api/v2/teams/{id}/projects/`
 
 ## EXAMPLES
 
@@ -199,7 +199,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Organization`  
 - `User`  
-- `Team`  
+- `Team`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

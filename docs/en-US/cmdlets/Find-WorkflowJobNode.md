@@ -30,7 +30,7 @@ Retrieve the list of WorkflowJobNodes.
 
 Implementation of following API:  
 - `/api/v2/workflow_job_nodes/`  
-- `/api/v2/workflow_jobs/{id}/workflow_nodes/`  
+- `/api/v2/workflow_jobs/{id}/workflow_nodes/`
 
 ## EXAMPLES
 

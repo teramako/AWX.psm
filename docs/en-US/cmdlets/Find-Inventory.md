@@ -33,7 +33,7 @@ Implementation of following API:
 - `/api/v2/inventories/`  
 - `/api/v2/organizations/{id}/inventories/`  
 - `/api/v2/inventories/{id}/input_inventories/`  
-- `/api/v2/hosts/{id}/smart_inventories/`  
+- `/api/v2/hosts/{id}/smart_inventories/`
 
 ## EXAMPLES
 
@@ -216,7 +216,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Organization`  
 - `Inventory`  
-- `Host`  
+- `Host`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

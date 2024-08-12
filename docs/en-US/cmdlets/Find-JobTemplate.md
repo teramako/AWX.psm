@@ -32,7 +32,7 @@ Retrieve the list of JobTemplates.
 Implementation of following API:  
 - `/api/v2/job_templates/`  
 - `/api/v2/organizations/{id}/job_templates/`  
-- `/api/v2/inventories/{id}/job_templates/`  
+- `/api/v2/inventories/{id}/job_templates/`
 
 ## EXAMPLES
 
@@ -216,7 +216,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `Organization`  
-- `Inventory`  
+- `Inventory`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

@@ -24,7 +24,7 @@ Retrieve the list of WorkflowJobNodes linked to always, success or failed state 
 Implementation of following API:  
 - `/api/v2/workflow_job_nodes/{id}/always_nodes/`  
 - `/api/v2/workflow_job_nodes/{id}/success_nodes/`  
-- `/api/v2/workflow_job_nodes/{id}/failure_nodes/`  
+- `/api/v2/workflow_job_nodes/{id}/failure_nodes/`
 
 ## EXAMPLES
 

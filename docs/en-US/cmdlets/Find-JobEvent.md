@@ -29,7 +29,7 @@ Implementation of following API:
 - `/api/v2/inventory_updates/{id}/events/`  
 - `/api/v2/groups/{id}/job_events/`  
 - `/api/v2/hosts/{id}/ad_hoc_command_events/`  
-- `/api/v2/hosts/{id}/job_events/`  
+- `/api/v2/hosts/{id}/job_events/`
 
 ## EXAMPLES
 
@@ -218,7 +218,7 @@ Acceptable values:
 - `SystemJob`  
 - `AdHocCommand`  
 - `Host`  
-- `Group`  
+- `Group`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.
@@ -233,7 +233,7 @@ JobEvent objects that extend `IJobEventBase` interface.
 - ProjectUpdate   : `AWX.Resources.ProjectUpdateJobEvent`  
 - InventoryUpdate : `AWX.Resources.InventoryUpdateJobEvent`  
 - SystemJob       : `AWX.Resources.SystemJobEvent`  
-- AdHocCommand    : `AWX.Resources.AdHocCommandJobEvent`  
+- AdHocCommand    : `AWX.Resources.AdHocCommandJobEvent`
 
 ## NOTES
 

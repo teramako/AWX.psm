@@ -30,7 +30,7 @@ Retrieve the list of NotificationTemplates.
 
 Implementation of following API:  
 - `/api/v2/notification_templates/`  
-- `/api/v2/organizations/{id}/notifications/`  
+- `/api/v2/organizations/{id}/notifications/`
 
 ## EXAMPLES
 

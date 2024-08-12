@@ -31,7 +31,7 @@ Retrieve the list of InventoryUpdates which are jobs of InventorySources.
 Implementation of following API:  
 - `/api/v2/inventory_updates/`  
 - `/api/v2/project_updates/{id}/scm_inventory_updates/`  
-- `/api/v2/inventory_sources/{id}/inventory_updates/`  
+- `/api/v2/inventory_sources/{id}/inventory_updates/`
 
 ## EXAMPLES
 
@@ -197,7 +197,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `ProjectUpdate`  
-- `InventorySource`  
+- `InventorySource`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

@@ -28,7 +28,7 @@ Implementation of following API:
 - `/api/v2/workflow_job_templates/{id}/notification_templates_success/`  
 - `/api/v2/projects/{id}/notification_templates_success/`  
 - `/api/v2/inventory_sources/{id}/notification_templates_success/`  
-- `/api/v2/system_job_templates/{id}/notification_templates_success/`  
+- `/api/v2/system_job_templates/{id}/notification_templates_success/`
 
 ## EXAMPLES
 
@@ -193,7 +193,7 @@ Acceptable values:
 - `InventorySource`  
 - `JobTemplate`  
 - `SystemJobTemplate`  
-- `WorkflowJobTemplate`  
+- `WorkflowJobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

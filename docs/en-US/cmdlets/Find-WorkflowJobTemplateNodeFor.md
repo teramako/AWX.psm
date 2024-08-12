@@ -24,7 +24,7 @@ Retrieve the list of WorkflowJobTemplateNodes linked to always, success or faile
 Implementation of following API:  
 - `/api/v2/workflow_job_template_nodes/{id}/always_nodes/`  
 - `/api/v2/workflow_job_template_nodes/{id}/success_nodes/`  
-- `/api/v2/workflow_job_template_nodes/{id}/failure_nodes/`  
+- `/api/v2/workflow_job_template_nodes/{id}/failure_nodes/`
 
 ## EXAMPLES
 

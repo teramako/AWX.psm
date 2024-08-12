@@ -48,7 +48,7 @@ Implements following Rest API:
 - `/api/v2/ad_hoc_commands/{id}/activity_stream/`  
 - `/api/v2/workflow_job_templates/{id}/activity_stream/`  
 - `/api/v2/workflow_jobs/{id}/activity_stream/`  
-- `/api/v2/execution_environments/{id}/activity_stream/`  
+- `/api/v2/execution_environments/{id}/activity_stream/`
 
 ## EXAMPLES
 
@@ -235,7 +235,7 @@ Acceptable values:
 - `AdHocCommand`  
 - `WorkflowJobTemplate`  
 - `WorkflowJob`  
-- `ExecutionEnvironment`  
+- `ExecutionEnvironment`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

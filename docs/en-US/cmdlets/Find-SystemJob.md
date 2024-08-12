@@ -30,7 +30,7 @@ Retrieve the list of jobs for SystemJobTemplate.
 
 Implementation of following API:  
 - `/api/v2/system_jobs/`  
-- `/api/v2/projects/{id}/project_updates/`  
+- `/api/v2/projects/{id}/project_updates/`
 
 ## EXAMPLES
 

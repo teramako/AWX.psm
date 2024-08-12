@@ -33,7 +33,7 @@ Implementation of following API:
 - `/api/v2/projects/{id}/scm_inventory_sources/`  
 - `/api/v2/inventories/{id}/inventory_sources/`  
 - `/api/v2/groups/{id}/inventory_sources/`  
-- `/api/v2/hosts/{id}/inventory_sources/`  
+- `/api/v2/hosts/{id}/inventory_sources/`
 
 ## EXAMPLES
 
@@ -201,7 +201,7 @@ Acceptable values:
 - `Project`  
 - `Inventory`  
 - `Group`  
-- `Host`  
+- `Host`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

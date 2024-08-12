@@ -32,7 +32,7 @@ Retrieve the list of Organizations.
 Implementation of following API:  
 - `/api/v2/organizations/`  
 - `/api/v2/users/{id}/organizations/`  
-- `/api/v2/users/{id}/admin_of_organizations/`  
+- `/api/v2/users/{id}/admin_of_organizations/`
 
 ## EXAMPLES
 

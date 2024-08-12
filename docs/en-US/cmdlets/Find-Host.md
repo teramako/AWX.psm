@@ -33,7 +33,7 @@ Implementation of following API:
 - `/api/v2/inventories/{id}/hosts/`  
 - `/api/v2/inventory_sources/{id}/hosts/`  
 - `/api/v2/groups/{id}/hosts/`  
-- `/api/v2/groups/{id}/all_hosts/`  
+- `/api/v2/groups/{id}/all_hosts/`
 
 ## EXAMPLES
 
@@ -228,7 +228,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Inventory`  
 - `InventorySource`  
-- `Group`  
+- `Group`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

@@ -24,7 +24,7 @@ Retrieve the list of JobHostSummaries for Job, Host or Group.
 Implementation of following API:  
 - `/api/v2/jobs/{id}/job_host_summaries`  
 - `/api/v2/groups/{id}/job_host_summaries/`  
-- `/api/v2/hosts/{id}/job_host_summaries/`  
+- `/api/v2/hosts/{id}/job_host_summaries/`
 
 ## EXAMPLES
 
@@ -193,7 +193,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Job`  
 - `Host`  
-- `Group`  
+- `Group`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

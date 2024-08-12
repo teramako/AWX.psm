@@ -37,7 +37,7 @@ Implementation of following API:
 - `/api/v2/workflow_job_templates/{id}/labels/`  
 - `/api/v2/workflow_jobs/{id}/labels/`  
 - `/api/v2/workflow_job_template_nodes/{id}/labels/`  
-- `/api/v2/workflow_job_nodes/{id}/labels/`  
+- `/api/v2/workflow_job_nodes/{id}/labels/`
 
 ## EXAMPLES
 
@@ -202,7 +202,7 @@ Acceptable values:
 - `WorkflowJobTemplate`  
 - `WorkflowJob`  
 - `WorkflowJobTemplateNode`  
-- `WorkflowJobNode`  
+- `WorkflowJobNode`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

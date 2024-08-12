@@ -34,7 +34,7 @@ Implementation of following API:
 - `/api/v2/users/{id}/teams/`  
 - `/api/v2/projects/{id}/teams/`  
 - `/api/v2/credentials/{id}/owner_teams/`  
-- `/api/v2/roles/{id}/teams/`  
+- `/api/v2/roles/{id}/teams/`
 
 ## EXAMPLES
 
@@ -203,7 +203,7 @@ Acceptable values:
 - `User`  
 - `Project`  
 - `Credential`  
-- `Role`  
+- `Role`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

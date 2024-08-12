@@ -21,7 +21,7 @@ Find-SystemJobTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Filter <Name
 Retrieve the list of SystemJobTemplates.
 
 Implementation of following API:  
-- `/api/v2/system_job_templates/`  
+- `/api/v2/system_job_templates/`
 
 ## EXAMPLES
 
