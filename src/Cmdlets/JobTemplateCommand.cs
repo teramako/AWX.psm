@@ -100,8 +100,8 @@ namespace AWX.Cmdlets
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
-                var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
-
+                var limitVal = def.Limit
+                               + (requirements.AskLimitOnLaunch && Limit != null ? $" => {Limit}" : "");
                 WriteHost(string.Format(fmt, "Limit", $"{limitVal}"),
                             foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }

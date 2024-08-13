@@ -98,13 +98,15 @@ namespace AWX.Cmdlets
             var fmt = "{0,22} : {1}\n";
             if (def.Inventory.Id != null || Inventory != null)
             {
-                var inventoryVal = $"[{def.Inventory.Id}] {def.Inventory.Name}" + (Inventory != null ? $" => {Inventory}" : "");
+                var inventoryVal = $"[{def.Inventory.Id}] {def.Inventory.Name}"
+                                   + (requirements.AskInventoryOnLaunch && Inventory != null ? $" => {Inventory}" : "");
                 WriteHost(string.Format(fmt, "Inventory", inventoryVal),
                             foregroundColor: requirements.AskInventoryOnLaunch ? (Inventory == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
-                var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
+                var limitVal = def.Limit
+                               + (requirements.AskLimitOnLaunch && Limit != null ? $" => {Limit}" : "");
                 WriteHost(string.Format(fmt, "Limit", limitVal),
                             foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
