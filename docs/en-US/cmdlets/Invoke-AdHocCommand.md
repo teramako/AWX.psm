@@ -231,18 +231,18 @@ Accept wildcard characters: False
 ### -SuppressJobLog
 Suppress display job log.
 
-If you need the job log, use `-InformationVariable` parameter likes following:
-
-    PS C:\> Invoke-AdHocCommand ... -InformationVariable joblog  
-    (snip)  
-
-    PS C:\> $joblog  
-    ====== [30] ping ======  
-
-    localhost | SUCCESS => {  
-        "changed": false,  
-        "ping": "pong"  
-    }
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Invoke-AdHocCommand ... -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ====== [30] ping ======  
+>  
+>     localhost | SUCCESS => {  
+>         "changed": false,  
+>         "ping": "pong"  
+>     }
 
 ```yaml
 Type: SwitchParameter

@@ -133,8 +133,20 @@ Accept wildcard characters: False
 ### -SuppressJobLog
 Suppress display job log.
 
-Note:  
-Use `-InformationVariable` parameter, if want to store logs to a variable.
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Invoke-JobTemplate ... -SuppressJobLog -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ====== [100] Demo Job Template ======  
+>     
+>     PLAY [Hello World Sample] ******************************************************  
+>     
+>     (snip)  
+>     
+>     PLAY RECAP *********************************************************************  
+>     localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 ```yaml
 Type: SwitchParameter

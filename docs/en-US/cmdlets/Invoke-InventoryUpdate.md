@@ -178,6 +178,16 @@ Accept wildcard characters: False
 ### -SuppressJobLog
 Suppress display job log.
 
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Invoke-InventoryUpdate ... -SuppressJobLog -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ====== [100] TestInventory - test_source ======  
+>     
+>     (snip)
+
 ```yaml
 Type: SwitchParameter
 Parameter Sets: Id, InventorySource, Inventory
