@@ -93,41 +93,40 @@ namespace AWX.Cmdlets
         {
             var wjt = requirements.WorkflowJobTemplateData;
             var def = requirements.Defaults;
-            var explicitColor = ConsoleColor.Green;
-            var askColor = ConsoleColor.Magenta;
+            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
             WriteHost($"[{wjt.Id}] {wjt.Name} - {wjt.Description}\n");
             var fmt = "{0,22} : {1}\n";
             if (def.Inventory.Id != null || Inventory != null)
             {
                 var inventoryVal = $"[{def.Inventory.Id}] {def.Inventory.Name}" + (Inventory != null ? $" => {Inventory}" : "");
                 WriteHost(string.Format(fmt, "Inventory", inventoryVal),
-                            foregroundColor: requirements.AskInventoryOnLaunch ? Inventory == null ? askColor : explicitColor : null);
+                            foregroundColor: requirements.AskInventoryOnLaunch ? (Inventory == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
                 var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
                 WriteHost(string.Format(fmt, "Limit", limitVal),
-                            foregroundColor: requirements.AskLimitOnLaunch ? Limit == null ? askColor : explicitColor : null);
+                            foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.ScmBranch))
             {
                 WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
-                            foregroundColor: requirements.AskScmBranchOnLaunch? askColor : explicitColor);
+                            foregroundColor: requirements.AskScmBranchOnLaunch? implicitColor : explicitColor);
             }
             if (def.Labels != null && def.Labels.Length > 0)
             {
                 WriteHost(string.Format(fmt, "Labels", string.Join(", ", def.Labels.Select(l => $"[{l.Id}] {l.Name}"))),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? askColor : explicitColor);
+                            foregroundColor: requirements.AskLabelsOnLaunch ? implicitColor : explicitColor);
             }
             if (!string.IsNullOrEmpty(def.JobTags))
             {
                 WriteHost(string.Format(fmt, "Job tags", def.JobTags),
-                            foregroundColor: requirements.AskTagsOnLaunch ? askColor : explicitColor);
+                            foregroundColor: requirements.AskTagsOnLaunch ? implicitColor : explicitColor);
             }
             if (!string.IsNullOrEmpty(def.SkipTags))
             {
                 WriteHost(string.Format(fmt, "Skip tags", def.SkipTags),
-                            foregroundColor: requirements.AskSkipTagsOnLaunch ? askColor : explicitColor);
+                            foregroundColor: requirements.AskSkipTagsOnLaunch ? implicitColor : explicitColor);
             }
             if (!string.IsNullOrEmpty(def.ExtraVars))
             {
@@ -139,7 +138,7 @@ namespace AWX.Cmdlets
                     sb.AppendLine("".PadLeft(25) + line);
                 }
                 WriteHost(sb.ToString(),
-                            foregroundColor: requirements.AskVariablesOnLaunch ? askColor : explicitColor);
+                            foregroundColor: requirements.AskVariablesOnLaunch ? implicitColor : explicitColor);
             }
         }
         protected WorkflowJob.LaunchResult? Launch(ulong id)

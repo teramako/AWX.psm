@@ -90,39 +90,40 @@ namespace AWX.Cmdlets
         {
             var jt = requirements.JobTemplateData;
             var def = requirements.Defaults;
+            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
             WriteHost($"[{jt.Id}] {jt.Name} - {jt.Description}\n");
             var fmt = "{0,22} : {1}\n";
             if (def.Inventory.Id != null)
             {
                 WriteHost(string.Format(fmt, "Inventory", $"[{def.Inventory.Id}] {def.Inventory.Name}"),
-                            foregroundColor: requirements.AskInventoryOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskInventoryOnLaunch ? implicitColor: fixedColor);
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
                 var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
 
                 WriteHost(string.Format(fmt, "Limit", $"{limitVal}"),
-                            foregroundColor: requirements.AskLimitOnLaunch ? Limit == null ? ConsoleColor.Magenta : ConsoleColor.Green : null);
+                            foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.ScmBranch))
             {
                 WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
-                            foregroundColor: requirements.AskScmBranchOnLaunch? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskScmBranchOnLaunch? implicitColor : fixedColor);
             }
             if (def.Labels != null && def.Labels.Length > 0)
             {
                 WriteHost(string.Format(fmt, "Labels", string.Join(", ", def.Labels.Select(l => $"[{l.Id}] {l.Name}"))),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskLabelsOnLaunch ? implicitColor : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.JobTags))
             {
                 WriteHost(string.Format(fmt, "Job tags", def.JobTags),
-                            foregroundColor: requirements.AskTagsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskTagsOnLaunch ? implicitColor : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.SkipTags))
             {
                 WriteHost(string.Format(fmt, "Skip tags", def.SkipTags),
-                            foregroundColor: requirements.AskSkipTagsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskSkipTagsOnLaunch ? implicitColor : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.ExtraVars))
             {
@@ -134,30 +135,30 @@ namespace AWX.Cmdlets
                     sb.AppendLine("".PadLeft(25) + line);
                 }
                 WriteHost(sb.ToString(),
-                            foregroundColor: requirements.AskVariablesOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskVariablesOnLaunch ? implicitColor : fixedColor);
             }
             WriteHost(string.Format(fmt, "Diff Mode", def.DiffMode),
-                            foregroundColor: requirements.AskDiffModeOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskDiffModeOnLaunch ? implicitColor : fixedColor);
             WriteHost(string.Format(fmt, "Job Type", def.JobType),
-                            foregroundColor: requirements.AskJobTypeOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskJobTypeOnLaunch ? implicitColor : fixedColor);
             WriteHost(string.Format(fmt, "Verbosity", $"{def.Verbosity:d} ({def.Verbosity})"),
-                            foregroundColor: requirements.AskVerbosityOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskVerbosityOnLaunch ? implicitColor : fixedColor);
             if (def.Credentials != null)
             {
                 WriteHost(string.Format(fmt, "Credentials", string.Join(", ", def.Credentials.Select(c => $"[{c.Id}] {c.Name}"))),
-                            foregroundColor: requirements.AskCredentialOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskCredentialOnLaunch ? implicitColor : fixedColor);
             }
             if (def.ExecutionEnvironment.Id != null)
             {
                 WriteHost(string.Format(fmt, "ExecutionEnvironment", $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"),
-                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? implicitColor : fixedColor);
             }
             WriteHost(string.Format(fmt, "Forks", def.Forks),
-                            foregroundColor: requirements.AskForksOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskForksOnLaunch ? implicitColor : fixedColor);
             WriteHost(string.Format(fmt, "Job Slice Count", def.JobSliceCount),
-                            foregroundColor: requirements.AskJobSliceCountOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskJobSliceCountOnLaunch ? implicitColor : fixedColor);
             WriteHost(string.Format(fmt, "Timeout", def.Timeout),
-                            foregroundColor: requirements.AskTimeoutOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskTimeoutOnLaunch ? implicitColor : fixedColor);
         }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
         {
