@@ -14,13 +14,13 @@ Invoke (launch) a JobTemplate.
 
 ### Id
 ```
-Start-JobTemplate [-Id] <UInt64> [-JobType <JobType>] [-Limit <String>]
+Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-Limit <String>]
  [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
-Start-JobTemplate [-JobTemplate] <JobTemplate> [-JobType <JobType>] [-Limit <String>]
+Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-Limit <String>]
  [<CommonParameters>]
 ```
 
@@ -97,6 +97,24 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Inventory
+Inventory ID
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

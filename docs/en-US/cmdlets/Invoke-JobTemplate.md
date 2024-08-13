@@ -14,14 +14,15 @@ Invoke (launch) a JobTemplate and wait unti the job is finished.
 
 ### Id
 ```
-Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-JobType <JobType>]
- [-Limit <String>] [<CommonParameters>]
+Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Inventory <UInt64>]
+ [-JobType <JobType>] [-Limit <String>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <JobTemplate>
- [-JobType <JobType>] [-Limit <String>] [<CommonParameters>]
+ [-Inventory <UInt64>] [-JobType <JobType>] [-Limit <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -96,6 +97,24 @@ Aliases:
 Required: False
 Position: Named
 Default value: 5
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Inventory
+Inventory ID
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -75,6 +75,9 @@ namespace AWX.Cmdlets
         public JobTemplate? JobTemplate { get; set; }
 
         [Parameter()]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
         [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
         public JobType? JobType { get; set; }
 
@@ -84,6 +87,10 @@ namespace AWX.Cmdlets
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
+            if (Inventory != null)
+            {
+                dict.Add("inventory", Inventory);
+            }
             if (JobType != null)
             {
                 dict.Add("job_type", $"{JobType}".ToLowerInvariant());
@@ -101,10 +108,11 @@ namespace AWX.Cmdlets
             var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
             WriteHost($"[{jt.Id}] {jt.Name} - {jt.Description}\n");
             var fmt = "{0,22} : {1}\n";
-            if (def.Inventory.Id != null)
             {
-                WriteHost(string.Format(fmt, "Inventory", $"[{def.Inventory.Id}] {def.Inventory.Name}"),
-                            foregroundColor: requirements.AskInventoryOnLaunch ? implicitColor: fixedColor);
+                var inventoryVal = (def.Inventory.Id != null ? $"[{def.Inventory.Id}] {def.Inventory.Name}" : "Undefined")
+                                   + (requirements.AskInventoryOnLaunch && Inventory != null ? $" => [{Inventory}]" : "");
+                WriteHost(string.Format(fmt, "Inventory", inventoryVal),
+                            foregroundColor: requirements.AskInventoryOnLaunch ? (Inventory == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
