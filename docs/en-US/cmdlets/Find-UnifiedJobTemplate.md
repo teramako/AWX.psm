@@ -13,15 +13,15 @@ Retrieve Unified Job Templates.
 ## SYNTAX
 
 ```
-Find-UnifiedJobTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-UnifiedJobTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>]
+ [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Retrieve Unified Job Templates which are JobTemplate, Project, InventorySource, SystemJobTemplate or WorkflowJobTemplate.
 
 Implementation of following API:  
-- `/api/v2/unified_job_templates/`  
+- `/api/v2/unified_job_templates/`
 
 ## EXAMPLES
 
@@ -58,6 +58,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see about_AWX.psm_Filter_parameter (about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -129,7 +151,7 @@ Unified Job Template objects which are following instances implemented `IUnified
 - `Project`  
 - `InventorSource`  
 - `SystemJobTemplate`  
-- `WorkflowJobTemplate`  
+- `WorkflowJobTemplate`
 
 ## NOTES
 

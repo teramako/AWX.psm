@@ -14,14 +14,15 @@ Retrieve Inventories.
 
 ### All (Default)
 ```
-Find-Inventory [-Kind <InventoryKind>] [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-Inventory [-Kind <InventoryKind>] [-OrderBy <String[]>] [-Search <String[]>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
 Find-Inventory -Type <ResourceType> -Id <UInt64> [-Kind <InventoryKind>] [-OrderBy <String[]>]
- [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
 
@@ -32,7 +33,7 @@ Implementation of following API:
 - `/api/v2/inventories/`  
 - `/api/v2/organizations/{id}/inventories/`  
 - `/api/v2/inventories/{id}/input_inventories/`  
-- `/api/v2/hosts/{id}/smart_inventories/`  
+- `/api/v2/hosts/{id}/smart_inventories/`
 
 ## EXAMPLES
 
@@ -70,6 +71,28 @@ Number to retrieve per page.
 
 ```yaml
 Type: UInt16
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see about_AWX.psm_Filter_parameter (about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
 Parameter Sets: (All)
 Aliases:
 
@@ -193,7 +216,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Organization`  
 - `Inventory`  
-- `Host`  
+- `Host`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

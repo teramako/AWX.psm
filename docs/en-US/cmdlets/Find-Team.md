@@ -14,14 +14,15 @@ Retrieve Teams.
 
 ### All (Default)
 ```
-Find-Team [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-Team [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>]
+ [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
-Find-Team -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-Team -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,7 +34,7 @@ Implementation of following API:
 - `/api/v2/users/{id}/teams/`  
 - `/api/v2/projects/{id}/teams/`  
 - `/api/v2/credentials/{id}/owner_teams/`  
-- `/api/v2/roles/{id}/teams/`  
+- `/api/v2/roles/{id}/teams/`
 
 ## EXAMPLES
 
@@ -77,6 +78,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see about_AWX.psm_Filter_parameter (about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -180,7 +203,7 @@ Acceptable values:
 - `User`  
 - `Project`  
 - `Credential`  
-- `Role`  
+- `Role`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

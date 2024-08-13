@@ -14,14 +14,15 @@ Retrieve Roles all or granted to the target resource.
 
 ### All (Default)
 ```
-Find-Role [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-Role [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>]
+ [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
-Find-Role -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-Role -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,7 +31,7 @@ Retrieve all Roles or the Roles granted to the target (User or Team) if specifie
 Implementation of following API:  
 - `/api/v2/roles/`  
 - `/api/v2/users/{id}/roles/`  
-- `/api/v2/teams/{id}/roles/`  
+- `/api/v2/teams/{id}/roles/`
 
 ## EXAMPLES
 
@@ -74,6 +75,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see about_AWX.psm_Filter_parameter (about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -174,7 +197,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `User`  
-- `Team`  
+- `Team`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

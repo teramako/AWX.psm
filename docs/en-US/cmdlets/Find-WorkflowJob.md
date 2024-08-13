@@ -14,14 +14,15 @@ Retrieve jobs for WorkflowJobTemplate.
 
 ### All (Default)
 ```
-Find-WorkflowJob [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-WorkflowJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>]
+ [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
-Find-WorkflowJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-WorkflowJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,7 +31,7 @@ Retrieve the list of jobs launched from WorkflowJobTemplates or sliced JobTempla
 Implementation of following API:  
 - `/api/v2/workflow_jobs/`  
 - `/api/v2/workflow_job_templates/{id}/workflow_jobs/`  
-- `/api/v2/job_templates/{id}/slice_workflow_jobs/`  
+- `/api/v2/job_templates/{id}/slice_workflow_jobs/`
 
 ## EXAMPLES
 
@@ -74,6 +75,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see about_AWX.psm_Filter_parameter (about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -174,7 +197,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `WorkflowJobTemplate`  
-- `JobTemplate`  
+- `JobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.
