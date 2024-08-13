@@ -75,11 +75,19 @@ namespace AWX.Cmdlets
         public JobTemplate? JobTemplate { get; set; }
 
         [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
         public string? Limit { get; set; }
 
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
+            if (JobType != null)
+            {
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            }
             if (Limit != null)
             {
                 dict.Add("limit", Limit);
@@ -139,8 +147,12 @@ namespace AWX.Cmdlets
             }
             WriteHost(string.Format(fmt, "Diff Mode", def.DiffMode),
                             foregroundColor: requirements.AskDiffModeOnLaunch ? implicitColor : fixedColor);
-            WriteHost(string.Format(fmt, "Job Type", def.JobType),
-                            foregroundColor: requirements.AskJobTypeOnLaunch ? implicitColor : fixedColor);
+            {
+                var jobTypeVal = def.JobType
+                                 + (requirements.AskJobTypeOnLaunch && JobType != null ? $" => {JobType}" : "");
+                WriteHost(string.Format(fmt, "Job Type", jobTypeVal),
+                                foregroundColor: requirements.AskJobTypeOnLaunch ? (JobType == null ? implicitColor : explicitColor) : fixedColor);
+            }
             WriteHost(string.Format(fmt, "Verbosity", $"{def.Verbosity:d} ({def.Verbosity})"),
                             foregroundColor: requirements.AskVerbosityOnLaunch ? implicitColor : fixedColor);
             if (def.Credentials != null)

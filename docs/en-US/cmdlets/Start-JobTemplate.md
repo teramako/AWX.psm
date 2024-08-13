@@ -14,12 +14,13 @@ Invoke (launch) a JobTemplate.
 
 ### Id
 ```
-Start-JobTemplate [-Id] <UInt64> [-Limit <String>] [<CommonParameters>]
+Start-JobTemplate [-Id] <UInt64> [-JobType <JobType>] [-Limit <String>]
+ [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
-Start-JobTemplate [-JobTemplate] <JobTemplate> [-Limit <String>]
+Start-JobTemplate [-JobTemplate] <JobTemplate> [-JobType <JobType>] [-Limit <String>]
  [<CommonParameters>]
 ```
 
@@ -111,6 +112,25 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -JobType
+Specify JobType ("Run" or "Check")
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: JobType
+Parameter Sets: (All)
+Aliases:
+Accepted values: Run, Check
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

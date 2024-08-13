@@ -14,14 +14,14 @@ Invoke (launch) a JobTemplate and wait unti the job is finished.
 
 ### Id
 ```
-Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Limit <String>]
- [<CommonParameters>]
+Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-JobType <JobType>]
+ [-Limit <String>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
-Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <JobTemplate> [-Limit <String>]
- [<CommonParameters>]
+Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <JobTemplate>
+ [-JobType <JobType>] [-Limit <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -112,6 +112,25 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -JobType
+Specify JobType ("Run" or "Check")
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: JobType
+Parameter Sets: (All)
+Aliases:
+Accepted values: Run, Check
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
