@@ -117,6 +117,49 @@ function Repair-PlatyPSMarkdown {
     return
 }
 
+function New-AboutHelp {
+    <#
+    .SYNOPSIS
+    create about_help.txt from Markdown
+    #>
+    param(
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [System.IO.FileInfo] $Path,
+        [Parameter(Mandatory)]
+        [string] $OutDir
+    )
+    begin {
+        $ErrorActionPreference = 'Stop'
+    }
+    process {
+        $file = Get-Item -Path $Path
+        $outputFile = $file.Name -replace ".md", ".help.txt"
+        $outputPath = "$OutDir\$outputFile"
+        $content = Get-Content -Path $file
+
+        "TOPIC",
+        ("    {0}" -F ($content[0] -replace "^#+\s*", "")),
+        "",
+        "SHORT DESCRIPTION",
+        ("    {0}" -F $content[1]),
+        "",
+        "LONG DESCRIPTION",
+        ($content[2..$content.Length] | ForEach-Object -Begin {
+            $level = 0;
+        } -Process {
+            switch -Wildcard ($_) {
+                '' { '' }
+                '#*' {
+                    $level = 1;
+                    "{0}{1}" -f ("    "*$level), $_;
+                }
+                default { "{0}{1}" -f ("    "*($level+1)), $_; }
+            }
+        }) | Out-File -FilePath $outputPath -Encoding utf8NoBOM
+        Get-Item -Path $outputPath
+    }
+}
+
 if (-not (Test-Path -Path $OutputFolder -PathType Container)) {
     New-Item -Path $OutputFolder -ItemType Directory
     $New = $true
@@ -163,3 +206,6 @@ $externalHelpParams = @{
     Force = $true;
 }
 New-ExternalHelp @externalHelpParams
+
+Get-Item -Path $OutputFolder\about_*.md -Exclude "about_$ModuleName.md" |
+    New-AboutHelp -OutDir $externalHelpDir
