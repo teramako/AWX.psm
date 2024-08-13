@@ -67,12 +67,19 @@ namespace AWX.Cmdlets
         [Parameter()]
         public ulong? Inventory { get; set; }
 
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
             if (Inventory != null)
             {
                 dict.Add("inventory", Inventory);
+            }
+            if (ScmBranch != null)
+            {
+                dict.Add("scm_branch", ScmBranch);
             }
             if (Limit != null)
             {
@@ -110,10 +117,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Limit", limitVal),
                             foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ScmBranch))
+            if (!string.IsNullOrEmpty(def.ScmBranch) || ScmBranch != null)
             {
-                WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
-                            foregroundColor: requirements.AskScmBranchOnLaunch? implicitColor : explicitColor);
+                var branchVal = def.ScmBranch
+                                + (requirements.AskScmBranchOnLaunch && ScmBranch != null ? $" => {ScmBranch}" : "");
+                WriteHost(string.Format(fmt, "Scm Branch", branchVal),
+                            foregroundColor: requirements.AskScmBranchOnLaunch ? (ScmBranch == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (def.Labels != null && def.Labels.Length > 0)
             {

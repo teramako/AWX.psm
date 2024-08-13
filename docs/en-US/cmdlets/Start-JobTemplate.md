@@ -14,14 +14,14 @@ Invoke (launch) a JobTemplate.
 
 ### Id
 ```
-Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-Limit <String>]
- [<CommonParameters>]
+Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
+ [-Limit <String>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
-Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-Limit <String>]
- [<CommonParameters>]
+Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
+ [-Limit <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -157,6 +157,24 @@ Further limit selected hosts to an additional pattern.
 
 > [!NOTE]  
 > This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScmBranch
+Specify branch to use in job run. Project default is used if omitted.
+
+> [!NOTE]  
+> This parameter will be ignored if the Project's `AllowOverride` flag is on and  "Ask" flag is off, although the request will be sent.
 
 ```yaml
 Type: String

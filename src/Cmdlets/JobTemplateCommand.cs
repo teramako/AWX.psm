@@ -82,6 +82,9 @@ namespace AWX.Cmdlets
         public JobType? JobType { get; set; }
 
         [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
         public string? Limit { get; set; }
 
         private Hashtable CreateSendData()
@@ -94,6 +97,10 @@ namespace AWX.Cmdlets
             if (JobType != null)
             {
                 dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            }
+            if (ScmBranch != null)
+            {
+                dict.Add("scm_branch", ScmBranch);
             }
             if (Limit != null)
             {
@@ -121,10 +128,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Limit", $"{limitVal}"),
                             foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ScmBranch))
+            if (!string.IsNullOrEmpty(def.ScmBranch) || ScmBranch != null)
             {
-                WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
-                            foregroundColor: requirements.AskScmBranchOnLaunch? implicitColor : fixedColor);
+                var branchVal = def.ScmBranch
+                                + (requirements.AskScmBranchOnLaunch && ScmBranch != null ? $" => {ScmBranch}" : "");
+                WriteHost(string.Format(fmt, "Scm Branch", branchVal),
+                            foregroundColor: requirements.AskScmBranchOnLaunch ? (ScmBranch == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (def.Labels != null && def.Labels.Length > 0)
             {

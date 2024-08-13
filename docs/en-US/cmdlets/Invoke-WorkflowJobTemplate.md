@@ -15,13 +15,13 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### Id
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Limit <String>]
- [-Inventory <UInt64>] [<CommonParameters>]
+ [-Inventory <UInt64>] [-ScmBranch <String>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog]
- [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>]
+ [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
  [<CommonParameters>]
 ```
 
@@ -111,6 +111,24 @@ Further limit selected hosts to an additional pattern.
 
 > [!NOTE]  
 > This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScmBranch
+Specify branch to use in job run. Project default is used if omitted.
+
+> [!NOTE]  
+> This parameter will be ignored if the Project's `AllowOverride` flag is on and  "Ask" flag is off, although the request will be sent.
 
 ```yaml
 Type: String
