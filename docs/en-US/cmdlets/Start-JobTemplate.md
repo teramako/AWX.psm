@@ -117,6 +117,9 @@ Accept wildcard characters: False
 ### -Limit
 Further limit selected hosts to an additional pattern.
 
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
 ```yaml
 Type: String
 Parameter Sets: (All)
