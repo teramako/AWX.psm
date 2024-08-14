@@ -17,7 +17,7 @@ Invoke (launch) a JobTemplate.
 Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
  [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>] [-Forks <Int32>]
- [<CommonParameters>]
+ [-ExecutionEnvironment <UInt64>] [<CommonParameters>]
 ```
 
 ### JobTemplate
@@ -25,7 +25,7 @@ Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-Sc
 Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
  [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>] [-Forks <Int32>]
- [<CommonParameters>]
+ [-ExecutionEnvironment <UInt64>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -115,6 +115,24 @@ Specify diff mode.
 
 ```yaml
 Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExecutionEnvironment
+Specify ExecutionEnvironment ID.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 

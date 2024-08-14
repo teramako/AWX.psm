@@ -113,6 +113,9 @@ namespace AWX.Cmdlets
         [ValidateRange(0, int.MaxValue)]
         public int? Forks { get; set; }
 
+        [Parameter()]
+        public ulong? ExecutionEnvironment { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -163,6 +166,10 @@ namespace AWX.Cmdlets
             if (Forks != null)
             {
                 dict.Add("forks", Forks);
+            }
+            if (ExecutionEnvironment != null)
+            {
+                dict.Add("execution_environment", ExecutionEnvironment);
             }
             return dict;
         }
@@ -261,10 +268,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Credentials", credentialsVal),
                             foregroundColor: requirements.AskCredentialOnLaunch ? (Credentials == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (def.ExecutionEnvironment.Id != null)
+            if (def.ExecutionEnvironment.Id != null || ExecutionEnvironment != null)
             {
-                WriteHost(string.Format(fmt, "ExecutionEnvironment", $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"),
-                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? implicitColor : fixedColor);
+                var eeVal = $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"
+                            + (requirements.AskExecutionEnvironmentOnLaunch && ExecutionEnvironment != null ? $" => [{ExecutionEnvironment}]" : "");
+                WriteHost(string.Format(fmt, "ExecutionEnvironment", eeVal),
+                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? (ExecutionEnvironment == null ? implicitColor : explicitColor) : fixedColor);
             }
             {
                 var forksVal = $"{def.Forks}" + (requirements.AskForksOnLaunch && Forks != null ? $" => {Forks}" : "");
