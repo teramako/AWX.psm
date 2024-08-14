@@ -120,6 +120,9 @@ namespace AWX.Cmdlets
         [ValidateRange(0, int.MaxValue)]
         public int? JobSliceCount { get; set; }
 
+        [Parameter()]
+        public int? Timeout { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -178,6 +181,10 @@ namespace AWX.Cmdlets
             if (JobSliceCount != null)
             {
                 dict.Add("job_slice_count", JobSliceCount);
+            }
+            if (Timeout != null)
+            {
+                dict.Add("timeout", Timeout);
             }
             return dict;
         }
@@ -294,8 +301,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Job Slice Count", jobSliceVal),
                                 foregroundColor: requirements.AskJobSliceCountOnLaunch ? (JobSliceCount == null ? implicitColor : explicitColor) : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Timeout", def.Timeout),
-                            foregroundColor: requirements.AskTimeoutOnLaunch ? implicitColor : fixedColor);
+            {
+                var timeoutVal = $"{def.Timeout}"
+                                 + (requirements.AskTimeoutOnLaunch && Timeout != null ? $" => {Timeout}" : "");
+                WriteHost(string.Format(fmt, "Timeout", timeoutVal),
+                                foregroundColor: requirements.AskTimeoutOnLaunch ? (Timeout == null ? implicitColor : explicitColor) : fixedColor);
+            }
         }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
         {
