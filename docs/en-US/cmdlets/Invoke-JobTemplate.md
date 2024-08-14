@@ -15,15 +15,15 @@ Invoke (launch) a JobTemplate and wait unti the job is finished.
 ### Id
 ```
 Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Inventory <UInt64>]
- [-JobType <JobType>] [-ScmBranch <String>] [-Limit <String>] [-Labels <UInt64[]>]
- [<CommonParameters>]
+ [-JobType <JobType>] [-ScmBranch <String>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>]
+ [-SkipTags <String[]>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <JobTemplate>
  [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>] [-Limit <String>] [-Labels <UInt64[]>]
- [<CommonParameters>]
+ [-Tags <String[]>] [-SkipTags <String[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -208,6 +208,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -SkipTags
+Specify skip tags. (commas `,` separated)
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SuppressJobLog
 Suppress display job log.
 
@@ -228,6 +246,24 @@ Suppress display job log.
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tags
+Specify tags. (commas `,` separated)
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

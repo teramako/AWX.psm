@@ -15,13 +15,15 @@ Invoke (update) a WorkflowJobTemplate.
 ### Id
 ```
 Start-WorkflowJobTemplate [-Id] <UInt64> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
- [-Labels <UInt64[]>] [<CommonParameters>]
+ [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Start-WorkflowJobTemplate [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>]
- [-ScmBranch <String>] [-Labels <UInt64[]>] [<CommonParameters>]
+ [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -127,6 +129,42 @@ Specify branch to use in job run. Project default is used if omitted.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipTags
+Specify skip tags. (commas `,` separated)
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tags
+Specify tags. (commas `,` separated)
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

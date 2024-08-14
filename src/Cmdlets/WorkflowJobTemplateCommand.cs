@@ -74,6 +74,12 @@ namespace AWX.Cmdlets
         [Parameter()] // XXX: Should be string[] and created if not exists ?
         public ulong[]? Labels { get; set; }
 
+        [Parameter()]
+        public string[]? Tags { get; set; }
+
+        [Parameter()]
+        public string[]? SkipTags { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -92,6 +98,14 @@ namespace AWX.Cmdlets
             if (Labels != null)
             {
                 dict.Add("labels", Labels);
+            }
+            if (Tags != null)
+            {
+                dict.Add("job_tags", string.Join(',', Tags));
+            }
+            if (SkipTags != null)
+            {
+                dict.Add("skip_tags", string.Join(',', SkipTags));
             }
             return dict;
         }
@@ -139,15 +153,19 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Labels", labelsVal),
                             foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.JobTags))
+            if (!string.IsNullOrEmpty(def.JobTags) || Tags != null)
             {
-                WriteHost(string.Format(fmt, "Job tags", def.JobTags),
-                            foregroundColor: requirements.AskTagsOnLaunch ? implicitColor : explicitColor);
+                var tagsVal = def.JobTags
+                              + (requirements.AskTagsOnLaunch && Tags != null ? $" => {string.Join(", ", Tags)}" : "");
+                WriteHost(string.Format(fmt, "Job tags", tagsVal),
+                            foregroundColor: requirements.AskTagsOnLaunch ? (Tags == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.SkipTags))
+            if (!string.IsNullOrEmpty(def.SkipTags) || SkipTags != null)
             {
-                WriteHost(string.Format(fmt, "Skip tags", def.SkipTags),
-                            foregroundColor: requirements.AskSkipTagsOnLaunch ? implicitColor : explicitColor);
+                var skipTagsVal = def.SkipTags
+                                  + (requirements.AskSkipTagsOnLaunch && SkipTags != null ? $" => {string.Join(", ", SkipTags)}" : "");
+                WriteHost(string.Format(fmt, "Skip tags", skipTagsVal),
+                            foregroundColor: requirements.AskSkipTagsOnLaunch ? (SkipTags == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.ExtraVars))
             {
