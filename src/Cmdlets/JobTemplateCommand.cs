@@ -86,6 +86,9 @@ namespace AWX.Cmdlets
         public string? ScmBranch { get; set; }
 
         [Parameter()]
+        public ulong[]? Credentials { get; set; }
+
+        [Parameter()]
         public string? Limit { get; set; }
 
         [Parameter()] // XXX: Should be string[] and created if not exists ?
@@ -117,6 +120,10 @@ namespace AWX.Cmdlets
             if (ScmBranch != null)
             {
                 dict.Add("scm_branch", ScmBranch);
+            }
+            if (Credentials != null)
+            {
+                dict.Add("credentials", Credentials);
             }
             if (Limit != null)
             {
@@ -228,10 +235,12 @@ namespace AWX.Cmdlets
             }
             WriteHost(string.Format(fmt, "Verbosity", $"{def.Verbosity:d} ({def.Verbosity})"),
                             foregroundColor: requirements.AskVerbosityOnLaunch ? implicitColor : fixedColor);
-            if (def.Credentials != null)
+            if (def.Credentials != null || Credentials != null)
             {
-                WriteHost(string.Format(fmt, "Credentials", string.Join(", ", def.Credentials.Select(c => $"[{c.Id}] {c.Name}"))),
-                            foregroundColor: requirements.AskCredentialOnLaunch ? implicitColor : fixedColor);
+                var credentialsVal = string.Join(", ", def.Credentials?.Select(c => $"[{c.Id}] {c.Name}") ?? [])
+                        + (requirements.AskCredentialOnLaunch && Credentials != null ? $" => {string.Join(',', Credentials.Select(id => $"[{id}]"))}" : "");
+                WriteHost(string.Format(fmt, "Credentials", credentialsVal),
+                            foregroundColor: requirements.AskCredentialOnLaunch ? (Credentials == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (def.ExecutionEnvironment.Id != null)
             {

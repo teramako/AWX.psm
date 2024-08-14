@@ -15,15 +15,15 @@ Invoke (launch) a JobTemplate.
 ### Id
 ```
 Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
- [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
- [-DiffMode <Boolean>] [<CommonParameters>]
+ [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [-ExtraVars <String>] [-DiffMode <Boolean>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
- [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
- [-DiffMode <Boolean>] [<CommonParameters>]
+ [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [-ExtraVars <String>] [-DiffMode <Boolean>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -86,6 +86,24 @@ Launch JobTemplate ID 7, and wait unti for the job is finished.
 This is almost same as `Invoke-JobTemplate` command.
 
 ## PARAMETERS
+
+### -Credentials
+Specify credential IDs.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: UInt64[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -DiffMode
 Specify diff mode.
