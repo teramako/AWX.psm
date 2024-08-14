@@ -2,6 +2,7 @@ using AWX.Resources;
 using System.Collections;
 using System.Management.Automation;
 using System.Text;
+using System.Text.Json;
 
 namespace AWX.Cmdlets
 {
@@ -176,7 +177,7 @@ namespace AWX.Cmdlets
             {
                 foreach (var (key ,val) in launchResult.IgnoredFields)
                 {
-                    WriteWarning($"Ignored field: {key} ({val})");
+                    WriteWarning($"Ignored field: {key} ({JsonSerializer.Serialize(val, Json.DeserializeOptions)})");
                 }
             }
             return launchResult;
