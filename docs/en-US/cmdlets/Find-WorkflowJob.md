@@ -14,15 +14,16 @@ Retrieve jobs for WorkflowJobTemplate.
 
 ### All (Default)
 ```
-Find-WorkflowJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-WorkflowJob [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>] [-OrderBy <String[]>]
+ [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
-Find-WorkflowJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-WorkflowJob -Type <ResourceType> -Id <UInt64> [[-Name] <String[]>] [-Status <String[]>]
+ [-LaunchType <String[]>] [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>]
+ [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -117,6 +118,40 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -LaunchType
+Filter with `launch_type` field
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: manual, relaunch, callback, scheduled, dependency, workflow, webhook, sync, scm
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+Filter by job name.
+The names must be an exact match. (case-sensitive)
+
+Multiple words are available by separating with a comma(`,`).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -OrderBy
 Retrieve list in the specified orders.
 Use `!` prefix to sort in reverse.
@@ -162,6 +197,22 @@ Multiple words are available by separating with a comma(`,`).
 Type: String[]
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Status
+Filter by `status` field.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: new, started, pending, waiting, running, successful, failed, error, canceled
 
 Required: False
 Position: Named
