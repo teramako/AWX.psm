@@ -106,6 +106,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public bool? DiffMode { get; set; }
 
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -148,6 +151,10 @@ namespace AWX.Cmdlets
             if (DiffMode != null)
             {
                 dict.Add("diff_mode", DiffMode);
+            }
+            if (Verbosity != null)
+            {
+                dict.Add("verbosity", (int)Verbosity);
             }
             return dict;
         }
@@ -233,8 +240,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Job Type", jobTypeVal),
                                 foregroundColor: requirements.AskJobTypeOnLaunch ? (JobType == null ? implicitColor : explicitColor) : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Verbosity", $"{def.Verbosity:d} ({def.Verbosity})"),
-                            foregroundColor: requirements.AskVerbosityOnLaunch ? implicitColor : fixedColor);
+            {
+                var verbosityVal = $"{def.Verbosity:d} ({def.Verbosity})"
+                                   + (requirements.AskVerbosityOnLaunch && Verbosity != null ? $" => {Verbosity:d} ({Verbosity})" : "");
+                WriteHost(string.Format(fmt, "Verbosity", verbosityVal),
+                                foregroundColor: requirements.AskVerbosityOnLaunch ? (Verbosity == null ? implicitColor : explicitColor) : fixedColor);
+            }
             if (def.Credentials != null || Credentials != null)
             {
                 var credentialsVal = string.Join(", ", def.Credentials?.Select(c => $"[{c.Id}] {c.Name}") ?? [])

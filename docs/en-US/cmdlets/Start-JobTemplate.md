@@ -16,14 +16,16 @@ Invoke (launch) a JobTemplate.
 ```
 Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
- [-ExtraVars <String>] [-DiffMode <Boolean>] [<CommonParameters>]
+ [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>]
+ [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
- [-ExtraVars <String>] [-DiffMode <Boolean>] [<CommonParameters>]
+ [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -290,6 +292,25 @@ Specify tags. (commas `,` separated)
 Type: String[]
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Verbosity
+Specify job verbosity.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: JobVerbosity
+Parameter Sets: (All)
+Aliases:
+Accepted values: Normal, Verbose, MoreVerbose, Debug, ConnectionDebug, WinRMDebug
 
 Required: False
 Position: Named
