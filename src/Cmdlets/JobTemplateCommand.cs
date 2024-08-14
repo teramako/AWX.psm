@@ -100,6 +100,9 @@ namespace AWX.Cmdlets
         [Parameter()] // TODO: Should accept `IDctionary` (convert to JSON serialized string)
         public string? ExtraVars { get; set; }
 
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -134,6 +137,10 @@ namespace AWX.Cmdlets
             if (!string.IsNullOrEmpty(ExtraVars))
             {
                 dict.Add("extra_vars", ExtraVars);
+            }
+            if (DiffMode != null)
+            {
+                dict.Add("diff_mode", DiffMode);
             }
             return dict;
         }
@@ -207,8 +214,12 @@ namespace AWX.Cmdlets
                 WriteHost(sb.ToString(),
                             foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Diff Mode", def.DiffMode),
-                            foregroundColor: requirements.AskDiffModeOnLaunch ? implicitColor : fixedColor);
+            {
+                var diffModeVal = $"{def.DiffMode}"
+                                  + (requirements.AskDiffModeOnLaunch && DiffMode != null ? $" => {DiffMode}" : "");
+                WriteHost(string.Format(fmt, "Diff Mode", diffModeVal),
+                                foregroundColor: requirements.AskDiffModeOnLaunch ? (DiffMode == null ? implicitColor : explicitColor) : fixedColor);
+            }
             {
                 var jobTypeVal = def.JobType
                                  + (requirements.AskJobTypeOnLaunch && JobType != null ? $" => {JobType}" : "");

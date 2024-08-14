@@ -16,14 +16,15 @@ Invoke (launch) a JobTemplate and wait unti the job is finished.
 ```
 Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Inventory <UInt64>]
  [-JobType <JobType>] [-ScmBranch <String>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>]
- [-SkipTags <String[]>] [-ExtraVars <String>] [<CommonParameters>]
+ [-SkipTags <String[]>] [-ExtraVars <String>] [-DiffMode <Boolean>]
+ [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <JobTemplate>
  [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>] [-Limit <String>] [-Labels <UInt64[]>]
- [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
+ [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-DiffMode <Boolean>]
  [<CommonParameters>]
 ```
 
@@ -71,6 +72,24 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 Launch JobTemplate ID 7, and wait unti for the job is finished.
 
 ## PARAMETERS
+
+### -DiffMode
+Specify diff mode.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -ExtraVars
 Specify extra variables.
