@@ -116,6 +116,10 @@ namespace AWX.Cmdlets
         [Parameter()]
         public ulong? ExecutionEnvironment { get; set; }
 
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -170,6 +174,10 @@ namespace AWX.Cmdlets
             if (ExecutionEnvironment != null)
             {
                 dict.Add("execution_environment", ExecutionEnvironment);
+            }
+            if (JobSliceCount != null)
+            {
+                dict.Add("job_slice_count", JobSliceCount);
             }
             return dict;
         }
@@ -280,8 +288,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Forks", forksVal),
                                 foregroundColor: requirements.AskForksOnLaunch ? (Forks == null ? implicitColor : explicitColor) : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Job Slice Count", def.JobSliceCount),
-                            foregroundColor: requirements.AskJobSliceCountOnLaunch ? implicitColor : fixedColor);
+            {
+                var jobSliceVal = $"{def.JobSliceCount}"
+                                  + (requirements.AskJobSliceCountOnLaunch && JobSliceCount != null ? $" => {JobSliceCount}" : "");
+                WriteHost(string.Format(fmt, "Job Slice Count", jobSliceVal),
+                                foregroundColor: requirements.AskJobSliceCountOnLaunch ? (JobSliceCount == null ? implicitColor : explicitColor) : fixedColor);
+            }
             WriteHost(string.Format(fmt, "Timeout", def.Timeout),
                             foregroundColor: requirements.AskTimeoutOnLaunch ? implicitColor : fixedColor);
         }
