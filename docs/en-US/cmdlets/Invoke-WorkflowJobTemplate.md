@@ -15,14 +15,15 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### Id
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Limit <String>]
- [-Inventory <UInt64>] [-ScmBranch <String>] [<CommonParameters>]
+ [-Inventory <UInt64>] [-ScmBranch <String>] [-Labels <UInt64[]>]
+ [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog]
  [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
- [<CommonParameters>]
+ [-Labels <UInt64[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -96,6 +97,24 @@ Inventory ID
 
 ```yaml
 Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Labels
+Label IDs
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: UInt64[]
 Parameter Sets: (All)
 Aliases:
 

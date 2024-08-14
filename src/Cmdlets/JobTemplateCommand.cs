@@ -87,6 +87,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public string? Limit { get; set; }
 
+        [Parameter()] // XXX: Should be string[] and created if not exists ?
+        public ulong[]? Labels { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -105,6 +108,10 @@ namespace AWX.Cmdlets
             if (Limit != null)
             {
                 dict.Add("limit", Limit);
+            }
+            if (Labels != null)
+            {
+                dict.Add("labels", Labels);
             }
             return dict;
         }
@@ -135,10 +142,12 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Scm Branch", branchVal),
                             foregroundColor: requirements.AskScmBranchOnLaunch ? (ScmBranch == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (def.Labels != null && def.Labels.Length > 0)
+            if ((def.Labels != null && def.Labels.Length > 0) || Labels != null)
             {
-                WriteHost(string.Format(fmt, "Labels", string.Join(", ", def.Labels.Select(l => $"[{l.Id}] {l.Name}"))),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? implicitColor : fixedColor);
+                var labelsVal = string.Join(", ", def.Labels?.Select(l => $"[{l.Id}] {l.Name}") ?? [])
+                                + (requirements.AskLabelsOnLaunch && Labels != null ? $" => {string.Join(',', Labels.Select(id => $"[{id}]"))}" : "");
+                WriteHost(string.Format(fmt, "Labels", labelsVal),
+                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.JobTags))
             {
