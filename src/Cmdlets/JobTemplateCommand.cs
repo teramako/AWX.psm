@@ -109,6 +109,10 @@ namespace AWX.Cmdlets
         [Parameter()]
         public JobVerbosity? Verbosity { get; set; }
 
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -155,6 +159,10 @@ namespace AWX.Cmdlets
             if (Verbosity != null)
             {
                 dict.Add("verbosity", (int)Verbosity);
+            }
+            if (Forks != null)
+            {
+                dict.Add("forks", Forks);
             }
             return dict;
         }
@@ -258,8 +266,11 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "ExecutionEnvironment", $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"),
                             foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? implicitColor : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Forks", def.Forks),
-                            foregroundColor: requirements.AskForksOnLaunch ? implicitColor : fixedColor);
+            {
+                var forksVal = $"{def.Forks}" + (requirements.AskForksOnLaunch && Forks != null ? $" => {Forks}" : "");
+                WriteHost(string.Format(fmt, "Forks", forksVal),
+                                foregroundColor: requirements.AskForksOnLaunch ? (Forks == null ? implicitColor : explicitColor) : fixedColor);
+            }
             WriteHost(string.Format(fmt, "Job Slice Count", def.JobSliceCount),
                             foregroundColor: requirements.AskJobSliceCountOnLaunch ? implicitColor : fixedColor);
             WriteHost(string.Format(fmt, "Timeout", def.Timeout),

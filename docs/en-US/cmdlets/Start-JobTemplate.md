@@ -16,7 +16,7 @@ Invoke (launch) a JobTemplate.
 ```
 Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
- [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>]
+ [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>] [-Forks <Int32>]
  [<CommonParameters>]
 ```
 
@@ -24,7 +24,7 @@ Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-Sc
 ```
 Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
- [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>]
+ [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>] [-Forks <Int32>]
  [<CommonParameters>]
 ```
 
@@ -133,6 +133,24 @@ Specify extra variables.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Forks
+Specify the number of forks.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
