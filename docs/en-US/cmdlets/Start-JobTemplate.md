@@ -15,14 +15,14 @@ Invoke (launch) a JobTemplate.
 ### Id
 ```
 Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
- [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
  [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
- [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
  [<CommonParameters>]
 ```
 
@@ -86,6 +86,24 @@ Launch JobTemplate ID 7, and wait unti for the job is finished.
 This is almost same as `Invoke-JobTemplate` command.
 
 ## PARAMETERS
+
+### -ExtraVars
+Specify extra variables.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Id
 JobTemplate ID to be launched.

@@ -80,6 +80,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public string[]? SkipTags { get; set; }
 
+        [Parameter()] // TODO: Should accept `IDctionary` (convert to JSON serialized string)
+        public string? ExtraVars { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -106,6 +109,10 @@ namespace AWX.Cmdlets
             if (SkipTags != null)
             {
                 dict.Add("skip_tags", string.Join(',', SkipTags));
+            }
+            if (!string.IsNullOrEmpty(ExtraVars))
+            {
+                dict.Add("extra_vars", ExtraVars);
             }
             return dict;
         }
@@ -167,17 +174,27 @@ namespace AWX.Cmdlets
                 WriteHost(string.Format(fmt, "Skip tags", skipTagsVal),
                             foregroundColor: requirements.AskSkipTagsOnLaunch ? (SkipTags == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ExtraVars))
+            if (!string.IsNullOrEmpty(def.ExtraVars) || !string.IsNullOrEmpty(ExtraVars))
             {
                 var sb = new StringBuilder();
                 var lines = def.ExtraVars.Split('\n');
+                var padding = "".PadLeft(25);
                 sb.Append(string.Format(fmt, "Extra vars", lines[0]));
                 foreach (var line in lines[1..])
                 {
-                    sb.AppendLine("".PadLeft(25) + line);
+                    sb.AppendLine(padding + line);
+                }
+                if (!string.IsNullOrEmpty(ExtraVars))
+                {
+                    sb.AppendLine($"{padding}=> (overwrite or append)");
+                    lines = ExtraVars.Split('\n');
+                    foreach (var line in lines)
+                    {
+                        sb.AppendLine(padding + line);
+                    }
                 }
                 WriteHost(sb.ToString(),
-                            foregroundColor: requirements.AskVariablesOnLaunch ? implicitColor : explicitColor);
+                            foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
             }
         }
         protected WorkflowJob.LaunchResult? Launch(ulong id)
