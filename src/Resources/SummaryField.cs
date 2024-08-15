@@ -2,9 +2,6 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
-    public interface ISummaryFields
-    {
-    }
 
     [JsonConverter(typeof(Json.CapabilityConverter))]
     [Flags]
@@ -27,15 +24,6 @@ namespace AWX.Resources
                               [property: JsonPropertyName("first_name")] string FirstName,
                               [property: JsonPropertyName("last_name")] string LastName);
 
-    public record OAuth2AccessTokenSummary(ulong Id,
-                                           [property: JsonPropertyName("user_id")] ulong UserId,
-                                           string Description,
-                                           string Scope);
-
-    public record UserCapability(bool Edit = false,
-                                 bool Delete = false,
-                                 bool Copy = false,
-                                 bool Use = false);
 
     public record RoleSummary(ulong Id,
                               string Name,
