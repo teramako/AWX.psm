@@ -2152,7 +2152,7 @@
       </MemberSet>
       <ScriptProperty>
         <Name>Actor</Name>
-        <GetScriptBlock>$t=$this.SummaryFields.Actor; "[{0}]{1}" -f $t.Id,$t.Username</GetScriptBlock>
+        <GetScriptBlock>$t=$this.SummaryFields.Actor; if ($t){ "[{0}]{1}" -f $t.Id,$t.Username; }</GetScriptBlock>
       </ScriptProperty>
     </Members>
   </Type>
