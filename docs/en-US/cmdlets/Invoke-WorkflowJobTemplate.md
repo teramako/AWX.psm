@@ -15,13 +15,15 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### Id
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Limit <String>]
- [-Inventory <UInt64>] [<CommonParameters>]
+ [-Inventory <UInt64>] [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
+ [-ExtraVars <String>] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog]
- [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>]
+ [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
+ [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
  [<CommonParameters>]
 ```
 
@@ -57,6 +59,24 @@ Launch WorkflowJobTemplate ID 13, and wait unti for the job is finished.
 
 ## PARAMETERS
 
+### -ExtraVars
+Specify extra variables.
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Id
 WorkflowJobTemplate ID to be launched.
 
@@ -91,8 +111,29 @@ Accept wildcard characters: False
 ### -Inventory
 Inventory ID
 
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
 ```yaml
 Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Labels
+Label IDs
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: UInt64[]
 Parameter Sets: (All)
 Aliases:
 
@@ -106,8 +147,47 @@ Accept wildcard characters: False
 ### -Limit
 Further limit selected hosts to an additional pattern.
 
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScmBranch
+Specify branch to use in job run. Project default is used if omitted.
+
+> [!NOTE]  
+> This parameter will be ignored if the Project's `AllowOverride` flag is on and  "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipTags
+Specify skip tags. (commas `,` separated)
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -143,6 +223,24 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tags
+Specify tags. (commas `,` separated)
+
+> [!NOTE]  
+> This parameter will be ignored if "Ask" flag is off, although the request will be sent.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
