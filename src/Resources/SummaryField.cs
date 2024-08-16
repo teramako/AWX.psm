@@ -52,15 +52,6 @@ namespace AWX.Resources
     public record LabelSummary(ulong Id, string Name)
         : ResourceSummary(Id, ResourceType.Label);
 
-    // NotificationTemplate in Notification
-    public record NameDescriptionSummary(ulong Id,
-                                         string Name,
-                                         string Description)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
-
     // Host in AdHocCommandJobEvent, JobEvent, JobHostSummary
     public record HostSummary(ulong Id, string Name, string Description)
         : ResourceSummary(Id, ResourceType.Host);
@@ -81,6 +72,10 @@ namespace AWX.Resources
     // JobTemplate in Job
     public record JobTemplateSummary(ulong Id, string Name, string Description)
         : ResourceSummary(Id, ResourceType.JobTemplate);
+
+    // NotificationTemplate in Notification
+    public record NotificationTemplateSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.NotificationTemplate);
 
     // Actor in ActivityStream
     // CreatedBy in AdHocCommand, Credential, CredentialInputSource, ExecutionEnvironment, Group, Inventory,
