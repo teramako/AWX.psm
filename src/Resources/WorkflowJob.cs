@@ -106,6 +106,8 @@ namespace AWX.Resources
         }
 
         public record Summary(
+            OrganizationSummary? Organization,
+            InventorySummary? Inventory,
             [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary? WorkflowJobTemplate,
             [property: JsonPropertyName("job_template")] JobTemplateSummary? JobTemplate,
             ScheduleSummary? Schedule,
