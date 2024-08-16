@@ -334,7 +334,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("credential_type")] CredentialTypeSummary CredentialType,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
+            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             OwnerSummary[] Owners);
 

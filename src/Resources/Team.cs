@@ -171,7 +171,7 @@ namespace AWX.Resources
             OrganizationSummary Organization,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
+            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
 
         public ulong Id { get; } = id;

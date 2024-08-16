@@ -260,7 +260,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
+            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
             ListSummary<LabelSummary> Labels,
             [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs,
