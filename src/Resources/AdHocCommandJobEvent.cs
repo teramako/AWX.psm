@@ -41,7 +41,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(NameDescriptionSummary Host);
+        public record Summary(HostSummary Host);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

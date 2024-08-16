@@ -86,7 +86,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(NameDescriptionSummary Host, JobExSummary Job);
+        public record Summary(HostSummary Host, JobExSummary Job);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

@@ -52,7 +52,6 @@ namespace AWX.Resources
     public record LabelSummary(ulong Id, string Name)
         : ResourceSummary(Id, ResourceType.Label);
 
-    // Host in AdHocCommandJobEvent, JobEvent, JobHostSummary
     // Organization in Application, Credential, ExecutionEnvironment, Inventory, InventorySource, InventoryUpdate,
     //                 JobTemplate, Job, Label, NotificationTemplate, Project, ProjectUpdate
     // CredentialType in Credential
@@ -66,6 +65,10 @@ namespace AWX.Resources
     {
         public override string ToString() => base.ToString();
     }
+
+    // Host in AdHocCommandJobEvent, JobEvent, JobHostSummary
+    public record HostSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.Host);
 
     // Actor in ActivityStream
     // CreatedBy in AdHocCommand, Credential, CredentialInputSource, ExecutionEnvironment, Group, Inventory,
