@@ -40,7 +40,6 @@ namespace AWX.Resources
         AdHoc = 1 << 6,
     }
 
-    // Application in Token
     // List<Group> in Host
     // List<Label> in Inventory, Job, JobTemplate, WorkflowJob, WorkflowJobTemplate
     public record NameSummary(ulong Id,
@@ -49,6 +48,10 @@ namespace AWX.Resources
     {
         public override string ToString() => base.ToString();
     }
+
+    // Application in Token
+    public record ApplicationSummary(ulong Id, string Name)
+        : ResourceSummary(Id, ResourceType.OAuth2Application);
 
     // Host in AdHocCommandJobEvent, JobEvent, JobHostSummary
     // Organization in Application, Credential, ExecutionEnvironment, Inventory, InventorySource, InventoryUpdate,

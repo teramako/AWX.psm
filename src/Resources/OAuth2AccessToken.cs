@@ -151,7 +151,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(UserSummary User, NameSummary? Application = null);
+        public record Summary(UserSummary User, ApplicationSummary? Application = null);
 
 
         public ulong Id { get; } = id;
