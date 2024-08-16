@@ -36,7 +36,7 @@ namespace AWX.Resources
         [JsonPropertyName("workflow_job")]
         ulong WorkflowJob { get; }
         [JsonPropertyName("unified_job_template")]
-        ulong UnifiedJobTemplate { get; }
+        ulong? UnifiedJobTemplate { get; }
         [JsonPropertyName("success_nodes")]
         ulong[] SuccessNodes { get; }
         [JsonPropertyName("failure_nodes")]
@@ -80,7 +80,7 @@ namespace AWX.Resources
                                  int? timeout,
                                  ulong? job,
                                  ulong workflowJob,
-                                 ulong unifiedJobTemplate,
+                                 ulong? unifiedJobTemplate,
                                  ulong[] successNodes,
                                  ulong[] failureNodes,
                                  ulong[] alwaysNodes,
@@ -121,7 +121,7 @@ namespace AWX.Resources
         public record Summary(
             JobSummary? Job,
             [property: JsonPropertyName("workflow_job")] WorkflowJobSummary WorkflowJob,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate);
+            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary? UnifiedJobTemplate);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
@@ -146,7 +146,7 @@ namespace AWX.Resources
         public int? Timeout { get; } = timeout;
         public ulong? Job { get; } = job;
         public ulong WorkflowJob { get; } = workflowJob;
-        public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
+        public ulong? UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public ulong[] SuccessNodes { get; } = successNodes;
         public ulong[] FailureNodes { get; } = failureNodes;
         public ulong[] AlwaysNodes { get; } = alwaysNodes;
