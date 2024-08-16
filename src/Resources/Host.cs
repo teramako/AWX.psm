@@ -167,7 +167,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("last_job")] JobExSummary? LastJob,
             [property: JsonPropertyName("last_job_host_summary")] LastJobHostSummary? LastJobHostSummary,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<NameSummary> Groups,
+            ListSummary<GroupSummary> Groups,
             [property: JsonPropertyName("recent_jobs")] HostRecentJobSummary[] RecentJobs);
 
 
