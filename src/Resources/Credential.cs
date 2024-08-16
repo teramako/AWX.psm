@@ -330,7 +330,7 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            NameDescriptionSummary? Organization,
+            OrganizationSummary? Organization,
             [property: JsonPropertyName("credential_type")] NameDescriptionSummary CredentialType,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,

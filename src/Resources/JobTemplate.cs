@@ -252,7 +252,7 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            NameDescriptionSummary Organization,
+            OrganizationSummary Organization,
             InventorySummary? Inventory,
             ProjectSummary Project,
             [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,

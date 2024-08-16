@@ -220,7 +220,7 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            NameDescriptionSummary Organization,
+            OrganizationSummary Organization,
             [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
             CredentialSummary? Credential,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,

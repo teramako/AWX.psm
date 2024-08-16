@@ -135,7 +135,7 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            NameDescriptionSummary Organization,
+            OrganizationSummary Organization,
             [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
             [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
