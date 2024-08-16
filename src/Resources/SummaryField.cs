@@ -327,7 +327,7 @@ namespace AWX.Resources
 
     // Owners in Credential
     public record OwnerSummary(ulong Id,
-                               string Type,
+                               ResourceType Type,
                                string Name,
                                string Description,
                                string Url)
