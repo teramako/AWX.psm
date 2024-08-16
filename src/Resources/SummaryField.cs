@@ -14,6 +14,17 @@ namespace AWX.Resources
             return sb.ToString();
         }
     }
+    public abstract record ResourceSummary(ulong Id, ResourceType Type)
+    {
+        public sealed override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("{ ");
+            if (PrintMembers(sb)) sb.Append(' ');
+            sb.Append('}');
+            return sb.ToString();
+        }
+    }
 
     [JsonConverter(typeof(Json.CapabilityConverter))]
     [Flags]
