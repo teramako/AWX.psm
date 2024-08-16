@@ -262,7 +262,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
             [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<NameSummary> Labels,
+            ListSummary<LabelSummary> Labels,
             [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs,
             JobTemplateCredentialSummary[] Credentials);
 

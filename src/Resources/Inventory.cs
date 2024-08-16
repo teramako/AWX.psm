@@ -140,7 +140,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
             [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<NameSummary> Labels);
+            ListSummary<LabelSummary> Labels);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

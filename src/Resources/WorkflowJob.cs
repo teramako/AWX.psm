@@ -112,7 +112,7 @@ namespace AWX.Resources
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<NameSummary> Labels);
+            ListSummary<LabelSummary> Labels);
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
