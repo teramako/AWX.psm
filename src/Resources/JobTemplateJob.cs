@@ -135,7 +135,7 @@ namespace AWX.Resources
             InventorySummary Inventory,
             [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
             ProjectSummary Project,
-            [property: JsonPropertyName("job_template")] NameDescriptionSummary JobTemplate,
+            [property: JsonPropertyName("job_template")] JobTemplateSummary JobTemplate,
             ScheduleSummary? Schedule,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
