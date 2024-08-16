@@ -52,7 +52,6 @@ namespace AWX.Resources
     public record LabelSummary(ulong Id, string Name)
         : ResourceSummary(Id, ResourceType.Label);
 
-    // CredentialType in Credential
     // ObjectRoles in Credential, InstanceGroup, Inventory, JobTemplate, Project
     // JobTemplate in Job
     // NotificationTemplate in Notification
@@ -72,6 +71,10 @@ namespace AWX.Resources
     //                 JobTemplate, Job, Label, NotificationTemplate, Project, ProjectUpdate, Team, WorkflowJobtemplate
     public record OrganizationSummary(ulong Id, string Name, string Description)
         : ResourceSummary(Id, ResourceType.Organization);
+
+    // CredentialType in Credential
+    public record CredentialTypeSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.CredentialType);
 
     // Actor in ActivityStream
     // CreatedBy in AdHocCommand, Credential, CredentialInputSource, ExecutionEnvironment, Group, Inventory,
