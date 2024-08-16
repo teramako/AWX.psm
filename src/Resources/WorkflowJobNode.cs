@@ -120,7 +120,7 @@ namespace AWX.Resources
         }
         public record Summary(
             JobSummary? Job,
-            [property: JsonPropertyName("workflow_job")] NameDescriptionSummary WorkflowJob,
+            [property: JsonPropertyName("workflow_job")] WorkflowJobSummary WorkflowJob,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate);
 
         public ulong Id { get; } = id;

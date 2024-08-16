@@ -77,6 +77,14 @@ namespace AWX.Resources
     public record NotificationTemplateSummary(ulong Id, string Name, string Description)
         : ResourceSummary(Id, ResourceType.NotificationTemplate);
 
+    // WorkflowJobTemplate in WorkflowApproval, WorkflowApprovalTemplate, WorkflowJob, WorkflowJobTemplateNode
+    public record WorkflowJobTemplateSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.NotificationTemplate);
+
+    // WorkflowJob in WorkflowApproval, WorkflowJobNode
+    public record WorkflowJobSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.WorkflowJob);
+
     // Actor in ActivityStream
     // CreatedBy in AdHocCommand, Credential, CredentialInputSource, ExecutionEnvironment, Group, Inventory,
     //              InventorySource, InventoryUpdate, JobTemplate, Job, Label, NotificationTemplate, Organization,
@@ -235,12 +243,12 @@ namespace AWX.Resources
     }
 
     // SourceWorkflowJob in Job, WorkflowApproval
-    public record WorkflowJobSummary(ulong Id,
-                                     string Name,
-                                     string Description,
-                                     JobStatus Status,
-                                     bool Failed,
-                                     double Elapsed)
+    public record SourceWorkflowJobSummary(ulong Id,
+                                           string Name,
+                                           string Description,
+                                           JobStatus Status,
+                                           bool Failed,
+                                           double Elapsed)
         : SummaryBase
     {
         public override string ToString() => base.ToString();
