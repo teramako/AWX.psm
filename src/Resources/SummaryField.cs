@@ -79,7 +79,7 @@ namespace AWX.Resources
 
     // WorkflowJobTemplate in WorkflowApproval, WorkflowApprovalTemplate, WorkflowJob, WorkflowJobTemplateNode
     public record WorkflowJobTemplateSummary(ulong Id, string Name, string Description)
-        : ResourceSummary(Id, ResourceType.NotificationTemplate);
+        : ResourceSummary(Id, ResourceType.WorkflowJobTemplate);
 
     // WorkflowJob in WorkflowApproval, WorkflowJobNode
     public record WorkflowJobSummary(ulong Id, string Name, string Description)
