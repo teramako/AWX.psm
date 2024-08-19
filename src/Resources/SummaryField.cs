@@ -304,6 +304,14 @@ namespace AWX.Resources
         : SummaryBase
     {
         public override string ToString() => base.ToString();
+        public ResourceType Type => UnifiedJobType switch {
+            ResourceType.Job => ResourceType.JobTemplate,
+            ResourceType.ProjectUpdate => ResourceType.Project,
+            ResourceType.InventoryUpdate => ResourceType.InventorySource,
+            ResourceType.WorkflowJob => ResourceType.WorkflowJobTemplate,
+            ResourceType.SystemJob => ResourceType.SystemJobTemplate,
+            _ => ResourceType.None
+        };
     }
 
     // InstanceGroup in AdHocCommand, InventoryUpdate, Job, ProjectUpdate, SystemJob
