@@ -100,10 +100,7 @@ namespace AWX.Resources
     // ExecutionEnvironment in AdHocCommand, InventorySource, InventoryUpdate, JobTemplate, Job, SystemJob
     // DefaultEnvironment in Organization, Project, ProjectUpdate
     // ResolvedEnvironment in SystemJobTemplate, WorkflowApprovalTemplate
-    public record EnvironmentSummary(ulong Id,
-                                     string Name,
-                                     string Description,
-                                     string Image)
+    public record EnvironmentSummary(ulong Id, string Name, string Description, string Image)
         : ResourceSummary(Id, ResourceType.ExecutionEnvironment);
 
     // RelatedFieldCounts in Organization
@@ -116,13 +113,10 @@ namespace AWX.Resources
         : SummaryBase;
 
     // List<Token> in Application
-    public record TokenSummary(ulong Id,
-                               string Token,
-                               string Scope)
+    public record TokenSummary(ulong Id, string Token, string Scope)
         : ResourceSummary(Id, ResourceType.OAuth2AccessToken);
 
-    public record ListSummary<T>(int Count,
-                                 T[] Results)
+    public record ListSummary<T>(int Count, T[] Results)
         : SummaryBase;
 
     // Credential in AdHocCommand, InventorySource, InventoryUpdate, Project, ProjectUpdate
@@ -138,11 +132,7 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.Credential);
 
     // Credentials in JobTemplate, Job
-    public record JobTemplateCredentialSummary(ulong Id,
-                                               string Name,
-                                               string Description,
-                                               string Kind,
-                                               bool Cloud)
+    public record JobTemplateCredentialSummary(ulong Id, string Name, string Description, string Kind, bool Cloud)
         : ResourceSummary(Id, ResourceType.Credential);
 
     // LastJob in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
@@ -155,11 +145,7 @@ namespace AWX.Resources
         : SummaryBase;
 
     // RecentJobs in Host
-    public record HostRecentJobSummary(ulong Id,
-                                       string Name,
-                                       ResourceType Type,
-                                       JobStatus Status,
-                                       DateTime? Finished)
+    public record HostRecentJobSummary(ulong Id, string Name, ResourceType Type, JobStatus Status, DateTime? Finished)
         : ResourceSummary(Id, Type);
 
     // RecentJobs in JobTemplate, WorkflowJobTemplate
@@ -213,23 +199,15 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.WorkflowJob);
 
     // AncestorJob in Job
-    public record AncestorJobSummary(ulong Id,
-                                     string Name,
-                                     ResourceType Type,
-                                     string Url)
+    public record AncestorJobSummary(ulong Id, string Name, ResourceType Type, string Url)
         : ResourceSummary(Id, Type);
 
     // LastJobHostSummary in Host
-    public record LastJobHostSummary(ulong Id,
-                                     bool Failed)
+    public record LastJobHostSummary(ulong Id, bool Failed)
         : ResourceSummary(Id, ResourceType.JobHostSummary);
 
     // LastUpdate in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
-    public record LastUpdateSummary(ulong Id,
-                                    string Name,
-                                    string Description,
-                                    JobStatus Status,
-                                    bool Failed)
+    public record LastUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
         : SummaryBase;
 
     // Inventory in AdHocCommand, Group, Host, InventorySource, InventoryUpdate, JobTemplate, Job, Schedule, WorkflowJobTemplate
@@ -266,11 +244,7 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.Project);
 
     // ProjectUpdate in ProjectUpdateJobEvent
-    public record ProjectUpdateSummary(ulong Id,
-                                       string Name,
-                                       string Description,
-                                       JobStatus Status,
-                                       bool Failed)
+    public record ProjectUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
         : ResourceSummary(Id, ResourceType.ProjectUpdate);
 
     // UnifiedJobTemplate in InventoryUpdate, Job, ProjectUpdate, Schedule, SystemJob, WorkflowApproval, WorkflowJob,
@@ -298,11 +272,7 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.InstanceGroup);
 
     // Owners in Credential
-    public record OwnerSummary(ulong Id,
-                               ResourceType Type,
-                               string Name,
-                               string Description,
-                               string Url)
+    public record OwnerSummary(ulong Id, ResourceType Type, string Name, string Description, string Url)
         : ResourceSummary(Id, Type);
 
     // Schedule in InventoryUpdate, Job, ProjectUpdate, SystemJob, WorkflowJob
@@ -313,16 +283,10 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.Schedule);
 
     // RecentNotification in NotificationTemplate
-    public record RecentNotificationSummary(ulong Id,
-                                            JobStatus Status,
-                                            DateTime Created,
-                                            string Error)
+    public record RecentNotificationSummary(ulong Id, JobStatus Status, DateTime Created, string Error)
         : ResourceSummary(Id, ResourceType.Notification);
 
     // WorkflowApprovalTemplate in WorkflowApproval
-    public record WorkflowApprovalTemplateSummary(ulong Id,
-                                                  string Name,
-                                                  string Description,
-                                                  int Timeout)
+    public record WorkflowApprovalTemplateSummary(ulong Id, string Name, string Description, int Timeout)
         : ResourceSummary(Id, ResourceType.WorkflowApprovalTemplate);
 }
