@@ -318,10 +318,7 @@ namespace AWX.Resources
     public record InstanceGroupSummary(ulong Id,
                                        string Name,
                                        [property: JsonPropertyName("is_container_group")] bool IsContainerGroup)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.InstanceGroup);
 
     // Owners in Credential
     public record OwnerSummary(ulong Id,
@@ -329,38 +326,26 @@ namespace AWX.Resources
                                string Name,
                                string Description,
                                string Url)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, Type);
 
     // Schedule in InventoryUpdate, Job, ProjectUpdate, SystemJob, WorkflowJob
     public record ScheduleSummary(ulong Id,
                                   string Name,
                                   string Description,
                                   [property: JsonPropertyName("next_run")] DateTime NextRun)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.Schedule);
 
     // RecentNotification in NotificationTemplate
     public record RecentNotificationSummary(ulong Id,
                                             JobStatus Status,
                                             DateTime Created,
                                             string Error)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.Notification);
 
     // WorkflowApprovalTemplate in WorkflowApproval
     public record WorkflowApprovalTemplateSummary(ulong Id,
                                                   string Name,
                                                   string Description,
                                                   int Timeout)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.WorkflowApprovalTemplate);
 }
