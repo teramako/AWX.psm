@@ -200,6 +200,16 @@ namespace AWX.Resources
         : ResourceSummary(Id, Type);
 
     // LastJob in Host
+    public record HostLastJobSummary(ulong Id,
+                                     string Name,
+                                     string Description,
+                                     JobStatus Status,
+                                     bool Failed,
+                                     double Elapsed,
+                                     [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
+                                     [property: JsonPropertyName("job_template_name")] string JobTemplateName)
+        : ResourceSummary(Id, ResourceType.Job);
+
     // Job in JobEvent, JobHostSummary
     public record JobExSummary(ulong Id,
                                string Name,
