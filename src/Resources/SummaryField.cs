@@ -220,10 +220,7 @@ namespace AWX.Resources
                                ResourceType Type,
                                [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
                                [property: JsonPropertyName("job_template_name")] string JobTemplateName)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, Type);
 
     // SourceWorkflowJob in Job, WorkflowApproval
     public record SourceWorkflowJobSummary(ulong Id,
@@ -232,28 +229,19 @@ namespace AWX.Resources
                                            JobStatus Status,
                                            bool Failed,
                                            double Elapsed)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.WorkflowJob);
 
     // AncestorJob in Job
     public record AncestorJobSummary(ulong Id,
                                      string Name,
                                      ResourceType Type,
                                      string Url)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, Type);
 
     // LastJobHostSummary in Host
     public record LastJobHostSummary(ulong Id,
                                      bool Failed)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.JobHostSummary);
 
     // LastUpdate in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
     public record LastUpdateSummary(ulong Id,
@@ -279,10 +267,7 @@ namespace AWX.Resources
                                    [property: JsonPropertyName("inventory_sources_with_failures")] int InventorySourcesWithFailures,
                                    [property: JsonPropertyName("organization_id")] ulong OrganizationId,
                                    string Kind)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.Inventory);
 
     // InventorySource in InventoryUpdate
     public record InventorySourceSummary(ulong Id,
@@ -290,10 +275,7 @@ namespace AWX.Resources
                                          string Source,
                                          [property: JsonPropertyName("last_updated")] DateTime LastUpdated,
                                          JobStatus Status)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.InventorySource);
 
     // SourceProject in InventorySource, InventoryUpdate
     // Project in JobTemplate, Job, ProjectUpdate
@@ -303,10 +285,7 @@ namespace AWX.Resources
                                  JobTemplateStatus Status,
                                  [property: JsonPropertyName("scm_type")] string ScmType,
                                  [property: JsonPropertyName("allow_override")] bool AllowOverride)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.Project);
 
     // ProjectUpdate in ProjectUpdateJobEvent
     public record ProjectUpdateSummary(ulong Id,
@@ -314,10 +293,7 @@ namespace AWX.Resources
                                        string Description,
                                        JobStatus Status,
                                        bool Failed)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.ProjectUpdate);
 
     // UnifiedJobTemplate in InventoryUpdate, Job, ProjectUpdate, Schedule, SystemJob, WorkflowApproval, WorkflowJob,
     //                       WorkflowJobNode, WorkflowJobTemplateNode
