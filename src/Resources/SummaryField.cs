@@ -98,20 +98,14 @@ namespace AWX.Resources
                               string Username,
                               [property: JsonPropertyName("first_name")] string FirstName,
                               [property: JsonPropertyName("last_name")] string LastName)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.User);
 
     // ObjectRoles in Organization
-    public record RoleSummary(ulong Id,
-                              string Name,
-                              string Description,
-                              [property: JsonPropertyName("user_only")] bool? UserOnly = null)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+    public record OrganizationObjectRoleSummary(ulong Id,
+                                                string Name,
+                                                string Description,
+                                                [property: JsonPropertyName("user_only")] bool UserOnly = false)
+        : ResourceSummary(Id, ResourceType.Role);
 
     // ExecutionEnvironment in AdHocCommand, InventorySource, InventoryUpdate, JobTemplate, Job, SystemJob
     // DefaultEnvironment in Organization, Project, ProjectUpdate
@@ -120,10 +114,7 @@ namespace AWX.Resources
                                      string Name,
                                      string Description,
                                      string Image)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.ExecutionEnvironment);
 
     // RelatedFieldCounts in Organization
     public record RelatedFieldCountsSummary(int Inventories,
@@ -141,10 +132,7 @@ namespace AWX.Resources
     public record TokenSummary(ulong Id,
                                string Token,
                                string Scope)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.OAuth2AccessToken);
 
     public record ListSummary<T>(int Count,
                                  T[] Results)
@@ -163,10 +151,7 @@ namespace AWX.Resources
                                     bool Cloud = false,
                                     bool Kubernetes = false,
                                     [property: JsonPropertyName("credential_type_id")] ulong? CredentialTypeId = null)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.Credential);
 
     // Credentials in JobTemplate, Job
     public record JobTemplateCredentialSummary(ulong Id,
@@ -174,10 +159,7 @@ namespace AWX.Resources
                                                string Description,
                                                string Kind,
                                                bool Cloud)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, ResourceType.Credential);
 
     // LastJob in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
     public record LastJobSummary(ulong Id,
@@ -197,10 +179,7 @@ namespace AWX.Resources
                                        ResourceType Type,
                                        JobStatus Status,
                                        DateTime? Finished)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, Type);
 
     // RecentJobs in JobTemplate, WorkflowJobTemplate
     public record RecentJobSummary(ulong Id,
@@ -208,10 +187,7 @@ namespace AWX.Resources
                                    DateTime? Finished,
                                    [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
                                    ResourceType Type)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, Type);
 
     // Job in WorkflowJobNode
     public record JobSummary(ulong Id,
@@ -221,10 +197,7 @@ namespace AWX.Resources
                              bool Failed,
                              double Elapsed,
                              ResourceType Type)
-        : SummaryBase
-    {
-        public override string ToString() => base.ToString();
-    }
+        : ResourceSummary(Id, Type);
 
     // LastJob in Host
     // Job in JobEvent, JobHostSummary
