@@ -78,7 +78,7 @@ For examples:
 - `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
 - `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
 
-For more details, see about_AWX.psm_Filter_parameter (about_AWX.psm_Filter_parameter.md).
+For more details, see [about_AWX.psm_Filter_parameter](about_AWX.psm_Filter_parameter.md).
 
 ```yaml
 Type: NameValueCollection
