@@ -100,4 +100,51 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Find, "AccessList")]
+    [OutputType(typeof(User))]
+    public class FindAccessListCommand : FindCmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
+        [ValidateSet(nameof(ResourceType.InstanceGroup),
+                     nameof(ResourceType.Organization),
+                     nameof(ResourceType.User),
+                     nameof(ResourceType.Project),
+                     nameof(ResourceType.Team),
+                     nameof(ResourceType.Credential),
+                     nameof(ResourceType.Inventory),
+                     nameof(ResourceType.JobTemplate),
+                     nameof(ResourceType.WorkflowJobTemplate))]
+        public override ResourceType Type { get; set; }
+        [Parameter(Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
+        public override ulong Id { get; set; }
+
+        [Parameter()]
+        public override string[] OrderBy { get; set; } = ["id"];
+
+        protected override void BeginProcessing()
+        {
+            SetupCommonQuery();
+        }
+        protected override void ProcessRecord()
+        {
+            var path = Type switch
+            {
+                ResourceType.InstanceGroup => $"{InstanceGroup.PATH}{Id}/access_list/",
+                ResourceType.Organization => $"{Organization.PATH}{Id}/access_list/",
+                ResourceType.User => $"{User.PATH}{Id}/access_list/",
+                ResourceType.Project => $"{Project.PATH}{Id}/access_list/",
+                ResourceType.Team => $"{Team.PATH}{Id}/access_list/",
+                ResourceType.Credential => $"{Credential.PATH}{Id}/access_list/",
+                ResourceType.Inventory => $"{Inventory.PATH}{Id}/access_list/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{Id}/access_list/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{Id}/access_list/",
+                _ => throw new ArgumentException($"Can't handle the type: {Type}")
+            };
+            foreach (var resultSet in GetResultSet<User>(path, Query, All))
+            {
+                WriteObject(resultSet.Results, true);
+            }
+        }
+    }
 }
