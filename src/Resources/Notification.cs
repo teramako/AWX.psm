@@ -58,7 +58,7 @@ namespace AWX.Resources
             }
         }
         public record Summary(
-            [property: JsonPropertyName("notification_template")] NameDescriptionSummary NotificationTemplate);
+            [property: JsonPropertyName("notification_template")] NotificationTemplateSummary NotificationTemplate);
 
 
         public ulong Id { get; } = id;

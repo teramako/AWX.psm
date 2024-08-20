@@ -9,7 +9,7 @@ namespace AWX.Resources
         [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
         [JsonPropertyName("workflow_job_template")]
-        ulong WorkflowJobTemplate { get; }
+        ulong? WorkflowJobTemplate { get; }
         [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
         [JsonPropertyName("allow_simultaneous")]
@@ -46,7 +46,7 @@ namespace AWX.Resources
                              string description, ulong unifiedJobTemplate, JobLaunchType launchType, JobStatus status,
                              ulong? executionEnvironment, bool failed, DateTime? started, DateTime? finished,
                              DateTime? canceledOn, double elapsed, string jobExplanation, LaunchedBy launchedBy,
-                             string? workUnitId, ulong workflowJobTemplate, string extraVars, bool allowSimultaneous,
+                             string? workUnitId, ulong? workflowJobTemplate, string extraVars, bool allowSimultaneous,
                              ulong? jobTemplate, bool isSlicedJob, ulong? inventory, string? limit, string? scmBranch,
                              string webhookService, ulong? webhookCredential, string webhookGuid, string? skipTags,
                              string? jobTags)
@@ -106,19 +106,22 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            [property: JsonPropertyName("workflow_job_template")] NameDescriptionSummary WorkflowJobTemplate,
+            OrganizationSummary? Organization,
+            InventorySummary? Inventory,
+            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary? WorkflowJobTemplate,
+            [property: JsonPropertyName("job_template")] JobTemplateSummary? JobTemplate,
             ScheduleSummary? Schedule,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<NameSummary> Labels);
+            ListSummary<LabelSummary> Labels);
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
         public string Description { get; } = description;
         public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        public ulong WorkflowJobTemplate { get; } = workflowJobTemplate;
+        public ulong? WorkflowJobTemplate { get; } = workflowJobTemplate;
         public string ExtraVars { get; } = extraVars;
         public bool AllowSimultaneous { get; } = allowSimultaneous;
         public ulong? JobTemplate { get; } = jobTemplate;
@@ -138,7 +141,7 @@ namespace AWX.Resources
                             ulong? executionEnvironment, bool failed, DateTime? started, DateTime? finished,
                             DateTime? canceledOn, double elapsed, string jobArgs, string jobCwd,
                             Dictionary<string, string> jobEnv, string jobExplanation, string resultTraceback,
-                            LaunchedBy launchedBy, string? workUnitId, ulong workflowJobTemplate, string extraVars,
+                            LaunchedBy launchedBy, string? workUnitId, ulong? workflowJobTemplate, string extraVars,
                             bool allowSimultaneous, ulong? jobTemplate, bool isSlicedJob, ulong? inventory,
                             string? limit, string? scmBranch, string webhookService, ulong? webhookCredential,
                             string webhookGuid, string? skipTags, string? jobTags)
@@ -162,7 +165,7 @@ namespace AWX.Resources
                                   DateTime? finished, DateTime? canceledOn, double elapsed, string jobArgs,
                                   string jobCwd, Dictionary<string, string> jobEnv, string jobExplanation,
                                   string resultTraceback, LaunchedBy launchedBy, string? workUnitId,
-                                  ulong workflowJobTemplate, string extraVars, bool allowSimultaneous,
+                                  ulong? workflowJobTemplate, string extraVars, bool allowSimultaneous,
                                   ulong? jobTemplate, bool isSlicedJob, ulong? inventory, string? limit,
                                   string? scmBranch, string webhookService, ulong? webhookCredential, string webhookGuid,
                                   string? skipTags, string? jobTags)

@@ -125,15 +125,15 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            NameDescriptionSummary? Organization,
+            OrganizationSummary? Organization,
             InventorySummary? Inventory,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
             [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, NameDescriptionSummary> ObjectRoles,
+            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<NameSummary> Labels,
+            ListSummary<LabelSummary> Labels,
             [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs);
 
 
