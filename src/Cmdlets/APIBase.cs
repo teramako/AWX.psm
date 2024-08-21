@@ -99,9 +99,16 @@ namespace AWX.Cmdlets
 
     public abstract class GetCmdletBase : APICmdletBase
     {
-        [Parameter(Mandatory = true, Position = 0, ValueFromRemainingArguments = true, ValueFromPipeline = true)]
+        [Parameter(Mandatory = true,
+                   Position = 0,
+                   ValueFromRemainingArguments = true,
+                   ValueFromPipeline = true,
+                   ValueFromPipelineByPropertyName = true)]
         [PSDefaultValue(Value = 1, Help = "The resource ID")]
         public ulong[] Id { get; set; } = [];
+
+        [Parameter(ValueFromPipelineByPropertyName = true, DontShow = true)]
+        public ResourceType? Type { get; set; }
 
         protected readonly HashSet<ulong> IdSet  = [];
         protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
