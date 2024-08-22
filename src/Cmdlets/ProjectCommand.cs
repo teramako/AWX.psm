@@ -95,4 +95,25 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Get, "InventoryFile")]
+    [OutputType(typeof(string))]
+    public class GetInventoryFileCommand : GetCmdletBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (Type != null && Type != ResourceType.Project)
+            {
+                return;
+            }
+            foreach (var id in Id)
+            {
+                if (IdSet.Add(id))
+                {
+                    var inventoryFiles = GetResource<string[]>($"{Project.PATH}{id}/inventories/");
+                    WriteObject(inventoryFiles, true);
+                }
+            }
+        }
+    }
 }
