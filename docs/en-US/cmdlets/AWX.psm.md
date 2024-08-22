@@ -245,6 +245,9 @@ Retrieve Organizations by the ID(s).
 ### [Get-Ping](Get-Ping.md)
 Retrieve some basic information about the instance.
 
+### [Get-Playbook](Get-Playbook.md)
+Retrieve playbooks.
+
 ### [Get-Project](Get-Project.md)
 Retrieve Projects by the ID(s).
 
