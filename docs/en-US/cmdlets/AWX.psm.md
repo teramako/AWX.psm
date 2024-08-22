@@ -17,6 +17,9 @@ Approve requests for WorkflowApproval.
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
 Deny requests for WorkflowApproval.
 
+### [Find-AccessList](Find-AccessList.md)
+Retrieve Users accessible to a resource.
+
 ### [Find-ActivityStream](Find-ActivityStream.md)
 Retrieve ActivityStreams.
 
