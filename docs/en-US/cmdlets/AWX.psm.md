@@ -206,6 +206,9 @@ Retrieve InstanceGroups by the ID(s).
 ### [Get-Inventory](Get-Inventory.md)
 Retrieve Inventories by the ID(s).
 
+### [Get-InventoryFile](Get-InventoryFile.md)
+Retrieve inventory files.
+
 ### [Get-InventorySource](Get-InventorySource.md)
 Retrieve InventorySources by the ID(s).
 
