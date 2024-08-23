@@ -37,6 +37,30 @@
       </ListControl>
     </View>
     <View>
+      <Name>Dashboard</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Dashboard</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem><Label>Inventories</Label><ScriptBlock>($_.Inventories | Format-Table Total,TotalWithInventorySource,JobFailed,InventoryFailed | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>InventorySources</Label><ScriptBlock>(($_.InventorySources.Values | Format-Table Label,Total,Failed) | Out-String).Trim() </ScriptBlock></ListItem>
+              <ListItem><Label>Groups</Label><ScriptBlock>($_.Groups | Format-Table Total,InventoryFailed | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>Hosts</Label><ScriptBlock>($_.Hosts | Format-Table Total,Failed | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>Projects</Label><ScriptBlock>($_.Projects | Format-Table Total,Failed | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>ScmTypes</Label><ScriptBlock>(($_.ScmTypes.Values | Format-Table Label,Total,Failed) | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>Users</Label><ScriptBlock>($_.Projects | Format-Table Total | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>Organizations</Label><ScriptBlock>($_.Organizations | Format-Table Total | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>Teams</Label><ScriptBlock>($_.Teams | Format-Table Total | Out-String).Trim()</ScriptBlock></ListItem>
+              <ListItem><Label>JobTemplates</Label><ScriptBlock>($_.JobTemplates | Format-Table Total | Out-String).Trim()</ScriptBlock></ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
       <Name>UnifiedJobTemplate</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.JobTemplate</TypeName>
