@@ -62,7 +62,7 @@ namespace AWX.Resources
         Ping,
         [ResourcePath("settings", typeof(Setting))]
         Setting,
-        [ResourcePath("dashboard", Description = "Show Dashboard Details")]
+        [ResourcePath("dashboard", typeof(Dashboard), Description = "Show Dashboard Details")]
         [ResourceSubPath("graphs/jobs", Description = "View Statistics for job Runs", IsSubPathOfId = false)]
         Dashboard,
         [ResourcePath("organizations", typeof(ResultSet<Organization>), Description = "List Organizations")]
