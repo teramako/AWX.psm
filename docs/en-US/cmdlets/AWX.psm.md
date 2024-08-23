@@ -185,6 +185,9 @@ Retrieve CredentialInputSources by the ID(s).
 ### [Get-CredentialType](Get-CredentialType.md)
 Retrieve CredentialTypes by the ID(s).
 
+### [Get-Dashboard](Get-Dashboard.md)
+Retrieve Dashboard.
+
 ### [Get-ExecutionEnvironment](Get-ExecutionEnvironment.md)
 Retrieve ExecutionEnvironments by the ID(s).
 
