@@ -9,6 +9,7 @@ namespace AWX.Resources
         public const string PATH = "/api/v2/host_metrics/";
 
         public ulong Id { get; } = id;
+        public ResourceType Type { get; } = ResourceType.HostMetrics;
         public string Hostname { get; } = hostname;
         public string Url { get; } = url;
         [JsonPropertyName("first_automation")]

@@ -14,14 +14,15 @@ Retrieve ActivityStreams.
 
 ### All (Default)
 ```
-Find-ActivityStream [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-ActivityStream [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>]
+ [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
 Find-ActivityStream -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -47,7 +48,7 @@ Implements following Rest API:
 - `/api/v2/ad_hoc_commands/{id}/activity_stream/`  
 - `/api/v2/workflow_job_templates/{id}/activity_stream/`  
 - `/api/v2/workflow_jobs/{id}/activity_stream/`  
-- `/api/v2/execution_environments/{id}/activity_stream/`  
+- `/api/v2/execution_environments/{id}/activity_stream/`
 
 ## EXAMPLES
 
@@ -96,6 +97,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see [about_AWX.psm_Filter_parameter](about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -212,7 +235,7 @@ Acceptable values:
 - `AdHocCommand`  
 - `WorkflowJobTemplate`  
 - `WorkflowJob`  
-- `ExecutionEnvironment`  
+- `ExecutionEnvironment`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

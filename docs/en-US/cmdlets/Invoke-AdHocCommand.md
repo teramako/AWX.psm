@@ -15,14 +15,14 @@ Invoke (launch) an AdHocCommand and wait until the job is finished.
 ### Host
 ```
 Invoke-AdHocCommand [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Host] <Host> [-ModuleName] <String>
- [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Limit <String>] [-Check]
+ [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Check]
  [<CommonParameters>]
 ```
 
 ### Group
 ```
 Invoke-AdHocCommand [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Group] <Group> [-ModuleName] <String>
- [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Limit <String>] [-Check]
+ [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Check]
  [<CommonParameters>]
 ```
 
@@ -184,7 +184,7 @@ Further limit selected hosts to an additional pattern.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Inventory, InventoryId
 Aliases:
 
 Required: False
@@ -231,18 +231,18 @@ Accept wildcard characters: False
 ### -SuppressJobLog
 Suppress display job log.
 
-If you need the job log, use `-InformationVariable` parameter likes following:
-
-    PS C:\> Invoke-AdHocCommand ... -InformationVariable joblog  
-    (snip)  
-
-    PS C:\> $joblog  
-    ====== [30] ping ======  
-
-    localhost | SUCCESS => {  
-        "changed": false,  
-        "ping": "pong"  
-    }
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Invoke-AdHocCommand ... -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ====== [30] ping ======  
+>  
+>     localhost | SUCCESS => {  
+>         "changed": false,  
+>         "ping": "pong"  
+>     }
 
 ```yaml
 Type: SwitchParameter

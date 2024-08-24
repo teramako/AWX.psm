@@ -14,14 +14,16 @@ Retrieve jobs for WorkflowJobTemplate.
 
 ### All (Default)
 ```
-Find-WorkflowJob [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+Find-WorkflowJob [[-Name] <String[]>] [-Status <String[]>] [-LaunchType <String[]>] [-OrderBy <String[]>]
+ [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
-Find-WorkflowJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-WorkflowJob -Type <ResourceType> -Id <UInt64> [[-Name] <String[]>] [-Status <String[]>]
+ [-LaunchType <String[]>] [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>]
+ [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,7 +32,7 @@ Retrieve the list of jobs launched from WorkflowJobTemplates or sliced JobTempla
 Implementation of following API:  
 - `/api/v2/workflow_jobs/`  
 - `/api/v2/workflow_job_templates/{id}/workflow_jobs/`  
-- `/api/v2/job_templates/{id}/slice_workflow_jobs/`  
+- `/api/v2/job_templates/{id}/slice_workflow_jobs/`
 
 ## EXAMPLES
 
@@ -78,6 +80,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see [about_AWX.psm_Filter_parameter](about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Id
 Datebase ID of the target resource.
 Use in conjection with the `-Type` parameter.
@@ -91,6 +115,40 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -LaunchType
+Filter with `launch_type` field
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: manual, relaunch, callback, scheduled, dependency, workflow, webhook, sync, scm
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+Filter by job name.
+The names must be an exact match. (case-sensitive)
+
+Multiple words are available by separating with a comma(`,`).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -147,6 +205,22 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Status
+Filter by `status` field.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: new, started, pending, waiting, running, successful, failed, error, canceled
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Type
 Resource type name of the target.
 Use in conjection with the `-Id` parameter.
@@ -174,7 +248,7 @@ Input by `Type` property in the pipeline object.
 
 Acceptable values:  
 - `WorkflowJobTemplate`  
-- `JobTemplate`  
+- `JobTemplate`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

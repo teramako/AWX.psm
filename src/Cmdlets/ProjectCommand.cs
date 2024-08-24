@@ -9,6 +9,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.Project)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 IdSet.Add(id);
@@ -67,6 +71,48 @@ namespace AWX.Cmdlets
             foreach (var resultSet in GetResultSet<Project>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Get, "Playbook")]
+    [OutputType(typeof(string))]
+    public class GetPlaybookCommand : GetCmdletBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (Type != null && Type != ResourceType.Project)
+            {
+                return;
+            }
+            foreach (var id in Id)
+            {
+                if (IdSet.Add(id))
+                {
+                    var playbooks = GetResource<string[]>($"{Project.PATH}{id}/playbooks/");
+                    WriteObject(playbooks, true);
+                }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Get, "InventoryFile")]
+    [OutputType(typeof(string))]
+    public class GetInventoryFileCommand : GetCmdletBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (Type != null && Type != ResourceType.Project)
+            {
+                return;
+            }
+            foreach (var id in Id)
+            {
+                if (IdSet.Add(id))
+                {
+                    var inventoryFiles = GetResource<string[]>($"{Project.PATH}{id}/inventories/");
+                    WriteObject(inventoryFiles, true);
+                }
             }
         }
     }

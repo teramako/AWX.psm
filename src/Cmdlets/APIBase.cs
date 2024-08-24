@@ -99,9 +99,16 @@ namespace AWX.Cmdlets
 
     public abstract class GetCmdletBase : APICmdletBase
     {
-        [Parameter(Mandatory = true, Position = 0, ValueFromRemainingArguments = true, ValueFromPipeline = true)]
+        [Parameter(Mandatory = true,
+                   Position = 0,
+                   ValueFromRemainingArguments = true,
+                   ValueFromPipeline = true,
+                   ValueFromPipelineByPropertyName = true)]
         [PSDefaultValue(Value = 1, Help = "The resource ID")]
         public ulong[] Id { get; set; } = [];
+
+        [Parameter(ValueFromPipelineByPropertyName = true, DontShow = true)]
+        public ResourceType? Type { get; set; }
 
         protected readonly HashSet<ulong> IdSet  = [];
         protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
@@ -131,6 +138,18 @@ namespace AWX.Cmdlets
         /// </summary>
         [Parameter()]
         public string[]? Search { get; set; }
+
+        /// <summary>
+        /// Filtering for various fields for API.
+        /// The value is transformed to from one or more various types into a <see cref="NameValueCollection"/>.
+        /// <br/>
+        /// See: <a href="https://docs.ansible.com/automation-controller/latest/html/controllerapi/filtering.html">
+        /// 6. Filtering — Automation Controller API Guide</a>
+        /// </summary>
+        /// <seealso cref="FilterArgumentTransformationAttribute"/>
+        [Parameter()]
+        [FilterArgumentTransformation]
+        public NameValueCollection? Filter { get; set; }
 
         /// <summary>
         /// <c>"order_by"</c> query parameter for API.
@@ -182,6 +201,7 @@ namespace AWX.Cmdlets
         ///     <item><see cref="OrderBy">OrderBy</see> to <c>order_by</c></item>
         ///     <item><see cref="Count">Count</see> to <c>page_size</c></item>
         ///     <item><see cref="Page">Page</see> to <c>page</c></item>
+        ///     <item><see cref="Filter">Filter</see> to various fields</item>
         /// </list>
         /// </summary>
         protected virtual void SetupCommonQuery()
@@ -197,6 +217,10 @@ namespace AWX.Cmdlets
             }
             Query.Add("page_size", $"{Count}");
             Query.Add("page", $"{Page}");
+            if (Filter != null)
+            {
+                Query.Add(Filter);
+            }
         }
 
         protected virtual void Find<T>(string path) where T : class

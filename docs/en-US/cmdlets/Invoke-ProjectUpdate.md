@@ -139,8 +139,18 @@ Accept wildcard characters: False
 ### -SuppressJobLog
 Suppress display job log.
 
-Note:  
-Use `-InformationVariable` parameter, if want to store logs to a variable.
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Invoke-ProjectUpdate ... -SuppressJobLog -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ====== [100] proj_1 ======  
+>     
+>     (snip)  
+>     
+>     PLAY RECAP *********************************************************************  
+>     localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=4    rescued=0    ignored=0
 
 ```yaml
 Type: SwitchParameter

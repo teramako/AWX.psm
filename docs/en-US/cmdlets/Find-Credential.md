@@ -14,34 +14,34 @@ Retrieve Credentials.
 
 ### All (Default)
 ```
-Find-Credential [-Kind <String>] [-Galaxy] [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>]
- [-Page <UInt32>] [-All] [<CommonParameters>]
+Find-Credential [-Kind <String>] [-Galaxy] [-OrderBy <String[]>] [-Search <String[]>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
 Find-Credential -Type <ResourceType> -Id <UInt64> [-Kind <String>] [-Galaxy] [-OrderBy <String[]>]
- [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Retrieve the list of Credentials.
 
-Implementation of following API:
-
-- `/api/v2/credentials/`
-- `/api/v2/organizations/{id}/credentials/`
-- `/api/v2/organizations/{id}/galaxy_credentials/`
-- `/api/v2/users/{id}/credentials/`
-- `/api/v2/teams/{id}/credentials/`
-- `/api/v2/credential_types/{id}/credentials/`
-- `/api/v2/inventory_sources/{id}/credentials/`
-- `/api/v2/inventory_updates/{id}/credentials/`
-- `/api/v2/job_templates/{id}/credentials/`
-- `/api/v2/jobs/{id}/credentials/`
-- `/api/v2/schedules/{id}/credentials/`
-- `/api/v2/workflow_job_template_nodes/{id}/credentials/`
+Implementation of following API:  
+- `/api/v2/credentials/`  
+- `/api/v2/organizations/{id}/credentials/`  
+- `/api/v2/organizations/{id}/galaxy_credentials/`  
+- `/api/v2/users/{id}/credentials/`  
+- `/api/v2/teams/{id}/credentials/`  
+- `/api/v2/credential_types/{id}/credentials/`  
+- `/api/v2/inventory_sources/{id}/credentials/`  
+- `/api/v2/inventory_updates/{id}/credentials/`  
+- `/api/v2/job_templates/{id}/credentials/`  
+- `/api/v2/jobs/{id}/credentials/`  
+- `/api/v2/schedules/{id}/credentials/`  
+- `/api/v2/workflow_job_template_nodes/{id}/credentials/`  
 - `/api/v2/workflow_job_nodes/{id}/credentials/`
 
 ## EXAMPLES
@@ -97,6 +97,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see [about_AWX.psm_Filter_parameter](about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -246,7 +268,7 @@ Acceptable values:
 - `Job`  
 - `Schedule`  
 - `WorkflowJobTemplateNode`  
-- `WorkflowJobNode`  
+- `WorkflowJobNode`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

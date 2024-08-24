@@ -2,6 +2,7 @@ using AWX.Resources;
 using System.Collections;
 using System.Management.Automation;
 using System.Text;
+using System.Text.Json;
 
 namespace AWX.Cmdlets
 {
@@ -11,6 +12,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.JobTemplate)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 IdSet.Add(id);
@@ -75,14 +80,115 @@ namespace AWX.Cmdlets
         public JobTemplate? JobTemplate { get; set; }
 
         [Parameter()]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        public ulong[]? Credentials { get; set; }
+
+        [Parameter()]
         public string? Limit { get; set; }
+
+        [Parameter()] // XXX: Should be string[] and created if not exists ?
+        public ulong[]? Labels { get; set; }
+
+        [Parameter()]
+        public string[]? Tags { get; set; }
+
+        [Parameter()]
+        public string[]? SkipTags { get; set; }
+
+        [Parameter()] // TODO: Should accept `IDctionary` (convert to JSON serialized string)
+        public string? ExtraVars { get; set; }
+
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
 
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
+            if (Inventory != null)
+            {
+                dict.Add("inventory", Inventory);
+            }
+            if (JobType != null)
+            {
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            }
+            if (ScmBranch != null)
+            {
+                dict.Add("scm_branch", ScmBranch);
+            }
+            if (Credentials != null)
+            {
+                dict.Add("credentials", Credentials);
+            }
             if (Limit != null)
             {
                 dict.Add("limit", Limit);
+            }
+            if (Labels != null)
+            {
+                dict.Add("labels", Labels);
+            }
+            if (Tags != null)
+            {
+                dict.Add("job_tags", string.Join(',', Tags));
+            }
+            if (SkipTags != null)
+            {
+                dict.Add("skip_tags", string.Join(',', SkipTags));
+            }
+            if (!string.IsNullOrEmpty(ExtraVars))
+            {
+                dict.Add("extra_vars", ExtraVars);
+            }
+            if (DiffMode != null)
+            {
+                dict.Add("diff_mode", DiffMode);
+            }
+            if (Verbosity != null)
+            {
+                dict.Add("verbosity", (int)Verbosity);
+            }
+            if (Forks != null)
+            {
+                dict.Add("forks", Forks);
+            }
+            if (ExecutionEnvironment != null)
+            {
+                dict.Add("execution_environment", ExecutionEnvironment);
+            }
+            if (JobSliceCount != null)
+            {
+                dict.Add("job_slice_count", JobSliceCount);
+            }
+            if (Timeout != null)
+            {
+                dict.Add("timeout", Timeout);
             }
             return dict;
         }
@@ -90,74 +196,121 @@ namespace AWX.Cmdlets
         {
             var jt = requirements.JobTemplateData;
             var def = requirements.Defaults;
+            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
             WriteHost($"[{jt.Id}] {jt.Name} - {jt.Description}\n");
             var fmt = "{0,22} : {1}\n";
-            if (def.Inventory.Id != null)
             {
-                WriteHost(string.Format(fmt, "Inventory", $"[{def.Inventory.Id}] {def.Inventory.Name}"),
-                            foregroundColor: requirements.AskInventoryOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                var inventoryVal = (def.Inventory.Id != null ? $"[{def.Inventory.Id}] {def.Inventory.Name}" : "Undefined")
+                                   + (requirements.AskInventoryOnLaunch && Inventory != null ? $" => [{Inventory}]" : "");
+                WriteHost(string.Format(fmt, "Inventory", inventoryVal),
+                            foregroundColor: requirements.AskInventoryOnLaunch ? (Inventory == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
-                var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
-
+                var limitVal = def.Limit
+                               + (requirements.AskLimitOnLaunch && Limit != null ? $" => {Limit}" : "");
                 WriteHost(string.Format(fmt, "Limit", $"{limitVal}"),
-                            foregroundColor: requirements.AskLimitOnLaunch ? Limit == null ? ConsoleColor.Magenta : ConsoleColor.Green : null);
+                            foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ScmBranch))
+            if (!string.IsNullOrEmpty(def.ScmBranch) || ScmBranch != null)
             {
-                WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
-                            foregroundColor: requirements.AskScmBranchOnLaunch? ConsoleColor.Magenta : ConsoleColor.Green);
+                var branchVal = def.ScmBranch
+                                + (requirements.AskScmBranchOnLaunch && ScmBranch != null ? $" => {ScmBranch}" : "");
+                WriteHost(string.Format(fmt, "Scm Branch", branchVal),
+                            foregroundColor: requirements.AskScmBranchOnLaunch ? (ScmBranch == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (def.Labels != null && def.Labels.Length > 0)
+            if ((def.Labels != null && def.Labels.Length > 0) || Labels != null)
             {
-                WriteHost(string.Format(fmt, "Labels", string.Join(", ", def.Labels.Select(l => $"[{l.Id}] {l.Name}"))),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                var labelsVal = string.Join(", ", def.Labels?.Select(l => $"[{l.Id}] {l.Name}") ?? [])
+                                + (requirements.AskLabelsOnLaunch && Labels != null ? $" => {string.Join(',', Labels.Select(id => $"[{id}]"))}" : "");
+                WriteHost(string.Format(fmt, "Labels", labelsVal),
+                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.JobTags))
+            if (!string.IsNullOrEmpty(def.JobTags) || Tags != null)
             {
-                WriteHost(string.Format(fmt, "Job tags", def.JobTags),
-                            foregroundColor: requirements.AskTagsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                var tagsVal = def.JobTags
+                              + (requirements.AskTagsOnLaunch && Tags != null ? $" => {string.Join(", ", Tags)}" : "");
+                WriteHost(string.Format(fmt, "Job tags", tagsVal),
+                            foregroundColor: requirements.AskTagsOnLaunch ? (Tags == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.SkipTags))
+            if (!string.IsNullOrEmpty(def.SkipTags) || SkipTags != null)
             {
-                WriteHost(string.Format(fmt, "Skip tags", def.SkipTags),
-                            foregroundColor: requirements.AskSkipTagsOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                var skipTagsVal = def.SkipTags
+                                  + (requirements.AskSkipTagsOnLaunch && SkipTags != null ? $" => {string.Join(", ", SkipTags)}" : "");
+                WriteHost(string.Format(fmt, "Skip tags", skipTagsVal),
+                            foregroundColor: requirements.AskSkipTagsOnLaunch ? (SkipTags == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ExtraVars))
+            if (!string.IsNullOrEmpty(def.ExtraVars) || !string.IsNullOrEmpty(ExtraVars))
             {
                 var sb = new StringBuilder();
                 var lines = def.ExtraVars.Split('\n');
+                var padding = "".PadLeft(25);
                 sb.Append(string.Format(fmt, "Extra vars", lines[0]));
                 foreach (var line in lines[1..])
                 {
-                    sb.AppendLine("".PadLeft(25) + line);
+                    sb.AppendLine(padding + line);
+                }
+                if (!string.IsNullOrEmpty(ExtraVars))
+                {
+                    sb.AppendLine($"{padding}=> (overwrite or append)");
+                    lines = ExtraVars.Split('\n');
+                    foreach (var line in lines)
+                    {
+                        sb.AppendLine(padding + line);
+                    }
                 }
                 WriteHost(sb.ToString(),
-                            foregroundColor: requirements.AskVariablesOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                            foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Diff Mode", def.DiffMode),
-                            foregroundColor: requirements.AskDiffModeOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
-            WriteHost(string.Format(fmt, "Job Type", def.JobType),
-                            foregroundColor: requirements.AskJobTypeOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
-            WriteHost(string.Format(fmt, "Verbosity", $"{def.Verbosity:d} ({def.Verbosity})"),
-                            foregroundColor: requirements.AskVerbosityOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
-            if (def.Credentials != null)
             {
-                WriteHost(string.Format(fmt, "Credentials", string.Join(", ", def.Credentials.Select(c => $"[{c.Id}] {c.Name}"))),
-                            foregroundColor: requirements.AskCredentialOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                var diffModeVal = $"{def.DiffMode}"
+                                  + (requirements.AskDiffModeOnLaunch && DiffMode != null ? $" => {DiffMode}" : "");
+                WriteHost(string.Format(fmt, "Diff Mode", diffModeVal),
+                                foregroundColor: requirements.AskDiffModeOnLaunch ? (DiffMode == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (def.ExecutionEnvironment.Id != null)
             {
-                WriteHost(string.Format(fmt, "ExecutionEnvironment", $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"),
-                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+                var jobTypeVal = def.JobType
+                                 + (requirements.AskJobTypeOnLaunch && JobType != null ? $" => {JobType}" : "");
+                WriteHost(string.Format(fmt, "Job Type", jobTypeVal),
+                                foregroundColor: requirements.AskJobTypeOnLaunch ? (JobType == null ? implicitColor : explicitColor) : fixedColor);
             }
-            WriteHost(string.Format(fmt, "Forks", def.Forks),
-                            foregroundColor: requirements.AskForksOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
-            WriteHost(string.Format(fmt, "Job Slice Count", def.JobSliceCount),
-                            foregroundColor: requirements.AskJobSliceCountOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
-            WriteHost(string.Format(fmt, "Timeout", def.Timeout),
-                            foregroundColor: requirements.AskTimeoutOnLaunch ? ConsoleColor.Magenta : ConsoleColor.Green);
+            {
+                var verbosityVal = $"{def.Verbosity:d} ({def.Verbosity})"
+                                   + (requirements.AskVerbosityOnLaunch && Verbosity != null ? $" => {Verbosity:d} ({Verbosity})" : "");
+                WriteHost(string.Format(fmt, "Verbosity", verbosityVal),
+                                foregroundColor: requirements.AskVerbosityOnLaunch ? (Verbosity == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            if (def.Credentials != null || Credentials != null)
+            {
+                var credentialsVal = string.Join(", ", def.Credentials?.Select(c => $"[{c.Id}] {c.Name}") ?? [])
+                        + (requirements.AskCredentialOnLaunch && Credentials != null ? $" => {string.Join(',', Credentials.Select(id => $"[{id}]"))}" : "");
+                WriteHost(string.Format(fmt, "Credentials", credentialsVal),
+                            foregroundColor: requirements.AskCredentialOnLaunch ? (Credentials == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            if (def.ExecutionEnvironment.Id != null || ExecutionEnvironment != null)
+            {
+                var eeVal = $"[{def.ExecutionEnvironment.Id}] {def.ExecutionEnvironment.Name}"
+                            + (requirements.AskExecutionEnvironmentOnLaunch && ExecutionEnvironment != null ? $" => [{ExecutionEnvironment}]" : "");
+                WriteHost(string.Format(fmt, "ExecutionEnvironment", eeVal),
+                            foregroundColor: requirements.AskExecutionEnvironmentOnLaunch ? (ExecutionEnvironment == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            {
+                var forksVal = $"{def.Forks}" + (requirements.AskForksOnLaunch && Forks != null ? $" => {Forks}" : "");
+                WriteHost(string.Format(fmt, "Forks", forksVal),
+                                foregroundColor: requirements.AskForksOnLaunch ? (Forks == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            {
+                var jobSliceVal = $"{def.JobSliceCount}"
+                                  + (requirements.AskJobSliceCountOnLaunch && JobSliceCount != null ? $" => {JobSliceCount}" : "");
+                WriteHost(string.Format(fmt, "Job Slice Count", jobSliceVal),
+                                foregroundColor: requirements.AskJobSliceCountOnLaunch ? (JobSliceCount == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            {
+                var timeoutVal = $"{def.Timeout}"
+                                 + (requirements.AskTimeoutOnLaunch && Timeout != null ? $" => {Timeout}" : "");
+                WriteHost(string.Format(fmt, "Timeout", timeoutVal),
+                                foregroundColor: requirements.AskTimeoutOnLaunch ? (Timeout == null ? implicitColor : explicitColor) : fixedColor);
+            }
         }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
         {
@@ -174,7 +327,7 @@ namespace AWX.Cmdlets
             {
                 foreach (var (key, val) in launchResult.IgnoredFields)
                 {
-                    WriteWarning($"Ignored field: {key} ({val})");
+                    WriteWarning($"Ignored field: {key} ({JsonSerializer.Serialize(val, Json.DeserializeOptions)})");
                 }
             }
             return launchResult;

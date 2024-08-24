@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace AWX.Resources
@@ -214,7 +213,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(NameDescriptionSummary? Host, JobExSummary Job, OrderedDictionary Role);
+        public record Summary(HostSummary? Host, JobExSummary Job, OrderedDictionary Role);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

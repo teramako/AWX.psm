@@ -1,8 +1,8 @@
 ---
 Module Name: AWX.psm
 Module Guid: a60acf94-7e42-4b77-bf97-1cdaf17b822b
-Download Help Link: {{ Update Download Link }}
-Help Version: {{ Update Help Version }}
+Download Help Link: null
+Help Version: 1.1.0
 Locale: en-US
 ---
 
@@ -16,6 +16,9 @@ Approve requests for WorkflowApproval.
 
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
 Deny requests for WorkflowApproval.
+
+### [Find-AccessList](Find-AccessList.md)
+Retrieve Users accessible to a resource.
 
 ### [Find-ActivityStream](Find-ActivityStream.md)
 Retrieve ActivityStreams.
@@ -182,6 +185,9 @@ Retrieve CredentialInputSources by the ID(s).
 ### [Get-CredentialType](Get-CredentialType.md)
 Retrieve CredentialTypes by the ID(s).
 
+### [Get-Dashboard](Get-Dashboard.md)
+Retrieve Dashboard.
+
 ### [Get-ExecutionEnvironment](Get-ExecutionEnvironment.md)
 Retrieve ExecutionEnvironments by the ID(s).
 
@@ -203,6 +209,9 @@ Retrieve InstanceGroups by the ID(s).
 ### [Get-Inventory](Get-Inventory.md)
 Retrieve Inventories by the ID(s).
 
+### [Get-InventoryFile](Get-InventoryFile.md)
+Retrieve inventory files.
+
 ### [Get-InventorySource](Get-InventorySource.md)
 Retrieve InventorySources by the ID(s).
 
@@ -217,6 +226,9 @@ Retrieve JobHostSummaries by ID(s).
 
 ### [Get-JobLog](Get-JobLog.md)
 Retrieve job logs.
+
+### [Get-JobStatistics](Get-JobStatistics.md)
+Retrieve statistics for job runs.
 
 ### [Get-JobTemplate](Get-JobTemplate.md)
 Retrieve JobTemplates by the ID(s).
@@ -241,6 +253,9 @@ Retrieve Organizations by the ID(s).
 
 ### [Get-Ping](Get-Ping.md)
 Retrieve some basic information about the instance.
+
+### [Get-Playbook](Get-Playbook.md)
+Retrieve playbooks.
 
 ### [Get-Project](Get-Project.md)
 Retrieve Projects by the ID(s).

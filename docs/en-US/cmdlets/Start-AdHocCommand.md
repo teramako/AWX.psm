@@ -15,13 +15,13 @@ Invoke (launch) an AdHocCommand.
 ### Host
 ```
 Start-AdHocCommand [-Host] <Host> [-ModuleName] <String> [[-ModuleArgs] <String>] [-Credential] <UInt64>
- [-Limit <String>] [-Check] [<CommonParameters>]
+ [-Check] [<CommonParameters>]
 ```
 
 ### Group
 ```
 Start-AdHocCommand [-Group] <Group> [-ModuleName] <String> [[-ModuleArgs] <String>] [-Credential] <UInt64>
- [-Limit <String>] [-Check] [<CommonParameters>]
+ [-Check] [<CommonParameters>]
 ```
 
 ### Inventory
@@ -157,7 +157,7 @@ Further limit selected hosts to an additional pattern.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Inventory, InventoryId
 Aliases:
 
 Required: False
@@ -216,6 +216,8 @@ Group object to be executed.
 Inventory object to be executed.
 
 ### System.UInt64
+Inventory ID to be executed.
+
 ## OUTPUTS
 
 ### AWX.Resources.AdHocCommand

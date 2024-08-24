@@ -14,14 +14,15 @@ Retrieve Hosts.
 
 ### All (Default)
 ```
-Find-Host [-OrderBy <String[]>] [-Search <String[]>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+Find-Host [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollection>] [-Count <UInt16>]
+ [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
 Find-Host -Type <ResourceType> -Id <UInt64> [-OnlyChildren] [-OrderBy <String[]>] [-Search <String[]>]
- [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +33,7 @@ Implementation of following API:
 - `/api/v2/inventories/{id}/hosts/`  
 - `/api/v2/inventory_sources/{id}/hosts/`  
 - `/api/v2/groups/{id}/hosts/`  
-- `/api/v2/groups/{id}/all_hosts/`  
+- `/api/v2/groups/{id}/all_hosts/`
 
 ## EXAMPLES
 
@@ -88,6 +89,28 @@ Aliases:
 Required: False
 Position: Named
 Default value: 20
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Filter
+Filtering various fields.
+
+For examples:  
+- `name__icontains=test`: "name" field contains "test" (case-insensitive).  
+- `"name_ in=test,demo", created _gt=2024-01-01`: "name" field is "test" or "demo" and created after 2024-01-01.  
+- `@{ Name = "name"; Value = "test"; Type = "Contains"; Not = $true }`: "name" field NOT contains "test"
+
+For more details, see [about_AWX.psm_Filter_parameter](about_AWX.psm_Filter_parameter.md).
+
+```yaml
+Type: NameValueCollection
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -205,7 +228,7 @@ Input by `Type` property in the pipeline object.
 Acceptable values:  
 - `Inventory`  
 - `InventorySource`  
-- `Group`  
+- `Group`
 
 ### System.UInt64
 Input by `Id` property in the pipeline object.

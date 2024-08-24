@@ -9,6 +9,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.WorkflowJob)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 if (!IdSet.Add(id))
@@ -36,11 +40,34 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }
 
+        [Parameter(Position = 0)]
+        public string[]? Name { get; set; }
+
+        [Parameter()]
+        [ValidateSet(typeof(EnumValidateSetGenerator<JobStatus>))]
+        public string[]? Status { get; set; }
+
+        [Parameter()]
+        [ValidateSet(typeof(EnumValidateSetGenerator<JobLaunchType>))]
+        public string[]? LaunchType { get; set; }
+
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["!id"];
 
         protected override void BeginProcessing()
         {
+            if (Name != null)
+            {
+                Query.Add("name__in", string.Join(',', Name));
+            }
+            if (Status != null)
+            {
+                Query.Add("status__in", string.Join(',', Status));
+            }
+            if (LaunchType != null)
+            {
+                Query.Add("launch_type__in", string.Join(',', LaunchType));
+            }
             SetupCommonQuery();
         }
         protected override void ProcessRecord()

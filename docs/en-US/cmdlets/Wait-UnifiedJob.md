@@ -92,8 +92,15 @@ Accept wildcard characters: False
 ### -SuppressJobLog
 Suppress display job log.
 
-Note:  
-Use `-InformationVariable` parameter, if want to store logs to a variable.
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Wait-UnifiedJob ... -SuppressJobLog -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ====== [111] Test_1 ======  
+>     
+>     (snip)  
 
 ```yaml
 Type: SwitchParameter

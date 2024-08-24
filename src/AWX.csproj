@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>AWX.psm</AssemblyName>
     <RootNamespace>AWX</RootNamespace>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.1.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,16 +16,23 @@
     </Reference>
   </ItemGroup>
 
+  <PropertyGroup>
+    <PowerShellExe>pwsh</PowerShellExe>
+    <DestDir>..\out\$(AssemblyName)\</DestDir>
+  </PropertyGroup>
+
+  <Target AfterTargets="Clean" Name="CleanDestDir">
+    <RemoveDir Directories="$(DestDir)" />
+  </Target>
+
   <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
     <PropertyGroup>
-      <PowerShellExe>pwsh</PowerShellExe>
-      <DestDir>..\out\$(AssemblyName)\</DestDir>
       <DllFile>$(OutDir)$(AssemblyName).dll</DllFile>
     </PropertyGroup>
     <ItemGroup>
       <PowerShellModules Include="*.psd1;*.ps1xml" />
     </ItemGroup>
-    <MakeDir Directories="$(DestDir)" />
+    <MakeDir Directories="$(DestDir)" Condition="!Exists('$(DestDir)')"/>
 
     <Message Text="Copy built file: $(DllFile)" Importance="high" />
     <Copy SourceFiles="$(DllFile)" DestinationFolder="$(DestDir)" />
@@ -39,7 +46,6 @@
 
   <Target Name="docs" DependsOnTargets="PSM">
     <PropertyGroup>
-      <PowerShellExe>pwsh</PowerShellExe>
       <ScriptLocation>../docs/Make-Doc.ps1</ScriptLocation>
     </PropertyGroup>
     <Message Text="Update documents (using platyPS)" Importance="high" />

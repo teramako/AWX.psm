@@ -62,8 +62,8 @@ namespace AWX.Resources
         Ping,
         [ResourcePath("settings", typeof(Setting))]
         Setting,
-        [ResourcePath("dashboard", Description = "Show Dashboard Details")]
-        [ResourceSubPath("graphs/jobs", Description = "View Statistics for job Runs", IsSubPathOfId = false)]
+        [ResourcePath("dashboard", typeof(Dashboard), Description = "Show Dashboard Details")]
+        [ResourceSubPath("graphs/jobs", typeof(JobStatisticsContainer), Description = "View Statistics for job Runs", IsSubPathOfId = false)]
         Dashboard,
         [ResourcePath("organizations", typeof(ResultSet<Organization>), Description = "List Organizations")]
         [ResourcePath("organizations", typeof(Organization), Method = Method.POST, Description = "Create an Organization")]

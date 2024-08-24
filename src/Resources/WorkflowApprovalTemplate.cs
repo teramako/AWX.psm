@@ -25,7 +25,7 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            [property: JsonPropertyName("workflow_job_template")] NameDescriptionSummary WorkflowJobTemplate,
+            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary WorkflowJobTemplate,
             [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
             [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,

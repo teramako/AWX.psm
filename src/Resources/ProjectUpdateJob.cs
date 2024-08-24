@@ -104,7 +104,7 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            NameDescriptionSummary Organization,
+            OrganizationSummary Organization,
             [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
             ProjectSummary Project,
             CredentialSummary? Credential,

@@ -9,6 +9,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.WorkflowApprovalTemplate)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 if (!IdSet.Add(id))

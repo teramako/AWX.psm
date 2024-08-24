@@ -139,8 +139,11 @@ namespace AWX.Cmdlets
             }
             switch (paths.Length)
             {
-                case <= 3:
+                case <= 2:
                     foreach (var item in Complete()) { yield return item; }
+                    break;
+                case 3:
+                    foreach (var item in Complete(paths[2])) { yield return item; }
                     break;
                 case 4:
                     foreach (var item in Complete(method, paths[3])) { yield return item; }
@@ -153,11 +156,13 @@ namespace AWX.Cmdlets
                     break;
             }
         }
-        private static IEnumerable<CompletionResult> Complete()
+        private static IEnumerable<CompletionResult> Complete(string p2 = "")
         {
             string[] paths = ["v2", "o"];
             foreach (var path in paths)
             {
+                if (!string.IsNullOrEmpty(p2) && !path.StartsWith(p2))
+                    continue;
                 yield return new CompletionResult($"/api/{path}/");
             }
         }

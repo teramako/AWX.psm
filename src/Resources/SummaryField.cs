@@ -1,10 +1,20 @@
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
-    public interface ISummaryFields
+    public abstract record SummaryBase
     {
+        public sealed override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("{ ");
+            if (PrintMembers(sb)) sb.Append(' ');
+            sb.Append('}');
+            return sb.ToString();
+        }
     }
+    public abstract record ResourceSummary(ulong Id, ResourceType Type) : SummaryBase;
 
     [JsonConverter(typeof(Json.CapabilityConverter))]
     [Flags]
@@ -20,83 +30,154 @@ namespace AWX.Resources
         AdHoc = 1 << 6,
     }
 
-    public record NameSummary(ulong Id, string Name);
-    public record NameDescriptionSummary(ulong Id, string Name, string Description);
+    // Application in Token
+    public record ApplicationSummary(ulong Id, string Name)
+        : ResourceSummary(Id, ResourceType.OAuth2Application);
+
+    // List<Group> in Host
+    public record GroupSummary(ulong Id, string Name)
+        : ResourceSummary(Id, ResourceType.Group);
+
+    // List<Label> in Inventory, Job, JobTemplate, WorkflowJob, WorkflowJobTemplate
+    public record LabelSummary(ulong Id, string Name)
+        : ResourceSummary(Id, ResourceType.Label);
+
+    // Host in AdHocCommandJobEvent, JobEvent, JobHostSummary
+    public record HostSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.Host);
+
+    // Organization in Application, Credential, ExecutionEnvironment, Inventory, InventorySource, InventoryUpdate,
+    //                 JobTemplate, Job, Label, NotificationTemplate, Project, ProjectUpdate, Team, WorkflowJobtemplate
+    public record OrganizationSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.Organization);
+
+    // CredentialType in Credential
+    public record CredentialTypeSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.CredentialType);
+
+    // ObjectRoles in Credential, InstanceGroup, Inventory, JobTemplate, Project, Team, WorkflowJobTemplate
+    public record ObjectRoleSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.Role);
+
+    // JobTemplate in Job
+    public record JobTemplateSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.JobTemplate);
+
+    // NotificationTemplate in Notification
+    public record NotificationTemplateSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.NotificationTemplate);
+
+    // WorkflowJobTemplate in WorkflowApproval, WorkflowApprovalTemplate, WorkflowJob, WorkflowJobTemplateNode
+    public record WorkflowJobTemplateSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.WorkflowJobTemplate);
+
+    // WorkflowJob in WorkflowApproval, WorkflowJobNode
+    public record WorkflowJobSummary(ulong Id, string Name, string Description)
+        : ResourceSummary(Id, ResourceType.WorkflowJob);
+
+    // Actor in ActivityStream
+    // CreatedBy in AdHocCommand, Credential, CredentialInputSource, ExecutionEnvironment, Group, Inventory,
+    //              InventorySource, InventoryUpdate, JobTemplate, Job, Label, NotificationTemplate, Organization,
+    //              Project, Schedule, Team, WorkflowApprovalTemplate, WorkflowJob, WorkflowJobTemplate
+    // ModifiedBy in Credential, CredentialInputSource, ExecutionEnvironment, Group, Inventory InventorySource,
+    //               JobTemplate, Label, NotificationTemplate, Organization, Project, Schedule, Team,
+    //               WorkflowApprovalTemplate, WorkflowJob, WorkflowJobTemplate
+    // User in Token
+    // ApprovedOrDeniedBy in WorkflowApproval
     public record UserSummary(ulong Id,
                               string Username,
                               [property: JsonPropertyName("first_name")] string FirstName,
-                              [property: JsonPropertyName("last_name")] string LastName);
+                              [property: JsonPropertyName("last_name")] string LastName)
+        : ResourceSummary(Id, ResourceType.User);
 
-    public record OAuth2AccessTokenSummary(ulong Id,
-                                           [property: JsonPropertyName("user_id")] ulong UserId,
-                                           string Description,
-                                           string Scope);
+    // ObjectRoles in Organization
+    public record OrganizationObjectRoleSummary(ulong Id,
+                                                string Name,
+                                                string Description,
+                                                [property: JsonPropertyName("user_only")] bool UserOnly = false)
+        : ResourceSummary(Id, ResourceType.Role);
 
-    public record UserCapability(bool Edit = false,
-                                 bool Delete = false,
-                                 bool Copy = false,
-                                 bool Use = false);
+    // ExecutionEnvironment in AdHocCommand, InventorySource, InventoryUpdate, JobTemplate, Job, SystemJob
+    // DefaultEnvironment in Organization, Project, ProjectUpdate
+    // ResolvedEnvironment in SystemJobTemplate, WorkflowApprovalTemplate
+    public record EnvironmentSummary(ulong Id, string Name, string Description, string Image)
+        : ResourceSummary(Id, ResourceType.ExecutionEnvironment);
 
-    public record RoleSummary(ulong Id,
-                              string Name,
-                              string Description,
-                              [property: JsonPropertyName("user_only")] bool? UserOnly = null)
-        : NameDescriptionSummary(Id, Name, Description);
+    // RelatedFieldCounts in Organization
+    public record RelatedFieldCountsSummary(int Inventories,
+                                            int Teams,
+                                            int Users,
+                                            [property: JsonPropertyName("job_templates")] int JobTemplates,
+                                            int Admins,
+                                            int Projects)
+        : SummaryBase;
 
-    public record EnvironmentSummary(ulong Id,
-                                     string Name,
-                                     string Description,
-                                     string Image)
-        : NameDescriptionSummary(Id, Name, Description);
+    // List<Token> in Application
+    public record TokenSummary(ulong Id, string Token, string Scope)
+        : ResourceSummary(Id, ResourceType.OAuth2AccessToken);
 
-    public record RelatedFieldCountsSummary(
-        int Inventories,
-        int Teams,
-        int Users,
-        [property: JsonPropertyName("job_templates")] int JobTemplates,
-        int Admins,
-        int Projects);
+    public record ListSummary<T>(int Count, T[] Results)
+        : SummaryBase;
 
-    public record TokenSummary(ulong Id, string Token, string Scope);
-
-    public record ListSummary<T>(int Count, T[] Results);
-
+    // Credential in AdHocCommand, InventorySource, InventoryUpdate, Project, ProjectUpdate
+    // SourceCredential in CredentialInputSource
+    // TargetCredential in CredentialInputSource
     public record CredentialSummary(ulong Id,
                                     string Name,
                                     string Description,
                                     string Kind,
                                     bool Cloud = false,
                                     bool Kubernetes = false,
-                                    [property: JsonPropertyName("credential_type_id")] ulong? CredentialTypeId = null);
-    public record JobTemplateCredentialSummary(ulong Id,
-                                               string Name,
-                                               string Description,
-                                               string Kind,
-                                               bool Cloud);
+                                    [property: JsonPropertyName("credential_type_id")] ulong? CredentialTypeId = null)
+        : ResourceSummary(Id, ResourceType.Credential);
 
+    // Credentials in JobTemplate, Job
+    public record JobTemplateCredentialSummary(ulong Id, string Name, string Description, string Kind, bool Cloud)
+        : ResourceSummary(Id, ResourceType.Credential);
+
+    // LastJob in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
     public record LastJobSummary(ulong Id,
                                  string Name,
                                  string Description,
                                  DateTime? Finished,
                                  JobStatus Status,
-                                 bool Failed);
-    public record HostRecentJobSummary(ulong Id,
-                                       string Name,
-                                       ResourceType Type,
-                                       JobStatus Status,
-                                       DateTime? Finished);
+                                 bool Failed)
+        : SummaryBase;
+
+    // RecentJobs in Host
+    public record HostRecentJobSummary(ulong Id, string Name, ResourceType Type, JobStatus Status, DateTime? Finished)
+        : ResourceSummary(Id, Type);
+
+    // RecentJobs in JobTemplate, WorkflowJobTemplate
     public record RecentJobSummary(ulong Id,
                                    JobStatus Status,
                                    DateTime? Finished,
                                    [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
-                                   ResourceType Type);
+                                   ResourceType Type)
+        : ResourceSummary(Id, Type);
+
+    // Job in WorkflowJobNode
     public record JobSummary(ulong Id,
                              string Name,
                              string Description,
                              JobStatus Status,
                              bool Failed,
                              double Elapsed,
-                             ResourceType Type);
+                             ResourceType Type)
+        : ResourceSummary(Id, Type);
+
+    // LastJob in Host
+    public record HostLastJobSummary(ulong Id,
+                                     string Name,
+                                     string Description,
+                                     JobStatus Status,
+                                     bool Failed,
+                                     double Elapsed,
+                                     [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
+                                     [property: JsonPropertyName("job_template_name")] string JobTemplateName)
+        : ResourceSummary(Id, ResourceType.Job);
+
+    // Job in JobEvent, JobHostSummary
     public record JobExSummary(ulong Id,
                                string Name,
                                string Description,
@@ -105,20 +186,31 @@ namespace AWX.Resources
                                double Elapsed,
                                ResourceType Type,
                                [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
-                               [property: JsonPropertyName("job_template_name")] string JobTemplateName);
+                               [property: JsonPropertyName("job_template_name")] string JobTemplateName)
+        : ResourceSummary(Id, Type);
 
-    public record WorkflowJobSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed, double Elapsed);
+    // SourceWorkflowJob in Job, WorkflowApproval
+    public record SourceWorkflowJobSummary(ulong Id,
+                                           string Name,
+                                           string Description,
+                                           JobStatus Status,
+                                           bool Failed,
+                                           double Elapsed)
+        : ResourceSummary(Id, ResourceType.WorkflowJob);
 
-    public record AncestorJobSummary(ulong Id, string Name, ResourceType Type, string Url);
+    // AncestorJob in Job
+    public record AncestorJobSummary(ulong Id, string Name, ResourceType Type, string Url)
+        : ResourceSummary(Id, Type);
 
-    public record LastJobHostSummary(ulong Id, bool Failed);
+    // LastJobHostSummary in Host
+    public record LastJobHostSummary(ulong Id, bool Failed)
+        : ResourceSummary(Id, ResourceType.JobHostSummary);
 
-    public record LastUpdateSummary(ulong Id,
-                                    string Name,
-                                    string Description,
-                                    JobStatus Status,
-                                    bool Failed)
-        : NameDescriptionSummary(Id, Name, Description);
+    // LastUpdate in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
+    public record LastUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
+        : SummaryBase;
+
+    // Inventory in AdHocCommand, Group, Host, InventorySource, InventoryUpdate, JobTemplate, Job, Schedule, WorkflowJobTemplate
     public record InventorySummary(ulong Id,
                                    string Name,
                                    string Description,
@@ -131,39 +223,70 @@ namespace AWX.Resources
                                    [property: JsonPropertyName("inventory_sources_with_failures")] int InventorySourcesWithFailures,
                                    [property: JsonPropertyName("organization_id")] ulong OrganizationId,
                                    string Kind)
-        : NameDescriptionSummary(Id, Name, Description);
+        : ResourceSummary(Id, ResourceType.Inventory);
 
+    // InventorySource in InventoryUpdate
     public record InventorySourceSummary(ulong Id,
                                          string Name,
                                          string Source,
                                          [property: JsonPropertyName("last_updated")] DateTime LastUpdated,
-                                         JobStatus Status);
+                                         JobStatus Status)
+        : ResourceSummary(Id, ResourceType.InventorySource);
+
+    // SourceProject in InventorySource, InventoryUpdate
+    // Project in JobTemplate, Job, ProjectUpdate
     public record ProjectSummary(ulong Id,
                                  string Name,
                                  string Description,
                                  JobTemplateStatus Status,
                                  [property: JsonPropertyName("scm_type")] string ScmType,
                                  [property: JsonPropertyName("allow_override")] bool AllowOverride)
-        : NameDescriptionSummary(Id, Name, Description);
-    public record ProjectUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
-        : NameDescriptionSummary(Id, Name, Description);
+        : ResourceSummary(Id, ResourceType.Project);
 
+    // ProjectUpdate in ProjectUpdateJobEvent
+    public record ProjectUpdateSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed)
+        : ResourceSummary(Id, ResourceType.ProjectUpdate);
+
+    // UnifiedJobTemplate in InventoryUpdate, Job, ProjectUpdate, Schedule, SystemJob, WorkflowApproval, WorkflowJob,
+    //                       WorkflowJobNode, WorkflowJobTemplateNode
     public record UnifiedJobTemplateSummary(ulong Id,
-                                     string Name,
-                                     string Description,
-                                     [property: JsonPropertyName("unified_job_type")] ResourceType UnifiedJobType)
-        : NameDescriptionSummary(Id, Name, Description);
+                                            string Name,
+                                            string Description,
+                                            [property: JsonPropertyName("unified_job_type")] ResourceType UnifiedJobType)
+        : SummaryBase
+    {
+        public ResourceType Type => UnifiedJobType switch {
+            ResourceType.Job => ResourceType.JobTemplate,
+            ResourceType.ProjectUpdate => ResourceType.Project,
+            ResourceType.InventoryUpdate => ResourceType.InventorySource,
+            ResourceType.WorkflowJob => ResourceType.WorkflowJobTemplate,
+            ResourceType.SystemJob => ResourceType.SystemJobTemplate,
+            _ => ResourceType.None
+        };
+    }
+
+    // InstanceGroup in AdHocCommand, InventoryUpdate, Job, ProjectUpdate, SystemJob
     public record InstanceGroupSummary(ulong Id,
                                        string Name,
-                                       [property: JsonPropertyName("is_container_group")] bool IsContainerGroup);
+                                       [property: JsonPropertyName("is_container_group")] bool IsContainerGroup)
+        : ResourceSummary(Id, ResourceType.InstanceGroup);
 
-    public record OwnerSummary(ulong Id, string Type, string Name, string Description, string Url);
+    // Owners in Credential
+    public record OwnerSummary(ulong Id, ResourceType Type, string Name, string Description, string Url)
+        : ResourceSummary(Id, Type);
 
+    // Schedule in InventoryUpdate, Job, ProjectUpdate, SystemJob, WorkflowJob
     public record ScheduleSummary(ulong Id,
                                   string Name,
                                   string Description,
-                                  [property: JsonPropertyName("next_run")] DateTime NextRun);
-    public record RecentNotificationSummary(ulong Id, JobStatus Status, DateTime Created, string Error);
+                                  [property: JsonPropertyName("next_run")] DateTime NextRun)
+        : ResourceSummary(Id, ResourceType.Schedule);
 
-    public record WorkflowApprovalTemplateSummary(ulong Id, string Name, string Description, int Timeout);
+    // RecentNotification in NotificationTemplate
+    public record RecentNotificationSummary(ulong Id, JobStatus Status, DateTime Created, string Error)
+        : ResourceSummary(Id, ResourceType.Notification);
+
+    // WorkflowApprovalTemplate in WorkflowApproval
+    public record WorkflowApprovalTemplateSummary(ulong Id, string Name, string Description, int Timeout)
+        : ResourceSummary(Id, ResourceType.WorkflowApprovalTemplate);
 }

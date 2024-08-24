@@ -2,6 +2,7 @@ using AWX.Resources;
 using System.Collections;
 using System.Management.Automation;
 using System.Text;
+using System.Text.Json;
 
 namespace AWX.Cmdlets
 {
@@ -11,6 +12,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.WorkflowJobTemplate)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 IdSet.Add(id);
@@ -67,6 +72,21 @@ namespace AWX.Cmdlets
         [Parameter()]
         public ulong? Inventory { get; set; }
 
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()] // XXX: Should be string[] and created if not exists ?
+        public ulong[]? Labels { get; set; }
+
+        [Parameter()]
+        public string[]? Tags { get; set; }
+
+        [Parameter()]
+        public string[]? SkipTags { get; set; }
+
+        [Parameter()] // TODO: Should accept `IDctionary` (convert to JSON serialized string)
+        public string? ExtraVars { get; set; }
+
         private Hashtable CreateSendData()
         {
             var dict = new Hashtable();
@@ -74,9 +94,29 @@ namespace AWX.Cmdlets
             {
                 dict.Add("inventory", Inventory);
             }
+            if (ScmBranch != null)
+            {
+                dict.Add("scm_branch", ScmBranch);
+            }
             if (Limit != null)
             {
                 dict.Add("limit", Limit);
+            }
+            if (Labels != null)
+            {
+                dict.Add("labels", Labels);
+            }
+            if (Tags != null)
+            {
+                dict.Add("job_tags", string.Join(',', Tags));
+            }
+            if (SkipTags != null)
+            {
+                dict.Add("skip_tags", string.Join(',', SkipTags));
+            }
+            if (!string.IsNullOrEmpty(ExtraVars))
+            {
+                dict.Add("extra_vars", ExtraVars);
             }
             return dict;
         }
@@ -93,53 +133,72 @@ namespace AWX.Cmdlets
         {
             var wjt = requirements.WorkflowJobTemplateData;
             var def = requirements.Defaults;
-            var explicitColor = ConsoleColor.Green;
-            var askColor = ConsoleColor.Magenta;
+            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
             WriteHost($"[{wjt.Id}] {wjt.Name} - {wjt.Description}\n");
             var fmt = "{0,22} : {1}\n";
             if (def.Inventory.Id != null || Inventory != null)
             {
-                var inventoryVal = $"[{def.Inventory.Id}] {def.Inventory.Name}" + (Inventory != null ? $" => {Inventory}" : "");
+                var inventoryVal = $"[{def.Inventory.Id}] {def.Inventory.Name}"
+                                   + (requirements.AskInventoryOnLaunch && Inventory != null ? $" => {Inventory}" : "");
                 WriteHost(string.Format(fmt, "Inventory", inventoryVal),
-                            foregroundColor: requirements.AskInventoryOnLaunch ? Inventory == null ? askColor : explicitColor : null);
+                            foregroundColor: requirements.AskInventoryOnLaunch ? (Inventory == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.Limit) || Limit != null)
             {
-                var limitVal = def.Limit + (Limit != null ? $" => {Limit}" : "");
+                var limitVal = def.Limit
+                               + (requirements.AskLimitOnLaunch && Limit != null ? $" => {Limit}" : "");
                 WriteHost(string.Format(fmt, "Limit", limitVal),
-                            foregroundColor: requirements.AskLimitOnLaunch ? Limit == null ? askColor : explicitColor : null);
+                            foregroundColor: requirements.AskLimitOnLaunch ? (Limit == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ScmBranch))
+            if (!string.IsNullOrEmpty(def.ScmBranch) || ScmBranch != null)
             {
-                WriteHost(string.Format(fmt, "Scm Branch", def.ScmBranch),
-                            foregroundColor: requirements.AskScmBranchOnLaunch? askColor : explicitColor);
+                var branchVal = def.ScmBranch
+                                + (requirements.AskScmBranchOnLaunch && ScmBranch != null ? $" => {ScmBranch}" : "");
+                WriteHost(string.Format(fmt, "Scm Branch", branchVal),
+                            foregroundColor: requirements.AskScmBranchOnLaunch ? (ScmBranch == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (def.Labels != null && def.Labels.Length > 0)
+            if ((def.Labels != null && def.Labels.Length > 0) || Labels != null)
             {
-                WriteHost(string.Format(fmt, "Labels", string.Join(", ", def.Labels.Select(l => $"[{l.Id}] {l.Name}"))),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? askColor : explicitColor);
+                var labelsVal = string.Join(", ", def.Labels?.Select(l => $"[{l.Id}] {l.Name}") ?? [])
+                                + (requirements.AskLabelsOnLaunch && Labels != null ? $" => {string.Join(',', Labels.Select(id => $"[{id}]"))}" : "");
+                WriteHost(string.Format(fmt, "Labels", labelsVal),
+                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.JobTags))
+            if (!string.IsNullOrEmpty(def.JobTags) || Tags != null)
             {
-                WriteHost(string.Format(fmt, "Job tags", def.JobTags),
-                            foregroundColor: requirements.AskTagsOnLaunch ? askColor : explicitColor);
+                var tagsVal = def.JobTags
+                              + (requirements.AskTagsOnLaunch && Tags != null ? $" => {string.Join(", ", Tags)}" : "");
+                WriteHost(string.Format(fmt, "Job tags", tagsVal),
+                            foregroundColor: requirements.AskTagsOnLaunch ? (Tags == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.SkipTags))
+            if (!string.IsNullOrEmpty(def.SkipTags) || SkipTags != null)
             {
-                WriteHost(string.Format(fmt, "Skip tags", def.SkipTags),
-                            foregroundColor: requirements.AskSkipTagsOnLaunch ? askColor : explicitColor);
+                var skipTagsVal = def.SkipTags
+                                  + (requirements.AskSkipTagsOnLaunch && SkipTags != null ? $" => {string.Join(", ", SkipTags)}" : "");
+                WriteHost(string.Format(fmt, "Skip tags", skipTagsVal),
+                            foregroundColor: requirements.AskSkipTagsOnLaunch ? (SkipTags == null ? implicitColor : explicitColor) : fixedColor);
             }
-            if (!string.IsNullOrEmpty(def.ExtraVars))
+            if (!string.IsNullOrEmpty(def.ExtraVars) || !string.IsNullOrEmpty(ExtraVars))
             {
                 var sb = new StringBuilder();
                 var lines = def.ExtraVars.Split('\n');
+                var padding = "".PadLeft(25);
                 sb.Append(string.Format(fmt, "Extra vars", lines[0]));
                 foreach (var line in lines[1..])
                 {
-                    sb.AppendLine("".PadLeft(25) + line);
+                    sb.AppendLine(padding + line);
+                }
+                if (!string.IsNullOrEmpty(ExtraVars))
+                {
+                    sb.AppendLine($"{padding}=> (overwrite or append)");
+                    lines = ExtraVars.Split('\n');
+                    foreach (var line in lines)
+                    {
+                        sb.AppendLine(padding + line);
+                    }
                 }
                 WriteHost(sb.ToString(),
-                            foregroundColor: requirements.AskVariablesOnLaunch ? askColor : explicitColor);
+                            foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
             }
         }
         protected WorkflowJob.LaunchResult? Launch(ulong id)
@@ -157,7 +216,7 @@ namespace AWX.Cmdlets
             {
                 foreach (var (key ,val) in launchResult.IgnoredFields)
                 {
-                    WriteWarning($"Ignored field: {key} ({val})");
+                    WriteWarning($"Ignored field: {key} ({JsonSerializer.Serialize(val, Json.DeserializeOptions)})");
                 }
             }
             return launchResult;

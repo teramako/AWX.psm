@@ -11,6 +11,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.AdHocCommand)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 if (!IdSet.Add(id))
@@ -87,7 +91,8 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, Position = 3)]
         public ulong Credential { get; set; }
 
-        [Parameter()]
+        [Parameter(ParameterSetName = "Inventory")]
+        [Parameter(ParameterSetName = "InventoryId")]
         public string Limit { get; set; } = string.Empty;
 
         [Parameter()]
@@ -103,7 +108,7 @@ namespace AWX.Cmdlets
             {
                 SendData.Add("job_type", "check");
             }
-            if (Limit != null)
+            if (!string.IsNullOrEmpty(Limit))
             {
                 SendData.Add("limit", Limit);
             }

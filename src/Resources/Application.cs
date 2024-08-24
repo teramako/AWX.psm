@@ -135,9 +135,9 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(NameDescriptionSummary Organization,
-                                               [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-                                               ListSummary<TokenSummary> Tokens);
+        public record Summary(OrganizationSummary Organization,
+                              [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
+                              ListSummary<TokenSummary> Tokens);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

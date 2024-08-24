@@ -9,6 +9,10 @@ namespace AWX.Cmdlets
     {
         protected override void ProcessRecord()
         {
+            if (Type != null && Type != ResourceType.ActivityStream)
+            {
+                return;
+            }
             foreach (var id in Id)
             {
                 IdSet.Add(id);

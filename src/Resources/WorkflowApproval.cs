@@ -46,14 +46,14 @@ namespace AWX.Resources
         }
 
         public record Summary(
-            [property: JsonPropertyName("workflow_job_template")] NameDescriptionSummary WorkflowJobTemplate,
-            [property: JsonPropertyName("workflow_job")] NameDescriptionSummary WorkflowJob,
+            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary WorkflowJobTemplate,
+            [property: JsonPropertyName("workflow_job")] WorkflowJobSummary WorkflowJob,
             [property: JsonPropertyName("workflow_approval_template")] WorkflowApprovalTemplateSummary WorkflowApprovalTemplate,
             [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary? UnifiedJobTemplate,
             [property: JsonPropertyName("approved_or_denied_by")] UserSummary? ApprovedOrDeniedBy,
             [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
             [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            [property: JsonPropertyName("source_workflow_job")] WorkflowJobSummary SourceWorkflowJob
+            [property: JsonPropertyName("source_workflow_job")] SourceWorkflowJobSummary SourceWorkflowJob
         );
 
         public RelatedDictionary Related { get; } = related;
