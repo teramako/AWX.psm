@@ -61,6 +61,37 @@
       </ListControl>
     </View>
     <View>
+      <Name>JobStatistics</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.JobStatistics</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Successful</Label>
+            <Width>30</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Failed</Label>
+            <Width>30</Width>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap />
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock>($_.Successful | Format-Table @{Label="Date";Expression={$_.Date.ToShortDateString()}}, Count | Out-String).Trim()</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>($_.Failed | Format-Table @{Label="Date";Expression={$_.Date.ToShortDateString()}}, Count | Out-String).Trim()</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>UnifiedJobTemplate</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.JobTemplate</TypeName>
