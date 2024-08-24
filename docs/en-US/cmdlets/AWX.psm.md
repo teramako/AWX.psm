@@ -227,6 +227,9 @@ Retrieve JobHostSummaries by ID(s).
 ### [Get-JobLog](Get-JobLog.md)
 Retrieve job logs.
 
+### [Get-JobStatistics](Get-JobStatistics.md)
+Retrieve statistics for job runs.
+
 ### [Get-JobTemplate](Get-JobTemplate.md)
 Retrieve JobTemplates by the ID(s).
 
