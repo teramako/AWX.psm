@@ -1,8 +1,8 @@
 ---
 Module Name: AWX.psm
 Module Guid: a60acf94-7e42-4b77-bf97-1cdaf17b822b
-Download Help Link: {{ Update Download Link }}
-Help Version: {{ Update Help Version }}
+Download Help Link: null
+Help Version: 1.1.0
 Locale: en-US
 ---
 
