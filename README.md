@@ -3,15 +3,15 @@ PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ![demo1](docs/img/AWX.psm-demo-1.gif)
 
-## Build
+## 🚀 Build
 
 See [Build](./docs/en-US/build.md) document.
 
-## Settings
+## ⚙️ Settings
 
 See [Settings](./docs/en-US/settings.md) document.
 
-## Available Commands
+## 🛠️ Commands
 
 See [Cmdlet documents directory(en-US)](./docs/en-US/cmdlets/) for more details
 
