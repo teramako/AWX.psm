@@ -1,5 +1,4 @@
 using AWX.Resources;
-using System.Collections;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
@@ -127,9 +126,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public int? Timeout { get; set; }
 
-        private Hashtable CreateSendData()
+        private IDictionary<string, object?> CreateSendData()
         {
-            var dict = new Hashtable();
+            var dict = new Dictionary<string, object?>();
             if (Inventory != null)
             {
                 dict.Add("inventory", Inventory);
@@ -320,7 +319,8 @@ namespace AWX.Cmdlets
                 return null;
             }
             ShowJobTemplateInfo(requirements);
-            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", CreateSendData());
+            var sendData = CreateSendData();
+            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
             if (launchResult.IgnoredFields.Count > 0)
