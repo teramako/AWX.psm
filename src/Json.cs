@@ -372,7 +372,13 @@ namespace AWX
 
             public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> dict, JsonSerializerOptions options)
             {
-                throw new NotImplementedException();
+                writer.WriteStartObject();
+                foreach (var (key, val) in dict)
+                {
+                    writer.WritePropertyName(key);
+                    JsonSerializer.Serialize(writer, val, options);
+                }
+                writer.WriteEndObject();
             }
         }
         /// <summary>
@@ -443,7 +449,12 @@ namespace AWX
 
             public override void Write(Utf8JsonWriter writer, object?[] list, JsonSerializerOptions options)
             {
-                JsonSerializer.Serialize(writer, list, options);
+                writer.WriteStartArray();
+                foreach (var val in list)
+                {
+                    JsonSerializer.Serialize(writer, val, options);
+                }
+                writer.WriteEndArray();
             }
         }
 
