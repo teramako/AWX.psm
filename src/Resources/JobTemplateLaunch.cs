@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace AWX.Resources
@@ -80,12 +81,47 @@ namespace AWX.Resources
         [property: JsonPropertyName("job_slice_count")] int JobSliceCount,
         int Timeout
     );
-    public record TemplateData(ulong Id, string Name, string Description);
-    public record NamedData(ulong? Id, string? Name);
+    public record TemplateData(ulong Id, string Name, string Description)
+    {
+        public override string ToString()
+        {
+            return $"[{Id}] {Name}";
+        }
+    }
+    public record NamedData(ulong? Id, string? Name)
+    {
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            if (Id != null)
+            {
+                sb.Append($"[{Id}]");
+            }
+            if (!string.IsNullOrEmpty(Name))
+            {
+                if (sb.Length > 0) sb.Append(' ');
+                sb.Append(Name);
+            }
+            return sb.ToString();
+        }
+    }
     public record CredentialData(
         ulong Id,
         string? Name,
         [property: JsonPropertyName("credential_type")] ulong? CredentialType,
         [property: JsonPropertyName("passwords_needed")] string[]? Passwordsneeded
-    );
+    )
+    {
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"[{Id}");
+            if (!string.IsNullOrEmpty(Name))
+            {
+                sb.Append(' ');
+                sb.Append(Name);
+            }
+            return sb.ToString();
+        }
+    }
 }
