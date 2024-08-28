@@ -132,7 +132,8 @@ namespace AWX.Cmdlets
         {
             var wjt = requirements.WorkflowJobTemplateData;
             var def = requirements.Defaults;
-            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
+            var (fixedColor, implicitColor, explicitColor, requiredColor) =
+                ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red);
             WriteHost($"[{wjt.Id}] {wjt.Name} - {wjt.Description}\n");
             var fmt = "{0,22} : {1}\n";
             if (def.Inventory.Id != null || Inventory != null)
@@ -198,6 +199,20 @@ namespace AWX.Cmdlets
                 }
                 WriteHost(sb.ToString(),
                             foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            if (requirements.SurveyEnabled)
+            {
+                WriteHost(string.Format(fmt, "Survey", "Enabled"), foregroundColor: requiredColor);
+            }
+            if (requirements.VariablesNeededToStart.Length > 0)
+            {
+                WriteHost(string.Format(fmt, "Variables", $"[{string.Join(", ", requirements.VariablesNeededToStart)}]"),
+                            foregroundColor: requiredColor);
+            }
+            if (requirements.NodePromptsRejected.Length > 0)
+            {
+                WriteWarning("Prompt Input will be ignored in following nodes: " +
+                        $"[{string.Join(", ", requirements.NodePromptsRejected)}]");
             }
         }
         protected WorkflowJob.LaunchResult? Launch(ulong id)
