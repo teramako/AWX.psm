@@ -223,6 +223,15 @@ namespace AWX.Cmdlets
                 return null;
             }
             ShowJobTemplateInfo(requirements);
+            if (requirements.NodeTemplatesMissing.Length > 0)
+            {
+                var missingNodes = string.Join(", ", requirements.NodeTemplatesMissing);
+                WriteError(new ErrorRecord(new InvalidOperationException($"Missing Templates in Nodes: [{missingNodes}]"),
+                                           "MissingNodeTemplates",
+                                           ErrorCategory.ResourceUnavailable,
+                                           requirements));
+                return null;
+            }
             var sendData = CreateSendData();
             var apiResult = CreateResource<WorkflowJob.LaunchResult>($"{WorkflowJobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
