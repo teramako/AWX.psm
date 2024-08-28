@@ -173,7 +173,7 @@ Accept wildcard characters: False
 ### -Search
 Search words. (case-insensitive)
 
-Target fields: `name`, `description`
+Target fields: `username`, `first_name`, `last_name`, `email`
 
 Multiple words are available by separating with a comma(`,`).
 
