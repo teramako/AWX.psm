@@ -134,6 +134,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public int? Timeout { get; set; }
 
+        [Parameter()]
+        public SwitchParameter Interactive { get; set; }
+
         private IDictionary<string, object?> CreateSendData()
         {
             var dict = new Dictionary<string, object?>();
@@ -334,6 +337,293 @@ namespace AWX.Cmdlets
                                 foregroundColor: requirements.AskTimeoutOnLaunch ? (Timeout == null ? implicitColor : explicitColor) : fixedColor);
             }
         }
+        // FIXME
+        /// <summary>
+        /// Show input prompt and Update <paramref name="sendData"/>.
+        /// </summary>
+        /// <param name="sendData"></param>
+        /// <param name="requirements"></param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        protected bool TryAskOnLaunch(JobTemplateLaunchRequirements requirements,
+                                      IDictionary<string, object?> sendData)
+        {
+            if (requirements.CanStartWithoutUserInput)
+            {
+                return true;
+            }
+            if (CommandRuntime.Host == null)
+            {
+                return false;
+            }
+            var prompt = new AskPrompt(CommandRuntime.Host);
+            string key;
+            string skipFormat = "Skip {0} prompt. Already specified: {1:g}";
+
+            // Inventory
+            if (requirements.AskInventoryOnLaunch)
+            {
+                key = "inventory";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Inventory", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<ulong>("Inventory", requirements.Defaults.Inventory.Id,
+                                           "", out var inventoryAnswer))
+                {
+                    if (!inventoryAnswer.IsEmpty)
+                        sendData[key] = inventoryAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Credentials
+            if (requirements.AskCredentialOnLaunch)
+            {
+                key = "credentials";
+                if (sendData.ContainsKey(key))
+                {
+                    var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
+                    WriteHost(string.Format(skipFormat, "Credentials", strData), dontshow: true);
+                }
+                else if (prompt.AskList<ulong>("Credentials",
+                            requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
+                            "", out var credentialsAnswer))
+                {
+                    if (!credentialsAnswer.IsEmpty)
+                        sendData[key] = credentialsAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // ExecutionEnvironment
+            if (requirements.AskExecutionEnvironmentOnLaunch)
+            {
+                key = "execution_environment";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Execution Environment", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<ulong>("Execution Environment",
+                                           requirements.Defaults.ExecutionEnvironment.Id,
+                                           "", out var eeAnswer))
+                {
+                    if (!eeAnswer.IsEmpty)
+                        sendData[key] = eeAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // JobType
+            if (requirements.AskJobTypeOnLaunch)
+            {
+                key = "job_type";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Job Type", sendData[key]), dontshow: true);
+                }
+                else if (prompt.AskBool("Job Type",
+                                        requirements.Defaults.JobType == Resources.JobType.Run,
+                                        "Run", "Check", out var jobTypeAnswer))
+                {
+                    if (!jobTypeAnswer.IsEmpty)
+                        sendData[key] = (jobTypeAnswer.Input ? Resources.JobType.Run : Resources.JobType.Check)
+                            .ToString().ToLowerInvariant();
+                }
+                else { return false; }
+            }
+
+            // ScmBranch
+            if (requirements.AskScmBranchOnLaunch)
+            {
+                key = "scm_branch";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "ScmBranch", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask("ScmBranch", requirements.Defaults.ScmBranch,
+                                    "", out var branchAnswer))
+                {
+                    if (!branchAnswer.IsEmpty)
+                        sendData[key] = branchAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Labels
+            if (requirements.AskLabelsOnLaunch)
+            {
+                key = "labels";
+                if (sendData.ContainsKey(key))
+                {
+                    var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
+                    WriteHost(string.Format(skipFormat, "Labels", strData), dontshow: true);
+                }
+                else if (prompt.AskList<ulong>("Labels",
+                                               requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
+                                               "", out var labelsAnswer))
+                {
+                    if (!labelsAnswer.IsEmpty)
+                        sendData[key] = labelsAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Forks
+            if (requirements.AskForksOnLaunch)
+            {
+                key = "forks";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Forks", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<int>("Forks", requirements.Defaults.Forks,
+                                         "", out var forksAnswer))
+                {
+                    if (!forksAnswer.IsEmpty)
+                        sendData[key] = forksAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Limit
+            if (requirements.AskLimitOnLaunch)
+            {
+                key = "limit";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Limit", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask("Limit", requirements.Defaults.Limit,
+                                    "", out var limitAnswer))
+                {
+                    if (!limitAnswer.IsEmpty)
+                        sendData[key] = limitAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Verbosity
+            if (requirements.AskVerbosityOnLaunch)
+            {
+                key = "verbosity";
+                if (sendData.ContainsKey(key))
+                {
+                    var v = (JobVerbosity)((int)(sendData[key] ?? 0));
+                    WriteHost(string.Format(skipFormat, "Job Tags", $"{v:d} ({v:g})"), dontshow: true);
+                }
+                else if (prompt.AskEnum<JobVerbosity>("Verbosity", requirements.Defaults.Verbosity,
+                                                      "", out var verbosityAnswer))
+                {
+                    if (!verbosityAnswer.IsEmpty)
+                        sendData[key] = (int)verbosityAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // JobSliceCount
+            if (requirements.AskJobTypeOnLaunch)
+            {
+                key = "job_slice_count";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Job Slice Count", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<int>("Job Slice Count", requirements.Defaults.JobSliceCount,
+                                         "", out var jobSliceCountAnswer))
+                {
+                    if (!jobSliceCountAnswer.IsEmpty)
+                        sendData[key] = jobSliceCountAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Timeout
+            if (requirements.AskTimeoutOnLaunch)
+            {
+                key = "timeout";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Timeout", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<int>("Timeout", requirements.Defaults.JobSliceCount,
+                                         "", out var timeoutAnswer))
+                {
+                    if (!timeoutAnswer.IsEmpty)
+                        sendData[key] = timeoutAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // DiffMode
+            if (requirements.AskDiffModeOnLaunch)
+            {
+                key = "diff_mode";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Diff Mode", sendData[key]), dontshow: true);
+                }
+                else if (prompt.AskBool("Diff Mode", requirements.Defaults.DiffMode,
+                                        "On", "Off", out var diffModeAnswer))
+                {
+                    if (!diffModeAnswer.IsEmpty)
+                        sendData[key] = diffModeAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // Tags
+            if (requirements.AskTagsOnLaunch)
+            {
+                key = "job_tags";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Job Tags", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask("Job Tags", requirements.Defaults.JobTags,
+                                    "", out var jobTagsAnswer))
+                {
+                    if (!jobTagsAnswer.IsEmpty)
+                        sendData[key] = jobTagsAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // SkipTags
+            if (requirements.AskSkipTagsOnLaunch)
+            {
+                key = "skip_tags";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Skip Tags", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask("Skip Tags", requirements.Defaults.JobTags,
+                                    "", out var skipTagsAnswer))
+                {
+                    if (!skipTagsAnswer.IsEmpty)
+                        sendData[key] = skipTagsAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            // ExtraVars
+            if (requirements.AskVariablesOnLaunch)
+            {
+                key = "extra_vars";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, "Extra Vars", sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask("ExtraVariables", requirements.Defaults.ExtraVars,
+                            "", out var extraVarsAnswer))
+                {
+                    if (!extraVarsAnswer.IsEmpty)
+                        sendData[key] = extraVarsAnswer.Input;
+                }
+                else { return false; }
+            }
+
+            return true;
+        }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
         {
             var requirements = GetResource<JobTemplateLaunchRequirements>($"{JobTemplate.PATH}{id}/launch/");
@@ -343,6 +633,34 @@ namespace AWX.Cmdlets
             }
             ShowJobTemplateInfo(requirements);
             var sendData = CreateSendData();
+            if (Interactive)
+            {
+                if (TryAskOnLaunch(requirements, sendData))
+                {
+                    if (sendData == null)
+                    {
+                        return null;
+                    }
+                    foreach (var (key, obj) in sendData)
+                    {
+                        if (obj == null)
+                        {
+                            WriteHost(string.Format("{0,22} : {1} ({2})\n", key, obj, "null"));
+                        }
+                        else
+                        {
+                            WriteHost(string.Format("{0,22} : {1} ({2})\n", key, obj, obj.GetType().Name));
+                        }
+                    }
+                }
+                else
+                {
+                    WriteWarning("Launch canceled.");
+                    return null;
+                }
+            }
+            string senDataString = JsonSerializer.Serialize(sendData, Json.DeserializeOptions);
+            WriteHost($"SenData:\n{senDataString}\n", dontshow: true);
             var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
