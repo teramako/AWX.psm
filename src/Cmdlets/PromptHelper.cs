@@ -240,6 +240,38 @@ namespace AWX.Cmdlets
             }
             while (true);
         }
+        /// <summary>
+        /// Boolean input prompt
+        /// </summary>
+        /// <param name="label">Prompt label</param>
+        /// <param name="answer"></param>
+        /// <param name="trueHelpMessage"></param>
+        /// <param name="falseHelpMessage"></param>
+        /// <param name="defaultValue"</param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        public bool AskBool(string label, bool defaultValue, string trueHelpMessage, string falseHelpMessage, out Answer<bool> answer)
+        {
+            var choices = new Collection<ChoiceDescription>();
+
+            choices.Add(new ChoiceDescription("&True", trueHelpMessage));
+            choices.Add(new ChoiceDescription("&False", falseHelpMessage));
+
+            printHeader(label, "", $"{trueHelpMessage}(true) or {falseHelpMessage}(false)");
+            var res = _host.UI.PromptForChoice("", "", choices, defaultValue ? 0 : 1);
+            switch (res)
+            {
+                case 0:
+                    answer = new Answer<bool>(true);
+                    return true;
+                case 1:
+                    answer = new Answer<bool>(false);
+                    return true;
+                default:
+                    answer = new Answer<bool>(false);
+                    return false;
+            }
+
+        }
         private bool TryPromptOneInput(string label, out string inputString)
         {
             inputString = string.Empty;
