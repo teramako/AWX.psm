@@ -272,6 +272,45 @@ namespace AWX.Cmdlets
             }
 
         }
+        /// <summary>
+        /// String input prompt
+        /// </summary>
+        /// <typeparam name="TEnum">inputed data type (Enum)</typeparam>
+        /// <param name="label">Prompt label</param>
+        /// <param name="answer"></param>
+        /// <param name="helpMessage"></param>
+        /// <param name="defaultValue"</param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        public bool AskEnum<TEnum>(string label, TEnum defaultValue, string helpMessage, out Answer<TEnum> answer) where TEnum : System.Enum
+        {
+            var defaultValueString = $"{defaultValue:g} ({defaultValue:d})";
+            printHeader(label, defaultValueString, helpMessage);
+            var choices = new Collection<ChoiceDescription>();
+            var defaultValueIndex = -1;
+            var enumType = typeof(TEnum);
+
+            var list = new List<TEnum>();
+            var enumValues = Enum.GetValues(enumType);
+            foreach (TEnum val in enumValues)
+            {
+                var num = $"{val:d}";
+                var str = $"{val:g}";
+                if (str == $"{defaultValue}")
+                {
+                    defaultValueIndex = choices.Count;
+                }
+                choices.Add(new ChoiceDescription($"&{str}", $"[{num}] {str}"));
+                list.Add(val);
+            }
+            var res = _host.UI.PromptForChoice("", "", choices, defaultValueIndex);
+            if (res >= 0 && res < list.Count)
+            {
+                answer = new Answer<TEnum>(list[res]);
+                return true;
+            }
+            answer = new Answer<TEnum>(defaultValue, true);
+            return false;
+        }
         private bool TryPromptOneInput(string label, out string inputString)
         {
             inputString = string.Empty;
