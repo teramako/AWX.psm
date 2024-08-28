@@ -12,41 +12,56 @@ namespace AWX.Cmdlets
         }
         private PSHost _host { get; }
 
-        private void printHeader(string label, string defaultValue, string help)
+        private void printHeader(string label, string defaultValue, string helpMessage = "", string helpIndicator = "")
         {
             var gb = Console.BackgroundColor;
-            _host.UI.WriteLine();
             _host.UI.Write(ConsoleColor.Blue, gb, "==> ");
-            _host.UI.WriteLine($"Enter {label} (Default: {defaultValue})");
-            _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, help);
-
+            _host.UI.Write($"{label} (Default: ");
+            _host.UI.Write(ConsoleColor.DarkYellow, gb, $"{defaultValue}");
+            _host.UI.WriteLine(")");
+            if (!string.IsNullOrEmpty(helpMessage))
+            {
+                _host.UI.WriteLine(helpMessage);
+            }
+            if (!string.IsNullOrEmpty(helpIndicator))
+            {
+                _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, helpIndicator);
+            }
         }
-        private void printHelp(string label, string message, string help)
+        private void printHelp(string label, string helpMessage = "", string helpIndicator = "")
         {
             var gb = Console.BackgroundColor;
             _host.UI.Write(ConsoleColor.Blue, gb, "==> ");
             _host.UI.WriteLine(label);
-            _host.UI.WriteLine(message);
-            _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, help);
+            if (!string.IsNullOrEmpty(helpMessage))
+            {
+                _host.UI.WriteLine(helpMessage);
+            }
+            if (!string.IsNullOrEmpty(helpIndicator))
+            {
+                _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, helpIndicator);
+            }
         }
         /// <summary>
         /// List input prompt
         /// </summary>
         /// <param name="label">Prompt label</param>
         /// <param name="defaultValues"></param>
+        /// <param name="helpMessage"></param>
         /// <param name="answers"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool AskList<T>(string label, IEnumerable<string>? defaultValues, out Answer<List<T>> answers)
+        public bool AskList<T>(string label, IEnumerable<string>? defaultValues, string helpMessage, out Answer<List<T>> answers)
         {
             var results = new List<T>();
             var index = 0;
             var defaultValuString = $"[{string.Join(", ", defaultValues ?? [])}]";
-            var help = "(Type !? : Show help, !> : Suspend)";
-            printHeader(label, defaultValuString, help);
+            var helpIndicator = "(Type !? : Show help, !> : Suspend)";
+            printHeader(label, defaultValuString, helpMessage, helpIndicator);
             do
             {
                 var fieldLabel = $"{label}[{index}]";
-                var currentHelpMessage = $"CurrentValues: [{string.Join(", ", results.Select(item => $"{item}"))}]";
+                var currentHelpMessage = (string.IsNullOrEmpty(helpMessage) ? "" : $"{helpMessage}\n")
+                                         + $"CurrentValues: [{string.Join(", ", results.Select(item => $"{item}"))}]";
                 if (!TryPromptOneInput(fieldLabel, out var inputString))
                 {
                     answers = new Answer<List<T>>([], true);
@@ -58,7 +73,7 @@ namespace AWX.Cmdlets
                     switch (command)
                     {
                         case "?":
-                            printHelp(label, currentHelpMessage, help);
+                            printHelp(label, currentHelpMessage, helpIndicator);
                             continue;
                         case ">":
                             _host.EnterNestedPrompt();
@@ -92,15 +107,18 @@ namespace AWX.Cmdlets
         /// </summary>
         /// <param name="label">Prompt label</param>
         /// <param name="defaultValue"></param>
+        /// <param name="helpMessage"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask(string label, string? defaultValue, out Answer<string> answer)
+        public bool Ask(string label, string? defaultValue, string helpMessage, out Answer<string> answer)
         {
             var defaultValueString = $"\"{defaultValue}\"";
-            var help = """
+            var helpIndicator = """
                 (!? => Show help, !! => Use default, !> => Suspend, Empty => Skip, ("", '', $null) => Specify empty string)
                 """;
-            printHeader(label, defaultValueString, help);
+            printHeader(label, defaultValueString, helpMessage, helpIndicator);
+            var help = (string.IsNullOrEmpty(helpMessage) ? "" : $"{helpMessage}\n")
+                       + $"Default: {defaultValueString}";
             do
             {
                 var inputed = false;
@@ -115,7 +133,7 @@ namespace AWX.Cmdlets
                     switch (command)
                     {
                         case "?":
-                            printHelp(label, $"Default: {defaultValueString}", help);
+                            printHelp(label, help, helpIndicator);
                             continue;
                         case "!":
                             answer = new Answer<string>(defaultValue ?? string.Empty);
@@ -157,14 +175,17 @@ namespace AWX.Cmdlets
         /// <typeparam name="T">inputed data type (mainly number type)</typeparam>
         /// <param name="label">Prompt label</param>
         /// <param name="defaultValue"></param>
+        /// <param name="helpMessage"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask<T>(string label, T? defaultValue, out Answer<T> answer) where T : struct
+        public bool Ask<T>(string label, T? defaultValue, string helpMessage, out Answer<T> answer) where T : struct
         {
-            var help = """
+            var helpIndicator = """
                 (!? => Show help, !! => Use default, !> => Suspend, Empty => Skip)
                 """;
-            printHeader(label, $"{defaultValue}", help);
+            printHeader(label, $"{defaultValue}", helpMessage, helpIndicator);
+            var help = (string.IsNullOrEmpty(helpMessage) ? "" : $"{helpMessage}\n")
+                       + $"Default: {defaultValue}";
             do
             {
                 var inputed = false;
@@ -179,7 +200,7 @@ namespace AWX.Cmdlets
                     switch (command)
                     {
                         case "?":
-                            printHelp(label, $"Default: {defaultValue}", help);
+                            printHelp(label, help, helpIndicator);
                             continue;
                         case "!":
                             inputed = true;
