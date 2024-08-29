@@ -20,19 +20,16 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            string path;
             if (IdSet.Count == 1)
             {
-                path = $"{WorkflowJobTemplateNode.PATH}{IdSet.First()}/";
-                var res = GetResource<WorkflowJobTemplateNode>(path);
+                var res = GetResource<WorkflowJobTemplateNode>($"{WorkflowJobTemplateNode.PATH}{IdSet.First()}/");
                 WriteObject(res);
             }
             else
             {
-                path = WorkflowJobTemplateNode.PATH;
                 Query.Add("id__in", string.Join(',', IdSet));
                 Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<WorkflowJobTemplateNode>(path, Query, true))
+                foreach (var resultSet in GetResultSet<WorkflowJobTemplateNode>(WorkflowJobTemplateNode.PATH, Query, true))
                 {
                     WriteObject(resultSet.Results, true);
                 }
