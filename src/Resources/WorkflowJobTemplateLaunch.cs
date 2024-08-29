@@ -7,7 +7,7 @@ namespace AWX.Resources
                                                        bool askVariablesOnLaunch, bool askLabelsOnLaunch,
                                                        bool askTagsOnLaunch, bool askSkipTagsOnLaunch,
                                                        bool surveyEnabled, string[] variablesNeededToStart,
-                                                       string[] nodeTemplatesMissing, ulong[] nodePromptsRejected,
+                                                       ulong[] nodeTemplatesMissing, ulong[] nodePromptsRejected,
                                                        TemplateData workflowJobTemplateData,
                                                        WorkflowJobTemplateDefaults defaults)
     {
@@ -33,7 +33,7 @@ namespace AWX.Resources
         public string[] VariablesNeededToStart { get; } = variablesNeededToStart;
 
         [JsonPropertyName("node_templates_missing")]
-        public string[] NodeTemplatesMissing { get; } = nodeTemplatesMissing;
+        public ulong[] NodeTemplatesMissing { get; } = nodeTemplatesMissing;
         [JsonPropertyName("node_prompts_rejected")]
         public ulong[] NodePromptsRejected { get; } = nodePromptsRejected;
 

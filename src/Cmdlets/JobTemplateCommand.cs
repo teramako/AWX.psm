@@ -203,7 +203,8 @@ namespace AWX.Cmdlets
         {
             var jt = requirements.JobTemplateData;
             var def = requirements.Defaults;
-            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
+            var (fixedColor, implicitColor, explicitColor, requiredColor) =
+                ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red);
             WriteHost($"[{jt.Id}] {jt.Name} - {jt.Description}\n");
             var fmt = "{0,22} : {1}\n";
             {
@@ -269,6 +270,15 @@ namespace AWX.Cmdlets
                 WriteHost(sb.ToString(),
                             foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
             }
+            if (requirements.SurveyEnabled)
+            {
+                WriteHost(string.Format(fmt, "Survey", "Enabled"), foregroundColor: requiredColor);
+            }
+            if (requirements.VariablesNeededToStart.Length > 0)
+            {
+                WriteHost(string.Format(fmt, "Variables", $"[{string.Join(", ", requirements.VariablesNeededToStart)}]"),
+                            foregroundColor: requiredColor);
+            }
             {
                 var diffModeVal = $"{def.DiffMode}"
                                   + (requirements.AskDiffModeOnLaunch && DiffMode != null ? $" => {DiffMode}" : "");
@@ -293,6 +303,11 @@ namespace AWX.Cmdlets
                         + (requirements.AskCredentialOnLaunch && Credentials != null ? $" => {string.Join(',', Credentials.Select(id => $"[{id}]"))}" : "");
                 WriteHost(string.Format(fmt, "Credentials", credentialsVal),
                             foregroundColor: requirements.AskCredentialOnLaunch ? (Credentials == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            if (requirements.PasswordsNeededToStart.Length > 0)
+            {
+                WriteHost(string.Format(fmt, "CredentialPassswords", $"[{string.Join(", ", requirements.PasswordsNeededToStart)}]"),
+                            foregroundColor: requiredColor);
             }
             if (def.ExecutionEnvironment.Id != null || ExecutionEnvironment != null)
             {
