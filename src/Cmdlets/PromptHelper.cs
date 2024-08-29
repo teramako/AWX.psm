@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Host;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace AWX.Cmdlets
 {
@@ -12,13 +14,21 @@ namespace AWX.Cmdlets
         }
         private PSHost _host { get; }
 
-        private void printHeader(string label, string defaultValue, string helpMessage = "", string helpIndicator = "")
+        private void printHeader(string label, string defaultValue, string helpMessage = "", string helpIndicator = "", bool showDefault = true)
         {
             var gb = Console.BackgroundColor;
             _host.UI.Write(ConsoleColor.Blue, gb, "==> ");
-            _host.UI.Write($"{label} (Default: ");
-            _host.UI.Write(ConsoleColor.DarkYellow, gb, $"{defaultValue}");
-            _host.UI.WriteLine(")");
+            _host.UI.Write($"{label}");
+            if (showDefault)
+            {
+                _host.UI.Write(" (Default: ");
+                _host.UI.Write(ConsoleColor.DarkYellow, gb, $"{defaultValue}");
+                _host.UI.WriteLine(")");
+            }
+            else
+            {
+                _host.UI.WriteLine();
+            }
             if (!string.IsNullOrEmpty(helpMessage))
             {
                 _host.UI.WriteLine(helpMessage);
@@ -256,7 +266,7 @@ namespace AWX.Cmdlets
             choices.Add(new ChoiceDescription("&True", trueHelpMessage));
             choices.Add(new ChoiceDescription("&False", falseHelpMessage));
 
-            printHeader(label, "", $"{trueHelpMessage}(true) or {falseHelpMessage}(false)");
+            printHeader(label, "", $"{trueHelpMessage}(true) or {falseHelpMessage}(false)", showDefault: false);
             var res = _host.UI.PromptForChoice("", "", choices, defaultValue ? 0 : 1);
             switch (res)
             {
@@ -309,6 +319,39 @@ namespace AWX.Cmdlets
                 return true;
             }
             answer = new Answer<TEnum>(defaultValue, true);
+            return false;
+        }
+        /// <summary>
+        /// Password prompt
+        /// </summary>
+        /// <param name="caption">Header label</param>
+        /// <param name="answer"></param>
+        /// <param name="helpMessage"></param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        public bool AskPassword(string caption, string helpMessage, out Answer<string> answer)
+        {
+            printHeader(caption, "", helpMessage, showDefault: false);
+            var label = "Password";
+            var fd = new FieldDescription(label);
+            fd.SetParameterType(typeof(SecureString));
+            var fdc = new Collection<FieldDescription>() { fd };
+            Dictionary<string, PSObject>? result = _host.UI.Prompt("", "", fdc);
+            if (result != null && result.TryGetValue(label, out PSObject? pso))
+            {
+                if (pso == null || pso.BaseObject == null)
+                {
+                    answer = new Answer<string>(string.Empty, true);
+                    return false;
+                }
+                if (pso.BaseObject is SecureString secureString)
+                {
+                    var password = Marshal.PtrToStringUni(Marshal.SecureStringToGlobalAllocUnicode(secureString));
+                    secureString.Dispose();
+                    answer = new Answer<string>(password ?? string.Empty);
+                    return true;
+                }
+            }
+            answer = new Answer<string>(string.Empty, true);
             return false;
         }
         private bool TryPromptOneInput(string label, out string inputString)
