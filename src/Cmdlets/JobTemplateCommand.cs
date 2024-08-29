@@ -22,11 +22,19 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Query.Add("id__in", string.Join(',', IdSet));
-            Query.Add("page_size", $"{IdSet.Count}");
-            foreach (var resultSet in GetResultSet<JobTemplate>($"{JobTemplate.PATH}?{Query}", true))
+            if (IdSet.Count == 1)
             {
-                WriteObject(resultSet.Results, true);
+                var result = GetResource<JobTemplate>($"{JobTemplate.PATH}{IdSet.First()}/");
+                WriteObject(result);
+            }
+            else
+            {
+                Query.Add("id__in", string.Join(',', IdSet));
+                Query.Add("page_size", $"{IdSet.Count}");
+                foreach (var resultSet in GetResultSet<JobTemplate>(JobTemplate.PATH, Query, true))
+                {
+                    WriteObject(resultSet.Results, true);
+                }
             }
         }
     }
