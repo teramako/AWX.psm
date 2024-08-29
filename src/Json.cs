@@ -433,12 +433,7 @@ namespace AWX
                             array.Add(Read(ref reader, typeToConvert, options));
                             break;
                         case JsonTokenType.StartObject:
-                            /*
-                            Type dictType = typeof(OrderedDictionary);
-                            var dictConverter = (JsonConverter<OrderedDictionary>)options.GetConverter(dictType);
-                            array.Add(dictConverter.Read(ref reader, dictType, options));
-                            */
-                            array.Add(dictConverter.Read(ref reader, typeof(OrderedDictionary), options));
+                            array.Add(dictConverter.Read(ref reader, typeof(Dictionary<string, object?>), options));
                             break;
                         default:
                             throw new JsonException($"Invalid TokenType: {reader.TokenType}");
