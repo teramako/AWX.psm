@@ -24,7 +24,7 @@ namespace AWX.Resources
         /// Enter inputs using either JSON or YAML syntax.
         /// Refer to the documentaion for example syntax.
         /// </summary>
-        OrderedDictionary Inputs { get; }
+        Dictionary<string, object?> Inputs { get; }
     }
 
 
@@ -40,7 +40,7 @@ namespace AWX.Resources
                             ulong? organization,
                             ulong credentialType,
                             bool managed,
-                            OrderedDictionary inputs,
+                            Dictionary<string, object?> inputs,
                             string kind,
                             bool cloud,
                             bool kubernetes)
@@ -352,7 +352,7 @@ namespace AWX.Resources
         public ulong CredentialType { get; } = credentialType;
         public bool Managed { get; } = managed;
 
-        public OrderedDictionary Inputs { get; } = inputs;
+        public Dictionary<string, object?> Inputs { get; } = inputs;
         public string Kind { get; } = kind;
         public bool Cloud { get; } = cloud;
         public bool Kubernetes { get; } = kubernetes;
