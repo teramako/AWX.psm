@@ -2,6 +2,7 @@ using AWX.Resources;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 
 namespace AWX.Cmdlets
 {
@@ -337,6 +338,130 @@ namespace AWX.Cmdlets
                                 foregroundColor: requirements.AskTimeoutOnLaunch ? (Timeout == null ? implicitColor : explicitColor) : fixedColor);
             }
         }
+
+        private bool CheckPasswordsRequired(JobTemplateLaunchRequirements requirements,
+                                            IDictionary<string, object?> sendData,
+                                            out Dictionary<string, (string caption, string description)> result)
+        {
+            result = new();
+            ulong[] credentialIds;
+            if (sendData.TryGetValue("credentials", out var res))
+            {
+                credentialIds = (res as List<ulong>)?.ToArray() ?? [];
+                if (credentialIds.Length == 0)
+                    return false;
+
+                var query = HttpUtility.ParseQueryString("");
+                query.Set("id__in", string.Join(',', credentialIds));
+                query.Set("page_size", $"{credentialIds.Length}");
+                foreach (var resultSet in GetResultSet<Credential>(Credential.PATH, query, true))
+                {
+                    foreach (var cred in resultSet.Results)
+                    {
+                        string captionFmt;
+                        string description = cred.Description;
+                        foreach (var kv in cred.Inputs)
+                        {
+                            if (result.ContainsKey(kv.Key)) continue;
+                            string key = kv.Key;
+                            switch (kv.Key)
+                            {
+                                case "password":
+                                    captionFmt = "Password ({0})";
+                                    break;
+                                case "become_password":
+                                    captionFmt = "Become Password ({0})";
+                                    break;
+                                case "ssh_key_unlock":
+                                    captionFmt = "SSH Passphrase ({0})";
+                                    break;
+                                case "vault_password":
+                                    string vaultId = cred.Inputs["vault_id"] as string ?? "";
+                                    if (string.IsNullOrEmpty(vaultId))
+                                    {
+                                        captionFmt = "Vault Password ({0})";
+                                    }
+                                    else
+                                    {
+                                        captionFmt = $"Vault Password ({{0}} | {vaultId})";
+                                        key = $"{kv.Key}.{vaultId}";
+                                    }
+                                    break;
+                                default:
+                                    continue;
+                            }
+                            if (kv.Value as string != "ASK")
+                                continue;
+
+                            result.Add(key, (string.Format(captionFmt, $"[{cred.Id}]{cred.Name}"), description));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                credentialIds = requirements.Defaults.Credentials?.Select(x => x.Id).ToArray() ?? [];
+                if (requirements.PasswordsNeededToStart.Length == 0)
+                    return false;
+
+                foreach (var key in requirements.PasswordsNeededToStart)
+                {
+                    string captionFmt;
+                    string description = "";
+                    switch (key)
+                    {
+                        case "password":
+                            captionFmt = "Password ({0})";
+                            break;
+                        case "become_password":
+                            captionFmt = "Become Password ({0})";
+                            break;
+                        case "ssh_key_unlock":
+                            captionFmt = "SSH Passphrase ({0})";
+                            break;
+                        default:
+                            if (!key.StartsWith("vault_password"))
+                                return false;
+                            string[] vaultKeys = key.Split('.', 2);
+                            captionFmt = (vaultKeys.Length == 2 && !string.IsNullOrEmpty(vaultKeys[1]))
+                                         ? $"Vault Password ({{0}} | {vaultKeys[1]})"
+                                         : "Vault Password ({0})";
+                            break;
+                    }
+                    var t = requirements.Defaults.Credentials?
+                        .Where(cred => cred.Passwordsneeded?.Any(passwordKey => passwordKey == key) ?? false)
+                        .Select(cred => (string.Format(captionFmt, $"[{cred.Id}]{cred.Name}"), description))
+                        .FirstOrDefault() ?? ("", "");
+
+                    result.Add(key, t);
+                }
+            }
+
+            return result.Count > 0;
+        }
+        private bool TryAskCredentials(IDictionary<string, (string caption, string description)> checkResult,
+                                         IDictionary<string, object?> sendData)
+        {
+            if (CommandRuntime.Host == null)
+                return false;
+
+            var prompt = new AskPrompt(CommandRuntime.Host);
+            var credentialPassswords = new Dictionary<string, string>();
+            sendData.Add("credential_passwords", credentialPassswords);
+
+            foreach (var (key, (caption, description)) in checkResult)
+            {
+                if (prompt.AskPassword(caption, description, out var passwordAnswer))
+                {
+                    credentialPassswords.Add(key, passwordAnswer.Input);
+                }
+                else
+                {   // Canceled
+                    return false;
+                }
+            }
+            return true;
+        }
         // FIXME
         /// <summary>
         /// Show input prompt and Update <paramref name="sendData"/>.
@@ -393,6 +518,15 @@ namespace AWX.Cmdlets
                         sendData[key] = credentialsAnswer.Input;
                 }
                 else { return false; }
+            }
+
+            // CredentialPassword
+            if (CheckPasswordsRequired(requirements, sendData, out var checkResult))
+            {
+                if (!TryAskCredentials(checkResult, sendData))
+                {
+                    return false;
+                }
             }
 
             // ExecutionEnvironment
@@ -635,25 +769,15 @@ namespace AWX.Cmdlets
             var sendData = CreateSendData();
             if (Interactive)
             {
-                if (TryAskOnLaunch(requirements, sendData))
+                if (!TryAskOnLaunch(requirements, sendData))
                 {
-                    if (sendData == null)
-                    {
-                        return null;
-                    }
-                    foreach (var (key, obj) in sendData)
-                    {
-                        if (obj == null)
-                        {
-                            WriteHost(string.Format("{0,22} : {1} ({2})\n", key, obj, "null"));
-                        }
-                        else
-                        {
-                            WriteHost(string.Format("{0,22} : {1} ({2})\n", key, obj, obj.GetType().Name));
-                        }
-                    }
+                    WriteWarning("Launch canceled.");
+                    return null;
                 }
-                else
+            }
+            else if (CheckPasswordsRequired(requirements, sendData, out var checkResult))
+            {
+                if (!TryAskCredentials(checkResult, sendData))
                 {
                     WriteWarning("Launch canceled.");
                     return null;
