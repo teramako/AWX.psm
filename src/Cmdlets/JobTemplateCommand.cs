@@ -519,8 +519,9 @@ namespace AWX.Cmdlets
                     WriteHost(string.Format(skipFormat, "Credentials", strData), dontshow: true);
                 }
                 else if (prompt.AskList<ulong>("Credentials",
-                            requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
-                            "", out var credentialsAnswer))
+                                               defaultValues: requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
+                                               helpMessage: "",
+                                               out var credentialsAnswer))
                 {
                     if (!credentialsAnswer.IsEmpty)
                         sendData[key] = credentialsAnswer.Input;
@@ -566,12 +567,15 @@ namespace AWX.Cmdlets
                     WriteHost(string.Format(skipFormat, "Job Type", sendData[key]), dontshow: true);
                 }
                 else if (prompt.AskBool("Job Type",
-                                        requirements.Defaults.JobType == Resources.JobType.Run,
-                                        "Run", "Check", out var jobTypeAnswer))
+                                        defaultValue: requirements.Defaults.JobType == Resources.JobType.Run,
+                                        trueHelpMessage: "Run",
+                                        falseHelpMessage: "Check",
+                                        out var jobTypeAnswer))
                 {
                     if (!jobTypeAnswer.IsEmpty)
                         sendData[key] = (jobTypeAnswer.Input ? Resources.JobType.Run : Resources.JobType.Check)
-                            .ToString().ToLowerInvariant();
+                                        .ToString()
+                                        .ToLowerInvariant();
                 }
                 else { return false; }
             }
@@ -584,8 +588,10 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "ScmBranch", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("ScmBranch", requirements.Defaults.ScmBranch,
-                                    "", out var branchAnswer))
+                else if (prompt.Ask("ScmBranch",
+                                    defaultValue: requirements.Defaults.ScmBranch,
+                                    helpMessage: "",
+                                    out var branchAnswer))
                 {
                     if (!branchAnswer.IsEmpty)
                         sendData[key] = branchAnswer.Input;
@@ -603,8 +609,9 @@ namespace AWX.Cmdlets
                     WriteHost(string.Format(skipFormat, "Labels", strData), dontshow: true);
                 }
                 else if (prompt.AskList<ulong>("Labels",
-                                               requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
-                                               "", out var labelsAnswer))
+                                               defaultValues: requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
+                                               helpMessage: "",
+                                               out var labelsAnswer))
                 {
                     if (!labelsAnswer.IsEmpty)
                         sendData[key] = labelsAnswer.Input;
@@ -640,8 +647,10 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Limit", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("Limit", requirements.Defaults.Limit,
-                                    "", out var limitAnswer))
+                else if (prompt.Ask("Limit",
+                                    defaultValue: requirements.Defaults.Limit,
+                                    helpMessage: "",
+                                    out var limitAnswer))
                 {
                     if (!limitAnswer.IsEmpty)
                         sendData[key] = limitAnswer.Input;
@@ -658,8 +667,10 @@ namespace AWX.Cmdlets
                     var v = (JobVerbosity)((int)(sendData[key] ?? 0));
                     WriteHost(string.Format(skipFormat, "Job Tags", $"{v:d} ({v:g})"), dontshow: true);
                 }
-                else if (prompt.AskEnum<JobVerbosity>("Verbosity", requirements.Defaults.Verbosity,
-                                                      "", out var verbosityAnswer))
+                else if (prompt.AskEnum<JobVerbosity>("Verbosity",
+                                                      defaultValue: requirements.Defaults.Verbosity,
+                                                      helpMessage: "",
+                                                      out var verbosityAnswer))
                 {
                     if (!verbosityAnswer.IsEmpty)
                         sendData[key] = (int)verbosityAnswer.Input;
@@ -715,8 +726,11 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Diff Mode", sendData[key]), dontshow: true);
                 }
-                else if (prompt.AskBool("Diff Mode", requirements.Defaults.DiffMode,
-                                        "On", "Off", out var diffModeAnswer))
+                else if (prompt.AskBool("Diff Mode",
+                                        defaultValue: requirements.Defaults.DiffMode,
+                                        trueHelpMessage: "On",
+                                        falseHelpMessage: "Off",
+                                        out var diffModeAnswer))
                 {
                     if (!diffModeAnswer.IsEmpty)
                         sendData[key] = diffModeAnswer.Input;
@@ -732,8 +746,10 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Job Tags", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("Job Tags", requirements.Defaults.JobTags,
-                                    "", out var jobTagsAnswer))
+                else if (prompt.Ask("Job Tags",
+                                    defaultValue: requirements.Defaults.JobTags,
+                                    helpMessage: "",
+                                    out var jobTagsAnswer))
                 {
                     if (!jobTagsAnswer.IsEmpty)
                         sendData[key] = jobTagsAnswer.Input;
@@ -749,8 +765,10 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Skip Tags", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("Skip Tags", requirements.Defaults.JobTags,
-                                    "", out var skipTagsAnswer))
+                else if (prompt.Ask("Skip Tags",
+                                    defaultValue: requirements.Defaults.JobTags,
+                                    helpMessage: "",
+                                    out var skipTagsAnswer))
                 {
                     if (!skipTagsAnswer.IsEmpty)
                         sendData[key] = skipTagsAnswer.Input;
@@ -766,8 +784,10 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Extra Vars", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("ExtraVariables", requirements.Defaults.ExtraVars,
-                            "", out var extraVarsAnswer))
+                else if (prompt.Ask("ExtraVariables",
+                                    defaultValue: requirements.Defaults.ExtraVars,
+                                    helpMessage: "",
+                                    out var extraVarsAnswer))
                 {
                     if (!extraVarsAnswer.IsEmpty)
                         sendData[key] = extraVarsAnswer.Input;
