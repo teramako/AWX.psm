@@ -70,7 +70,7 @@ namespace AWX.Resources
         string Description { get; }
         CredentialTypeKind Kind { get; }
         CredentialTypeInputs Inputs { get; }
-        OrderedDictionary Injectors { get; }
+        Dictionary<string, Dictionary<string, string>> Injectors { get; }
     }
 
     public class CredentialType(ulong id,
@@ -86,7 +86,7 @@ namespace AWX.Resources
                                 string nameSpace,
                                 bool managed,
                                 CredentialTypeInputs inputs,
-                                OrderedDictionary injectors)
+                                Dictionary<string, Dictionary<string, string>> injectors)
         : ICredentialType, IResource<CredentialType.Summary>
     {
         public const string PATH = "/api/v2/credential_types/";
@@ -136,7 +136,7 @@ namespace AWX.Resources
         public string Namespace { get; } = nameSpace;
         public bool Managed { get; } = managed;
         public CredentialTypeInputs Inputs { get; } = inputs;
-        public OrderedDictionary Injectors { get; } = injectors;
+        public Dictionary<string, Dictionary<string, string>> Injectors { get; } = injectors;
     }
 
     public record CredentialTypeInputs(CredentialInputField[] Fields, string[]? Required)
