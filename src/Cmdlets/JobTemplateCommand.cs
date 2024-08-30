@@ -466,11 +466,16 @@ namespace AWX.Cmdlets
         /// <summary>
         /// Show input prompt and Update <paramref name="sendData"/>.
         /// </summary>
-        /// <param name="sendData"></param>
         /// <param name="requirements"></param>
+        /// <param name="sendData">Dictionary object that is the source of the JSON string sent to AWX/AnsibleTower</param>
+        /// <param name="checkOptional">
+        ///   <c>true</c>(`Interactive` mode)  => Check both <c>***NeededToStart</c> and <c>**AskInventoryOnLaunch</c>.
+        ///   <c>false</c> => Check only <c>***NeededToStart</c>.
+        /// </param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
         protected bool TryAskOnLaunch(JobTemplateLaunchRequirements requirements,
-                                      IDictionary<string, object?> sendData)
+                                      IDictionary<string, object?> sendData,
+                                      bool checkOptional = false)
         {
             if (requirements.CanStartWithoutUserInput)
             {
@@ -485,7 +490,7 @@ namespace AWX.Cmdlets
             string skipFormat = "Skip {0} prompt. Already specified: {1:g}";
 
             // Inventory
-            if (requirements.AskInventoryOnLaunch)
+            if (requirements.InventoryNeededToStart || (checkOptional && requirements.AskInventoryOnLaunch))
             {
                 key = "inventory";
                 if (sendData.ContainsKey(key))
@@ -502,7 +507,7 @@ namespace AWX.Cmdlets
             }
 
             // Credentials
-            if (requirements.AskCredentialOnLaunch)
+            if (requirements.CredentialNeededToStart || (checkOptional &&  requirements.AskCredentialOnLaunch))
             {
                 key = "credentials";
                 if (sendData.ContainsKey(key))
@@ -530,7 +535,7 @@ namespace AWX.Cmdlets
             }
 
             // ExecutionEnvironment
-            if (requirements.AskExecutionEnvironmentOnLaunch)
+            if (checkOptional && requirements.AskExecutionEnvironmentOnLaunch)
             {
                 key = "execution_environment";
                 if (sendData.ContainsKey(key))
@@ -548,7 +553,7 @@ namespace AWX.Cmdlets
             }
 
             // JobType
-            if (requirements.AskJobTypeOnLaunch)
+            if (checkOptional && requirements.AskJobTypeOnLaunch)
             {
                 key = "job_type";
                 if (sendData.ContainsKey(key))
@@ -567,7 +572,7 @@ namespace AWX.Cmdlets
             }
 
             // ScmBranch
-            if (requirements.AskScmBranchOnLaunch)
+            if (checkOptional && requirements.AskScmBranchOnLaunch)
             {
                 key = "scm_branch";
                 if (sendData.ContainsKey(key))
@@ -584,7 +589,7 @@ namespace AWX.Cmdlets
             }
 
             // Labels
-            if (requirements.AskLabelsOnLaunch)
+            if (checkOptional && requirements.AskLabelsOnLaunch)
             {
                 key = "labels";
                 if (sendData.ContainsKey(key))
@@ -603,7 +608,7 @@ namespace AWX.Cmdlets
             }
 
             // Forks
-            if (requirements.AskForksOnLaunch)
+            if (checkOptional && requirements.AskForksOnLaunch)
             {
                 key = "forks";
                 if (sendData.ContainsKey(key))
@@ -620,7 +625,7 @@ namespace AWX.Cmdlets
             }
 
             // Limit
-            if (requirements.AskLimitOnLaunch)
+            if (checkOptional && requirements.AskLimitOnLaunch)
             {
                 key = "limit";
                 if (sendData.ContainsKey(key))
@@ -637,7 +642,7 @@ namespace AWX.Cmdlets
             }
 
             // Verbosity
-            if (requirements.AskVerbosityOnLaunch)
+            if (checkOptional && requirements.AskVerbosityOnLaunch)
             {
                 key = "verbosity";
                 if (sendData.ContainsKey(key))
@@ -655,7 +660,7 @@ namespace AWX.Cmdlets
             }
 
             // JobSliceCount
-            if (requirements.AskJobTypeOnLaunch)
+            if (checkOptional && requirements.AskJobTypeOnLaunch)
             {
                 key = "job_slice_count";
                 if (sendData.ContainsKey(key))
@@ -672,7 +677,7 @@ namespace AWX.Cmdlets
             }
 
             // Timeout
-            if (requirements.AskTimeoutOnLaunch)
+            if (checkOptional && requirements.AskTimeoutOnLaunch)
             {
                 key = "timeout";
                 if (sendData.ContainsKey(key))
@@ -689,7 +694,7 @@ namespace AWX.Cmdlets
             }
 
             // DiffMode
-            if (requirements.AskDiffModeOnLaunch)
+            if (checkOptional && requirements.AskDiffModeOnLaunch)
             {
                 key = "diff_mode";
                 if (sendData.ContainsKey(key))
@@ -706,7 +711,7 @@ namespace AWX.Cmdlets
             }
 
             // Tags
-            if (requirements.AskTagsOnLaunch)
+            if (checkOptional && requirements.AskTagsOnLaunch)
             {
                 key = "job_tags";
                 if (sendData.ContainsKey(key))
@@ -723,7 +728,7 @@ namespace AWX.Cmdlets
             }
 
             // SkipTags
-            if (requirements.AskSkipTagsOnLaunch)
+            if (checkOptional && requirements.AskSkipTagsOnLaunch)
             {
                 key = "skip_tags";
                 if (sendData.ContainsKey(key))
@@ -740,7 +745,7 @@ namespace AWX.Cmdlets
             }
 
             // ExtraVars
-            if (requirements.AskVariablesOnLaunch)
+            if (checkOptional && requirements.AskVariablesOnLaunch)
             {
                 key = "extra_vars";
                 if (sendData.ContainsKey(key))
@@ -756,6 +761,9 @@ namespace AWX.Cmdlets
                 else { return false; }
             }
 
+            // FIXME: implement Survey
+            // FIXME: implement requirements.VariablesNeededToStart
+
             return true;
         }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
@@ -767,21 +775,10 @@ namespace AWX.Cmdlets
             }
             ShowJobTemplateInfo(requirements);
             var sendData = CreateSendData();
-            if (Interactive)
+            if (!TryAskOnLaunch(requirements, sendData, checkOptional: Interactive))
             {
-                if (!TryAskOnLaunch(requirements, sendData))
-                {
-                    WriteWarning("Launch canceled.");
-                    return null;
-                }
-            }
-            else if (CheckPasswordsRequired(requirements, sendData, out var checkResult))
-            {
-                if (!TryAskCredentials(checkResult, sendData))
-                {
-                    WriteWarning("Launch canceled.");
-                    return null;
-                }
+                WriteWarning("Launch canceled.");
+                return null;
             }
             string senDataString = JsonSerializer.Serialize(sendData, Json.DeserializeOptions);
             WriteHost($"SenData:\n{senDataString}\n", dontshow: true);
