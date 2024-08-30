@@ -6,7 +6,7 @@ namespace AWX.Resources
     public interface IWorkflowJobTemplateNode
     {
         [JsonPropertyName("extra_data")]
-        OrderedDictionary ExtraData { get; }
+        Dictionary<string, object?> ExtraData { get; }
         /// <summary>
         /// Inventory applied as a prompt, assuming job template for inventory.
         /// </summary>
@@ -49,7 +49,7 @@ namespace AWX.Resources
                                          WorkflowJobTemplateNode.Summary summaryFields,
                                          DateTime created,
                                          DateTime? modified,
-                                         OrderedDictionary extraData,
+                                         Dictionary<string, object?> extraData,
                                          ulong? inventory,
                                          string? scmBranch,
                                          string? jobType,
@@ -111,7 +111,7 @@ namespace AWX.Resources
         public Summary SummaryFields { get; } = summaryFields;
         public DateTime Created { get; } = created;
         public DateTime? Modified { get; } = modified;
-        public OrderedDictionary ExtraData { get; } = extraData;
+        public Dictionary<string, object?> ExtraData { get; } = extraData;
         public ulong? Inventory { get; } = inventory;
         public string? ScmBranch { get; } = scmBranch;
         public string? JobType { get; } = jobType;

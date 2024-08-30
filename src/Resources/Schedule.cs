@@ -9,7 +9,7 @@ namespace AWX.Resources
         string Description { get; }
         string Rrule { get; }
         [JsonPropertyName("extra_data")]
-        OrderedDictionary ExtraData { get; }
+        Dictionary<string, object?> ExtraData { get; }
         ulong? Inventory { get; }
         [JsonPropertyName("scm_branch")]
         string? ScmBranch { get; }
@@ -37,7 +37,7 @@ namespace AWX.Resources
 
     public class Schedule(string rrule, ulong id, ResourceType type, string url, RelatedDictionary related,
                           Schedule.Summary summaryFields, DateTime created, DateTime? modified, string name,
-                          string description, OrderedDictionary extraData, ulong? inventory, string? scmBranch,
+                          string description, Dictionary<string, object?> extraData, ulong? inventory, string? scmBranch,
                           string? jobType, string? jobTags, string? skipTags, string? limit, bool? diffMode,
                           JobVerbosity? verbosity, ulong? executionEnvironment, int? forks, int? jobSliceCount,
                           int? timeout, ulong unifiedJobTemplate, bool enabled, DateTime? dtStart, DateTime? dtEnd,
@@ -93,7 +93,7 @@ namespace AWX.Resources
 
         public string Name { get; } = name;
         public string Description { get; } = description;
-        public OrderedDictionary ExtraData { get; } = extraData;
+        public Dictionary<string, object?> ExtraData { get; } = extraData;
         public ulong? Inventory { get; } = inventory;
         public string? ScmBranch { get; } = scmBranch;
         public string? JobType { get; } = jobType;
