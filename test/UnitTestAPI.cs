@@ -3048,7 +3048,7 @@ namespace API_Test
         static void DumpSummary(WorkflowJob.Summary summary)
         {
             Console.WriteLine("-----SummaryFields-----");
-            Console.WriteLine($"Template        : [{summary.WorkflowJobTemplate.Id}] {summary.WorkflowJobTemplate.Name}");
+            Console.WriteLine($"Template        : [{summary.WorkflowJobTemplate?.Id}] {summary.WorkflowJobTemplate?.Name}");
             Console.WriteLine($"Schedule        : [{summary.Schedule?.Id}] {summary.Schedule?.Name} {summary.Schedule?.NextRun}");
             Console.WriteLine($"UnifiedTemplate : [{summary.UnifiedJobTemplate.Id}][{summary.UnifiedJobTemplate.UnifiedJobType}] {summary.UnifiedJobTemplate.Name}");
             Console.WriteLine($"CreatedBy       : [{summary.CreatedBy?.Id}] {summary.CreatedBy?.Username}");
@@ -3143,7 +3143,7 @@ namespace API_Test
             Console.WriteLine("-----SummaryFields-----");
             Console.WriteLine($"Job             : [{summary.Job?.Id}][{summary.Job?.Type}] {summary.Job?.Status} {summary.Job?.Name}");
             Console.WriteLine($"WorkflowJob     : [{summary.WorkflowJob.Id}] {summary.WorkflowJob.Name}");
-            Console.WriteLine($"UnifiedTemplate : [{summary.UnifiedJobTemplate.Id}][{summary.UnifiedJobTemplate.UnifiedJobType}] {summary.UnifiedJobTemplate.Name}");
+            Console.WriteLine($"UnifiedTemplate : [{summary.UnifiedJobTemplate?.Id}][{summary.UnifiedJobTemplate?.UnifiedJobType}] {summary.UnifiedJobTemplate?.Name}");
             Console.WriteLine();
         }
         [TestMethod]
@@ -3302,7 +3302,8 @@ namespace API_Test
             {
                 Console.WriteLine($"WorkflowApproval: [{approval.Id}]{approval.Name}");
                 Console.WriteLine($"Workflow: [{approval.SummaryFields.WorkflowJobTemplate.Id}]{approval.SummaryFields.WorkflowApprovalTemplate.Name}");
-                var res = await WorkflowApprovalTemplate.Get(approval.UnifiedJobTemplate);
+                Assert.IsNotNull(approval.UnifiedJobTemplate);
+                var res = await WorkflowApprovalTemplate.Get((ulong)approval.UnifiedJobTemplate);
                 Assert.IsInstanceOfType<WorkflowApprovalTemplate>(res);
                 DumpResource(res);
                 DumpSummary(res.SummaryFields);
