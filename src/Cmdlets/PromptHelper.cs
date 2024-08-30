@@ -186,9 +186,10 @@ namespace AWX.Cmdlets
         /// <param name="label">Prompt label</param>
         /// <param name="defaultValue"></param>
         /// <param name="helpMessage"></param>
+        /// <param name="required"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask<T>(string label, T? defaultValue, string helpMessage, out Answer<T> answer) where T : struct
+        public bool Ask<T>(string label, T defaultValue, string helpMessage, bool required, out Answer<T> answer) where T: struct
         {
             var helpIndicator = """
                 (!? => Show help, !! => Use default, !> => Suspend, Empty => Skip)
@@ -226,14 +227,14 @@ namespace AWX.Cmdlets
                 }
                 if (string.IsNullOrEmpty(inputString))
                 {
-                    if (defaultValue != null)
+                    if (required)
                     {
-                        answer = new Answer<T>((T)defaultValue, !inputed);
-                        return true;
+                        _host.UI.WriteLine(ConsoleColor.Red, Console.BackgroundColor,
+                                           "Empty value is not allowed.");
+                        continue;
                     }
-                    _host.UI.Write(ConsoleColor.Red, Console.BackgroundColor,
-                            $"default value is null. Please specify value.\n");
-                    continue;
+                    answer = new Answer<T>((T)defaultValue, !inputed);
+                    return true;
                 }
                 else
                 {

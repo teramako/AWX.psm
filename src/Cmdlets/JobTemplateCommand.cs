@@ -497,10 +497,13 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Inventory", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<ulong>("Inventory", requirements.Defaults.Inventory.Id,
-                                           "", out var inventoryAnswer))
+                else if (prompt.Ask<ulong>("Inventory",
+                                           defaultValue: requirements.Defaults.Inventory.Id ?? 0,
+                                           helpMessage: "",
+                                           required: requirements.InventoryNeededToStart,
+                                           out var inventoryAnswer))
                 {
-                    if (!inventoryAnswer.IsEmpty)
+                    if (!inventoryAnswer.IsEmpty && inventoryAnswer.Input > 0)
                         sendData[key] = inventoryAnswer.Input;
                 }
                 else { return false; }
@@ -543,10 +546,12 @@ namespace AWX.Cmdlets
                     WriteHost(string.Format(skipFormat, "Execution Environment", sendData[key]), dontshow: true);
                 }
                 else if (prompt.Ask<ulong>("Execution Environment",
-                                           requirements.Defaults.ExecutionEnvironment.Id,
-                                           "", out var eeAnswer))
+                                           defaultValue: requirements.Defaults.ExecutionEnvironment.Id ?? 0,
+                                           helpMessage: "",
+                                           required: false,
+                                           out var eeAnswer))
                 {
-                    if (!eeAnswer.IsEmpty)
+                    if (!eeAnswer.IsEmpty && eeAnswer.Input > 0)
                         sendData[key] = eeAnswer.Input;
                 }
                 else { return false; }
@@ -615,8 +620,11 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Forks", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>("Forks", requirements.Defaults.Forks,
-                                         "", out var forksAnswer))
+                else if (prompt.Ask<int>("Forks",
+                                         defaultValue: requirements.Defaults.Forks,
+                                         helpMessage: "",
+                                         required: false,
+                                         out var forksAnswer))
                 {
                     if (!forksAnswer.IsEmpty)
                         sendData[key] = forksAnswer.Input;
@@ -667,8 +675,11 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Job Slice Count", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>("Job Slice Count", requirements.Defaults.JobSliceCount,
-                                         "", out var jobSliceCountAnswer))
+                else if (prompt.Ask<int>("Job Slice Count",
+                                         defaultValue: requirements.Defaults.JobSliceCount,
+                                         helpMessage: "",
+                                         required: false,
+                                         out var jobSliceCountAnswer))
                 {
                     if (!jobSliceCountAnswer.IsEmpty)
                         sendData[key] = jobSliceCountAnswer.Input;
@@ -684,8 +695,11 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, "Timeout", sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>("Timeout", requirements.Defaults.JobSliceCount,
-                                         "", out var timeoutAnswer))
+                else if (prompt.Ask<int>("Timeout",
+                                         defaultValue: requirements.Defaults.Timeout,
+                                         helpMessage: "",
+                                         required: false,
+                                         out var timeoutAnswer))
                 {
                     if (!timeoutAnswer.IsEmpty)
                         sendData[key] = timeoutAnswer.Input;
