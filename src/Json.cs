@@ -270,11 +270,13 @@ namespace AWX
         }
         /// <summary>
         /// Json Serialize / Deserialize OPTIONS for this API.
-        /// <list type="bullet">Property PathName to snake_case for serialization</list>
-        /// <list type="bullet">Property PathName In case sensitive for deserialization</list>
-        /// <list type="bullet">DateTime to Local time zone for deserialization, to Utc for serialization</list>
-        /// <list type="bullet">Non classed object to <see cref="OrderedDictionary"/> for deserialization</list>
-        /// <list type="bullet">Non classed array to <see cref="object"/>?[] for deserialization</list>
+        /// <list type="bullet">
+        ///   <item>Property PathName to snake_case for serialization</item>
+        ///   <item>Property PathName In case sensitive for deserialization</item>
+        ///   <item>DateTime to Local time zone for deserialization, to Utc for serialization</item>
+        ///   <item>Non classed object to <c>Dictionary&lt;string, object?&gt;</c> for deserialization</item>
+        ///   <item>Non classed array to <c>object?[]</c> for deserialization</item>
+        /// </list>
         /// </summary>
         public static readonly JsonSerializerOptions DeserializeOptions = new()
         {
@@ -297,7 +299,7 @@ namespace AWX
             }
         };
         /// <summary>
-        /// Deserialize JSON to <see cref="OrderedDictionary"/> and serialize
+        /// Deserialize JSON to <see cref="Dictionary{string, object?}"/> and serialize
         /// </summary>
         private class DictConverter : JsonConverter<Dictionary<string, object?>>
         {
