@@ -213,7 +213,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(HostSummary? Host, JobExSummary Job, OrderedDictionary Role);
+        public record Summary(HostSummary? Host, JobExSummary Job, Dictionary<string, ObjectRoleSummary> Role);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
