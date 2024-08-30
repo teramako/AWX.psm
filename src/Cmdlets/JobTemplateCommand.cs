@@ -347,7 +347,7 @@ namespace AWX.Cmdlets
             ulong[] credentialIds;
             if (sendData.TryGetValue("credentials", out var res))
             {
-                credentialIds = (res as List<ulong>)?.ToArray() ?? [];
+                credentialIds = res as ulong[] ?? [];
                 if (credentialIds.Length == 0)
                     return false;
 
@@ -524,7 +524,9 @@ namespace AWX.Cmdlets
                                                out var credentialsAnswer))
                 {
                     if (!credentialsAnswer.IsEmpty)
-                        sendData[key] = credentialsAnswer.Input;
+                        sendData[key] = credentialsAnswer.Input
+                                                         .Where(x => x > 0)
+                                                         .ToArray();
                 }
                 else { return false; }
             }
@@ -614,7 +616,9 @@ namespace AWX.Cmdlets
                                                out var labelsAnswer))
                 {
                     if (!labelsAnswer.IsEmpty)
-                        sendData[key] = labelsAnswer.Input;
+                        sendData[key] = labelsAnswer.Input
+                                                    .Where(x => x > 0)
+                                                    .ToArray();
                 }
                 else { return false; }
             }
