@@ -97,7 +97,8 @@ namespace AWX.Cmdlets
 
                 if (string.IsNullOrEmpty(inputString))
                 {
-                    answers = new Answer<List<T>>(results);
+                    var isEmpty = results.Count == 0;
+                    answers = new Answer<List<T>>(results, isEmpty);
                     return true;
                 }
                 else
