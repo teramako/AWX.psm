@@ -34,7 +34,7 @@ namespace AWX.Resources
         [JsonPropertyName("notification_type")]
         NotificationType NotificationType { get; }
         [JsonPropertyName("notification_configuration")]
-        OrderedDictionary NotificationConfiguration { get; }
+        Dictionary<string, object?> NotificationConfiguration { get; }
         Messages? Messages { get; }
     }
 
@@ -49,7 +49,7 @@ namespace AWX.Resources
                                       string description,
                                       ulong organization,
                                       NotificationType notificationType,
-                                      OrderedDictionary notificationConfiguration,
+                                      Dictionary<string, object?> notificationConfiguration,
                                       Messages? messages)
                 : INotificationTemplate, IResource<NotificationTemplate.Summary>
     {
@@ -102,7 +102,7 @@ namespace AWX.Resources
         public string Description { get; } = description;
         public ulong Organization { get; } = organization;
         public NotificationType NotificationType { get; } = notificationType;
-        public OrderedDictionary NotificationConfiguration { get; } = notificationConfiguration;
+        public Dictionary<string, object?> NotificationConfiguration { get; } = notificationConfiguration;
         public Messages? Messages { get; } = messages;
     }
 
