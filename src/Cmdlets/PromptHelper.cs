@@ -38,6 +38,10 @@ namespace AWX.Cmdlets
                 _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, helpIndicator);
             }
         }
+        private void WriteError(string errorMessage)
+        {
+            _host.UI.WriteLine(ConsoleColor.Red, (ConsoleColor)(-1), errorMessage);
+        }
         private void printHelp(string label, string helpMessage = "", string helpIndicator = "")
         {
             var gb = Console.BackgroundColor;
@@ -106,7 +110,7 @@ namespace AWX.Cmdlets
                     }
                     catch (Exception ex)
                     {
-                        _host.UI.WriteLine(ConsoleColor.Red, Console.BackgroundColor, ex.Message);
+                        WriteError(ex.Message);
                     }
                 }
             }
@@ -229,8 +233,7 @@ namespace AWX.Cmdlets
                 {
                     if (required)
                     {
-                        _host.UI.WriteLine(ConsoleColor.Red, Console.BackgroundColor,
-                                           "Empty value is not allowed.");
+                        WriteError("Empty value is not allowed.");
                         continue;
                     }
                     answer = new Answer<T>((T)defaultValue, !inputed);
@@ -245,7 +248,7 @@ namespace AWX.Cmdlets
                     }
                     catch(Exception ex)
                     {
-                        _host.UI.WriteLine(ConsoleColor.Red, Console.BackgroundColor, ex.Message);
+                        WriteError(ex.Message);
                     }
                 }
             }
