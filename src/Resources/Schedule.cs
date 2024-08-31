@@ -8,28 +8,19 @@ namespace AWX.Resources
         string Name { get; }
         string Description { get; }
         string Rrule { get; }
-        [JsonPropertyName("extra_data")]
         Dictionary<string, object?> ExtraData { get; }
         ulong? Inventory { get; }
-        [JsonPropertyName("scm_branch")]
         string? ScmBranch { get; }
-        [JsonPropertyName("job_type")]
         string? JobType { get; }
-        [JsonPropertyName("job_tags")]
         string? JobTags { get; }
-        [JsonPropertyName("skip_tags")]
         string? SkipTags { get; }
         string? Limit { get; }
-        [JsonPropertyName("diff_mode")]
         bool? DiffMode { get; }
         JobVerbosity? Verbosity { get; }
-        [JsonPropertyName("execution_environment")]
         ulong? ExecutionEnvironment { get; }
         int? Forks { get; }
-        [JsonPropertyName("job_slice_count")]
         int? JobSliceCount { get; }
         int? Timeout { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
         bool Enabled { get; }
 
@@ -73,12 +64,11 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            InventorySummary? Inventory);
+        public record Summary(UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities,
+                              InventorySummary? Inventory);
 
 
         public string Rrule { get; } = rrule;
@@ -112,7 +102,6 @@ namespace AWX.Resources
         public DateTime? DtStart { get; } = dtStart;
         [JsonPropertyName("dtend")]
         public DateTime? DtEnd { get; } = dtEnd;
-        [JsonPropertyName("next_run")]
         public DateTime? NextRun { get; } = nextRun;
         public string TimeZone { get; } = timezone;
         public string Until { get; } = until;

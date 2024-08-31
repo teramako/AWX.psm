@@ -1,23 +1,16 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface ISystemJob : IUnifiedJob
     {
         string Description { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
-        [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
 
-        [JsonPropertyName("system_job_template")]
         ulong SystemJobTemplate { get; }
-        [JsonPropertyName("job_type")]
         string JobType { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("result_stdout")]
         string ResultStdout { get; }
 
     }
@@ -62,12 +55,11 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary ExecutionEnvironment,
-            ScheduleSummary? Schedule,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(EnvironmentSummary ExecutionEnvironment,
+                              ScheduleSummary? Schedule,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              InstanceGroupSummary InstanceGroup,
+                              Capability UserCapabilities);
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related,
                             Summary summaryFields, DateTime created, DateTime? modified, string name,
@@ -88,7 +80,6 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
         }
 

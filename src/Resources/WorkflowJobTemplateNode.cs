@@ -1,42 +1,30 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IWorkflowJobTemplateNode
     {
-        [JsonPropertyName("extra_data")]
         Dictionary<string, object?> ExtraData { get; }
         /// <summary>
         /// Inventory applied as a prompt, assuming job template for inventory.
         /// </summary>
         ulong? Inventory { get; }
-        [JsonPropertyName("scm_branch")]
         string? ScmBranch { get; }
-        [JsonPropertyName("job_type")]
         string? JobType { get; }
-        [JsonPropertyName("job_tags")]
         string? JobTags { get; }
-        [JsonPropertyName("skip_tags")]
         string? SkipTags { get; }
         string? Limit { get; }
-        [JsonPropertyName("diff_mode")]
         bool? DiffMode { get; }
         JobVerbosity? Verbosity { get; }
         /// <summary>
         /// The container image to be used for execution.
         /// </summary>
-        [JsonPropertyName("execution_environment")]
         ulong? ExecutionEnvironment { get; }
         int? Forks { get; }
-        [JsonPropertyName("job_slice_count")]
         int? JobSliceCount { get; }
         int? Timeout { get; }
-        [JsonPropertyName("workflow_job_template")]
         ulong WorkflowJobTemplate { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong? UnifiedJobTemplate { get; }
-        [JsonPropertyName("all_parents_must_converge")]
         bool AllParentsMustConverge { get; }
         string Identifier { get; }
     }
@@ -100,9 +88,8 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary WorkflowJobTemplate,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate);
+        public record Summary(WorkflowJobTemplateSummary WorkflowJobTemplate,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
@@ -126,11 +113,8 @@ namespace AWX.Resources
         public int? Timeout { get; } = timeout;
         public ulong WorkflowJobTemplate { get; } = workflowJobTemplate;
         public ulong? UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        [JsonPropertyName("success_nodes")]
         public ulong[] SuccessNodes { get; } = successNodes;
-        [JsonPropertyName("failure_nodes")]
         public ulong[] FailureNodes { get; } = failureNodes;
-        [JsonPropertyName("always_nodes")]
         public ulong[] AlwaysNodes { get; } = alwaysNodes;
         public bool AllParentsMustConverge { get; } = allParentsMustConverge;
         public string Identifier { get; } = identifier;

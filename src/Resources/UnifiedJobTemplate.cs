@@ -61,11 +61,8 @@ namespace AWX.Resources
         /// Optional description of this template.
         /// </summary>
         string Description { get; }
-        [JsonPropertyName("last_job_run")]
         DateTime? LastJobRun { get; }
-        [JsonPropertyName("last_job_failed")]
         bool LastJobFailed { get; }
-        [JsonPropertyName("next_job_run")]
         DateTime? NextJobRun { get; }
         JobTemplateStatus Status { get; }
     }
