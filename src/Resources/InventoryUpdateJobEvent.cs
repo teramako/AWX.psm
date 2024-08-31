@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -53,7 +52,6 @@ namespace AWX.Resources
         public int StartLine { get; } = startLine;
         public int EndLine { get; } = endLine;
         public JobVerbosity Verbosity { get; } = verbosity;
-        [JsonPropertyName("inventory_update")]
         public ulong InventoryUpdate { get; } = inventoryUpdate;
     }
 }

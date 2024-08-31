@@ -1,17 +1,9 @@
-using System.Text.Json.Serialization;
-
 namespace AWX.Resources
 {
     public class JobLog(JobLog.JobLogRange range, string content)
     {
         public JobLogRange Range { get; } = range;
         public string Content { get; } = content;
-        public class JobLogRange(uint start, uint end, uint absoluteEnd)
-        {
-            public uint Start { get; } = start;
-            public uint End { get; } = end;
-            [JsonPropertyName("absolute_end")]
-            public uint AbsoluteEnd { get; } = absoluteEnd;
-        }
+        public record JobLogRange(uint Start, uint End, uint AbsoluteEnd);
     }
 }

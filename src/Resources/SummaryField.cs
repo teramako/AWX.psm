@@ -84,17 +84,11 @@ namespace AWX.Resources
     //               WorkflowApprovalTemplate, WorkflowJob, WorkflowJobTemplate
     // User in Token
     // ApprovedOrDeniedBy in WorkflowApproval
-    public record UserSummary(ulong Id,
-                              string Username,
-                              [property: JsonPropertyName("first_name")] string FirstName,
-                              [property: JsonPropertyName("last_name")] string LastName)
+    public record UserSummary(ulong Id, string Username, string FirstName, string LastName)
         : ResourceSummary(Id, ResourceType.User);
 
     // ObjectRoles in Organization
-    public record OrganizationObjectRoleSummary(ulong Id,
-                                                string Name,
-                                                string Description,
-                                                [property: JsonPropertyName("user_only")] bool UserOnly = false)
+    public record OrganizationObjectRoleSummary(ulong Id, string Name, string Description, bool UserOnly = false)
         : ResourceSummary(Id, ResourceType.Role);
 
     // ExecutionEnvironment in AdHocCommand, InventorySource, InventoryUpdate, JobTemplate, Job, SystemJob
@@ -104,12 +98,8 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.ExecutionEnvironment);
 
     // RelatedFieldCounts in Organization
-    public record RelatedFieldCountsSummary(int Inventories,
-                                            int Teams,
-                                            int Users,
-                                            [property: JsonPropertyName("job_templates")] int JobTemplates,
-                                            int Admins,
-                                            int Projects)
+    public record RelatedFieldCountsSummary(int Inventories, int Teams, int Users, int JobTemplates,
+                                            int Admins, int Projects)
         : SummaryBase;
 
     // List<Token> in Application
@@ -122,13 +112,8 @@ namespace AWX.Resources
     // Credential in AdHocCommand, InventorySource, InventoryUpdate, Project, ProjectUpdate
     // SourceCredential in CredentialInputSource
     // TargetCredential in CredentialInputSource
-    public record CredentialSummary(ulong Id,
-                                    string Name,
-                                    string Description,
-                                    string Kind,
-                                    bool Cloud = false,
-                                    bool Kubernetes = false,
-                                    [property: JsonPropertyName("credential_type_id")] ulong? CredentialTypeId = null)
+    public record CredentialSummary(ulong Id, string Name, string Description, string Kind,
+                                    bool Cloud = false, bool Kubernetes = false, ulong? CredentialTypeId = null)
         : ResourceSummary(Id, ResourceType.Credential);
 
     // Credentials in JobTemplate, Job
@@ -136,12 +121,8 @@ namespace AWX.Resources
         : ResourceSummary(Id, ResourceType.Credential);
 
     // LastJob in InventorySource, JobTemplate, Project, SystemJobTemplate, WorkflowApprovalTemplate, WorkflowJobTemplate
-    public record LastJobSummary(ulong Id,
-                                 string Name,
-                                 string Description,
-                                 DateTime? Finished,
-                                 JobStatus Status,
-                                 bool Failed)
+    public record LastJobSummary(ulong Id, string Name, string Description, DateTime? Finished,
+                                 JobStatus Status, bool Failed)
         : SummaryBase;
 
     // RecentJobs in Host
@@ -149,53 +130,27 @@ namespace AWX.Resources
         : ResourceSummary(Id, Type);
 
     // RecentJobs in JobTemplate, WorkflowJobTemplate
-    public record RecentJobSummary(ulong Id,
-                                   JobStatus Status,
-                                   DateTime? Finished,
-                                   [property: JsonPropertyName("canceled_on")] DateTime? CanceledOn,
-                                   ResourceType Type)
+    public record RecentJobSummary(ulong Id, JobStatus Status, DateTime? Finished, DateTime? CanceledOn, ResourceType Type)
         : ResourceSummary(Id, Type);
 
     // Job in WorkflowJobNode
-    public record JobSummary(ulong Id,
-                             string Name,
-                             string Description,
-                             JobStatus Status,
-                             bool Failed,
-                             double Elapsed,
-                             ResourceType Type)
+    public record JobSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed,
+                             double Elapsed, ResourceType Type)
         : ResourceSummary(Id, Type);
 
     // LastJob in Host
-    public record HostLastJobSummary(ulong Id,
-                                     string Name,
-                                     string Description,
-                                     JobStatus Status,
-                                     bool Failed,
-                                     double Elapsed,
-                                     [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
-                                     [property: JsonPropertyName("job_template_name")] string JobTemplateName)
+    public record HostLastJobSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed,
+                                     double Elapsed, ulong JobTemplateId, string JobTemplateName)
         : ResourceSummary(Id, ResourceType.Job);
 
     // Job in JobEvent, JobHostSummary
-    public record JobExSummary(ulong Id,
-                               string Name,
-                               string Description,
-                               JobStatus Status,
-                               bool Failed,
-                               double Elapsed,
-                               ResourceType Type,
-                               [property: JsonPropertyName("job_template_id")] ulong JobTemplateId,
-                               [property: JsonPropertyName("job_template_name")] string JobTemplateName)
+    public record JobExSummary(ulong Id, string Name, string Description, JobStatus Status, bool Failed,
+                               double Elapsed, ResourceType Type, ulong JobTemplateId, string JobTemplateName)
         : ResourceSummary(Id, Type);
 
     // SourceWorkflowJob in Job, WorkflowApproval
-    public record SourceWorkflowJobSummary(ulong Id,
-                                           string Name,
-                                           string Description,
-                                           JobStatus Status,
-                                           bool Failed,
-                                           double Elapsed)
+    public record SourceWorkflowJobSummary(ulong Id, string Name, string Description, JobStatus Status,
+                                           bool Failed, double Elapsed)
         : ResourceSummary(Id, ResourceType.WorkflowJob);
 
     // AncestorJob in Job
@@ -211,36 +166,19 @@ namespace AWX.Resources
         : SummaryBase;
 
     // Inventory in AdHocCommand, Group, Host, InventorySource, InventoryUpdate, JobTemplate, Job, Schedule, WorkflowJobTemplate
-    public record InventorySummary(ulong Id,
-                                   string Name,
-                                   string Description,
-                                   [property: JsonPropertyName("has_active_failures")] bool HasActiveFailures,
-                                   [property: JsonPropertyName("total_hosts")] int TotalHosts,
-                                   [property: JsonPropertyName("hosts_with_active_failures")] int HostsWithActiveFailures,
-                                   [property: JsonPropertyName("total_groups")] int TotalGroups,
-                                   [property: JsonPropertyName("has_inventory_sources")] bool HasInventorySources,
-                                   [property: JsonPropertyName("total_inventory_sources")] int TotalInventorySources,
-                                   [property: JsonPropertyName("inventory_sources_with_failures")] int InventorySourcesWithFailures,
-                                   [property: JsonPropertyName("organization_id")] ulong OrganizationId,
-                                   string Kind)
+    public record InventorySummary(ulong Id, string Name, string Description, bool HasActiveFailures, int TotalHosts,
+                                   int HostsWithActiveFailures, int TotalGroups, bool HasInventorySources,
+                                   int TotalInventorySources, int InventorySourcesWithFailures, ulong OrganizationId, string Kind)
         : ResourceSummary(Id, ResourceType.Inventory);
 
     // InventorySource in InventoryUpdate
-    public record InventorySourceSummary(ulong Id,
-                                         string Name,
-                                         string Source,
-                                         [property: JsonPropertyName("last_updated")] DateTime LastUpdated,
-                                         JobStatus Status)
+    public record InventorySourceSummary(ulong Id, string Name, string Source, DateTime LastUpdated, JobStatus Status)
         : ResourceSummary(Id, ResourceType.InventorySource);
 
     // SourceProject in InventorySource, InventoryUpdate
     // Project in JobTemplate, Job, ProjectUpdate
-    public record ProjectSummary(ulong Id,
-                                 string Name,
-                                 string Description,
-                                 JobTemplateStatus Status,
-                                 [property: JsonPropertyName("scm_type")] string ScmType,
-                                 [property: JsonPropertyName("allow_override")] bool AllowOverride)
+    public record ProjectSummary(ulong Id, string Name, string Description, JobTemplateStatus Status,
+                                 string ScmType, bool AllowOverride)
         : ResourceSummary(Id, ResourceType.Project);
 
     // ProjectUpdate in ProjectUpdateJobEvent
@@ -249,10 +187,7 @@ namespace AWX.Resources
 
     // UnifiedJobTemplate in InventoryUpdate, Job, ProjectUpdate, Schedule, SystemJob, WorkflowApproval, WorkflowJob,
     //                       WorkflowJobNode, WorkflowJobTemplateNode
-    public record UnifiedJobTemplateSummary(ulong Id,
-                                            string Name,
-                                            string Description,
-                                            [property: JsonPropertyName("unified_job_type")] ResourceType UnifiedJobType)
+    public record UnifiedJobTemplateSummary(ulong Id, string Name, string Description, ResourceType UnifiedJobType)
         : SummaryBase
     {
         public ResourceType Type => UnifiedJobType switch {
@@ -266,9 +201,7 @@ namespace AWX.Resources
     }
 
     // InstanceGroup in AdHocCommand, InventoryUpdate, Job, ProjectUpdate, SystemJob
-    public record InstanceGroupSummary(ulong Id,
-                                       string Name,
-                                       [property: JsonPropertyName("is_container_group")] bool IsContainerGroup)
+    public record InstanceGroupSummary(ulong Id, string Name, bool IsContainerGroup)
         : ResourceSummary(Id, ResourceType.InstanceGroup);
 
     // Owners in Credential
@@ -276,10 +209,7 @@ namespace AWX.Resources
         : ResourceSummary(Id, Type);
 
     // Schedule in InventoryUpdate, Job, ProjectUpdate, SystemJob, WorkflowJob
-    public record ScheduleSummary(ulong Id,
-                                  string Name,
-                                  string Description,
-                                  [property: JsonPropertyName("next_run")] DateTime NextRun)
+    public record ScheduleSummary(ulong Id, string Name, string Description, DateTime NextRun)
         : ResourceSummary(Id, ResourceType.Schedule);
 
     // RecentNotification in NotificationTemplate

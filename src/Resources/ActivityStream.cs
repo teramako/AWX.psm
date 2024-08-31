@@ -461,13 +461,10 @@ namespace AWX.Resources
         [JsonPropertyOrder(14)]
         public string Object2 { get; } = object2;
         [JsonPropertyOrder(15)]
-        [JsonPropertyName("object_association")]
         public string ObjectAssociation { get; } = objectAssociation;
         [JsonPropertyOrder(16)]
-        [JsonPropertyName("action_node")]
         public string ActionNode { get; } = actionNode;
         [JsonPropertyOrder(17)]
-        [JsonPropertyName("object_type")]
         public string ObjectType { get; } = objectType;
     }
 }

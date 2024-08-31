@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -167,12 +166,11 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary Organization,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(OrganizationSummary Organization,
+                              UserSummary CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Dictionary<string, ObjectRoleSummary> ObjectRoles,
+                              Capability UserCapabilities);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

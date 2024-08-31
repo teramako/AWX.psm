@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -171,11 +170,10 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            InventorySummary Inventory,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(InventorySummary Inventory,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities);
 
 
         public ulong Id { get; } = id;

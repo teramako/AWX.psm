@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
+    [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<ApplicationClientType>))]
     public enum ApplicationClientType
     {
         Confidential,
@@ -22,22 +23,18 @@ namespace AWX.Resources
         /// <summary>
         /// Set to <c>Public</c> or <c>Confidential</c> depending on how secure the client device is.
         /// </summary>
-        [JsonPropertyName("client_type")]
         ApplicationClientType ClientType { get; }
         /// <summary>
         /// Allowed URIs list, space spareted.
         /// </summary>
-        [JsonPropertyName("redirect_uris")]
         string RedirectUris { get; }
         /// <summary>
         /// The Grant type the user must use for acquire tokens for this application.
         /// </summary>
-        [JsonPropertyName("authorization_grant_type")]
         string AuthorizationGrantType { get; }
         /// <summary>
         /// Set <c>True</c> to skip authorization step for completely trusted applications.
         /// </summary>
-        [JsonPropertyName("skip_authorization")]
         bool SkipAuthorization { get; }
         /// <summary>
         /// Organization containing thie application.
@@ -136,7 +133,7 @@ namespace AWX.Resources
         }
 
         public record Summary(OrganizationSummary Organization,
-                              [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
+                              Capability UserCapabilities,
                               ListSummary<TokenSummary> Tokens);
 
         public ulong Id { get; } = id;
@@ -148,11 +145,8 @@ namespace AWX.Resources
         public DateTime? Modified { get; } = modified;
         public string Name { get; } = name;
         public string Description { get; } = description;
-        [JsonPropertyName("client_id")]
         public string ClientId { get; } = clientId;
-        [JsonConverter(typeof(Json.EnumUpperCamelCaseStringConverter<ApplicationClientType>))]
         public ApplicationClientType ClientType { get; } = clientType;
-        [JsonPropertyName("client_secret")]
         public string? ClientSecret { get; } = clientSecret;
         public string RedirectUris { get; } = redirectUris;
         public string AuthorizationGrantType { get; } = authorizationGrantType;

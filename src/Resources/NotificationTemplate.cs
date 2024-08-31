@@ -31,9 +31,7 @@ namespace AWX.Resources
         /// Organization ID
         /// </summary>
         ulong Organization { get; }
-        [JsonPropertyName("notification_type")]
         NotificationType NotificationType { get; }
-        [JsonPropertyName("notification_configuration")]
         Dictionary<string, object?> NotificationConfiguration { get; }
         Messages? Messages { get; }
     }
@@ -82,12 +80,11 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            OrganizationSummary Organization,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            [property: JsonPropertyName("recent_notifications")] RecentNotificationSummary[] RecentNotification);
+        public record Summary(OrganizationSummary Organization,
+                              UserSummary CreatedBy,
+                              UserSummary ModifiedBy,
+                              Capability UserCapabilities,
+                              RecentNotificationSummary[] RecentNotification);
 
 
         public ulong Id { get; } = id;
@@ -110,7 +107,6 @@ namespace AWX.Resources
         NMessage Error,
         NMessage Started,
         NMessage Success,
-        [property: JsonPropertyName("workflow_approval")]
         ApprovalMessages WorkflowApproval
     );
 

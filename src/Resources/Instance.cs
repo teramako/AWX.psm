@@ -30,16 +30,11 @@ namespace AWX.Resources
     public interface IInstance
     {
         string Hostname { get; }
-        [JsonPropertyName("capacity_adjustment")]
         string CapacityAdjustment { get; }
         bool Enabled { get; }
-        [JsonPropertyName("managed_by_policy")]
         bool ManagedByPolicy { get; }
-        [JsonPropertyName("node_type")]
         InstanceNodeType NodeType { get; }
-        [JsonPropertyName("node_state")]
         string NodeState { get; }
-        [JsonPropertyName("listener_port")]
         int ListenerPort { get; }
     }
 
@@ -128,7 +123,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(Capability UserCapabilities);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
@@ -139,37 +134,26 @@ namespace AWX.Resources
         public string Uuid { get; } = uuid;
         public DateTime Created { get; } = created;
         public DateTime? Modified { get; } = modified;
-        [JsonPropertyName("last_seen")]
         public DateTime LastSeen { get; } = lastSeen;
-        [JsonPropertyName("health_check_started")]
         public DateTime? HealthCheckStarted { get; } = healthCheckStarted;
-        [JsonPropertyName("health_check_pending")]
         public bool HealthCheckPending { get; } = healthCheckPending;
-        [JsonPropertyName("last_health_check")]
         public DateTime? LastHealthCheck { get; } = lastHealthCheck;
         public string Errors { get; } = errors;
         public string CapacityAdjustment { get; } = capacityAdjustment;
         public string Version { get; } = version;
         public int Capacity { get; } = capacity;
-        [JsonPropertyName("consumed_capacity")]
         public int ConsumedCapacity { get; } = consumedCapacity;
-        [JsonPropertyName("percent_capacity_remaining")]
         public double PercentCapacityRemaining { get; } = percentCapacityRemaining;
-        [JsonPropertyName("jobs_running")]
         public int JobsRunning { get; } = jobsRunning;
-        [JsonPropertyName("jobs_total")]
         public int JobsTotal { get; } = jobsTotal;
         public string Cpu { get; } = cpu;
         public ulong Memory { get; } = memory;
-        [JsonPropertyName("cpu_capacity")]
         public int CpuCapacity { get; } = cpuCapacity;
-        [JsonPropertyName("mem_capacity")]
         public int MemCapacity { get; } = memCapacity;
         public bool Enabled { get; } = enabled;
         public bool ManagedByPolicy { get; } = managedByPolicy;
         public InstanceNodeType NodeType { get; } = nodeType;
         public string NodeState { get; } = nodeState;
-        [JsonPropertyName("ip_address")]
         public string IpAddress { get; } = ipAddress;
         public int ListenerPort { get; } = listenerPort;
     }

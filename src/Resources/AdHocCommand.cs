@@ -5,27 +5,19 @@ namespace AWX.Resources
 {
     public interface IAdHocCommand : IUnifiedJob
     {
-        [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
-        [JsonPropertyName("controller_node")]
         string ControllerNode { get; }
 
-        [JsonPropertyName("job_type")]
         JobType JobType { get; }
         ulong Inventory { get; }
         string Limit { get; }
         ulong Credential { get; }
-        [JsonPropertyName("module_name")]
         string ModuleName { get; }
-        [JsonPropertyName("module_args")]
         string ModuleArgs { get; }
         byte Forks { get; }
         JobVerbosity Verbosity { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("become_enabled")]
         bool BecomeEnabled { get; }
-        [JsonPropertyName("diff_mode")]
         bool DiffMode { get; }
     }
 
@@ -134,13 +126,12 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            InventorySummary Inventory,
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
-            CredentialSummary Credential,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(InventorySummary Inventory,
+                              EnvironmentSummary? ExecutionEnvironment,
+                              CredentialSummary Credential,
+                              InstanceGroupSummary InstanceGroup,
+                              UserSummary? CreatedBy,
+                              Capability UserCapabilities);
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related,
                             AdHocCommand.Summary summaryFields, DateTime created, DateTime? modified, string name,
@@ -162,9 +153,7 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
-            [JsonPropertyName("host_status_counts")]
             public Dictionary<string, int> HostStatusCounts { get; } = hostStatusCounts;
         }
         public RelatedDictionary Related { get; } = related;

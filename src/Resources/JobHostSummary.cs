@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -97,9 +96,7 @@ namespace AWX.Resources
         public DateTime? Modified { get; } = modified;
         public ulong Job { get; } = job;
         public ulong Host { get; } = host;
-        [JsonPropertyName("constructed_host")]
         public ulong? ConstructedHost { get; } = constructedHost;
-        [JsonPropertyName("host_name")]
         public string HostName { get; } = hostName;
         public int Changed { get; } = changed;
         public int Dark { get; } = dark;

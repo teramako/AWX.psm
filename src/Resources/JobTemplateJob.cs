@@ -1,63 +1,40 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IJobTemplateJob : IUnifiedJob
     {
         string Description { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
-        [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
-        [JsonPropertyName("controller_node")]
         string ControllerNode { get; }
-        [JsonPropertyName("job_type")]
         JobType JobType { get; }
         ulong Inventory { get; }
         ulong Project { get; }
         string Playbook { get; }
-        [JsonPropertyName("scm_branch")]
         string ScmBranch { get; }
         byte Forks { get; }
         string Limit { get; }
         JobVerbosity Verbosity { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("job_tags")]
         string JobTags { get; }
-        [JsonPropertyName("force_handlers")]
         bool ForceHandlers { get; }
-        [JsonPropertyName("skip_tags")]
         string SkipTags { get; }
-        [JsonPropertyName("start_at_task")]
         string StartAtTask { get; }
         ushort Timeout { get; }
-        [JsonPropertyName("use_fact_cache")]
         bool UseFactCache { get; }
         ulong Organization { get; }
-        [JsonPropertyName("job_template")]
         ulong JobTemplate { get; }
-        [JsonPropertyName("passwords_needed_to_start")]
         string[] PasswordsNeededToStart { get; }
-        [JsonPropertyName("allow_simultaneous")]
         bool AllowSimultaneous { get; }
         OrderedDictionary Artifacts { get; }
-        [JsonPropertyName("scm_revision")]
         string ScmRevision { get; }
-        [JsonPropertyName("instance_group")]
         ulong? InstanceGroup { get; }
-        [JsonPropertyName("diff_mode")]
         bool DiffMode { get; }
-        [JsonPropertyName("job_slice_number")]
         int JobSliceNumber { get; }
-        [JsonPropertyName("job_slice_count")]
         int JobSliceCount { get; }
-        [JsonPropertyName("webhook_service")]
         string WebhookService { get; }
-        [JsonPropertyName("webhook_credential")]
         uint? WebhookCredential { get; }
-        [JsonPropertyName("webhook_guid")]
         string WebhookGuid { get; }
 
     }
@@ -130,21 +107,20 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary Organization,
-            InventorySummary Inventory,
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
-            ProjectSummary Project,
-            [property: JsonPropertyName("job_template")] JobTemplateSummary JobTemplate,
-            ScheduleSummary? Schedule,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<LabelSummary> Labels,
-            [property: JsonPropertyName("source_workflow_job")] SourceWorkflowJobSummary? SourceWorkflowJob,
-            [property: JsonPropertyName("ancestor_job")] AncestorJobSummary? AncestorJob,
-            JobTemplateCredentialSummary[] Credentials);
+        public record Summary(OrganizationSummary Organization,
+                              InventorySummary Inventory,
+                              EnvironmentSummary? ExecutionEnvironment,
+                              ProjectSummary Project,
+                              JobTemplateSummary JobTemplate,
+                              ScheduleSummary? Schedule,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              InstanceGroupSummary InstanceGroup,
+                              UserSummary CreatedBy,
+                              Capability UserCapabilities,
+                              ListSummary<LabelSummary> Labels,
+                              SourceWorkflowJobSummary? SourceWorkflowJob,
+                              AncestorJobSummary? AncestorJob,
+                              JobTemplateCredentialSummary[] Credentials);
 
 
         public RelatedDictionary Related { get; } = related;
@@ -217,17 +193,13 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
 
 
-            [JsonPropertyName("host_status_counts")]
             public Dictionary<string, int> HostStatusCounts { get; } = hostStatusCounts;
 
-            [JsonPropertyName("playbook_counts")]
             public Dictionary<string, int> PlaybookCounts { get; } = playbookCounts;
 
-            [JsonPropertyName("custom_virtualenv")]
             public string? CustomVirtualenv { get; } = customVirtualenv;
         }
         public class LaunchResult(ulong job, Dictionary<string, object?> ignoredFields, ulong id, ResourceType type,
@@ -257,14 +229,12 @@ namespace AWX.Resources
                IJobTemplateJob, IJobDetail, IResource<Summary>
         {
             public ulong Job { get; } = job;
-            [JsonPropertyName("ignored_fields")]
             public Dictionary<string, object?> IgnoredFields { get; } = ignoredFields;
 
             public string JobArgs { get; } = jobArgs;
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
         }
     }

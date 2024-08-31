@@ -5,12 +5,9 @@ namespace AWX.Resources
 {
     public interface IJobEvent : IJobEventBase
     {
-        [JsonPropertyName("event_level")]
         int EventLevel { get; }
-        [JsonPropertyName("parent_uuid")]
         string ParentUUID { get; }
         ulong? Host { get; }
-        [JsonPropertyName("host_name")]
         string HostName { get; }
         string Playbook { get; }
         string Play { get; }

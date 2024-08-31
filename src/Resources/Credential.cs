@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -18,7 +17,6 @@ namespace AWX.Resources
         /// Specify the type of credential you want to create.
         /// Refer to the documentaion for detail on each type.
         /// </summary>
-        [JsonPropertyName("credential_type")]
         ulong CredentialType { get; }
         /// <summary>
         /// Enter inputs using either JSON or YAML syntax.
@@ -329,14 +327,13 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary? Organization,
-            [property: JsonPropertyName("credential_type")] CredentialTypeSummary CredentialType,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            OwnerSummary[] Owners);
+        public record Summary(OrganizationSummary? Organization,
+                              CredentialTypeSummary CredentialType,
+                              UserSummary CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Dictionary<string, ObjectRoleSummary> ObjectRoles,
+                              Capability UserCapabilities,
+                              OwnerSummary[] Owners);
 
 
         public ulong Id { get; } = id;

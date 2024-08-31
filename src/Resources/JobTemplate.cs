@@ -55,7 +55,6 @@ namespace AWX.Resources
         ///     <item><term><c>check</c></term><description>Check mode (dry run)</description></item>
         /// </list>
         /// </summary>
-        [JsonPropertyName("job_type")]
         JobType JobType { get; }
         /// <summary>
         /// Inventory ID.
@@ -73,7 +72,6 @@ namespace AWX.Resources
         /// Branch to use in job run.
         /// Project default used if blank. Only allowed if project <c>allow_override</c> field is set to <c>true</c>.
         /// </summary>
-        [JsonPropertyName("scm_branch")]
         string ScmBranch { get; }
         /// <summary>
         /// Number of max concurrent fork processes.
@@ -81,11 +79,8 @@ namespace AWX.Resources
         int Forks { get; }
         string Limit { get; }
         JobVerbosity Verbosity { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("job_tags")]
         string JobTags { get; }
-        [JsonPropertyName("start_at_task")]
         string StartAtTask { get; }
         /// <summary>
         /// The amount of time (in seconds) to run before the task is caceled.
@@ -95,66 +90,39 @@ namespace AWX.Resources
         /// If enabled, the service will act as an Ansible Fact Cache Plugin;
         /// persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
         /// </summary>
-        [JsonPropertyName("use_fact_cache")]
         bool UseFactCache { get; }
-        [JsonPropertyName("execution_environment")]
         public ulong? ExecutionEnvironment { get; }
-        [JsonPropertyName("host_config_key")]
         string HostConfigKey { get; }
-        [JsonPropertyName("ask_scm_branch_on_launch")]
         bool AskScmBranchOnLaunch { get; }
-        [JsonPropertyName("ask_diff_mode_on_launch")]
         bool AskDiffModeOnLaunch { get; }
-        [JsonPropertyName("ask_variables_on_launch")]
         bool AskVariablesOnLaunch { get; }
-        [JsonPropertyName("ask_limit_on_launch")]
         bool AskLimitOnLaunch { get; }
-        [JsonPropertyName("ask_tags_on_launch")]
         bool AskTagsOnLaunch { get; }
-        [JsonPropertyName("ask_skip_tags_on_launch")]
         bool AskSkipTagsOnLaunch { get; }
-        [JsonPropertyName("ask_job_type_on_launch")]
         bool AskJobTypeOnLaunch { get; }
-        [JsonPropertyName("ask_verbosity_on_launch")]
         bool AskVerbosityOnLaunch { get; }
-        [JsonPropertyName("ask_inventory_on_launch")]
         bool AskInventoryOnLaunch { get; }
-        [JsonPropertyName("ask_credential_on_launch")]
         bool AskCredentialOnLaunch { get; }
-        [JsonPropertyName("ask_execution_environment_on_launch")]
         bool AskExecutionEnvironmentOnLaunch { get; }
-        [JsonPropertyName("ask_labels_on_launch")]
         bool AskLabelsOnLaunch { get; }
-        [JsonPropertyName("ask_forks_on_launch")]
         bool AskForksOnLaunch { get; }
-        [JsonPropertyName("ask_job_slice_count_on_launch")]
         bool AskJobSliceCountOnLaunch { get; }
-        [JsonPropertyName("ask_timeout_on_launch")]
         bool AskTimeoutOnLaunch { get; }
-        [JsonPropertyName("ask_instance_groups_on_launch")]
         bool AskInstanceGroupsOnLaunch { get; }
-        [JsonPropertyName("survey_enabled")]
         bool SurveyEnabled { get; }
-        [JsonPropertyName("become_enabled")]
         bool BecomeEnabled { get; }
         /// <summary>
         /// If enabled, texual changes mode to ny templated files on the host are shown in the standard output.
         /// </summary>
-        [JsonPropertyName("diff_mode")]
         bool DiffMode { get; }
-        [JsonPropertyName("allow_simultaneous")]
         bool AllowSimultaneous { get; }
         /// <summary>
         /// The number of jobs to slice into at runtime.
         /// Will cause the Job Template to launch a workflow if value is greater than <c>1</c>.
         /// </summary>
-        [JsonPropertyName("job_slice_count")]
         int JobSliceCount { get; }
-        [JsonPropertyName("webhook_service")]
         string WebhookService { get; }
-        [JsonPropertyName("webhook_credential")]
         ulong? WebhookCredential { get; }
-        [JsonPropertyName("prevent_instance_group_fallback")]
         bool PreventInstanceGroupFallback { get; }
     }
 
@@ -251,20 +219,19 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary Organization,
-            InventorySummary? Inventory,
-            ProjectSummary Project,
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
-            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<LabelSummary> Labels,
-            [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs,
-            JobTemplateCredentialSummary[] Credentials);
+        public record Summary(OrganizationSummary Organization,
+                              InventorySummary? Inventory,
+                              ProjectSummary Project,
+                              EnvironmentSummary? ExecutionEnvironment,
+                              LastJobSummary? LastJob,
+                              LastUpdateSummary? LastUpdate,
+                              UserSummary CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Dictionary<string, ObjectRoleSummary> ObjectRoles,
+                              Capability UserCapabilities,
+                              ListSummary<LabelSummary> Labels,
+                              RecentJobSummary[] RecentJobs,
+                              JobTemplateCredentialSummary[] Credentials);
 
 
         public RelatedDictionary Related { get; } = related;
@@ -279,7 +246,6 @@ namespace AWX.Resources
         public JobVerbosity Verbosity { get; } = verbosity;
         public string ExtraVars { get; } = extraVars;
         public string JobTags { get; } = jobTags;
-        [JsonPropertyName("force_handlers")]
         public bool ForceHandlers { get; } = forceHandlers;
         public string StartAtTask { get; } = startAtTask;
         public int Timeout { get; } = timeout;
@@ -307,7 +273,6 @@ namespace AWX.Resources
         public bool BecomeEnabled { get; } = becomeEnabled;
         public bool DiffMode { get; } = diffMode;
         public bool AllowSimultaneous { get; } = allowSimultaneous;
-        [JsonPropertyName("custom_virtualenv")]
         public string? CustomVirtualenv { get; } = customVirtualenv;
         public int JobSliceCount { get; } = jobSliceCount;
         public string WebhookService { get; } = webhookService;

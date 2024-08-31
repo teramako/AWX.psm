@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -24,7 +23,6 @@ namespace AWX.Resources
         /// <summary>
         /// The value used by the remote inventory source to uniquely identify the host.
         /// </summary>
-        [JsonPropertyName("instance_id")]
         string InstanceId { get; }
         /// <summary>
         /// Host variables in JSON or YAML format.
@@ -162,13 +160,12 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            InventorySummary Inventory,
-            [property: JsonPropertyName("last_job")] HostLastJobSummary? LastJob,
-            [property: JsonPropertyName("last_job_host_summary")] LastJobHostSummary? LastJobHostSummary,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<GroupSummary> Groups,
-            [property: JsonPropertyName("recent_jobs")] HostRecentJobSummary[] RecentJobs);
+        public record Summary(InventorySummary Inventory,
+                              HostLastJobSummary? LastJob,
+                              LastJobHostSummary? LastJobHostSummary,
+                              Capability UserCapabilities,
+                              ListSummary<GroupSummary> Groups,
+                              HostRecentJobSummary[] RecentJobs);
 
 
         public ulong Id { get; } = id;
