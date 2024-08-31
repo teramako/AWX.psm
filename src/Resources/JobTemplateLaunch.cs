@@ -109,7 +109,7 @@ namespace AWX.Resources
         ulong Id,
         string? Name,
         [property: JsonPropertyName("credential_type")] ulong? CredentialType,
-        [property: JsonPropertyName("passwords_needed")] string[]? Passwordsneeded
+        [property: JsonPropertyName("passwords_needed")] string[]? PasswordsNeeded
     )
     {
         public override string ToString()
