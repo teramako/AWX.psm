@@ -498,7 +498,7 @@ namespace AWX.Cmdlets
                     WriteHost(string.Format(skipFormat, "Inventory", sendData[key]), dontshow: true);
                 }
                 else if (prompt.Ask<ulong>("Inventory",
-                                           defaultValue: requirements.Defaults.Inventory.Id ?? 0,
+                                           defaultValue: requirements.Defaults.Inventory.Id,
                                            helpMessage: "",
                                            required: requirements.InventoryNeededToStart,
                                            out var inventoryAnswer))
@@ -549,7 +549,7 @@ namespace AWX.Cmdlets
                     WriteHost(string.Format(skipFormat, "Execution Environment", sendData[key]), dontshow: true);
                 }
                 else if (prompt.Ask<ulong>("Execution Environment",
-                                           defaultValue: requirements.Defaults.ExecutionEnvironment.Id ?? 0,
+                                           defaultValue: requirements.Defaults.ExecutionEnvironment.Id,
                                            helpMessage: "",
                                            required: false,
                                            out var eeAnswer))

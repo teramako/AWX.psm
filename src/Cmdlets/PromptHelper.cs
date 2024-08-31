@@ -194,14 +194,25 @@ namespace AWX.Cmdlets
         /// <param name="required"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask<T>(string label, T defaultValue, string helpMessage, bool required, out Answer<T> answer) where T: struct
+        public bool Ask<T>(string label, T? defaultValue, string helpMessage, bool required, out Answer<T> answer) where T: struct
         {
-            var helpIndicator = """
-                (!? => Show help, !! => Use default, !> => Suspend, Empty => Skip)
-                """;
-            printHeader(label, $"{defaultValue}", helpMessage, helpIndicator);
-            var help = (string.IsNullOrEmpty(helpMessage) ? "" : $"{helpMessage}\n")
-                       + $"Default: {defaultValue}";
+            string helpIndicator;
+            string help = helpMessage;
+            if (defaultValue == null)
+            {
+                helpIndicator = """
+                    (!? => Show help, !> => Suspend)
+                    """;
+            }
+            else
+            {
+                helpIndicator = """
+                    (!? => Show help, !! => Use default, !> => Suspend, Empty => Skip)
+                    """;
+                help += (string.IsNullOrEmpty(help) ? "" : "\n") + $"Default: {defaultValue}";
+            }
+
+            printHeader(label, $"{defaultValue}", helpMessage, helpIndicator, showDefault: defaultValue != null);
             do
             {
                 var inputed = false;
@@ -219,6 +230,7 @@ namespace AWX.Cmdlets
                             printHelp(label, help, helpIndicator);
                             continue;
                         case "!":
+                            if (defaultValue == null) break;
                             inputed = true;
                             inputString = string.Empty;
                             break;
@@ -237,7 +249,14 @@ namespace AWX.Cmdlets
                         WriteError("Empty value is not allowed.");
                         continue;
                     }
-                    answer = new Answer<T>((T)defaultValue, !inputed);
+                    if (defaultValue == null)
+                    {
+                        answer = new Answer<T>(default(T), !inputed);
+                    }
+                    else
+                    {
+                        answer = new Answer<T>((T)defaultValue, !inputed);
+                    }
                     return true;
                 }
                 else
