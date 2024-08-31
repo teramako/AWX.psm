@@ -242,6 +242,8 @@ namespace AWX.Cmdlets
             Console.WriteLine($"Debug: {msg}");
             Console.ForegroundColor = currentColor;
         }
+        private readonly ConsoleColor DefaultForegroundColor = Console.ForegroundColor;
+        private readonly ConsoleColor DefaultBackgroundColor = Console.BackgroundColor;
         /// <summary>
         /// Write message to the console as Information
         /// </summary>
@@ -258,8 +260,8 @@ namespace AWX.Cmdlets
         {
             var msg = new HostInformationMessage() {
                 Message = message,
-                ForegroundColor = foregroundColor,
-                BackgroundColor = backgroundColor,
+                ForegroundColor = foregroundColor ?? DefaultForegroundColor,
+                BackgroundColor = backgroundColor ?? DefaultBackgroundColor,
                 NoNewLine = true
             };
             List<string> infoTags = dontshow ? [] : ["PSHOST"];
