@@ -84,7 +84,7 @@ namespace AWX.Resources
                               UserSummary CreatedBy,
                               UserSummary ModifiedBy,
                               Capability UserCapabilities,
-                              RecentNotificationSummary[] RecentNotification);
+                              RecentNotificationSummary[] RecentNotifications);
 
 
         public ulong Id { get; } = id;
