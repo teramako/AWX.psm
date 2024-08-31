@@ -1717,8 +1717,8 @@
               <Name>Description</Name>
               <Name>Enabled</Name>
               <Name>Rrule</Name>
-              <Name>Dtstart</Name>
-              <Name>Dtend</Name>
+              <Name>DtStart</Name>
+              <Name>DtEnd</Name>
               <Name>NextRun</Name>
               <Name>Timezone</Name>
               <Name>Until</Name>

@@ -108,8 +108,10 @@ namespace AWX.Resources
         public int? Timeout { get; } = timeout;
         public ulong UnifiedJobTemplate { get; } = unifiedJobTemplate;
         public bool Enabled { get; } = enabled;
-        public DateTime? DTStart { get; } = dtStart;
-        public DateTime? DTEnd { get; } = dtEnd;
+        [JsonPropertyName("dtstart")]
+        public DateTime? DtStart { get; } = dtStart;
+        [JsonPropertyName("dtend")]
+        public DateTime? DtEnd { get; } = dtEnd;
         [JsonPropertyName("next_run")]
         public DateTime? NextRun { get; } = nextRun;
         public string TimeZone { get; } = timezone;
