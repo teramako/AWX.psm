@@ -35,7 +35,7 @@ namespace AWX.Cmdlets
             }
             if (!string.IsNullOrEmpty(helpIndicator))
             {
-                _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, helpIndicator);
+                _host.UI.WriteLine(ConsoleColor.DarkGray, gb, helpIndicator);
             }
         }
         private void WriteError(string errorMessage)
@@ -53,7 +53,7 @@ namespace AWX.Cmdlets
             }
             if (!string.IsNullOrEmpty(helpIndicator))
             {
-                _host.UI.WriteLine(ConsoleColor.DarkYellow, gb, helpIndicator);
+                _host.UI.WriteLine(ConsoleColor.DarkGray, gb, helpIndicator);
             }
         }
         /// <summary>
