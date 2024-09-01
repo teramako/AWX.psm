@@ -17,7 +17,7 @@ namespace AWX.Cmdlets
         private void printHeader(string label, string defaultValue, string helpMessage = "", string helpIndicator = "", bool showDefault = true)
         {
             var gb = Console.BackgroundColor;
-            _host.UI.Write(ConsoleColor.Blue, gb, "==> ");
+            _host.UI.Write(ConsoleColor.Blue, gb, "<== ");
             _host.UI.Write($"{label}");
             if (showDefault)
             {
@@ -45,7 +45,7 @@ namespace AWX.Cmdlets
         private void printHelp(string label, string helpMessage = "", string helpIndicator = "")
         {
             var gb = Console.BackgroundColor;
-            _host.UI.Write(ConsoleColor.Blue, gb, "==> ");
+            _host.UI.Write(ConsoleColor.Blue, gb, "<== ");
             _host.UI.WriteLine(label);
             if (!string.IsNullOrEmpty(helpMessage))
             {
