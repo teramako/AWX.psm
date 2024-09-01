@@ -555,8 +555,8 @@ namespace AWX.Cmdlets
                                            required: false,
                                            out var eeAnswer))
                 {
-                    if (!eeAnswer.IsEmpty && eeAnswer.Input > 0)
-                        sendData[key] = eeAnswer.Input;
+                    if (!eeAnswer.IsEmpty)
+                        sendData[key] = eeAnswer.Input > 0 ? eeAnswer.Input : null;
                 }
                 else { return false; }
             }
