@@ -329,23 +329,20 @@ namespace AWX.Cmdlets
             var defaultValueIndex = -1;
             var enumType = typeof(TEnum);
 
-            var list = new List<TEnum>();
-            var enumValues = Enum.GetValues(enumType);
-            foreach (TEnum val in enumValues)
+            var enumValues = (TEnum[])Enum.GetValues(enumType);
+            for (var i = 0; i < enumValues.Length; i++)
             {
-                var num = $"{val:d}";
-                var str = $"{val:g}";
+                var str = $"{enumValues[i]:g}";
                 if (str == $"{defaultValue}")
                 {
-                    defaultValueIndex = choices.Count;
+                    defaultValueIndex = i;
                 }
-                choices.Add(new ChoiceDescription($"&{str}", $"[{num}] {str}"));
-                list.Add(val);
+                choices.Add(new ChoiceDescription($"{str}(&{i})", str));
             }
             var res = _host.UI.PromptForChoice("", "", choices, defaultValueIndex);
-            if (res >= 0 && res < list.Count)
+            if (res >= 0 && res < enumValues.Length)
             {
-                answer = new Answer<TEnum>(list[res]);
+                answer = new Answer<TEnum>(enumValues[res]);
                 return true;
             }
             answer = new Answer<TEnum>(defaultValue, true);
