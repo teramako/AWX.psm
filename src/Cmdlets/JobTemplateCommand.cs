@@ -499,7 +499,8 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask<ulong>("Inventory",
                                            defaultValue: requirements.Defaults.Inventory.Id,
-                                           helpMessage: "",
+                                           helpMessage: "Input an Inventory ID."
+                                                        + (requirements.InventoryNeededToStart ? " (Required)" : ""),
                                            required: requirements.InventoryNeededToStart,
                                            out var inventoryAnswer))
                 {
@@ -520,7 +521,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.AskList<ulong>("Credentials",
                                                defaultValues: requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
-                                               helpMessage: "",
+                                               helpMessage: "Enter Credential ID(s).",
                                                out var credentialsAnswer))
                 {
                     if (!credentialsAnswer.IsEmpty)
@@ -550,7 +551,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask<ulong>("Execution Environment",
                                            defaultValue: requirements.Defaults.ExecutionEnvironment.Id,
-                                           helpMessage: "",
+                                           helpMessage: "Enter the Execution Environment ID.",
                                            required: false,
                                            out var eeAnswer))
                 {
@@ -592,7 +593,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask("ScmBranch",
                                     defaultValue: requirements.Defaults.ScmBranch,
-                                    helpMessage: "",
+                                    helpMessage: "Enter the SCM branch name (or commit hash or tag)",
                                     out var branchAnswer))
                 {
                     if (!branchAnswer.IsEmpty)
@@ -612,7 +613,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.AskList<ulong>("Labels",
                                                defaultValues: requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
-                                               helpMessage: "",
+                                               helpMessage: "Enter Label ID(s).",
                                                out var labelsAnswer))
                 {
                     if (!labelsAnswer.IsEmpty)
@@ -633,7 +634,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask<int>("Forks",
                                          defaultValue: requirements.Defaults.Forks,
-                                         helpMessage: "",
+                                         helpMessage: "Enter the number of parallel or simultaneous procecces.",
                                          required: false,
                                          out var forksAnswer))
                 {
@@ -653,7 +654,10 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask("Limit",
                                     defaultValue: requirements.Defaults.Limit,
-                                    helpMessage: "",
+                                    helpMessage: """
+                                    Enter the host pattern to further constrain the list of host managed or affected by the playbook.
+                                    Multiple patterns can be separated by commas(`,`) or colons(`:`).
+                                    """,
                                     out var limitAnswer))
                 {
                     if (!limitAnswer.IsEmpty)
@@ -673,7 +677,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.AskEnum<JobVerbosity>("Verbosity",
                                                       defaultValue: requirements.Defaults.Verbosity,
-                                                      helpMessage: "",
+                                                      helpMessage: "Choose the job log verbosity level.",
                                                       out var verbosityAnswer))
                 {
                     if (!verbosityAnswer.IsEmpty)
@@ -692,7 +696,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask<int>("Job Slice Count",
                                          defaultValue: requirements.Defaults.JobSliceCount,
-                                         helpMessage: "",
+                                         helpMessage: "Enter the number of slices you want this job template to run.",
                                          required: false,
                                          out var jobSliceCountAnswer))
                 {
@@ -712,7 +716,7 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask<int>("Timeout",
                                          defaultValue: requirements.Defaults.Timeout,
-                                         helpMessage: "",
+                                         helpMessage: "Enter the timeout value(seconds).",
                                          required: false,
                                          out var timeoutAnswer))
                 {
@@ -752,7 +756,10 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask("Job Tags",
                                     defaultValue: requirements.Defaults.JobTags,
-                                    helpMessage: "",
+                                    helpMessage: """
+                                    Enter the tags. Multiple values can be separated by commas(`,`).
+                                    This is same as the `--tags` command-line parameter for `ansible-playbook`.
+                                    """,
                                     out var jobTagsAnswer))
                 {
                     if (!jobTagsAnswer.IsEmpty)
@@ -771,7 +778,10 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask("Skip Tags",
                                     defaultValue: requirements.Defaults.JobTags,
-                                    helpMessage: "",
+                                    helpMessage: """
+                                    Enter the skip tags. Multiple values can be separated by commas(`,`).
+                                    This is same as the `--skip-tags` command-line parameter for `ansible-playbook`.
+                                    """,
                                     out var skipTagsAnswer))
                 {
                     if (!skipTagsAnswer.IsEmpty)
@@ -790,7 +800,10 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.Ask("ExtraVariables",
                                     defaultValue: requirements.Defaults.ExtraVars,
-                                    helpMessage: "",
+                                    helpMessage: """
+                                    Enter the extra variables provided key/value pairs using either YAML or JSON, to be passed to the playbook.
+                                    This is same as the `-e` or `--extra-vars` command-line parameter for `ansible-playbook`.
+                                    """,
                                     out var extraVarsAnswer))
                 {
                     if (!extraVarsAnswer.IsEmpty)
