@@ -571,8 +571,8 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.AskBool("Job Type",
                                         defaultValue: requirements.Defaults.JobType == Resources.JobType.Run,
-                                        trueHelpMessage: "Run",
-                                        falseHelpMessage: "Check",
+                                        trueParameter: ("Run", "Run: Execut the playbook when launched, running Ansible tasks on the selected hosts."),
+                                        falseParameter: ("Check", "Check: Perform a \"dry run\" of the playbook. This is same as `-C` -or `--check` command-line parameter for `ansible-playbook`"),
                                         out var jobTypeAnswer))
                 {
                     if (!jobTypeAnswer.IsEmpty)
@@ -736,8 +736,8 @@ namespace AWX.Cmdlets
                 }
                 else if (prompt.AskBool("Diff Mode",
                                         defaultValue: requirements.Defaults.DiffMode,
-                                        trueHelpMessage: "On",
-                                        falseHelpMessage: "Off",
+                                        trueParameter: ("On", "On: Allows to see the changes made by Ansible tasks. This is same as `-D` or `--diff` command-line parameter for `ansible-playbook`."),
+                                        falseParameter: ("Off", "Off"),
                                         out var diffModeAnswer))
                 {
                     if (!diffModeAnswer.IsEmpty)

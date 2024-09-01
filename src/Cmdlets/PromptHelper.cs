@@ -282,18 +282,21 @@ namespace AWX.Cmdlets
         /// </summary>
         /// <param name="label">Prompt label</param>
         /// <param name="answer"></param>
-        /// <param name="trueHelpMessage"></param>
-        /// <param name="falseHelpMessage"></param>
+        /// <param name="trueParameter"></param>
+        /// <param name="falseParameter"></param>
         /// <param name="defaultValue"</param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool AskBool(string label, bool defaultValue, string trueHelpMessage, string falseHelpMessage, out Answer<bool> answer)
+        public bool AskBool(string label, bool defaultValue,
+                            (string label, string helpMessage) trueParameter,
+                            (string label, string helpMessage) falseParameter,
+                            out Answer<bool> answer)
         {
             var choices = new Collection<ChoiceDescription>();
 
-            choices.Add(new ChoiceDescription("&True", trueHelpMessage));
-            choices.Add(new ChoiceDescription("&False", falseHelpMessage));
+            choices.Add(new ChoiceDescription($"{trueParameter.label} (&Yes)", trueParameter.helpMessage));
+            choices.Add(new ChoiceDescription($"{falseParameter.label} (&No)", falseParameter.helpMessage));
 
-            printHeader(label, "", $"{trueHelpMessage}(true) or {falseHelpMessage}(false)", showDefault: false);
+            printHeader(label, "", $"{trueParameter.label} (Yes) or {falseParameter.label} (No)", showDefault: false);
             var res = _host.UI.PromptForChoice("", "", choices, defaultValue ? 0 : 1);
             switch (res)
             {
@@ -304,7 +307,7 @@ namespace AWX.Cmdlets
                     answer = new Answer<bool>(false);
                     return true;
                 default:
-                    answer = new Answer<bool>(false);
+                    answer = new Answer<bool>(defaultValue);
                     return false;
             }
 
