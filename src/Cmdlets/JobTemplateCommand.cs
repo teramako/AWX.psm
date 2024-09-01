@@ -487,17 +487,18 @@ namespace AWX.Cmdlets
             }
             var prompt = new AskPrompt(CommandRuntime.Host);
             string key;
+            string label;
             string skipFormat = "Skip {0} prompt. Already specified: {1:g}";
 
             // Inventory
             if (requirements.InventoryNeededToStart || (checkOptional && requirements.AskInventoryOnLaunch))
             {
-                key = "inventory";
+                key = "inventory"; label = "Inventory";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Inventory", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<ulong>("Inventory",
+                else if (prompt.Ask<ulong>(label,
                                            defaultValue: requirements.Defaults.Inventory.Id,
                                            helpMessage: "Input an Inventory ID."
                                                         + (requirements.InventoryNeededToStart ? " (Required)" : ""),
@@ -513,13 +514,13 @@ namespace AWX.Cmdlets
             // Credentials
             if (requirements.CredentialNeededToStart || (checkOptional &&  requirements.AskCredentialOnLaunch))
             {
-                key = "credentials";
+                key = "credentials"; label = "Credentials";
                 if (sendData.ContainsKey(key))
                 {
                     var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
-                    WriteHost(string.Format(skipFormat, "Credentials", strData), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, strData), dontshow: true);
                 }
-                else if (prompt.AskList<ulong>("Credentials",
+                else if (prompt.AskList<ulong>(label,
                                                defaultValues: requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
                                                helpMessage: "Enter Credential ID(s).",
                                                out var credentialsAnswer))
@@ -544,12 +545,12 @@ namespace AWX.Cmdlets
             // ExecutionEnvironment
             if (checkOptional && requirements.AskExecutionEnvironmentOnLaunch)
             {
-                key = "execution_environment";
+                key = "execution_environment"; label = "Execution Environment";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Execution Environment", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<ulong>("Execution Environment",
+                else if (prompt.Ask<ulong>(label,
                                            defaultValue: requirements.Defaults.ExecutionEnvironment.Id,
                                            helpMessage: "Enter the Execution Environment ID.",
                                            required: false,
@@ -564,12 +565,12 @@ namespace AWX.Cmdlets
             // JobType
             if (checkOptional && requirements.AskJobTypeOnLaunch)
             {
-                key = "job_type";
+                key = "job_type"; label = "Job Type";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Job Type", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.AskBool("Job Type",
+                else if (prompt.AskBool(label,
                                         defaultValue: requirements.Defaults.JobType == Resources.JobType.Run,
                                         trueParameter: ("Run", "Run: Execut the playbook when launched, running Ansible tasks on the selected hosts."),
                                         falseParameter: ("Check", "Check: Perform a \"dry run\" of the playbook. This is same as `-C` -or `--check` command-line parameter for `ansible-playbook`"),
@@ -586,12 +587,12 @@ namespace AWX.Cmdlets
             // ScmBranch
             if (checkOptional && requirements.AskScmBranchOnLaunch)
             {
-                key = "scm_branch";
+                key = "scm_branch"; label = "ScmBranch";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "ScmBranch", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("ScmBranch",
+                else if (prompt.Ask(label,
                                     defaultValue: requirements.Defaults.ScmBranch,
                                     helpMessage: "Enter the SCM branch name (or commit hash or tag)",
                                     out var branchAnswer))
@@ -605,13 +606,13 @@ namespace AWX.Cmdlets
             // Labels
             if (checkOptional && requirements.AskLabelsOnLaunch)
             {
-                key = "labels";
+                key = "labels"; label = "Labels";
                 if (sendData.ContainsKey(key))
                 {
                     var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
-                    WriteHost(string.Format(skipFormat, "Labels", strData), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, strData), dontshow: true);
                 }
-                else if (prompt.AskList<ulong>("Labels",
+                else if (prompt.AskList<ulong>(label,
                                                defaultValues: requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
                                                helpMessage: "Enter Label ID(s).",
                                                out var labelsAnswer))
@@ -627,12 +628,12 @@ namespace AWX.Cmdlets
             // Forks
             if (checkOptional && requirements.AskForksOnLaunch)
             {
-                key = "forks";
+                key = "forks"; label = "Forks";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Forks", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>("Forks",
+                else if (prompt.Ask<int>(label,
                                          defaultValue: requirements.Defaults.Forks,
                                          helpMessage: "Enter the number of parallel or simultaneous procecces.",
                                          required: false,
@@ -647,12 +648,12 @@ namespace AWX.Cmdlets
             // Limit
             if (checkOptional && requirements.AskLimitOnLaunch)
             {
-                key = "limit";
+                key = "limit"; label = "Limit";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Limit", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("Limit",
+                else if (prompt.Ask(label,
                                     defaultValue: requirements.Defaults.Limit,
                                     helpMessage: """
                                     Enter the host pattern to further constrain the list of host managed or affected by the playbook.
@@ -669,13 +670,13 @@ namespace AWX.Cmdlets
             // Verbosity
             if (checkOptional && requirements.AskVerbosityOnLaunch)
             {
-                key = "verbosity";
+                key = "verbosity"; label = "Verbosity";
                 if (sendData.ContainsKey(key))
                 {
                     var v = (JobVerbosity)((int)(sendData[key] ?? 0));
-                    WriteHost(string.Format(skipFormat, "Job Tags", $"{v:d} ({v:g})"), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, $"{v:d} ({v:g})"), dontshow: true);
                 }
-                else if (prompt.AskEnum<JobVerbosity>("Verbosity",
+                else if (prompt.AskEnum<JobVerbosity>(label,
                                                       defaultValue: requirements.Defaults.Verbosity,
                                                       helpMessage: "Choose the job log verbosity level.",
                                                       out var verbosityAnswer))
@@ -689,12 +690,12 @@ namespace AWX.Cmdlets
             // JobSliceCount
             if (checkOptional && requirements.AskJobTypeOnLaunch)
             {
-                key = "job_slice_count";
+                key = "job_slice_count"; label = "Job Slice Count";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Job Slice Count", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>("Job Slice Count",
+                else if (prompt.Ask<int>(label,
                                          defaultValue: requirements.Defaults.JobSliceCount,
                                          helpMessage: "Enter the number of slices you want this job template to run.",
                                          required: false,
@@ -709,12 +710,12 @@ namespace AWX.Cmdlets
             // Timeout
             if (checkOptional && requirements.AskTimeoutOnLaunch)
             {
-                key = "timeout";
+                key = "timeout"; label = "Timeout";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Timeout", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>("Timeout",
+                else if (prompt.Ask<int>(label,
                                          defaultValue: requirements.Defaults.Timeout,
                                          helpMessage: "Enter the timeout value(seconds).",
                                          required: false,
@@ -729,12 +730,12 @@ namespace AWX.Cmdlets
             // DiffMode
             if (checkOptional && requirements.AskDiffModeOnLaunch)
             {
-                key = "diff_mode";
+                key = "diff_mode"; label = "Diff Mode";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Diff Mode", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.AskBool("Diff Mode",
+                else if (prompt.AskBool(label,
                                         defaultValue: requirements.Defaults.DiffMode,
                                         trueParameter: ("On", "On: Allows to see the changes made by Ansible tasks. This is same as `-D` or `--diff` command-line parameter for `ansible-playbook`."),
                                         falseParameter: ("Off", "Off"),
@@ -749,12 +750,12 @@ namespace AWX.Cmdlets
             // Tags
             if (checkOptional && requirements.AskTagsOnLaunch)
             {
-                key = "job_tags";
+                key = "job_tags"; label = "Job Tags";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Job Tags", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("Job Tags",
+                else if (prompt.Ask(label,
                                     defaultValue: requirements.Defaults.JobTags,
                                     helpMessage: """
                                     Enter the tags. Multiple values can be separated by commas(`,`).
@@ -771,12 +772,12 @@ namespace AWX.Cmdlets
             // SkipTags
             if (checkOptional && requirements.AskSkipTagsOnLaunch)
             {
-                key = "skip_tags";
+                key = "skip_tags"; label = "Skip Tags";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Skip Tags", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("Skip Tags",
+                else if (prompt.Ask(label,
                                     defaultValue: requirements.Defaults.JobTags,
                                     helpMessage: """
                                     Enter the skip tags. Multiple values can be separated by commas(`,`).
@@ -793,12 +794,12 @@ namespace AWX.Cmdlets
             // ExtraVars
             if (checkOptional && requirements.AskVariablesOnLaunch)
             {
-                key = "extra_vars";
+                key = "extra_vars"; label = "Extra Variables";
                 if (sendData.ContainsKey(key))
                 {
-                    WriteHost(string.Format(skipFormat, "Extra Vars", sendData[key]), dontshow: true);
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask("ExtraVariables",
+                else if (prompt.Ask(label,
                                     defaultValue: requirements.Defaults.ExtraVars,
                                     helpMessage: """
                                     Enter the extra variables provided key/value pairs using either YAML or JSON, to be passed to the playbook.
