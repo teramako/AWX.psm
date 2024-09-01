@@ -339,6 +339,29 @@ namespace AWX.Cmdlets
             }
         }
 
+        private void PrintResult(string label, string resultValue, bool notSpecified = false)
+        {
+            var ui = CommandRuntime.Host?.UI;
+            if (ui == null) return;
+            var bg = Console.BackgroundColor;
+            ui.Write(ConsoleColor.Green, bg, "==> ");
+            var sb = new StringBuilder();
+            if (notSpecified)
+            {
+                sb.Append($"Not specified {label}. Will be used default");
+            }
+            else
+            {
+                sb.Append($"Accepted {label}");
+            }
+            if (!string.IsNullOrEmpty(resultValue))
+            {
+                sb.Append($": {resultValue}");
+            }
+            WriteHost(sb.ToString());
+            ui.WriteLine("\n");
+        }
+
         private bool CheckPasswordsRequired(JobTemplateLaunchRequirements requirements,
                                             IDictionary<string, object?> sendData,
                                             out Dictionary<string, (string caption, string description)> result)
@@ -454,6 +477,7 @@ namespace AWX.Cmdlets
                 if (prompt.AskPassword(caption, description, out var passwordAnswer))
                 {
                     credentialPassswords.Add(key, passwordAnswer.Input);
+                    PrintResult(key, string.Empty);
                 }
                 else
                 {   // Canceled
@@ -506,7 +530,14 @@ namespace AWX.Cmdlets
                                            out var inventoryAnswer))
                 {
                     if (!inventoryAnswer.IsEmpty && inventoryAnswer.Input > 0)
+                    {
                         sendData[key] = inventoryAnswer.Input;
+                        PrintResult(label, $"{inventoryAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.Inventory}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -526,9 +557,17 @@ namespace AWX.Cmdlets
                                                out var credentialsAnswer))
                 {
                     if (!credentialsAnswer.IsEmpty)
-                        sendData[key] = credentialsAnswer.Input
-                                                         .Where(x => x > 0)
-                                                         .ToArray();
+                    {
+                        var arr = credentialsAnswer.Input.Where(x => x > 0).ToArray();
+                        sendData[key] = arr;
+                        PrintResult(label, $"[{string.Join(", ", arr)}]");
+                    }
+                    else
+                    {
+                        PrintResult(label,
+                                    $"[{string.Join(", ", requirements.Defaults.Credentials?.Select(x => $"{x}") ?? [])}]",
+                                    true);
+                    }
                 }
                 else { return false; }
             }
@@ -557,7 +596,14 @@ namespace AWX.Cmdlets
                                            out var eeAnswer))
                 {
                     if (!eeAnswer.IsEmpty)
+                    {
                         sendData[key] = eeAnswer.Input > 0 ? eeAnswer.Input : null;
+                        PrintResult(label, eeAnswer.Input > 0 ? $"{eeAnswer.Input}" : "(null)");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.ExecutionEnvironment}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -577,9 +623,15 @@ namespace AWX.Cmdlets
                                         out var jobTypeAnswer))
                 {
                     if (!jobTypeAnswer.IsEmpty)
-                        sendData[key] = (jobTypeAnswer.Input ? Resources.JobType.Run : Resources.JobType.Check)
-                                        .ToString()
-                                        .ToLowerInvariant();
+                    {
+                        var result = (jobTypeAnswer.Input ? Resources.JobType.Run : Resources.JobType.Check).ToString().ToLowerInvariant();
+                        sendData[key] = result;
+                        PrintResult(label, result);
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.JobType}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -598,7 +650,14 @@ namespace AWX.Cmdlets
                                     out var branchAnswer))
                 {
                     if (!branchAnswer.IsEmpty)
+                    {
                         sendData[key] = branchAnswer.Input;
+                        PrintResult(label, $"\"{branchAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"\"{requirements.Defaults.ScmBranch}\"", true);
+                    }
                 }
                 else { return false; }
             }
@@ -618,9 +677,17 @@ namespace AWX.Cmdlets
                                                out var labelsAnswer))
                 {
                     if (!labelsAnswer.IsEmpty)
-                        sendData[key] = labelsAnswer.Input
-                                                    .Where(x => x > 0)
-                                                    .ToArray();
+                    {
+                        var arr = labelsAnswer.Input.Where(x => x > 0).ToArray();
+                        sendData[key] = arr;
+                        PrintResult(label, $"[{string.Join(", ", arr)}]");
+                    }
+                    else
+                    {
+                        PrintResult(label,
+                                    $"[{string.Join(", ", requirements.Defaults.Labels?.Select(x => $"{x}") ?? [])}]",
+                                    true);
+                    }
                 }
                 else { return false; }
             }
@@ -640,7 +707,14 @@ namespace AWX.Cmdlets
                                          out var forksAnswer))
                 {
                     if (!forksAnswer.IsEmpty)
+                    {
                         sendData[key] = forksAnswer.Input;
+                        PrintResult(label, $"{forksAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.Forks}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -662,7 +736,14 @@ namespace AWX.Cmdlets
                                     out var limitAnswer))
                 {
                     if (!limitAnswer.IsEmpty)
+                    {
                         sendData[key] = limitAnswer.Input;
+                        PrintResult(label, $"\"{limitAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"\"{requirements.Defaults.Limit}\"", true);
+                    }
                 }
                 else { return false; }
             }
@@ -682,7 +763,16 @@ namespace AWX.Cmdlets
                                                       out var verbosityAnswer))
                 {
                     if (!verbosityAnswer.IsEmpty)
+                    {
                         sendData[key] = (int)verbosityAnswer.Input;
+                        PrintResult(label, $"{verbosityAnswer.Input} ({verbosityAnswer.Input:d})");
+                    }
+                    else
+                    {
+                        PrintResult(label,
+                                    $"{requirements.Defaults.Verbosity} ({requirements.Defaults.Verbosity:d})",
+                                    true);
+                    }
                 }
                 else { return false; }
             }
@@ -702,7 +792,14 @@ namespace AWX.Cmdlets
                                          out var jobSliceCountAnswer))
                 {
                     if (!jobSliceCountAnswer.IsEmpty)
+                    {
                         sendData[key] = jobSliceCountAnswer.Input;
+                        PrintResult(label, $"{jobSliceCountAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.JobSliceCount}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -722,7 +819,14 @@ namespace AWX.Cmdlets
                                          out var timeoutAnswer))
                 {
                     if (!timeoutAnswer.IsEmpty)
+                    {
                         sendData[key] = timeoutAnswer.Input;
+                        PrintResult(label, $"{timeoutAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.Timeout}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -742,7 +846,14 @@ namespace AWX.Cmdlets
                                         out var diffModeAnswer))
                 {
                     if (!diffModeAnswer.IsEmpty)
+                    {
                         sendData[key] = diffModeAnswer.Input;
+                        PrintResult(label, $"{diffModeAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"{requirements.Defaults.DiffMode}", true);
+                    }
                 }
                 else { return false; }
             }
@@ -764,7 +875,14 @@ namespace AWX.Cmdlets
                                     out var jobTagsAnswer))
                 {
                     if (!jobTagsAnswer.IsEmpty)
+                    {
                         sendData[key] = jobTagsAnswer.Input;
+                        PrintResult(label, $"\"{jobTagsAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"\"{requirements.Defaults.JobTags}\"", true);
+                    }
                 }
                 else { return false; }
             }
@@ -786,7 +904,14 @@ namespace AWX.Cmdlets
                                     out var skipTagsAnswer))
                 {
                     if (!skipTagsAnswer.IsEmpty)
+                    {
                         sendData[key] = skipTagsAnswer.Input;
+                        PrintResult(label, $"\"{skipTagsAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintResult(label, $"\"{requirements.Defaults.SkipTags}\"", true);
+                    }
                 }
                 else { return false; }
             }
@@ -808,7 +933,14 @@ namespace AWX.Cmdlets
                                     out var extraVarsAnswer))
                 {
                     if (!extraVarsAnswer.IsEmpty)
+                    {
                         sendData[key] = extraVarsAnswer.Input;
+                        PrintResult(label, extraVarsAnswer.Input);
+                    }
+                    else
+                    {
+                        PrintResult(label, requirements.Defaults.ExtraVars, true);
+                    }
                 }
                 else { return false; }
             }
