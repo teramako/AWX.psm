@@ -964,8 +964,6 @@ namespace AWX.Cmdlets
                 WriteWarning("Launch canceled.");
                 return null;
             }
-            string senDataString = JsonSerializer.Serialize(sendData, Json.DeserializeOptions);
-            WriteHost($"SenData:\n{senDataString}\n", dontshow: true);
             var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
