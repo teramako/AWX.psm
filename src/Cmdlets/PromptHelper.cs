@@ -69,7 +69,7 @@ namespace AWX.Cmdlets
             var results = new List<T>();
             var index = 0;
             var defaultValuString = $"[{string.Join(", ", defaultValues ?? [])}]";
-            var helpIndicator = "(Type !? : Show help, !> : Suspend)";
+            var helpIndicator = "(!? => Show help, !> => Suspend, !! => Comfirm even if the list is empty)";
             printHeader(label, defaultValuString, helpMessage, helpIndicator);
             do
             {
@@ -89,6 +89,9 @@ namespace AWX.Cmdlets
                         case "?":
                             printHelp(label, currentHelpMessage, helpIndicator);
                             continue;
+                        case "!": // return as the list is fulfilled even if the list is empty.
+                            answers = new Answer<List<T>>(results, false);
+                            return true;
                         case ">":
                             _host.EnterNestedPrompt();
                             continue;
@@ -151,7 +154,7 @@ namespace AWX.Cmdlets
                             printHelp(label, help, helpIndicator);
                             continue;
                         case "!":
-                            answer = new Answer<string>(defaultValue ?? string.Empty);
+                            answer = new Answer<string>(string.Empty);
                             return true;
                         case ">":
                             _host.EnterNestedPrompt();
