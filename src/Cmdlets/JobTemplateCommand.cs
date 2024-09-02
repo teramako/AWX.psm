@@ -452,7 +452,7 @@ namespace AWX.Cmdlets
                             break;
                     }
                     var t = requirements.Defaults.Credentials?
-                        .Where(cred => cred.Passwordsneeded?.Any(passwordKey => passwordKey == key) ?? false)
+                        .Where(cred => cred.PasswordsNeeded?.Any(passwordKey => passwordKey == key) ?? false)
                         .Select(cred => (string.Format(captionFmt, $"[{cred.Id}]{cred.Name}"), description))
                         .FirstOrDefault() ?? ("", "");
 
