@@ -18,7 +18,7 @@ Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [
  [-JobType <JobType>] [-ScmBranch <String>] [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>]
  [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-DiffMode <Boolean>]
  [-Verbosity <JobVerbosity>] [-Forks <Int32>] [-ExecutionEnvironment <UInt64>] [-JobSliceCount <Int32>]
- [-Timeout <Int32>] [<CommonParameters>]
+ [-Timeout <Int32>] [-Interactive] [<CommonParameters>]
 ```
 
 ### JobTemplate
@@ -27,7 +27,7 @@ Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <
  [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>] [-Credentials <UInt64[]>] [-Limit <String>]
  [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-DiffMode <Boolean>]
  [-Verbosity <JobVerbosity>] [-Forks <Int32>] [-ExecutionEnvironment <UInt64>] [-JobSliceCount <Int32>]
- [-Timeout <Int32>] [<CommonParameters>]
+ [-Timeout <Int32>] [-Interactive] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -177,6 +177,22 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Interactive
+"Prompt on launch" prompts for checked items.
+(However, it will not prompt for items that have already been given as parameters.)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

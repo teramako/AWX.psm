@@ -16,14 +16,14 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-Limit <String>]
  [-Inventory <UInt64>] [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
- [-ExtraVars <String>] [<CommonParameters>]
+ [-ExtraVars <String>] [-Interactive] [<CommonParameters>]
 ```
 
 ### JobTemplate
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog]
  [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
- [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
+ [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-Interactive]
  [<CommonParameters>]
 ```
 
@@ -89,6 +89,22 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Interactive
+"Prompt on launch" prompts for checked items.
+(However, it will not prompt for items that have already been given as parameters.)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
