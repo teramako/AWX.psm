@@ -33,6 +33,7 @@
   <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
     <PropertyGroup>
       <DllFile>$(OutDir)$(AssemblyName).dll</DllFile>
+      <DllYamlDotNet>$(PkgYamlDotNet)\lib\$(TargetFramework)\YamlDotNet.dll</DllYamlDotNet>
     </PropertyGroup>
     <ItemGroup>
       <PowerShellModules Include="*.psd1;*.ps1xml" />
@@ -41,6 +42,9 @@
 
     <Message Text="Copy built file: $(DllFile)" Importance="high" />
     <Copy SourceFiles="$(DllFile)" DestinationFolder="$(DestDir)" />
+
+    <Message Text="Copy YamlDotNet: $(DllYamlDotNet)" Importance="high" />
+    <Copy SourceFiles="$(DllYamlDotNet)" DestinationFolder="$(DestDir)" />
 
     <Message Text="Copy *.psd1 and *.ps1xml files: @(PowerShellModules)" Importance="high" />
     <Copy SourceFiles="@(PowerShellModules)" DestinationFolder="$(DestDir)" />
