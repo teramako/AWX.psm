@@ -124,6 +124,12 @@ namespace AWX.Resources
         string WebhookService { get; }
         ulong? WebhookCredential { get; }
         bool PreventInstanceGroupFallback { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
 
@@ -278,6 +284,11 @@ namespace AWX.Resources
         public string WebhookService { get; } = webhookService;
         public ulong? WebhookCredential { get; } = webhookCredential;
         public bool PreventInstanceGroupFallback { get; } = preventInstanceGroupFallback;
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public JobTemplateAskOnLaunch AskOnLaunch

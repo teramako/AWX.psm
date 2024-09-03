@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -19,6 +18,12 @@ namespace AWX.Resources
         string ExtraVars { get; }
         bool BecomeEnabled { get; }
         bool DiffMode { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class AdHocCommand(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -172,5 +177,9 @@ namespace AWX.Resources
         public bool BecomeEnabled { get; } = becomeEnabled;
         public bool DiffMode { get; } = diffMode;
 
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
     }
 }
