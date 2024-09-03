@@ -92,6 +92,28 @@
       </TableControl>
     </View>
     <View>
+      <Name>Survey</Name>
+      <ViewSelectedBy>
+        <TypeName>AWX.Resources.Survey</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem><PropertyName>Name</PropertyName></ListItem>
+              <ListItem><PropertyName>Description</PropertyName></ListItem>
+              <ListItem>
+                <Label>Spec</Label>
+                <ScriptBlock>
+                  if ($_.Spec.Count -gt 0){ ($_.Spec | Format-Table -Wrap | Out-String).Trim() }
+                </ScriptBlock>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
       <Name>UnifiedJobTemplate</Name>
       <ViewSelectedBy>
         <TypeName>AWX.Resources.JobTemplate</TypeName>
