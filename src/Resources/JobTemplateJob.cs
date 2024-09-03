@@ -37,6 +37,11 @@ namespace AWX.Resources
         uint? WebhookCredential { get; }
         string WebhookGuid { get; }
 
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class JobTemplateJob(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -161,6 +166,11 @@ namespace AWX.Resources
         public uint? WebhookCredential { get; } = webhookCredential;
         public string WebhookGuid { get; } = webhookGuid;
         #endregion
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related,
                             Summary summaryFields, DateTime created, DateTime? modified, string name,

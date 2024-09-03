@@ -43,6 +43,12 @@ namespace AWX.Resources
         bool AskTagsOnLaunch { get; }
         string? SkipTags { get; }
         string? JobTags { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class WorkflowJobTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -168,6 +174,11 @@ namespace AWX.Resources
                        (!string.IsNullOrEmpty(WebhookService) ? JobTemplateOptions.Webhook : 0) |
                        (AllowSimultaneous ? JobTemplateOptions.Simultaneous : 0);
             }
+        }
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
         }
     }
 }

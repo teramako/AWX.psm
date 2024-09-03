@@ -13,6 +13,11 @@ namespace AWX.Resources
         string ExtraVars { get; }
         string ResultStdout { get; }
 
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class SystemJob(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -94,6 +99,11 @@ namespace AWX.Resources
         public string JobType { get; } = jobType;
         public string ExtraVars { get; } = extraVars;
         public string ResultStdout { get; } = resultStdout;
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
     }
 }
 

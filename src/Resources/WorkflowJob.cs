@@ -25,6 +25,12 @@ namespace AWX.Resources
         string WebhookGuid { get; }
         string? SkipTags { get; }
         string? JobTags { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
 
@@ -120,6 +126,11 @@ namespace AWX.Resources
         public string WebhookGuid { get; } = webhookGuid;
         public string? SkipTags { get; } = skipTags;
         public string? JobTags { get; } = jobTags;
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
                             DateTime created, DateTime? modified, string name, string description,
