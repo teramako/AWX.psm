@@ -453,7 +453,14 @@ namespace AWX.Cmdlets
                 else { return false; }
             }
 
-            // FIXME: implement Survey
+            // VariablesNeededToStart and Survey
+            if (requirements.VariablesNeededToStart.Length > 0 || (checkOptional && requirements.SurveyEnabled))
+            {
+                if (!AskSurvey(ResourceType.WorkflowJobTemplate, Id, checkOptional, sendData))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
