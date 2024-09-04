@@ -247,7 +247,7 @@ namespace AWX.Cmdlets
                 }
                 if (string.IsNullOrEmpty(inputString))
                 {
-                    if (required)
+                    if (required && defaultValue == null)
                     {
                         WriteError("Empty value is not allowed.");
                         continue;
