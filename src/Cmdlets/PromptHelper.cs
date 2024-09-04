@@ -154,7 +154,7 @@ namespace AWX.Cmdlets
                             printHelp(label, help, helpIndicator);
                             continue;
                         case "!":
-                            answer = new Answer<string>(string.Empty);
+                            answer = new Answer<string>(defaultValue ?? string.Empty);
                             return true;
                         case ">":
                             _host.EnterNestedPrompt();
