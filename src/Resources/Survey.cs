@@ -21,7 +21,7 @@ namespace AWX.Resources
 
     public enum SurveySpecType
     {
-        Text, Password, Integer, Float, MultipleChoice, MultiSelect
+        Text, Textarea, Password, Integer, Float, MultipleChoice, MultiSelect
     }
 
     [JsonConverter(typeof(SurveySpecConverter))]
