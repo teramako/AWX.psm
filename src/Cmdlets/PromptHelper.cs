@@ -396,6 +396,68 @@ namespace AWX.Cmdlets
             return false;
         }
         /// <summary>
+        /// Multi selectable prompts.
+        /// </summary>
+        /// <param name="label">Prompt label</param>
+        /// <param name="promptKey"></param>
+        /// <param name="fields"></param>
+        /// <param name="defaultValues"></param>
+        /// <param name="helpMessage"></param>
+        /// <param name="answer"</param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        public bool AskSelectMulti(string label, string promptKey,
+                                   IList<(string Value, string Description)> fields,
+                                   IList<string> defaultValues,
+                                   string helpMessage,
+                                   out Answer<string[]> answer)
+        {
+            printHeader(label, $"[{string.Join(", ", defaultValues)}]", helpMessage);
+            var maxCount = fields.Count;
+            var results = new List<string>();
+            var remainingFields = new List<(string Value, string Description)>(fields);
+            var remainingDefaultValues = new List<string>(defaultValues);
+            if (string.IsNullOrEmpty(promptKey))
+                promptKey = label;
+
+            do
+            {
+                var choices = new Collection<ChoiceDescription>();
+                var fieldIndex = 1;
+                var defaultValueIndex = 0;
+
+                choices.Add(new ChoiceDescription("&Confirm", "Confirm and finish multi select prompts"));
+                foreach (var field in remainingFields)
+                {
+                    if (remainingDefaultValues.Contains(field.Value))
+                        defaultValueIndex = fieldIndex;
+
+                    choices.Add(new ChoiceDescription($"{field.Value}(&{fieldIndex})", field.Description));
+                    fieldIndex++;
+                }
+
+                int selectedIndex = _host.UI.PromptForChoice("", $"{promptKey}[{results.Count}]", choices, defaultValueIndex);
+                if (selectedIndex == 0)
+                {
+                    break;
+                }
+                else if (selectedIndex > 0 && selectedIndex < remainingFields.Count)
+                {
+                    var selectedValue = remainingFields[selectedIndex - 1].Value;
+                    results.Add(selectedValue);
+                    remainingFields.RemoveAt(selectedIndex - 1);
+                    remainingDefaultValues.Remove(selectedValue);
+                }
+                else
+                {
+                    answer = new Answer<string[]>([], true);
+                    return false;
+                }
+            } while (results.Count <= maxCount);
+
+            answer = new Answer<string[]>(results.ToArray());
+            return true;
+        }
+        /// <summary>
         /// Password prompt
         /// </summary>
         /// <param name="caption">Header label</param>
