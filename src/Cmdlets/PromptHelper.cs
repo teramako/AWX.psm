@@ -60,20 +60,24 @@ namespace AWX.Cmdlets
         /// List input prompt
         /// </summary>
         /// <param name="label">Prompt label</param>
+        /// <param name="promptKey"></param>
         /// <param name="defaultValues"></param>
         /// <param name="helpMessage"></param>
         /// <param name="answers"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool AskList<T>(string label, IEnumerable<string>? defaultValues, string helpMessage, out Answer<List<T>> answers)
+        public bool AskList<T>(string label, string promptKey, IEnumerable<string>? defaultValues, string helpMessage, out Answer<List<T>> answers)
         {
             var results = new List<T>();
             var index = 0;
             var defaultValuString = $"[{string.Join(", ", defaultValues ?? [])}]";
             var helpIndicator = "(!? => Show help, !> => Suspend, !! => Comfirm even if the list is empty)";
             printHeader(label, defaultValuString, helpMessage, helpIndicator);
+            if (string.IsNullOrEmpty(promptKey))
+                promptKey = label;
+
             do
             {
-                var fieldLabel = $"{label}[{index}]";
+                var fieldLabel = $"{promptKey}[{index}]";
                 var currentHelpMessage = (string.IsNullOrEmpty(helpMessage) ? "" : $"{helpMessage}\n")
                                          + $"CurrentValues: [{string.Join(", ", results.Select(item => $"{item}"))}]";
                 if (!TryPromptOneInput(fieldLabel, out var inputString))
@@ -124,11 +128,12 @@ namespace AWX.Cmdlets
         /// String input prompt
         /// </summary>
         /// <param name="label">Prompt label</param>
+        /// <param name="promptKey"></param>
         /// <param name="defaultValue"></param>
         /// <param name="helpMessage"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask(string label, string? defaultValue, string helpMessage, out Answer<string> answer)
+        public bool Ask(string label, string promptKey, string? defaultValue, string helpMessage, out Answer<string> answer)
         {
             var defaultValueString = $"\"{defaultValue}\"";
             var helpIndicator = """
@@ -137,10 +142,13 @@ namespace AWX.Cmdlets
             printHeader(label, defaultValueString, helpMessage, helpIndicator);
             var help = (string.IsNullOrEmpty(helpMessage) ? "" : $"{helpMessage}\n")
                        + $"Default: {defaultValueString}";
+            if (string.IsNullOrEmpty(promptKey))
+                promptKey = label;
+
             do
             {
                 var inputed = false;
-                if (!TryPromptOneInput(label, out var inputString))
+                if (!TryPromptOneInput(promptKey, out var inputString))
                 {
                     answer = new Answer<string>(string.Empty, true);
                     return false;
@@ -192,12 +200,13 @@ namespace AWX.Cmdlets
         /// </summary>
         /// <typeparam name="T">inputed data type (mainly number type)</typeparam>
         /// <param name="label">Prompt label</param>
+        /// <param name="promptKey"></param>
         /// <param name="defaultValue"></param>
         /// <param name="helpMessage"></param>
         /// <param name="required"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask<T>(string label, T? defaultValue, string helpMessage, bool required, out Answer<T> answer) where T: struct
+        public bool Ask<T>(string label, string promptKey, T? defaultValue, string helpMessage, bool required, out Answer<T> answer) where T: struct
         {
             string helpIndicator;
             string help = helpMessage;
@@ -216,10 +225,13 @@ namespace AWX.Cmdlets
             }
 
             printHeader(label, $"{defaultValue}", helpMessage, helpIndicator, showDefault: defaultValue != null);
+            if (string.IsNullOrEmpty(promptKey))
+                promptKey = label;
+
             do
             {
                 var inputed = false;
-                if (!TryPromptOneInput(label, out var inputString))
+                if (!TryPromptOneInput(promptKey, out var inputString))
                 {
                     answer = new Answer<T>(default(T), true);
                     return false;
@@ -352,18 +364,21 @@ namespace AWX.Cmdlets
         /// Password prompt
         /// </summary>
         /// <param name="caption">Header label</param>
+        /// <param name="promptKey"></param>
         /// <param name="answer"></param>
         /// <param name="helpMessage"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool AskPassword(string caption, string helpMessage, out Answer<string> answer)
+        public bool AskPassword(string caption, string promptKey, string helpMessage, out Answer<string> answer)
         {
             printHeader(caption, "", helpMessage, showDefault: false);
-            var label = "Password";
-            var fd = new FieldDescription(label);
+            if (string.IsNullOrEmpty(promptKey))
+                promptKey = "Password";
+
+            var fd = new FieldDescription(promptKey);
             fd.SetParameterType(typeof(SecureString));
             var fdc = new Collection<FieldDescription>() { fd };
             Dictionary<string, PSObject>? result = _host.UI.Prompt("", "", fdc);
-            if (result != null && result.TryGetValue(label, out PSObject? pso))
+            if (result != null && result.TryGetValue(promptKey, out PSObject? pso))
             {
                 if (pso == null || pso.BaseObject == null)
                 {

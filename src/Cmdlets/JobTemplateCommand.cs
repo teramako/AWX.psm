@@ -451,7 +451,7 @@ namespace AWX.Cmdlets
 
             foreach (var (key, (caption, description)) in checkResult)
             {
-                if (prompt.AskPassword(caption, description, out var passwordAnswer))
+                if (prompt.AskPassword(caption, key, description, out var passwordAnswer))
                 {
                     credentialPassswords.Add(key, passwordAnswer.Input);
                     PrintPromptResult(key, string.Empty);
@@ -499,7 +499,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<ulong>(label,
+                else if (prompt.Ask<ulong>(label, "",
                                            defaultValue: requirements.Defaults.Inventory.Id,
                                            helpMessage: "Input an Inventory ID."
                                                         + (requirements.InventoryNeededToStart ? " (Required)" : ""),
@@ -528,7 +528,7 @@ namespace AWX.Cmdlets
                     var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
                     WriteHost(string.Format(skipFormat, label, strData), dontshow: true);
                 }
-                else if (prompt.AskList<ulong>(label,
+                else if (prompt.AskList<ulong>(label, "",
                                                defaultValues: requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
                                                helpMessage: "Enter Credential ID(s).",
                                                out var credentialsAnswer))
@@ -566,7 +566,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<ulong>(label,
+                else if (prompt.Ask<ulong>(label, "",
                                            defaultValue: requirements.Defaults.ExecutionEnvironment.Id,
                                            helpMessage: "Enter the Execution Environment ID.",
                                            required: false,
@@ -621,7 +621,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask(label,
+                else if (prompt.Ask(label, "",
                                     defaultValue: requirements.Defaults.ScmBranch,
                                     helpMessage: "Enter the SCM branch name (or commit hash or tag)",
                                     out var branchAnswer))
@@ -648,7 +648,7 @@ namespace AWX.Cmdlets
                     var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
                     WriteHost(string.Format(skipFormat, label, strData), dontshow: true);
                 }
-                else if (prompt.AskList<ulong>(label,
+                else if (prompt.AskList<ulong>(label, "",
                                                defaultValues: requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
                                                helpMessage: "Enter Label ID(s).",
                                                out var labelsAnswer))
@@ -677,7 +677,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>(label,
+                else if (prompt.Ask<int>(label, "",
                                          defaultValue: requirements.Defaults.Forks,
                                          helpMessage: "Enter the number of parallel or simultaneous procecces.",
                                          required: false,
@@ -704,7 +704,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask(label,
+                else if (prompt.Ask(label, "",
                                     defaultValue: requirements.Defaults.Limit,
                                     helpMessage: """
                                     Enter the host pattern to further constrain the list of host managed or affected by the playbook.
@@ -762,7 +762,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>(label,
+                else if (prompt.Ask<int>(label, "",
                                          defaultValue: requirements.Defaults.JobSliceCount,
                                          helpMessage: "Enter the number of slices you want this job template to run.",
                                          required: false,
@@ -789,7 +789,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask<int>(label,
+                else if (prompt.Ask<int>(label, "",
                                          defaultValue: requirements.Defaults.Timeout,
                                          helpMessage: "Enter the timeout value(seconds).",
                                          required: false,
@@ -843,7 +843,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask(label,
+                else if (prompt.Ask(label, "",
                                     defaultValue: requirements.Defaults.JobTags,
                                     helpMessage: """
                                     Enter the tags. Multiple values can be separated by commas(`,`).
@@ -872,7 +872,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask(label,
+                else if (prompt.Ask(label, "",
                                     defaultValue: requirements.Defaults.JobTags,
                                     helpMessage: """
                                     Enter the skip tags. Multiple values can be separated by commas(`,`).
@@ -901,7 +901,7 @@ namespace AWX.Cmdlets
                 {
                     WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
                 }
-                else if (prompt.Ask(label,
+                else if (prompt.Ask(label, "",
                                     defaultValue: requirements.Defaults.ExtraVars,
                                     helpMessage: """
                                     Enter the extra variables provided key/value pairs using either YAML or JSON, to be passed to the playbook.
