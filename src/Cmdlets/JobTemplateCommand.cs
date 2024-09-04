@@ -339,29 +339,6 @@ namespace AWX.Cmdlets
             }
         }
 
-        private void PrintPromptResult(string label, string resultValue, bool notSpecified = false)
-        {
-            var ui = CommandRuntime.Host?.UI;
-            if (ui == null) return;
-            var bg = Console.BackgroundColor;
-            ui.Write(ConsoleColor.Green, bg, "==> ");
-            var sb = new StringBuilder();
-            if (notSpecified)
-            {
-                sb.Append($"Not specified {label}. Will be used default");
-            }
-            else
-            {
-                sb.Append($"Accepted {label}");
-            }
-            if (!string.IsNullOrEmpty(resultValue))
-            {
-                sb.Append($": {resultValue}");
-            }
-            WriteHost(sb.ToString());
-            ui.WriteLine("\n");
-        }
-
         private bool CheckPasswordsRequired(JobTemplateLaunchRequirements requirements,
                                             IDictionary<string, object?> sendData,
                                             out Dictionary<string, (string caption, string description)> result)
