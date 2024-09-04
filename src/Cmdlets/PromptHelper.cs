@@ -361,6 +361,41 @@ namespace AWX.Cmdlets
             return false;
         }
         /// <summary>
+        /// Show input prompt for select one.
+        /// </summary>
+        /// <param name="label">Prompt label</param>
+        /// <param name="fields"></param>
+        /// <param name="defaultValue"></param>
+        /// <param name="helpMessage"></param>
+        /// <param name="answer"</param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        public bool AskSelectOne(string label,
+                                 IList<(string Value, string Description)> fields,
+                                 string defaultValue,
+                                 string helpMessage,
+                                 out Answer<string> answer)
+        {
+            printHeader(label, defaultValue, helpMessage);
+            var choices = new Collection<ChoiceDescription>();
+            var defaultValueIndex = -1;
+            for (var i = 0; i < fields.Count; i++)
+            {
+                var field = fields[i];
+                if (field.Value == defaultValue)
+                    defaultValueIndex = i;
+
+                choices.Add(new ChoiceDescription($"{field.Value}(&{i})", field.Description));
+            }
+            int res = _host.UI.PromptForChoice("", "", choices, defaultValueIndex);
+            if (res >= 0 && res < fields.Count)
+            {
+                answer = new Answer<string>(fields[res].Value);
+                return true;
+            }
+            answer = new Answer<string>(defaultValue, true);
+            return false;
+        }
+        /// <summary>
         /// Password prompt
         /// </summary>
         /// <param name="caption">Header label</param>
