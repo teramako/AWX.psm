@@ -91,7 +91,8 @@ namespace AWX.Cmdlets
         [Parameter()]
         public string[]? SkipTags { get; set; }
 
-        [Parameter()] // TODO: Should accept `IDctionary` (convert to JSON serialized string)
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
         public string? ExtraVars { get; set; }
 
         [Parameter()]
