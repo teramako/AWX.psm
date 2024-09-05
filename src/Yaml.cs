@@ -1,43 +1,40 @@
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
-using YamlDotNet.Serialization;
-using System.Text;
 using System.Collections;
 
 namespace AWX
 {
     public class Yaml
     {
-        public static IDeserializer Deserializer {
-            get {
-                if (_deserializer != null)
-                    return _deserializer;
-
-                _deserializer = new DeserializerBuilder().Build();
-                return _deserializer;
-            }
-        }
-        private static IDeserializer? _deserializer = null;
-
         /// <summary>
         /// Deserialize YAML string to Dictionary
         /// </summary>
         /// <param name="yaml">YAML or JSON string</param>
         /// <returns>Dictionary object</returns>
+        /// <exception cref="ArgumentException"></exception>
         public static Dictionary<string, object?> DeserializeToDict(string yaml)
         {
-            var result = new Dictionary<string, object?>();
             var parser = new Parser(new StringReader(yaml));
             parser.Consume<StreamStart>();
-            if (!parser.TryConsume<DocumentStart>(out _))
-            {
-                return result;
-            }
+            parser.Consume<DocumentStart>();
             if (!parser.TryConsume<MappingStart>(out _))
             {
-                return result;
+                var msg = "YAML root should be dictionary.";
+                var current = parser.Current;
+                if (current != null)
+                {
+                    msg += $": {current.GetType().Name} {{ Start: [{current.Start}] End: [{current.End}] }}";
+                }
+                throw new ArgumentException(msg);
             }
-            return ParseDict(parser, result);
+            try
+            {
+                return ParseDict(parser);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Faild to deserialize YAML", ex);
+            }
         }
 
         private static object? ParseScalar(Scalar scalar)
@@ -66,18 +63,19 @@ namespace AWX
             return stringValue;
         }
 
-        private static Dictionary<string, object?> ParseDict(IParser parser, Dictionary<string, object?> dict)
+        private static Dictionary<string, object?> ParseDict(IParser parser)
         {
+            var dict = new Dictionary<string, object?>();
             while (!parser.TryConsume<MappingEnd>(out _))
             {
                 var key = parser.Consume<Scalar>();
                 if (parser.TryConsume<MappingStart>(out _))
                 {
-                    dict.Add(key.Value, ParseDict(parser, new Dictionary<string, object?>()));
+                    dict.Add(key.Value, ParseDict(parser));
                 }
                 else if (parser.TryConsume<SequenceStart>(out _))
                 {
-                    dict.Add(key.Value, ParseArray(parser, new ArrayList()));
+                    dict.Add(key.Value, ParseArray(parser));
                 }
                 else if (parser.TryConsume<Scalar>(out var scalar))
                 {
@@ -87,17 +85,18 @@ namespace AWX
             return dict;
         }
 
-        private static object?[] ParseArray(IParser parser, ArrayList array)
+        private static object?[] ParseArray(IParser parser)
         {
+            var array = new ArrayList();
             while (!parser.TryConsume<SequenceEnd>(out _))
             {
                 if (parser.TryConsume<MappingStart>(out _))
                 {
-                    array.Add(ParseDict(parser, new Dictionary<string, object?>()));
+                    array.Add(ParseDict(parser));
                 }
                 else if (parser.TryConsume<SequenceStart>(out _))
                 {
-                    array.Add(ParseArray(parser, new ArrayList()));
+                    array.Add(ParseArray(parser));
                 }
                 else if (parser.TryConsume<Scalar>(out var scalar))
                 {
