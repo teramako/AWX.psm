@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -7,13 +6,10 @@ namespace AWX.Resources
     {
         DateTime Created { get; }
         DateTime? Modified { get; }
-        [JsonPropertyName("notification_template")]
         ulong NotificationTemplate { get; }
         string Error { get; }
         JobStatus Status { get; }
-        [JsonPropertyName("notifications_sent")]
         int NotificationsSent { get; }
-        [JsonPropertyName("notification_type")]
         NotificationType NotificationType { get; }
         string Recipients { get; }
         string Subject { get; }
@@ -49,7 +45,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Notification> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Notification>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Notification>(PATH, query, getAll))
             {
                 foreach (var notification in result.Contents.Results)
                 {
@@ -57,8 +53,7 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("notification_template")] NotificationTemplateSummary NotificationTemplate);
+        public record Summary(NotificationTemplateSummary NotificationTemplate);
 
 
         public ulong Id { get; } = id;

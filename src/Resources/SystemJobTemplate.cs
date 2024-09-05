@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -44,7 +43,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<SystemJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<SystemJobTemplate>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<SystemJobTemplate>(PATH, query, getAll))
             {
                 foreach (var systemJobTemplate in result.Contents.Results)
                 {
@@ -52,18 +51,15 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-            [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment);
+        public record Summary(LastJobSummary? LastJob,
+                              LastUpdateSummary? LastUpdate,
+                              EnvironmentSummary? ResolvedEnvironment);
 
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
 
-        [JsonPropertyName("execution_environment")]
         public ulong? ExecutionEnvironment { get; } = executionEnvironment;
-        [JsonPropertyName("job_type")]
         public string JobType { get; } = jobType;
     }
 }

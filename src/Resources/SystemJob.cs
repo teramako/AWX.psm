@@ -1,25 +1,23 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface ISystemJob : IUnifiedJob
     {
         string Description { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
-        [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
 
-        [JsonPropertyName("system_job_template")]
         ulong SystemJobTemplate { get; }
-        [JsonPropertyName("job_type")]
         string JobType { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("result_stdout")]
         string ResultStdout { get; }
 
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class SystemJob(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -54,7 +52,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
             {
                 foreach (var systemJob in result.Contents.Results)
                 {
@@ -62,12 +60,11 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary ExecutionEnvironment,
-            ScheduleSummary? Schedule,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(EnvironmentSummary ExecutionEnvironment,
+                              ScheduleSummary? Schedule,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              InstanceGroupSummary InstanceGroup,
+                              Capability UserCapabilities);
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related,
                             Summary summaryFields, DateTime created, DateTime? modified, string name,
@@ -88,7 +85,6 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
         }
 
@@ -103,6 +99,11 @@ namespace AWX.Resources
         public string JobType { get; } = jobType;
         public string ExtraVars { get; } = extraVars;
         public string ResultStdout { get; } = resultStdout;
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
     }
 }
 

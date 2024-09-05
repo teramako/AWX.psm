@@ -1,14 +1,11 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IAdHocCommandJobEvent : IJobEventBase
     {
-        [JsonPropertyName("ad_hoc_command")]
         ulong AdHocCommand { get; }
         ulong? Host { get; }
-        [JsonPropertyName("host_name")]
         string HostName { get; }
     }
 

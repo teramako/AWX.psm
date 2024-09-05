@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -45,17 +44,14 @@ namespace AWX.Resources
         /// If this setting is enabled and you provided an empty list, the global instance groups
         /// will be applied.
         /// </summary>
-        [JsonPropertyName("prevent_instance_group_fallback")]
         bool PreventInstanceGroupFallback { get; }
         /// <summary>
         /// The source_vars for the related auto-create inventory source, special to constructed inventory.
         /// </summary>
-        [JsonPropertyName("source_vars")]
         string SourceVars { get; }
         /// <summary>
         /// The cache timeout for the related auto-created inventory source, special to constructed inventory.
         /// </summary>
-        [JsonPropertyName("update_cache_timeout")]
         int UpdateCacheTimeout { get; }
         /// <summary>
         /// The limit to restrict the returned hosts for the related auto-created inventory source,
@@ -117,7 +113,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<ConstructedInventory> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ConstructedInventory>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ConstructedInventory>(PATH, query, getAll))
             {
                 foreach (var inventory in result.Contents.Results)
                 {
@@ -138,21 +134,13 @@ namespace AWX.Resources
         public ulong Organization { get; } = organization;
         public string Kind { get; } = kind;
         public string Variables { get; } = variables;
-        [JsonPropertyName("has_active_failures")]
         public bool HasActiveFailures { get; } = hasActiveFailures;
-        [JsonPropertyName("total_hosts")]
         public int TotalHosts { get; } = totalHosts;
-        [JsonPropertyName("hosts_with_active_failures")]
         public int HostsWithActiveFailures { get; } = hostsWithActiveFailures;
-        [JsonPropertyName("total_groups")]
         public int TotalGroups { get; } = totalGroups;
-        [JsonPropertyName("has_inventory_sources")]
         public bool HasInventorySources { get; } = hasInventorySources;
-        [JsonPropertyName("total_inventory_sources")]
         public int TotalInventorySources { get; } = totalInventorySources;
-        [JsonPropertyName("inventory_sources_with_failures")]
         public int InventorySourcesWithFailures { get; } = inventorySourcesWithFailures;
-        [JsonPropertyName("pending_deletion")]
         public bool PendingDeletion { get; } = pendingDeletion;
         public bool PreventInstanceGroupFallback { get; } = preventInstanceGroupFallback;
         public string SourceVars { get; } = sourceVars;

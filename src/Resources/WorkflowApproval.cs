@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -36,7 +35,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<WorkflowApproval> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowApproval>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowApproval>(PATH, query, getAll))
             {
                 foreach (var workflowJob in result.Contents.Results)
                 {
@@ -45,27 +44,21 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary WorkflowJobTemplate,
-            [property: JsonPropertyName("workflow_job")] WorkflowJobSummary WorkflowJob,
-            [property: JsonPropertyName("workflow_approval_template")] WorkflowApprovalTemplateSummary WorkflowApprovalTemplate,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary? UnifiedJobTemplate,
-            [property: JsonPropertyName("approved_or_denied_by")] UserSummary? ApprovedOrDeniedBy,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            [property: JsonPropertyName("source_workflow_job")] SourceWorkflowJobSummary SourceWorkflowJob
-        );
+        public record Summary(WorkflowJobTemplateSummary WorkflowJobTemplate,
+                              WorkflowJobSummary WorkflowJob,
+                              WorkflowApprovalTemplateSummary WorkflowApprovalTemplate,
+                              UnifiedJobTemplateSummary? UnifiedJobTemplate,
+                              UserSummary? ApprovedOrDeniedBy,
+                              UserSummary? CreatedBy,
+                              Capability UserCapabilities,
+                              SourceWorkflowJobSummary SourceWorkflowJob);
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
         public string Description { get; } = description;
-        [JsonPropertyName("unified_job_template")]
         public ulong? UnifiedJobTemplate { get; } = unifiedJobTemplate;
-        [JsonPropertyName("can_approve_or_deny")]
         public bool CanApproveOrDeny { get; } = canApproveOrDeny;
-        [JsonPropertyName("approval_expiration")]
         public DateTime? ApprovalExpiration { get; } = approvalExpiration;
-        [JsonPropertyName("timed_out")]
         public bool TimedOut { get; } = timedOut;
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,

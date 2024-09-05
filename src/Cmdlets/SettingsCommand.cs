@@ -1,5 +1,4 @@
 using AWX.Resources;
-using System.Collections.Specialized;
 using System.Management.Automation;
 
 namespace AWX.Cmdlets

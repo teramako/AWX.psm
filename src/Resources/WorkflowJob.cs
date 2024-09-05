@@ -1,43 +1,36 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IWorkflowJob : IUnifiedJob
     {
         string Description { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
-        [JsonPropertyName("workflow_job_template")]
         ulong? WorkflowJobTemplate { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("allow_simultaneous")]
         bool AllowSimultaneous { get; }
         /// <summary>
         /// If automatically created for a sliced job run, the job template the workflow job was created from.
         /// </summary>
-        [JsonPropertyName("job_template")]
         ulong? JobTemplate { get; }
-        [JsonPropertyName("is_sliced_job")]
         bool IsSlicedJob { get; }
         /// <summary>
         /// Inventory applied as a prompt, assuming job template prompts for inventory.
         /// </summary>
         ulong? Inventory { get; }
         string? Limit { get; }
-        [JsonPropertyName("scm_branch")]
         string? ScmBranch { get; }
-        [JsonPropertyName("webhook_service")]
         string WebhookService { get; }
-        [JsonPropertyName("webhook_credential")]
         ulong? WebhookCredential { get; }
-        [JsonPropertyName("webhook_guid")]
         string WebhookGuid { get; }
-        [JsonPropertyName("skip_tags")]
         string? SkipTags { get; }
-        [JsonPropertyName("job_tags")]
         string? JobTags { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
 
@@ -75,7 +68,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<WorkflowJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJob>(PATH, query, getAll))
             {
                 foreach (var workflowJob in result.Contents.Results)
                 {
@@ -96,7 +89,7 @@ namespace AWX.Resources
                                                                                       bool getAll = false)
         {
             var path = $"{Resources.WorkflowJobTemplate.PATH}{wjtId}/workflow_jobs/";
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJob>(path, query, getAll))
             {
                 foreach (var workflowJob in result.Contents.Results)
                 {
@@ -105,17 +98,16 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary? Organization,
-            InventorySummary? Inventory,
-            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary? WorkflowJobTemplate,
-            [property: JsonPropertyName("job_template")] JobTemplateSummary? JobTemplate,
-            ScheduleSummary? Schedule,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<LabelSummary> Labels);
+        public record Summary(OrganizationSummary? Organization,
+                              InventorySummary? Inventory,
+                              WorkflowJobTemplateSummary? WorkflowJobTemplate,
+                              JobTemplateSummary? JobTemplate,
+                              ScheduleSummary? Schedule,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities,
+                              ListSummary<LabelSummary> Labels);
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
@@ -134,6 +126,11 @@ namespace AWX.Resources
         public string WebhookGuid { get; } = webhookGuid;
         public string? SkipTags { get; } = skipTags;
         public string? JobTags { get; } = jobTags;
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
                             DateTime created, DateTime? modified, string name, string description,
@@ -177,9 +174,7 @@ namespace AWX.Resources
               IWorkflowJob, IJobDetail, IResource<Summary>
 
         {
-            [JsonPropertyName("workflow_job")]
             public ulong WorkflowJob { get; } = workflowJob;
-            [JsonPropertyName("ignored_fields")]
             public Dictionary<string, object?> IgnoredFields { get; } = ignoredFields;
         }
     }

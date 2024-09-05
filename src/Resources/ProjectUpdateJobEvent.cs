@@ -1,19 +1,15 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IProjectUpdateJobEvent : IJobEventBase
     {
-        [JsonPropertyName("event_level")]
         int EventLevel { get; }
-        [JsonPropertyName("host_name")]
         string HostName { get; }
         string Playbook { get; }
         string Play { get; }
         string Task { get; }
         string Role { get; }
-        [JsonPropertyName("project_update")]
         ulong ProjectUpdate { get; }
     }
 
@@ -48,9 +44,8 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            [property: JsonPropertyName("project_update")] ProjectUpdateSummary ProjectUpdate
-            );
+        public record Summary(ProjectUpdateSummary ProjectUpdate);
+
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
         public string Url { get; } = url;

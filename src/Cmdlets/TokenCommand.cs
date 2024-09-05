@@ -20,19 +20,16 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            string path;
             if (IdSet.Count == 1)
             {
-                path = $"{OAuth2AccessToken.PATH}{IdSet.First()}/";
-                var result = GetResource<OAuth2AccessToken>(path);
+                var result = GetResource<OAuth2AccessToken>($"{OAuth2AccessToken.PATH}{IdSet.First()}/");
                 WriteObject(result);
             }
             else
             {
-                path = OAuth2AccessToken.PATH;
                 Query.Add("id__in", string.Join(',', IdSet));
                 Query.Add("page_size", $"{IdSet.Count}");
-                foreach(var resultSet in GetResultSet<OAuth2AccessToken>(path, Query))
+                foreach (var resultSet in GetResultSet<OAuth2AccessToken>(OAuth2AccessToken.PATH, Query, true))
                 {
                     WriteObject(resultSet.Results, true);
                 }

@@ -15,7 +15,7 @@ Invoke (update) a WorkflowJobTemplate.
 ### Id
 ```
 Start-WorkflowJobTemplate [-Id] <UInt64> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
- [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
+ [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-Interactive]
  [<CommonParameters>]
 ```
 
@@ -23,7 +23,7 @@ Start-WorkflowJobTemplate [-Id] <UInt64> [-Limit <String>] [-Inventory <UInt64>]
 ```
 Start-WorkflowJobTemplate [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>]
  [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
- [<CommonParameters>]
+ [-Interactive] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -55,6 +55,11 @@ Launch WorkflowJobTemplate ID 13.
 ### -ExtraVars
 Specify extra variables.
 
+Specify in JSON or YAML format.
+You can also specify an object of type `IDictionary` as a parameter value.
+
+Example: `-ExtraVars @{ key1 = "string"; key2 = 10; key3 = Get-Date }`
+
 > [!NOTE]  
 > This parameter will be ignored if "Ask" flag is off, although the request will be sent.
 
@@ -82,6 +87,22 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Interactive
+"Prompt on launch" prompts for checked items.
+(However, it will not prompt for items that have already been given as parameters.)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

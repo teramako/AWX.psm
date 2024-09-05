@@ -3,6 +3,8 @@ using System.Collections.Frozen;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Management.Automation;
+using System.Text;
+using System.Text.Json;
 using System.Web;
 
 namespace AWX.Cmdlets
@@ -54,7 +56,7 @@ namespace AWX.Cmdlets
             do
             {
                 UpdateAllProgressRecordType(ProgressRecordType.Processing);
-                for(var i = 1; i <= intervalSeconds; i++)
+                for (var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
                     JobManager.UpdateProgress(i);
@@ -67,7 +69,7 @@ namespace AWX.Cmdlets
                 ShowJobLog(suppressJobLog);
 
                 WriteObject(JobManager.CleanCompleted(), true);
-            } while(JobManager.Count > 0);
+            } while (JobManager.Count > 0);
         }
 
         private void UpdateAllProgressRecordType(ProgressRecordType type)
@@ -95,6 +97,136 @@ namespace AWX.Cmdlets
         {
             _sleep?.Stop();
         }
+
+        protected void PrintPromptResult(string label, string resultValue, bool notSpecified = false)
+        {
+            var ui = CommandRuntime.Host?.UI;
+            if (ui == null) return;
+            var bg = Console.BackgroundColor;
+            ui.Write(ConsoleColor.Green, bg, "==> ");
+            var sb = new StringBuilder();
+            if (notSpecified)
+            {
+                sb.Append($"Not specified {label}. Will be used default");
+            }
+            else
+            {
+                sb.Append($"Accepted {label}");
+            }
+            if (!string.IsNullOrEmpty(resultValue))
+            {
+                sb.Append($": {resultValue}");
+            }
+            WriteHost(sb.ToString());
+            ui.WriteLine("\n");
+        }
+
+        /// <summary>
+        /// Get SurveySpecs and show input prompts.
+        /// </summary>
+        /// <param name="type">Resource Type. Should be either <see cref="ResourceType.JobTemplate"/> or <see cref="ResourceType.WorkflowJobTemplate"/></param>
+        /// <param name="id">ID number of either JobTemplate or WorkflowJobTemplate</param>
+        /// <param name="onlyRequired">Show prompts for only required.</param>
+        /// <param name="sendData">Results of input prompts will be stored into <c>extra_vars</c> key's property in this dictionary.</param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        protected bool AskSurvey(ResourceType type, ulong id, bool onlyRequired, IDictionary<string, object?> sendData)
+        {
+            var surveyPath = type switch
+            {
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{id}/survey_spec/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{id}/survey_spec/",
+                _ => throw new ArgumentException($"Invalid Resource Type: {type}")
+            };
+
+            var survey = GetResource<Survey>(surveyPath);
+            var extraVars = sendData.ContainsKey("extra_vars")
+                ? Yaml.DeserializeToDict(sendData["extra_vars"] as string ?? "")
+                : new Dictionary<string, object?>();
+            if (survey != null && survey.Spec?.Length > 0)
+            {
+                if (CommandRuntime.Host == null)
+                    return false;
+
+                var prompt = new AskPrompt(CommandRuntime.Host);
+
+                foreach (var spec in survey.Spec)
+                {
+                    var varName = spec.Variable;
+                    if (extraVars.ContainsKey(varName))
+                    {
+                        WriteHost($"Skip Survey[{varName}] prompt. Already specified: {JsonSerializer.Serialize(extraVars[varName])}",
+                                  dontshow: true);
+                        continue;
+                    }
+                    if (onlyRequired && !spec.Required)
+                        continue;
+
+                    var label = $"Survey {spec.QuestionName}";
+                    var key = $"extra_vars.{varName}";
+                    var description = $"Variable: [{varName}]"
+                        + (string.IsNullOrEmpty(spec.QuestionDescription) ? "" : $", Description: {spec.QuestionDescription}");
+                    switch (spec.Type)
+                    {
+                        case SurveySpecType.Text:
+                        case SurveySpecType.Textarea: // FIXME
+                            if (prompt.Ask(label, key, spec.Default as string, description, out var stringAnswer))
+                            {
+                                extraVars[varName] = stringAnswer.Input;
+                                PrintPromptResult(varName, $"\"{stringAnswer.Input}\"", stringAnswer.IsEmpty);
+                                continue;
+                            }
+                            return false;
+                        case SurveySpecType.Integer:
+                            int? intDefault = string.IsNullOrEmpty(spec.Default as string) ? null : (int)spec.Default;
+                            if (prompt.Ask<int>(label, key, (int?)spec.Default, description, spec.Required, out var intAnswer))
+                            {
+                                extraVars[varName] = intAnswer.Input;
+                                PrintPromptResult(varName, $"{intAnswer.Input}", intAnswer.IsEmpty);
+                                continue;
+                            }
+                            return false;
+                        case SurveySpecType.Float:
+                            float? floatDefault = string.IsNullOrEmpty(spec.Default as string) ? null : (float)spec.Default;
+                            if (prompt.Ask<float>(label, key, floatDefault, description, spec.Required, out var floatAnswer))
+                            {
+                                extraVars[varName] = floatAnswer.Input;
+                                PrintPromptResult(varName, $"{floatAnswer.Input}", floatAnswer.IsEmpty);
+                                continue;
+                            }
+                            return false;
+                        case SurveySpecType.MultipleChoice:
+                            var choiceFields = (spec.Choices as string[] ?? []).Select(val => (val, val)).ToArray();
+                            if (prompt.AskSelectOne(label, choiceFields, spec.Default as string ?? "", description, out var oneAnswer))
+                            {
+                                extraVars[varName] = oneAnswer.Input;
+                                PrintPromptResult(varName, $"\"{oneAnswer.Input}\"", oneAnswer.IsEmpty);
+                                continue;
+                            }
+                            return false;
+                        case SurveySpecType.MultiSelect:
+                            var multiFields = (spec.Choices as string[] ?? []).Select(val => (val, val)).ToArray();
+                            var defaultValues = (spec.Default as string ?? "").Split('\n');
+                            if (prompt.AskSelectMulti(label, key, multiFields, defaultValues, description, out var multiAnswer))
+                            {
+                                extraVars[varName] = multiAnswer.Input;
+                                PrintPromptResult(varName, $"[{string.Join(", ", multiAnswer.Input.Select(x => $"\"{x}\""))}]", multiAnswer.IsEmpty);
+                                continue;
+                            }
+                            return false;
+                        case SurveySpecType.Password:
+                            if (prompt.AskPassword(label, key, description, out var passwordAnswer))
+                            {
+                                extraVars[varName] = passwordAnswer.Input;
+                                PrintPromptResult(varName, string.Empty);
+                                continue;
+                            }
+                            return false;
+                    }
+                }
+                sendData["extra_vars"] = JsonSerializer.Serialize(extraVars);
+            }
+            return true;
+        }
     }
 
     public abstract class GetCmdletBase : APICmdletBase
@@ -110,7 +242,7 @@ namespace AWX.Cmdlets
         [Parameter(ValueFromPipelineByPropertyName = true, DontShow = true)]
         public ResourceType? Type { get; set; }
 
-        protected readonly HashSet<ulong> IdSet  = [];
+        protected readonly HashSet<ulong> IdSet = [];
         protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
     }
     /// <summary>
@@ -242,6 +374,8 @@ namespace AWX.Cmdlets
             Console.WriteLine($"Debug: {msg}");
             Console.ForegroundColor = currentColor;
         }
+        private readonly ConsoleColor DefaultForegroundColor = Console.ForegroundColor;
+        private readonly ConsoleColor DefaultBackgroundColor = Console.BackgroundColor;
         /// <summary>
         /// Write message to the console as Information
         /// </summary>
@@ -250,16 +384,17 @@ namespace AWX.Cmdlets
         /// <param name="backgroundColor"></param>
         /// <param name="tags"></param>
         /// <param name="dontshow">Follow the <c>$InformationPreference</c> value, don't output to console forcely.</param>
-        protected void WriteHost (string message,
+        protected void WriteHost(string message,
                                   ConsoleColor? foregroundColor = null,
                                   ConsoleColor? backgroundColor = null,
                                   string[]? tags = null,
                                   bool dontshow = false)
         {
-            var msg = new HostInformationMessage() {
+            var msg = new HostInformationMessage()
+            {
                 Message = message,
-                ForegroundColor = foregroundColor,
-                BackgroundColor = backgroundColor,
+                ForegroundColor = foregroundColor ?? DefaultForegroundColor,
+                BackgroundColor = backgroundColor ?? DefaultBackgroundColor,
                 NoNewLine = true
             };
             List<string> infoTags = dontshow ? [] : ["PSHOST"];
@@ -290,7 +425,7 @@ namespace AWX.Cmdlets
             {
                 WriteApiError(ex);
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 if (aex.InnerException is RestAPIException ex)
                 {
@@ -344,7 +479,7 @@ namespace AWX.Cmdlets
                     WriteApiError(ex);
                     break;
                 }
-                catch(AggregateException aex)
+                catch (AggregateException aex)
                 {
                     if (aex.InnerException is RestAPIException ex)
                     {
@@ -382,13 +517,13 @@ namespace AWX.Cmdlets
                 WriteVerboseResponse(result.Response);
                 return result;
             }
-            catch(RestAPIException ex)
+            catch (RestAPIException ex)
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
                 throw;
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 if (aex.InnerException is RestAPIException ex)
                 {

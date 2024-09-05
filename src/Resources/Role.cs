@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -33,7 +32,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Role> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))
             {
                 foreach (var role in result.Contents.Results)
                 {
@@ -41,11 +40,10 @@ namespace AWX.Resources
                 }
             }
         }
-        public record Summary(
-            [property: JsonPropertyName("resource_name")] string? ResourceName,
-            [property: JsonPropertyName("resource_type")] ResourceType? ResourceType,
-            [property: JsonPropertyName("resource_type_display_name")]string? ResourceTypeDisplayName,
-            [property: JsonPropertyName("resource_id")] ulong? ResourceId);
+        public record Summary(string? ResourceName,
+                              ResourceType? ResourceType,
+                              string? ResourceTypeDisplayName,
+                              ulong? ResourceId);
 
 
         public ulong Id { get; } = id;

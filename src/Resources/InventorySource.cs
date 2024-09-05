@@ -76,18 +76,15 @@ namespace AWX.Resources
         /// </summary>
         string Description { get; }
         InventorySourceSource Source { get; }
-        [JsonPropertyName("source_path")]
         string SourcePath { get; }
         /// <summary>
         /// Inventory source variables in YAML or JSON format.
         /// </summary>
-        [JsonPropertyName("source_vars")]
         string SourceVars { get; }
         /// <summary>
         /// Inventory source SCM branch.
         /// Project default used if blank. Only allowed if project <c>allow_override</c> field is set to <c>true</c>.
         /// </summary>
-        [JsonPropertyName("scm_branch")]
         string ScmBranch { get; }
         /// <summary>
         /// Cloud credential to use for inventory updates.
@@ -98,7 +95,6 @@ namespace AWX.Resources
         /// The enabled variable may be specified as <c>"foo.bar"</c>, in which case the lookup will traverse into nested dicts,
         /// equivalent to: <c>from_dict.get("foo", {}).get("bar", default)</c>
         /// </summary>
-        [JsonPropertyName("enabled_var")]
         string EnabledVar { get; }
         /// <summary>
         /// Only used when <c>enabled_var</c> is set.
@@ -122,13 +118,11 @@ namespace AWX.Resources
         /// If <c>power_state</c> where any value other then <c>powered_on</c> then the host would be disabled when imprted.
         /// If the key is not found then the host will be enabled.
         /// </summary>
-        [JsonPropertyName("enabled_value")]
         string EnabledValue { get; }
         /// <summary>
         /// This field is deprecated and will be removed in a future release.
         /// Regex where only matching hosts will be imported.
         /// </summary>
-        [JsonPropertyName("host_filter")]
         string HostFilter { get; }
         /// <summary>
         /// Overwrite local groups and hosts from remote inventory source.
@@ -137,7 +131,6 @@ namespace AWX.Resources
         /// <summary>
         /// Overwrite local variables from remote inventory source.
         /// </summary>
-        [JsonPropertyName("overwrite_vars")]
         bool OverwriteVars { get; }
         /// <summary>
         /// The amount of time (in seconds) to run before the task is canceled.
@@ -158,16 +151,13 @@ namespace AWX.Resources
         /// <summary>
         /// The container image to be used for execution.
         /// </summary>
-        [JsonPropertyName("execution_environment")]
         ulong? ExecutionEnvironment { get; }
         ulong Inventory { get; }
-        [JsonPropertyName("update_on_launch")]
         bool UpdateOnLaunch { get; }
         int UpdateCacheTimeout { get; }
         /// <summary>
         /// Project containing inventory file used as source.
         /// </summary>
-        [JsonPropertyName("source_project")]
         ulong? SourceProject { get; }
     }
 
@@ -300,17 +290,16 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary Organization,
-            InventorySummary Inventory,
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
-            [property: JsonPropertyName("source_project")] ProjectSummary? SourceProject,
-            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            CredentialSummary[] Credentials);
+        public record Summary(OrganizationSummary Organization,
+                              InventorySummary Inventory,
+                              EnvironmentSummary? ExecutionEnvironment,
+                              ProjectSummary? SourceProject,
+                              LastJobSummary? LastJob,
+                              LastUpdateSummary? LastUpdate,
+                              UserSummary CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities,
+                              CredentialSummary[] Credentials);
 
 
         public RelatedDictionary Related { get; } = related;
@@ -326,7 +315,6 @@ namespace AWX.Resources
         public string HostFilter { get; } = hostFilter;
         public bool Overwrite { get; } = overwrite;
         public bool OverwriteVars { get; } = overwriteVars;
-        [JsonPropertyName("custom_virtualenv")]
         public string? CustomVirtualenv { get; } = customVirtualenv;
         public int Timeout { get; } = timeout;
         public int Verbosity { get; } = verbosity;
@@ -336,9 +324,7 @@ namespace AWX.Resources
         public bool UpdateOnLaunch { get; } = updateOnLaunch;
         public int UpdateCacheTimeout { get; } = updateCacheTimeout;
         public ulong? SourceProject { get; } = sourceProject;
-        [JsonPropertyName("last_update_failed")]
         public bool LastUpdateFailed { get; } = lastUpdateFailed;
-        [JsonPropertyName("last_updated")]
         public DateTime? LastUpdated { get; } = lastUpdated;
 
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]

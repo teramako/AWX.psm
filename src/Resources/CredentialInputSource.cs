@@ -1,17 +1,13 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface ICredentialInputSource
     {
         public string Description { get; }
-        [JsonPropertyName("input_field_name")]
         public string InputFieldName { get; }
         public Dictionary<string, object?> Metadata { get; }
-        [JsonPropertyName("target_credential")]
         public ulong TargetCredential { get; }
-        [JsonPropertyName("source_credential")]
         public ulong SourceCredential { get; }
     }
 
@@ -43,7 +39,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<CredentialInputSource> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<CredentialInputSource>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<CredentialInputSource>(PATH, query, getAll))
             {
                 foreach (var credential in result.Contents.Results)
                 {
@@ -64,22 +60,20 @@ namespace AWX.Resources
                                                                                        bool getAll = false)
         {
             var path = $"{Credential.PATH}{credentialId}/input_sources/";
-            await foreach(var result in RestAPI.GetResultSetAsync<CredentialInputSource>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<CredentialInputSource>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
             }
         }
 
-        public record Summary(
-            [property: JsonPropertyName("source_credential")] CredentialSummary SourceCredential,
-            [property: JsonPropertyName("target_credential")] CredentialSummary TargetCredential,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities
-        );
+        public record Summary(CredentialSummary SourceCredential,
+                              CredentialSummary TargetCredential,
+                              UserSummary CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

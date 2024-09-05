@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -57,7 +56,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Group> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(PATH, query, getAll))
             {
                 foreach (var group in result.Contents.Results)
                 {
@@ -78,9 +77,9 @@ namespace AWX.Resources
                                                                       bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -99,9 +98,9 @@ namespace AWX.Resources
                                                                               bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/root_groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -120,9 +119,9 @@ namespace AWX.Resources
                                                                             bool getAll = false)
         {
             var path = $"{InventorySource.PATH}{inventorySourceId}/groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -141,9 +140,9 @@ namespace AWX.Resources
                                                                     bool getAll = false)
         {
             var path = $"{Host.PATH}{hostId}/all_groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -162,20 +161,19 @@ namespace AWX.Resources
                                                                  bool getAll = false)
         {
             var path = $"{Host.PATH}{hostId}/groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
             }
         }
 
-        public record Summary(
-            InventorySummary Inventory,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(InventorySummary Inventory,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities);
 
 
         public ulong Id { get; } = id;

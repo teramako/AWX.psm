@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "Me")]
     [OutputType(typeof(User))]
-    public class GetMeCommand: APICmdletBase
+    public class GetMeCommand : APICmdletBase
     {
         protected override void EndProcessing()
         {
@@ -34,19 +34,16 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            string path;
             if (IdSet.Count == 1)
             {
-                path = $"{User.PATH}{IdSet.First()}/";
-                var res = GetResource<User>(path);
+                var res = GetResource<User>($"{User.PATH}{IdSet.First()}/");
                 WriteObject(res);
             }
             else
             {
-                path = User.PATH;
                 Query.Add("id__in", string.Join(',', IdSet));
                 Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<User>(path, Query))
+                foreach (var resultSet in GetResultSet<User>(User.PATH, Query, true))
                 {
                     WriteObject(resultSet.Results, true);
                 }
@@ -71,7 +68,7 @@ namespace AWX.Cmdlets
         public string[]? UserName { get; set; }
 
         [Parameter(Position = 1)]
-        public string[]? Email {  get; set; }
+        public string[]? Email { get; set; }
 
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["id"];

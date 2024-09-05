@@ -272,6 +272,9 @@ Retrieve Schedules by the ID(s).
 ### [Get-Setting](Get-Setting.md)
 Retrieve Settings.
 
+### [Get-SurveySpec](Get-SurveySpec.md)
+Retrieve Survey specifications.
+
 ### [Get-SystemJob](Get-SystemJob.md)
 Retrieve SystemJob details by ID(s).
 

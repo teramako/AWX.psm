@@ -132,7 +132,7 @@ namespace AWX.Cmdlets
                     {
                         UpdateInventory(Inventory);
                     }
-                    catch (RestAPIException) {}
+                    catch (RestAPIException) { }
                 }
             }
             else
@@ -151,7 +151,7 @@ namespace AWX.Cmdlets
                     {
                         UpdateInventorySource(Id);
                     }
-                    catch (RestAPIException) {}
+                    catch (RestAPIException) { }
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace AWX.Cmdlets
                         }
 
                     }
-                    catch (RestAPIException) {}
+                    catch (RestAPIException) { }
                 }
             }
             else
@@ -213,7 +213,7 @@ namespace AWX.Cmdlets
                         WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
                         JobManager.Add(job);
                     }
-                    catch (RestAPIException) {}
+                    catch (RestAPIException) { }
                 }
             }
         }
@@ -247,7 +247,7 @@ namespace AWX.Cmdlets
                         var jobs = UpdateInventory(Inventory);
                         WriteObject(jobs, true);
                     }
-                    catch (RestAPIException) {}
+                    catch (RestAPIException) { }
                 }
             }
             else
@@ -267,7 +267,7 @@ namespace AWX.Cmdlets
                         var job = UpdateInventorySource(Id);
                         WriteObject(job, false);
                     }
-                    catch (RestAPIException) {}
+                    catch (RestAPIException) { }
                 }
             }
         }

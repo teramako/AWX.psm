@@ -1,6 +1,7 @@
 using AWX.Resources;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Management.Automation;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -270,11 +271,13 @@ namespace AWX
         }
         /// <summary>
         /// Json Serialize / Deserialize OPTIONS for this API.
-        /// <list type="bullet">Property PathName to snake_case for serialization</list>
-        /// <list type="bullet">Property PathName In case sensitive for deserialization</list>
-        /// <list type="bullet">DateTime to Local time zone for deserialization, to Utc for serialization</list>
-        /// <list type="bullet">Non classed object to <see cref="OrderedDictionary"/> for deserialization</list>
-        /// <list type="bullet">Non classed array to <see cref="object"/>?[] for deserialization</list>
+        /// <list type="bullet">
+        ///   <item>Property PathName to snake_case for serialization</item>
+        ///   <item>Property PathName In case sensitive for deserialization</item>
+        ///   <item>DateTime to Local time zone for deserialization, to Utc for serialization</item>
+        ///   <item>Non classed object to <c>Dictionary&lt;string, object?&gt;</c> for deserialization</item>
+        ///   <item>Non classed array to <c>object?[]</c> for deserialization</item>
+        /// </list>
         /// </summary>
         public static readonly JsonSerializerOptions DeserializeOptions = new()
         {
@@ -287,17 +290,37 @@ namespace AWX
                 // new ArrayConverter()
             }
         };
-        public static readonly JsonSerializerOptions SerializeOptions = new() {
+        public static readonly JsonSerializerOptions SerializeOptions = new()
+        {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
             Converters =
             {
+                new PSObjectConverter(),
                 new LocalDateTimeConverter(),
             }
         };
         /// <summary>
-        /// Deserialize JSON to <see cref="OrderedDictionary"/> and serialize
+        /// Converter to deserialize PSObject while preventing circular references
+        /// </summary>
+        /// <remarks>
+        /// **Don't use for deserializing**
+        /// </remarks>
+        private class PSObjectConverter : JsonConverter<PSObject>
+        {
+            public override PSObject? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void Write(Utf8JsonWriter writer, PSObject value, JsonSerializerOptions options)
+            {
+                JsonSerializer.Serialize(writer, value.BaseObject, options);
+            }
+        }
+        /// <summary>
+        /// Deserialize JSON to <see cref="Dictionary{string, object?}"/> and serialize
         /// </summary>
         private class DictConverter : JsonConverter<Dictionary<string, object?>>
         {
@@ -353,11 +376,6 @@ namespace AWX
                         case JsonTokenType.False:
                             dict.Add(propertyName, reader.GetBoolean()); break;
                         case JsonTokenType.StartArray:
-                            /*
-                            Type arrayType = typeof(object?[]);
-                            var arrayConverter = (JsonConverter<object?[]>)options.GetConverter(arrayType);
-                            dict.Add(propertyName, arrayConverter.Read(ref reader, arrayType, options));
-                            */
                             dict.Add(propertyName, arrayConverter.Read(ref reader, typeof(IList), options));
                             break;
                         case JsonTokenType.StartObject:
@@ -372,7 +390,13 @@ namespace AWX
 
             public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> dict, JsonSerializerOptions options)
             {
-                throw new NotImplementedException();
+                writer.WriteStartObject();
+                foreach (var (key, val) in dict)
+                {
+                    writer.WritePropertyName(key);
+                    JsonSerializer.Serialize(writer, val, options);
+                }
+                writer.WriteEndObject();
             }
         }
         /// <summary>
@@ -427,12 +451,7 @@ namespace AWX
                             array.Add(Read(ref reader, typeToConvert, options));
                             break;
                         case JsonTokenType.StartObject:
-                            /*
-                            Type dictType = typeof(OrderedDictionary);
-                            var dictConverter = (JsonConverter<OrderedDictionary>)options.GetConverter(dictType);
-                            array.Add(dictConverter.Read(ref reader, dictType, options));
-                            */
-                            array.Add(dictConverter.Read(ref reader, typeof(OrderedDictionary), options));
+                            array.Add(dictConverter.Read(ref reader, typeof(Dictionary<string, object?>), options));
                             break;
                         default:
                             throw new JsonException($"Invalid TokenType: {reader.TokenType}");
@@ -443,7 +462,12 @@ namespace AWX
 
             public override void Write(Utf8JsonWriter writer, object?[] list, JsonSerializerOptions options)
             {
-                JsonSerializer.Serialize(writer, list, options);
+                writer.WriteStartArray();
+                foreach (var val in list)
+                {
+                    JsonSerializer.Serialize(writer, val, options);
+                }
+                writer.WriteEndArray();
             }
         }
 

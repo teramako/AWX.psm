@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -18,13 +17,12 @@ namespace AWX.Resources
         /// Specify the type of credential you want to create.
         /// Refer to the documentaion for detail on each type.
         /// </summary>
-        [JsonPropertyName("credential_type")]
         ulong CredentialType { get; }
         /// <summary>
         /// Enter inputs using either JSON or YAML syntax.
         /// Refer to the documentaion for example syntax.
         /// </summary>
-        OrderedDictionary Inputs { get; }
+        Dictionary<string, object?> Inputs { get; }
     }
 
 
@@ -40,7 +38,7 @@ namespace AWX.Resources
                             ulong? organization,
                             ulong credentialType,
                             bool managed,
-                            OrderedDictionary inputs,
+                            Dictionary<string, object?> inputs,
                             string kind,
                             bool cloud,
                             bool kubernetes)
@@ -68,7 +66,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Credential> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(PATH, query, getAll))
             {
                 foreach (var credential in result.Contents.Results)
                 {
@@ -89,9 +87,9 @@ namespace AWX.Resources
                                                                               bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -110,9 +108,9 @@ namespace AWX.Resources
                                                                                     bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/galaxy_credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -131,9 +129,9 @@ namespace AWX.Resources
                                                                       bool getAll = false)
         {
             var path = $"{User.PATH}{userId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -152,9 +150,9 @@ namespace AWX.Resources
                                                                       bool getAll = false)
         {
             var path = $"{Team.PATH}{teamId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -173,9 +171,9 @@ namespace AWX.Resources
                                                                                 bool getAll = false)
         {
             var path = $"{Resources.CredentialType.PATH}{credentialTypeId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -194,9 +192,9 @@ namespace AWX.Resources
                                                                                  bool getAll = false)
         {
             var path = $"{InventorySource.PATH}{inventorySourceId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -215,9 +213,9 @@ namespace AWX.Resources
                                                                                     bool getAll = false)
         {
             var path = $"{InventoryUpdateJob.PATH}{inventoryUpdateJobId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -236,9 +234,9 @@ namespace AWX.Resources
                                                                              bool getAll = false)
         {
             var path = $"{JobTemplate.PATH}{jobTemplateId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -257,9 +255,9 @@ namespace AWX.Resources
                                                                                 bool getAll = false)
         {
             var path = $"{JobTemplateJob.PATH}{jobId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -278,9 +276,9 @@ namespace AWX.Resources
                                                                           bool getAll = false)
         {
             var path = $"{Schedule.PATH}{scheduleId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -299,9 +297,9 @@ namespace AWX.Resources
                                                                                          bool getAll = false)
         {
             var path = $"{WorkflowJobTemplateNode.PATH}{wjtnId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -320,23 +318,22 @@ namespace AWX.Resources
                                                                                  bool getAll = false)
         {
             var path = $"{WorkflowJobNode.PATH}{wjnId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
             }
         }
 
-        public record Summary(
-            OrganizationSummary? Organization,
-            [property: JsonPropertyName("credential_type")] CredentialTypeSummary CredentialType,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            OwnerSummary[] Owners);
+        public record Summary(OrganizationSummary? Organization,
+                              CredentialTypeSummary CredentialType,
+                              UserSummary CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Dictionary<string, ObjectRoleSummary> ObjectRoles,
+                              Capability UserCapabilities,
+                              OwnerSummary[] Owners);
 
 
         public ulong Id { get; } = id;
@@ -352,7 +349,7 @@ namespace AWX.Resources
         public ulong CredentialType { get; } = credentialType;
         public bool Managed { get; } = managed;
 
-        public OrderedDictionary Inputs { get; } = inputs;
+        public Dictionary<string, object?> Inputs { get; } = inputs;
         public string Kind { get; } = kind;
         public bool Cloud { get; } = cloud;
         public bool Kubernetes { get; } = kubernetes;

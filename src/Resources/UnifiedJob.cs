@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 using System.Web;
 
 namespace AWX.Resources
@@ -19,27 +18,13 @@ namespace AWX.Resources
     {
         DateTime Created { get; }
         DateTime? Modified { get; }
-        [JsonPropertyName("launch_type")]
         JobLaunchType LaunchType { get; }
-        [JsonPropertyName("execution_environment")]
         ulong? ExecutionEnvironment { get; }
         DateTime? Started { get; }
         DateTime? Finished { get; }
-        [JsonPropertyName("canceled_on")]
         DateTime? CanceledOn { get; }
-        [JsonPropertyName("job_explanation")]
         string JobExplanation { get; }
-        /*
-        [JsonPropertyName("execution_node")]
-        string ExecutionNode { get; }
-        */
-        /*
-        [JsonPropertyName("controller_node")]
-        string ControllerNode { get; }
-        */
-        [JsonPropertyName("launched_by")]
         LaunchedBy LaunchedBy { get; }
-        [JsonPropertyName("work_unit_id")]
         string? WorkUnitId { get; }
     }
 

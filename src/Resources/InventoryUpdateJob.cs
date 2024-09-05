@@ -1,28 +1,22 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IInventoryUpdateJob : IUnifiedJob
     {
         string Description { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
-        [JsonPropertyName("controller_node")]
         string ControllerNode { get; }
         InventorySourceSource Source { get; }
-        [JsonPropertyName("source_path")]
         string SourcePath { get; }
         /// <summary>
         /// Inventory source variables in YAML or JSON format.
         /// </summary>
-        [JsonPropertyName("source_vars")]
         string SourceVars { get; }
         /// <summary>
         /// Inventory source SCM branch.
         /// Project default used if blank. Only allowed if project <c>allow_override</c> field is set to <c>true</c>.
         /// </summary>
-        [JsonPropertyName("scm_branch")]
         string ScmBranch { get; }
         /// <summary>
         /// Cloud credential to use for inventory updates.
@@ -33,7 +27,6 @@ namespace AWX.Resources
         /// The enabled variable may be specified as <c>"foo.bar"</c>, in which case the lookup will traverse into nested dicts,
         /// equivalent to: <c>from_dict.get("foo", {}).get("bar", default)</c>
         /// </summary>
-        [JsonPropertyName("enabled_var")]
         string EnabledVar { get; }
         /// <summary>
         /// Only used when <c>enabled_var</c> is set.
@@ -57,13 +50,11 @@ namespace AWX.Resources
         /// If <c>power_state</c> where any value other then <c>powered_on</c> then the host would be disabled when imprted.
         /// If the key is not found then the host will be enabled.
         /// </summary>
-        [JsonPropertyName("enabled_value")]
         string EnabledValue { get; }
         /// <summary>
         /// This field is deprecated and will be removed in a future release.
         /// Regex where only matching hosts will be imported.
         /// </summary>
-        [JsonPropertyName("host_filter")]
         string HostFilter { get; }
         /// <summary>
         /// Overwrite local groups and hosts from remote inventory source.
@@ -72,9 +63,7 @@ namespace AWX.Resources
         /// <summary>
         /// Overwrite local variables from remote inventory source.
         /// </summary>
-        [JsonPropertyName("overwrite_vars")]
         bool OverwriteVars { get; }
-        [JsonPropertyName("custom_virtualenv")]
         string? CustomVirtualenv { get; }
         /// <summary>
         /// The amount of time (in seconds) to run before the task is canceled.
@@ -93,23 +82,17 @@ namespace AWX.Resources
         /// </summary>
         string Limit { get; }
         ulong Inventory { get; }
-        [JsonPropertyName("inventory_source")]
         ulong InventorySource { get; }
-        [JsonPropertyName("license_error")]
         bool LicenseError { get; }
-        [JsonPropertyName("org_host_limit_error")]
         bool OrgHostLimitError { get; }
         /// <summary>
         /// Inventory files from thie Project Update were used for the inventory update.
         /// </summary>
-        [JsonPropertyName("source_project_update")]
         ulong? SourceProjectUpdate { get; }
         /// <summary>
         /// The Instance group the job was run under.
         /// </summary>
-        [JsonPropertyName("instance_group")]
         ulong? InstanceGroup { get; }
-        [JsonPropertyName("scm_revision")]
         string ScmRevision { get; }
     }
 
@@ -151,7 +134,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<InventoryUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
             {
                 foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
@@ -172,9 +155,9 @@ namespace AWX.Resources
                                                                                        bool getAll = false)
         {
             var path = $"{ProjectUpdateJob.PATH}{projectUpdateId}/scm_inventory_updates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
             {
-                foreach(var inventoryUpdateJob in result.Contents.Results)
+                foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
                     yield return inventoryUpdateJob;
                 }
@@ -193,9 +176,9 @@ namespace AWX.Resources
                                                                                          bool getAll = false)
         {
             var path = $"{Resources.InventorySource.PATH}{inventorySourceId}/inventory_updates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
             {
-                foreach(var inventoryUpdateJob in result.Contents.Results)
+                foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
                     yield return inventoryUpdateJob;
                 }
@@ -203,19 +186,18 @@ namespace AWX.Resources
         }
 
 
-        public record Summary(
-            OrganizationSummary Organization,
-            InventorySummary Inventory,
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
-            CredentialSummary? Credential,
-            ScheduleSummary? Schedule,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("inventory_source")] InventorySourceSummary InventorySource,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            CredentialSummary[] Credentials,
-            [property: JsonPropertyName("source_project")] ProjectSummary? SourceProject);
+        public record Summary(OrganizationSummary Organization,
+                              InventorySummary Inventory,
+                              EnvironmentSummary? ExecutionEnvironment,
+                              CredentialSummary? Credential,
+                              ScheduleSummary? Schedule,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              InventorySourceSummary InventorySource,
+                              InstanceGroupSummary InstanceGroup,
+                              UserSummary CreatedBy,
+                              Capability UserCapabilities,
+                              CredentialSummary[] Credentials,
+                              ProjectSummary? SourceProject);
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related, Summary summaryFields,
                             DateTime created, DateTime? modified, string name, string description,
@@ -243,7 +225,6 @@ namespace AWX.Resources
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
-            [JsonPropertyName("source_project")]
             public ulong? SourceProject { get; } = sourceProject;
         }
 
@@ -275,11 +256,8 @@ namespace AWX.Resources
         public bool OrgHostLimitError { get; } = orgHostLimitError;
         public ulong? SourceProjectUpdate { get; } = sourceProjectUpdate;
         public ulong? InstanceGroup { get; } = instanceGroup;
-        public string ScmRevision {  get; } = scmRevision;
+        public string ScmRevision { get; } = scmRevision;
     }
 
-    public record CanUpdateInventorySource(
-        [property: JsonPropertyName("inventory_source")] ulong? InventorySource,
-        [property: JsonPropertyName("can_update")] bool CanUpdate
-    );
+    public record CanUpdateInventorySource(ulong? InventorySource, bool CanUpdate);
 }

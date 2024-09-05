@@ -20,19 +20,16 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            string path;
             if (IdSet.Count == 1)
             {
-                path = $"{Organization.PATH}{IdSet.First()}/";
-                var res = GetResource<Organization>(path);
+                var res = GetResource<Organization>($"{Organization.PATH}{IdSet.First()}/");
                 WriteObject(res);
             }
             else
             {
-                path = Organization.PATH;
                 Query.Add("id__in", string.Join(',', IdSet));
                 Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Organization>(path, Query))
+                foreach (var resultSet in GetResultSet<Organization>(Organization.PATH, Query, true))
                 {
                     WriteObject(resultSet.Results, true);
                 }
@@ -68,7 +65,8 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch {
+            var path = Type switch
+            {
                 ResourceType.User => $"{User.PATH}{Id}/" + (Admin ? "admin_of_organizations/" : "organizations/"),
                 _ => Organization.PATH
             };

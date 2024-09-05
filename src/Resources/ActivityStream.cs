@@ -50,7 +50,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<ActivityStream> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ActivityStream>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(PATH, query, getAll))
             {
                 foreach (var activity in result.Contents.Results)
                 {
@@ -461,13 +461,10 @@ namespace AWX.Resources
         [JsonPropertyOrder(14)]
         public string Object2 { get; } = object2;
         [JsonPropertyOrder(15)]
-        [JsonPropertyName("object_association")]
         public string ObjectAssociation { get; } = objectAssociation;
         [JsonPropertyOrder(16)]
-        [JsonPropertyName("action_node")]
         public string ActionNode { get; } = actionNode;
         [JsonPropertyOrder(17)]
-        [JsonPropertyName("object_type")]
         public string ObjectType { get; } = objectType;
     }
 }

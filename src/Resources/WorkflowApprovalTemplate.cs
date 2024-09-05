@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace AWX.Resources
 {
     public class WorkflowApprovalTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -24,18 +22,15 @@ namespace AWX.Resources
             return apiResult.Contents;
         }
 
-        public record Summary(
-            [property: JsonPropertyName("workflow_job_template")] WorkflowJobTemplateSummary WorkflowJobTemplate,
-            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("resolved_environment")] EnvironmentSummary? ResolvedEnvironment
-        );
+        public record Summary(WorkflowJobTemplateSummary WorkflowJobTemplate,
+                              LastJobSummary? LastJob,
+                              LastUpdateSummary? LastUpdate,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              EnvironmentSummary? ResolvedEnvironment);
 
         public RelatedDictionary Related { get; } = related;
         public Summary SummaryFields { get; } = summaryFields;
-        [JsonPropertyName("execution_environment")]
         public ulong? ExecutionEnvironment { get; } = executionEnvironment;
         public int Timeout { get; } = timeout;
     }

@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace AWX.Resources
 {
     public interface IResource<TSummary>
@@ -21,7 +19,6 @@ namespace AWX.Resources
         /// Data structure with name/description for related resources.
         /// The output for some objects may be limited for performance reasons.
         /// </summary>
-        [JsonPropertyName("summary_fields")]
         TSummary SummaryFields { get; }
     }
 }

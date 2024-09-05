@@ -58,7 +58,8 @@ namespace AWX
             }
             else if (client.BaseAddress.Scheme != uri.Scheme || client.BaseAddress.Authority != uri.Authority)
             {
-                client = new HttpClient() {
+                client = new HttpClient()
+                {
                     BaseAddress = uri,
                     DefaultRequestVersion = HttpVersion.Version11,
                 };
@@ -154,7 +155,8 @@ namespace AWX
                                                                                          bool all = false)
         {
             var sb = new StringBuilder(path);
-            if (query != null && query.Count > 0) {
+            if (query != null && query.Count > 0)
+            {
                 sb.Append('?');
                 sb.Append(query.ToString());
             }

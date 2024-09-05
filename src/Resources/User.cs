@@ -1,19 +1,14 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IUser
     {
         string Username { get; }
-        [JsonPropertyName("first_name")]
         string FirstName { get; }
-        [JsonPropertyName("last_name")]
         string LastName { get; }
         string Email { get; }
-        [JsonPropertyName("is_superuser")]
         bool IsSuperuser { get; }
-        [JsonPropertyName("is_system_auditor")]
         bool IsSystemAuditor { get; }
         string Password { get; }
     }
@@ -162,7 +157,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary([property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(Capability UserCapabilities);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;
@@ -179,13 +174,9 @@ namespace AWX.Resources
         public bool IsSuperuser { get; } = isSuperuser;
         public bool IsSystemAuditor { get; } = isSystemAuditor;
         public string Password { get; } = password;
-        [JsonPropertyName("ldap_dn")]
         public string LdapDn { get; } = ldapDn;
-        [JsonPropertyName("last_login")]
         public DateTime? LastLogin { get; } = lastLogin;
-        [JsonPropertyName("external_account")]
         public string? ExternalAccount { get; } = externalAccount;
-        [JsonPropertyOrder(22)]
         public string[] Auth { get; } = auth;
 
         public UserData ToData()
@@ -208,9 +199,9 @@ namespace AWX.Resources
         public string? Username { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? Email { get; set;  }
+        public string? Email { get; set; }
         public bool? IsSuperuser { get; set; }
         public bool? IsSystemAuditor { get; set; }
-        public string?  Password { get; set; }
+        public string? Password { get; set; }
     }
 }

@@ -6,13 +6,18 @@
     <Nullable>enable</Nullable>
     <AssemblyName>AWX.psm</AssemblyName>
     <RootNamespace>AWX</RootNamespace>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <VersionPrefix>1.2.0</VersionPrefix>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="16.1.0" GeneratePathProperty="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System.Management.Automation">
       <HintPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">C:\Program Files\PowerShell\7\System.Management.Automation.dll</HintPath>
       <HintPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">/opt/microsoft/powershell/7/System.Management.Automation.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 
@@ -28,14 +33,18 @@
   <Target DependsOnTargets="Build" AfterTargets="Build" Name="PSM">
     <PropertyGroup>
       <DllFile>$(OutDir)$(AssemblyName).dll</DllFile>
+      <DllYamlDotNet>$(PkgYamlDotNet)\lib\$(TargetFramework)\YamlDotNet.dll</DllYamlDotNet>
     </PropertyGroup>
     <ItemGroup>
       <PowerShellModules Include="*.psd1;*.ps1xml" />
     </ItemGroup>
-    <MakeDir Directories="$(DestDir)" Condition="!Exists('$(DestDir)')"/>
+    <MakeDir Directories="$(DestDir)" Condition="!Exists('$(DestDir)')" />
 
     <Message Text="Copy built file: $(DllFile)" Importance="high" />
     <Copy SourceFiles="$(DllFile)" DestinationFolder="$(DestDir)" />
+
+    <Message Text="Copy YamlDotNet: $(DllYamlDotNet)" Importance="high" />
+    <Copy SourceFiles="$(DllYamlDotNet)" DestinationFolder="$(DestDir)" />
 
     <Message Text="Copy *.psd1 and *.ps1xml files: @(PowerShellModules)" Importance="high" />
     <Copy SourceFiles="@(PowerShellModules)" DestinationFolder="$(DestDir)" />

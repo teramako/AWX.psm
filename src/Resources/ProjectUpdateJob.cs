@@ -1,40 +1,26 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IProjectUpdateJob : IUnifiedJob
     {
         string Description { get; }
-        [JsonPropertyName("unified_job_template")]
         ulong UnifiedJobTemplate { get; }
-        [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
 
-        [JsonPropertyName("local_path")]
         string LocalPath { get; }
-        [JsonPropertyName("scm_type")]
         string ScmType { get; }
-        [JsonPropertyName("scm_url")]
         string ScmUrl { get; }
-        [JsonPropertyName("scm_branch")]
         string ScmBranch { get; }
-        [JsonPropertyName("scm_refspec")]
         string ScmRefspec { get; }
-        [JsonPropertyName("scm_clean")]
         bool ScmClean { get; }
-        [JsonPropertyName("scm_track_submodules")]
         bool ScmTrackSubmodules { get; }
-        [JsonPropertyName("scm_delete_on_update")]
         bool ScmDeleteOnUpdate { get; }
         ulong? Credential { get; }
         int Timeout { get; }
-        [JsonPropertyName("scm_revision")]
         string ScmRevision { get; }
         ulong Project { get; }
-        [JsonPropertyName("job_type")]
         JobType JobType { get; }
-        [JsonPropertyName("job_tags")]
         string JobTags { get; }
     }
 
@@ -73,7 +59,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<ProjectUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(PATH, query, getAll))
             {
                 foreach (var projectUpdateJob in result.Contents.Results)
                 {
@@ -94,24 +80,23 @@ namespace AWX.Resources
                                                                                bool getAll = false)
         {
             var path = $"{Resources.Project.PATH}{projectId}/project_updates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(path, query, getAll))
             {
-                foreach(var projectUpdateJob in result.Contents.Results)
+                foreach (var projectUpdateJob in result.Contents.Results)
                 {
                     yield return projectUpdateJob;
                 }
             }
         }
 
-        public record Summary(
-            OrganizationSummary Organization,
-            [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
-            ProjectSummary Project,
-            CredentialSummary? Credential,
-            ScheduleSummary? Schedule,
-            [property: JsonPropertyName("unified_job_template")] UnifiedJobTemplateSummary UnifiedJobTemplate,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(OrganizationSummary Organization,
+                              EnvironmentSummary? DefaultEnvironment,
+                              ProjectSummary Project,
+                              CredentialSummary? Credential,
+                              ScheduleSummary? Schedule,
+                              UnifiedJobTemplateSummary UnifiedJobTemplate,
+                              InstanceGroupSummary InstanceGroup,
+                              Capability UserCapabilities);
 
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -136,12 +121,9 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
 
-            [JsonPropertyName("host_status_counts")]
             public Dictionary<string, int> HostStatusCounts { get; } = hostStatusCounts;
-            [JsonPropertyName("playbook_counts")]
             public Dictionary<string, int> PlaybookCounts { get; } = playbookCounts;
         }
 
@@ -169,8 +151,5 @@ namespace AWX.Resources
         public string JobTags { get; } = jobTags;
     }
 
-    public record CanUpdateProject(
-        ulong? Project,
-        [property: JsonPropertyName("can_update")] bool CanUpdate
-    );
+    public record CanUpdateProject(ulong? Project, bool CanUpdate);
 }

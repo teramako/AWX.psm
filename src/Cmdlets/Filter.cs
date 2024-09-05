@@ -103,7 +103,7 @@ namespace AWX.Cmdlets
     public class Filter
     {
         public Filter()
-        {}
+        { }
         public Filter(string name, object? value, FilterLookupType type = FilterLookupType.Exact, bool or = false, bool not = false)
         {
             Or = or;
@@ -204,7 +204,8 @@ namespace AWX.Cmdlets
             }
         }
 
-        public string Name {
+        public string Name
+        {
             get { return _name; }
             set
             {
@@ -227,7 +228,8 @@ namespace AWX.Cmdlets
             }
         }
         private string _name = string.Empty;
-        public object? Value {
+        public object? Value
+        {
             get { return _value; }
             set
             {

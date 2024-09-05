@@ -20,19 +20,16 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            string path;
             if (IdSet.Count == 1)
             {
-                path = $"{HostMetric.PATH}{IdSet.First()}/";
-                var res = GetResource<HostMetric>(path);
+                var res = GetResource<HostMetric>($"{HostMetric.PATH}{IdSet.First()}/");
                 WriteObject(res);
             }
             else
             {
-                path = HostMetric.PATH;
                 Query.Add("id__in", string.Join(',', IdSet));
                 Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<HostMetric>(path, Query))
+                foreach (var resultSet in GetResultSet<HostMetric>(HostMetric.PATH, Query, true))
                 {
                     WriteObject(resultSet.Results, true);
                 }

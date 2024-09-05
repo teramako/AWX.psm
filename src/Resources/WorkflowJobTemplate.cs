@@ -13,51 +13,42 @@ namespace AWX.Resources
         /// Optional description of this workflow job template.
         /// </summary>
         string Description { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
         /// <summary>
         /// The organization used to determine access to this template.
         /// </summary>
         ulong? Organization { get; }
-        [JsonPropertyName("survey_enabled")]
         bool SurveyEnabled { get; }
-        [JsonPropertyName("allow_simultaneous")]
         bool AllowSimultaneous { get; }
-        [JsonPropertyName("ask_variables_on_launch")]
         bool AskVariablesOnLaunch { get; }
         /// <summary>
         /// Inventory applied as a prompt, assuming job template prompts for inventory.
         /// </summary>
         ulong? Inventory { get; }
         string? Limit { get; }
-        [JsonPropertyName("scm_branch")]
         string? ScmBranch { get; }
-        [JsonPropertyName("ask_inventory_on_launch")]
         bool AskInventoryOnLaunch { get; }
-        [JsonPropertyName("ask_scm_branch_on_launch")]
         bool AskScmBranchOnLaunch { get; }
-        [JsonPropertyName("ask_limit_on_launch")]
         bool AskLimitOnLaunch { get; }
         /// <summary>
         /// Service that webhook requests will be accepted from.
         /// </summary>
-        [JsonPropertyName("webhook_service")]
         string WebhookService { get; }
         /// <summary>
         /// Personal Access Token for posting back the status to the service API.
         /// </summary>
-        [JsonPropertyName("webhook_credential")]
         ulong? WebhookCredential { get; }
-        [JsonPropertyName("ask_labels_on_launch")]
         bool AskLabelsOnLaunch { get; }
-        [JsonPropertyName("ask_skip_tags_on_launch")]
         bool AskSkipTagsOnLaunch { get; }
-        [JsonPropertyName("ask_tags_on_launch")]
         bool AskTagsOnLaunch { get; }
-        [JsonPropertyName("skip_tags")]
         string? SkipTags { get; }
-        [JsonPropertyName("job_tags")]
         string? JobTags { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class WorkflowJobTemplate(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -94,7 +85,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<WorkflowJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(PATH, query, getAll))
             {
                 foreach (var jobTemplate in result.Contents.Results)
                 {
@@ -115,7 +106,7 @@ namespace AWX.Resources
                                                                                        bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/workflow_job_templates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(path, query, getAll))
             {
                 foreach (var jobTemplate in result.Contents.Results)
                 {
@@ -124,17 +115,16 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary? Organization,
-            InventorySummary? Inventory,
-            [property: JsonPropertyName("last_job")] LastJobSummary? LastJob,
-            [property: JsonPropertyName("last_update")] LastUpdateSummary? LastUpdate,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<LabelSummary> Labels,
-            [property: JsonPropertyName("recent_jobs")] RecentJobSummary[] RecentJobs);
+        public record Summary(OrganizationSummary? Organization,
+                              InventorySummary? Inventory,
+                              LastJobSummary? LastJob,
+                              LastUpdateSummary? LastUpdate,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Dictionary<string, ObjectRoleSummary> ObjectRoles,
+                              Capability UserCapabilities,
+                              ListSummary<LabelSummary> Labels,
+                              RecentJobSummary[] RecentJobs);
 
 
         public RelatedDictionary Related { get; } = related;
@@ -184,6 +174,11 @@ namespace AWX.Resources
                        (!string.IsNullOrEmpty(WebhookService) ? JobTemplateOptions.Webhook : 0) |
                        (AllowSimultaneous ? JobTemplateOptions.Simultaneous : 0);
             }
+        }
+
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
         }
     }
 }

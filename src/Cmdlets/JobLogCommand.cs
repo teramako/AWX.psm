@@ -65,7 +65,7 @@ namespace AWX.Cmdlets
             var query = HttpUtility.ParseQueryString("do_not_run=false&order_by=modified&page_size=20");
             foreach (var resultSet in GetResultSet<WorkflowJobNode>($"{WorkflowJob.PATH}{id}/workflow_nodes/?{query}", true))
             {
-                foreach(var node in resultSet.Results)
+                foreach (var node in resultSet.Results)
                 {
                     if (node.Job == null || node.SummaryFields.Job == null)
                     {
@@ -140,7 +140,7 @@ namespace AWX.Cmdlets
         {
             if (Download != null)
             {
-                foreach(var fileInfo in DownloadLogs(Download))
+                foreach (var fileInfo in DownloadLogs(Download))
                 {
                     WriteObject(fileInfo);
                 }
@@ -161,7 +161,7 @@ namespace AWX.Cmdlets
                 var path = GetStdoutPath(job.Id, job.Type);
                 if (job.Type == ResourceType.SystemJob)
                 {
-                    var systemJob= GetResource<SystemJob.Detail>(path);
+                    var systemJob = GetResource<SystemJob.Detail>(path);
                     yield return systemJob?.ResultStdout;
                     continue;
                 }

@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -35,9 +34,9 @@ namespace AWX.Resources
                                                                            bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/job_host_summaries/";
-            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path , query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
             {
-                foreach(var jobHostSummary in result.Contents.Results)
+                foreach (var jobHostSummary in result.Contents.Results)
                 {
                     yield return jobHostSummary;
                 }
@@ -56,9 +55,9 @@ namespace AWX.Resources
                                                                           bool getAll = false)
         {
             var path = $"{Resources.Host.PATH}{hostId}/job_host_summaries/";
-            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path , query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
             {
-                foreach(var jobHostSummary in result.Contents.Results)
+                foreach (var jobHostSummary in result.Contents.Results)
                 {
                     yield return jobHostSummary;
                 }
@@ -77,9 +76,9 @@ namespace AWX.Resources
                                                                          bool getAll = false)
         {
             var path = $"{JobTemplateJob.PATH}{jobId}/job_host_summaries/";
-            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path , query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
             {
-                foreach(var jobHostSummary in result.Contents.Results)
+                foreach (var jobHostSummary in result.Contents.Results)
                 {
                     yield return jobHostSummary;
                 }
@@ -97,9 +96,7 @@ namespace AWX.Resources
         public DateTime? Modified { get; } = modified;
         public ulong Job { get; } = job;
         public ulong Host { get; } = host;
-        [JsonPropertyName("constructed_host")]
         public ulong? ConstructedHost { get; } = constructedHost;
-        [JsonPropertyName("host_name")]
         public string HostName { get; } = hostName;
         public int Changed { get; } = changed;
         public int Dark { get; } = dark;

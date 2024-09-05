@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -72,7 +71,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<ExecutionEnvironment> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(PATH, query, getAll))
             {
                 foreach (var exeEnv in result.Contents.Results)
                 {
@@ -93,7 +92,7 @@ namespace AWX.Resources
                                                                                         bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/execution_environments/";
-            await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(path, query, getAll))
             {
                 foreach (var exeEnv in result.Contents.Results)
                 {
@@ -102,12 +101,10 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            OrganizationSummary? Organization,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary? ModifiedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities
-        );
+        public record Summary(OrganizationSummary? Organization,
+                              UserSummary? CreatedBy,
+                              UserSummary? ModifiedBy,
+                              Capability UserCapabilities);
 
         public ulong Id { get; } = id;
         public ResourceType Type { get; } = type;

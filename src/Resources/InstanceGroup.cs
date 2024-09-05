@@ -1,25 +1,17 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IInstanceGroup
     {
         string Name { get; }
-        [JsonPropertyName("max_concurrent_jobs")]
         int MaxConcurrentJobs { get; }
-        [JsonPropertyName("max_forks")]
         int MaxForks { get; }
-        [JsonPropertyName("is_container_group")]
         bool IsContainerGroup { get; }
         ulong? Credential { get; }
-        [JsonPropertyName("policy_instance_percentage")]
         double PolicyInstancePercentage { get; }
-        [JsonPropertyName("policy_instance_minimum")]
         int PolicyInstanceMinimum { get; }
-        [JsonPropertyName("policy_instance_list")]
         string[] PolicyInstanceList { get; }
-        [JsonPropertyName("pod_spec_override")]
         string PodSpecOverride { get; }
     }
 
@@ -224,9 +216,7 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            [property: JsonPropertyName("object_roles")] Dictionary<string, ObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(Dictionary<string, ObjectRoleSummary> ObjectRoles, Capability UserCapabilities);
 
 
         public ulong Id { get; } = id;
@@ -238,15 +228,11 @@ namespace AWX.Resources
         public DateTime Created { get; } = created;
         public DateTime? Modified { get; } = modified;
         public int Capacity { get; } = capacity;
-        [JsonPropertyName("consumed_capacity")]
         public int ConsumedCapacity { get; } = consumedCapacity;
-        [JsonPropertyName("percent_capacity_remaining")]
         public double PercentCapacityRemaining { get; } = percentCapacityRemaining;
-        [JsonPropertyName("jobs_running")]
         public int JobsRunning { get; } = jobsRunning;
         public int MaxConcurrentJobs { get; } = maxConcurrentJobs;
         public int MaxForks { get; } = maxForks;
-        [JsonPropertyName("jobs_total")]
         public int JobsTotal { get; } = jobsTotal;
         public int Instances { get; } = instances;
         public bool IsContainerGroup { get; } = isContainerGroup;

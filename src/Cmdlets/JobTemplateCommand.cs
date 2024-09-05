@@ -1,8 +1,8 @@
 using AWX.Resources;
-using System.Collections;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 
 namespace AWX.Cmdlets
 {
@@ -23,11 +23,19 @@ namespace AWX.Cmdlets
         }
         protected override void EndProcessing()
         {
-            Query.Add("id__in", string.Join(',', IdSet));
-            Query.Add("page_size", $"{IdSet.Count}");
-            foreach (var resultSet in GetResultSet<JobTemplate>($"{JobTemplate.PATH}?{Query}", true))
+            if (IdSet.Count == 1)
             {
-                WriteObject(resultSet.Results, true);
+                var result = GetResource<JobTemplate>($"{JobTemplate.PATH}{IdSet.First()}/");
+                WriteObject(result);
+            }
+            else
+            {
+                Query.Add("id__in", string.Join(',', IdSet));
+                Query.Add("page_size", $"{IdSet.Count}");
+                foreach (var resultSet in GetResultSet<JobTemplate>(JobTemplate.PATH, Query, true))
+                {
+                    WriteObject(resultSet.Results, true);
+                }
             }
         }
     }
@@ -104,7 +112,8 @@ namespace AWX.Cmdlets
         [Parameter()]
         public string[]? SkipTags { get; set; }
 
-        [Parameter()] // TODO: Should accept `IDctionary` (convert to JSON serialized string)
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
         public string? ExtraVars { get; set; }
 
         [Parameter()]
@@ -127,9 +136,12 @@ namespace AWX.Cmdlets
         [Parameter()]
         public int? Timeout { get; set; }
 
-        private Hashtable CreateSendData()
+        [Parameter()]
+        public SwitchParameter Interactive { get; set; }
+
+        private IDictionary<string, object?> CreateSendData()
         {
-            var dict = new Hashtable();
+            var dict = new Dictionary<string, object?>();
             if (Inventory != null)
             {
                 dict.Add("inventory", Inventory);
@@ -196,7 +208,8 @@ namespace AWX.Cmdlets
         {
             var jt = requirements.JobTemplateData;
             var def = requirements.Defaults;
-            var (fixedColor, implicitColor, explicitColor) = ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green);
+            var (fixedColor, implicitColor, explicitColor, requiredColor) =
+                ((ConsoleColor?)null, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red);
             WriteHost($"[{jt.Id}] {jt.Name} - {jt.Description}\n");
             var fmt = "{0,22} : {1}\n";
             {
@@ -224,7 +237,7 @@ namespace AWX.Cmdlets
                 var labelsVal = string.Join(", ", def.Labels?.Select(l => $"[{l.Id}] {l.Name}") ?? [])
                                 + (requirements.AskLabelsOnLaunch && Labels != null ? $" => {string.Join(',', Labels.Select(id => $"[{id}]"))}" : "");
                 WriteHost(string.Format(fmt, "Labels", labelsVal),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
+                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.JobTags) || Tags != null)
             {
@@ -262,6 +275,15 @@ namespace AWX.Cmdlets
                 WriteHost(sb.ToString(),
                             foregroundColor: requirements.AskVariablesOnLaunch ? (ExtraVars == null ? implicitColor : explicitColor) : fixedColor);
             }
+            if (requirements.SurveyEnabled)
+            {
+                WriteHost(string.Format(fmt, "Survey", "Enabled"), foregroundColor: requiredColor);
+            }
+            if (requirements.VariablesNeededToStart.Length > 0)
+            {
+                WriteHost(string.Format(fmt, "Variables", $"[{string.Join(", ", requirements.VariablesNeededToStart)}]"),
+                            foregroundColor: requiredColor);
+            }
             {
                 var diffModeVal = $"{def.DiffMode}"
                                   + (requirements.AskDiffModeOnLaunch && DiffMode != null ? $" => {DiffMode}" : "");
@@ -286,6 +308,11 @@ namespace AWX.Cmdlets
                         + (requirements.AskCredentialOnLaunch && Credentials != null ? $" => {string.Join(',', Credentials.Select(id => $"[{id}]"))}" : "");
                 WriteHost(string.Format(fmt, "Credentials", credentialsVal),
                             foregroundColor: requirements.AskCredentialOnLaunch ? (Credentials == null ? implicitColor : explicitColor) : fixedColor);
+            }
+            if (requirements.PasswordsNeededToStart.Length > 0)
+            {
+                WriteHost(string.Format(fmt, "CredentialPassswords", $"[{string.Join(", ", requirements.PasswordsNeededToStart)}]"),
+                            foregroundColor: requiredColor);
             }
             if (def.ExecutionEnvironment.Id != null || ExecutionEnvironment != null)
             {
@@ -312,6 +339,601 @@ namespace AWX.Cmdlets
                                 foregroundColor: requirements.AskTimeoutOnLaunch ? (Timeout == null ? implicitColor : explicitColor) : fixedColor);
             }
         }
+
+        private bool CheckPasswordsRequired(JobTemplateLaunchRequirements requirements,
+                                            IDictionary<string, object?> sendData,
+                                            out Dictionary<string, (string caption, string description)> result)
+        {
+            result = new();
+            ulong[] credentialIds;
+            if (sendData.TryGetValue("credentials", out var res))
+            {
+                credentialIds = res as ulong[] ?? [];
+                if (credentialIds.Length == 0)
+                    return false;
+
+                var query = HttpUtility.ParseQueryString("");
+                query.Set("id__in", string.Join(',', credentialIds));
+                query.Set("page_size", $"{credentialIds.Length}");
+                foreach (var resultSet in GetResultSet<Credential>(Credential.PATH, query, true))
+                {
+                    foreach (var cred in resultSet.Results)
+                    {
+                        string captionFmt;
+                        string description = cred.Description;
+                        foreach (var kv in cred.Inputs)
+                        {
+                            if (result.ContainsKey(kv.Key)) continue;
+                            string key = kv.Key;
+                            switch (kv.Key)
+                            {
+                                case "password":
+                                    captionFmt = "Password ({0})";
+                                    break;
+                                case "become_password":
+                                    captionFmt = "Become Password ({0})";
+                                    break;
+                                case "ssh_key_unlock":
+                                    captionFmt = "SSH Passphrase ({0})";
+                                    break;
+                                case "vault_password":
+                                    string vaultId = cred.Inputs["vault_id"] as string ?? "";
+                                    if (string.IsNullOrEmpty(vaultId))
+                                    {
+                                        captionFmt = "Vault Password ({0})";
+                                    }
+                                    else
+                                    {
+                                        captionFmt = $"Vault Password ({{0}} | {vaultId})";
+                                        key = $"{kv.Key}.{vaultId}";
+                                    }
+                                    break;
+                                default:
+                                    continue;
+                            }
+                            if (kv.Value as string != "ASK")
+                                continue;
+
+                            result.Add(key, (string.Format(captionFmt, $"[{cred.Id}]{cred.Name}"), description));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                credentialIds = requirements.Defaults.Credentials?.Select(x => x.Id).ToArray() ?? [];
+                if (requirements.PasswordsNeededToStart.Length == 0)
+                    return false;
+
+                foreach (var key in requirements.PasswordsNeededToStart)
+                {
+                    string captionFmt;
+                    string description = "";
+                    switch (key)
+                    {
+                        case "password":
+                            captionFmt = "Password ({0})";
+                            break;
+                        case "become_password":
+                            captionFmt = "Become Password ({0})";
+                            break;
+                        case "ssh_key_unlock":
+                            captionFmt = "SSH Passphrase ({0})";
+                            break;
+                        default:
+                            if (!key.StartsWith("vault_password"))
+                                return false;
+                            string[] vaultKeys = key.Split('.', 2);
+                            captionFmt = (vaultKeys.Length == 2 && !string.IsNullOrEmpty(vaultKeys[1]))
+                                         ? $"Vault Password ({{0}} | {vaultKeys[1]})"
+                                         : "Vault Password ({0})";
+                            break;
+                    }
+                    var t = requirements.Defaults.Credentials?
+                        .Where(cred => cred.PasswordsNeeded?.Any(passwordKey => passwordKey == key) ?? false)
+                        .Select(cred => (string.Format(captionFmt, $"[{cred.Id}]{cred.Name}"), description))
+                        .FirstOrDefault() ?? ("", "");
+
+                    result.Add(key, t);
+                }
+            }
+
+            return result.Count > 0;
+        }
+        private bool TryAskCredentials(IDictionary<string, (string caption, string description)> checkResult,
+                                         IDictionary<string, object?> sendData)
+        {
+            if (CommandRuntime.Host == null)
+                return false;
+
+            var prompt = new AskPrompt(CommandRuntime.Host);
+            var credentialPassswords = new Dictionary<string, string>();
+            sendData.Add("credential_passwords", credentialPassswords);
+
+            foreach (var (key, (caption, description)) in checkResult)
+            {
+                if (prompt.AskPassword(caption, key, description, out var passwordAnswer))
+                {
+                    credentialPassswords.Add(key, passwordAnswer.Input);
+                    PrintPromptResult(key, string.Empty);
+                }
+                else
+                {   // Canceled
+                    return false;
+                }
+            }
+            return true;
+        }
+        // FIXME
+        /// <summary>
+        /// Show input prompt and Update <paramref name="sendData"/>.
+        /// </summary>
+        /// <param name="requirements"></param>
+        /// <param name="sendData">Dictionary object that is the source of the JSON string sent to AWX/AnsibleTower</param>
+        /// <param name="checkOptional">
+        ///   <c>true</c>(`Interactive` mode)  => Check both <c>***NeededToStart</c> and <c>**AskInventoryOnLaunch</c>.
+        ///   <c>false</c> => Check only <c>***NeededToStart</c>.
+        /// </param>
+        /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
+        protected bool TryAskOnLaunch(JobTemplateLaunchRequirements requirements,
+                                      IDictionary<string, object?> sendData,
+                                      bool checkOptional = false)
+        {
+            if (requirements.CanStartWithoutUserInput)
+            {
+                return true;
+            }
+            if (CommandRuntime.Host == null)
+            {
+                return false;
+            }
+            var prompt = new AskPrompt(CommandRuntime.Host);
+            string key;
+            string label;
+            string skipFormat = "Skip {0} prompt. Already specified: {1:g}";
+
+            // Inventory
+            if (requirements.InventoryNeededToStart || (checkOptional && requirements.AskInventoryOnLaunch))
+            {
+                key = "inventory"; label = "Inventory";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<ulong>(label, "",
+                                           defaultValue: requirements.Defaults.Inventory.Id,
+                                           helpMessage: "Input an Inventory ID."
+                                                        + (requirements.InventoryNeededToStart ? " (Required)" : ""),
+                                           required: requirements.InventoryNeededToStart,
+                                           out var inventoryAnswer))
+                {
+                    if (!inventoryAnswer.IsEmpty && inventoryAnswer.Input > 0)
+                    {
+                        sendData[key] = inventoryAnswer.Input;
+                        PrintPromptResult(label, $"{inventoryAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.Inventory}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Credentials
+            if (requirements.CredentialNeededToStart || (checkOptional && requirements.AskCredentialOnLaunch))
+            {
+                key = "credentials"; label = "Credentials";
+                if (sendData.ContainsKey(key))
+                {
+                    var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
+                    WriteHost(string.Format(skipFormat, label, strData), dontshow: true);
+                }
+                else if (prompt.AskList<ulong>(label, "",
+                                               defaultValues: requirements.Defaults.Credentials?.Select(x => $"[{x.Id}] {x.Name}"),
+                                               helpMessage: "Enter Credential ID(s).",
+                                               out var credentialsAnswer))
+                {
+                    if (!credentialsAnswer.IsEmpty)
+                    {
+                        var arr = credentialsAnswer.Input.Where(x => x > 0).ToArray();
+                        sendData[key] = arr;
+                        PrintPromptResult(label, $"[{string.Join(", ", arr)}]");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label,
+                                    $"[{string.Join(", ", requirements.Defaults.Credentials?.Select(x => $"{x}") ?? [])}]",
+                                    true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // CredentialPassword
+            if (CheckPasswordsRequired(requirements, sendData, out var checkResult))
+            {
+                if (!TryAskCredentials(checkResult, sendData))
+                {
+                    return false;
+                }
+            }
+
+            // ExecutionEnvironment
+            if (checkOptional && requirements.AskExecutionEnvironmentOnLaunch)
+            {
+                key = "execution_environment"; label = "Execution Environment";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<ulong>(label, "",
+                                           defaultValue: requirements.Defaults.ExecutionEnvironment.Id,
+                                           helpMessage: "Enter the Execution Environment ID.",
+                                           required: false,
+                                           out var eeAnswer))
+                {
+                    if (!eeAnswer.IsEmpty)
+                    {
+                        sendData[key] = eeAnswer.Input > 0 ? eeAnswer.Input : null;
+                        PrintPromptResult(label, eeAnswer.Input > 0 ? $"{eeAnswer.Input}" : "(null)");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.ExecutionEnvironment}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // JobType
+            if (checkOptional && requirements.AskJobTypeOnLaunch)
+            {
+                key = "job_type"; label = "Job Type";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.AskBool(label,
+                                        defaultValue: requirements.Defaults.JobType == Resources.JobType.Run,
+                                        trueParameter: ("Run", "Run: Execut the playbook when launched, running Ansible tasks on the selected hosts."),
+                                        falseParameter: ("Check", "Check: Perform a \"dry run\" of the playbook. This is same as `-C` -or `--check` command-line parameter for `ansible-playbook`"),
+                                        out var jobTypeAnswer))
+                {
+                    if (!jobTypeAnswer.IsEmpty)
+                    {
+                        var result = (jobTypeAnswer.Input ? Resources.JobType.Run : Resources.JobType.Check).ToString().ToLowerInvariant();
+                        sendData[key] = result;
+                        PrintPromptResult(label, result);
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.JobType}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // ScmBranch
+            if (checkOptional && requirements.AskScmBranchOnLaunch)
+            {
+                key = "scm_branch"; label = "ScmBranch";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask(label, "",
+                                    defaultValue: requirements.Defaults.ScmBranch,
+                                    helpMessage: "Enter the SCM branch name (or commit hash or tag)",
+                                    out var branchAnswer))
+                {
+                    if (!branchAnswer.IsEmpty)
+                    {
+                        sendData[key] = branchAnswer.Input;
+                        PrintPromptResult(label, $"\"{branchAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"\"{requirements.Defaults.ScmBranch}\"", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Labels
+            if (checkOptional && requirements.AskLabelsOnLaunch)
+            {
+                key = "labels"; label = "Labels";
+                if (sendData.ContainsKey(key))
+                {
+                    var strData = $"[{string.Join(", ", (ulong[]?)sendData[key] ?? [])}]";
+                    WriteHost(string.Format(skipFormat, label, strData), dontshow: true);
+                }
+                else if (prompt.AskList<ulong>(label, "",
+                                               defaultValues: requirements.Defaults.Labels?.Select(x => $"[{x.Id}] {x.Name}") ?? [],
+                                               helpMessage: "Enter Label ID(s).",
+                                               out var labelsAnswer))
+                {
+                    if (!labelsAnswer.IsEmpty)
+                    {
+                        var arr = labelsAnswer.Input.Where(x => x > 0).ToArray();
+                        sendData[key] = arr;
+                        PrintPromptResult(label, $"[{string.Join(", ", arr)}]");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label,
+                                    $"[{string.Join(", ", requirements.Defaults.Labels?.Select(x => $"{x}") ?? [])}]",
+                                    true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Forks
+            if (checkOptional && requirements.AskForksOnLaunch)
+            {
+                key = "forks"; label = "Forks";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<int>(label, "",
+                                         defaultValue: requirements.Defaults.Forks,
+                                         helpMessage: "Enter the number of parallel or simultaneous procecces.",
+                                         required: false,
+                                         out var forksAnswer))
+                {
+                    if (!forksAnswer.IsEmpty)
+                    {
+                        sendData[key] = forksAnswer.Input;
+                        PrintPromptResult(label, $"{forksAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.Forks}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Limit
+            if (checkOptional && requirements.AskLimitOnLaunch)
+            {
+                key = "limit"; label = "Limit";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask(label, "",
+                                    defaultValue: requirements.Defaults.Limit,
+                                    helpMessage: """
+                                    Enter the host pattern to further constrain the list of host managed or affected by the playbook.
+                                    Multiple patterns can be separated by commas(`,`) or colons(`:`).
+                                    """,
+                                    out var limitAnswer))
+                {
+                    if (!limitAnswer.IsEmpty)
+                    {
+                        sendData[key] = limitAnswer.Input;
+                        PrintPromptResult(label, $"\"{limitAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"\"{requirements.Defaults.Limit}\"", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Verbosity
+            if (checkOptional && requirements.AskVerbosityOnLaunch)
+            {
+                key = "verbosity"; label = "Verbosity";
+                if (sendData.ContainsKey(key))
+                {
+                    var v = (JobVerbosity)((int)(sendData[key] ?? 0));
+                    WriteHost(string.Format(skipFormat, label, $"{v:d} ({v:g})"), dontshow: true);
+                }
+                else if (prompt.AskEnum<JobVerbosity>(label,
+                                                      defaultValue: requirements.Defaults.Verbosity,
+                                                      helpMessage: "Choose the job log verbosity level.",
+                                                      out var verbosityAnswer))
+                {
+                    if (!verbosityAnswer.IsEmpty)
+                    {
+                        sendData[key] = (int)verbosityAnswer.Input;
+                        PrintPromptResult(label, $"{verbosityAnswer.Input} ({verbosityAnswer.Input:d})");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label,
+                                    $"{requirements.Defaults.Verbosity} ({requirements.Defaults.Verbosity:d})",
+                                    true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // JobSliceCount
+            if (checkOptional && requirements.AskJobTypeOnLaunch)
+            {
+                key = "job_slice_count"; label = "Job Slice Count";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<int>(label, "",
+                                         defaultValue: requirements.Defaults.JobSliceCount,
+                                         helpMessage: "Enter the number of slices you want this job template to run.",
+                                         required: false,
+                                         out var jobSliceCountAnswer))
+                {
+                    if (!jobSliceCountAnswer.IsEmpty)
+                    {
+                        sendData[key] = jobSliceCountAnswer.Input;
+                        PrintPromptResult(label, $"{jobSliceCountAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.JobSliceCount}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Timeout
+            if (checkOptional && requirements.AskTimeoutOnLaunch)
+            {
+                key = "timeout"; label = "Timeout";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask<int>(label, "",
+                                         defaultValue: requirements.Defaults.Timeout,
+                                         helpMessage: "Enter the timeout value(seconds).",
+                                         required: false,
+                                         out var timeoutAnswer))
+                {
+                    if (!timeoutAnswer.IsEmpty)
+                    {
+                        sendData[key] = timeoutAnswer.Input;
+                        PrintPromptResult(label, $"{timeoutAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.Timeout}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // DiffMode
+            if (checkOptional && requirements.AskDiffModeOnLaunch)
+            {
+                key = "diff_mode"; label = "Diff Mode";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.AskBool(label,
+                                        defaultValue: requirements.Defaults.DiffMode,
+                                        trueParameter: ("On", "On: Allows to see the changes made by Ansible tasks. This is same as `-D` or `--diff` command-line parameter for `ansible-playbook`."),
+                                        falseParameter: ("Off", "Off"),
+                                        out var diffModeAnswer))
+                {
+                    if (!diffModeAnswer.IsEmpty)
+                    {
+                        sendData[key] = diffModeAnswer.Input;
+                        PrintPromptResult(label, $"{diffModeAnswer.Input}");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"{requirements.Defaults.DiffMode}", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // Tags
+            if (checkOptional && requirements.AskTagsOnLaunch)
+            {
+                key = "job_tags"; label = "Job Tags";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask(label, "",
+                                    defaultValue: requirements.Defaults.JobTags,
+                                    helpMessage: """
+                                    Enter the tags. Multiple values can be separated by commas(`,`).
+                                    This is same as the `--tags` command-line parameter for `ansible-playbook`.
+                                    """,
+                                    out var jobTagsAnswer))
+                {
+                    if (!jobTagsAnswer.IsEmpty)
+                    {
+                        sendData[key] = jobTagsAnswer.Input;
+                        PrintPromptResult(label, $"\"{jobTagsAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"\"{requirements.Defaults.JobTags}\"", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // SkipTags
+            if (checkOptional && requirements.AskSkipTagsOnLaunch)
+            {
+                key = "skip_tags"; label = "Skip Tags";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask(label, "",
+                                    defaultValue: requirements.Defaults.JobTags,
+                                    helpMessage: """
+                                    Enter the skip tags. Multiple values can be separated by commas(`,`).
+                                    This is same as the `--skip-tags` command-line parameter for `ansible-playbook`.
+                                    """,
+                                    out var skipTagsAnswer))
+                {
+                    if (!skipTagsAnswer.IsEmpty)
+                    {
+                        sendData[key] = skipTagsAnswer.Input;
+                        PrintPromptResult(label, $"\"{skipTagsAnswer.Input}\"");
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, $"\"{requirements.Defaults.SkipTags}\"", true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // ExtraVars
+            if (checkOptional && requirements.AskVariablesOnLaunch)
+            {
+                key = "extra_vars"; label = "Extra Variables";
+                if (sendData.ContainsKey(key))
+                {
+                    WriteHost(string.Format(skipFormat, label, sendData[key]), dontshow: true);
+                }
+                else if (prompt.Ask(label, "",
+                                    defaultValue: requirements.Defaults.ExtraVars,
+                                    helpMessage: """
+                                    Enter the extra variables provided key/value pairs using either YAML or JSON, to be passed to the playbook.
+                                    This is same as the `-e` or `--extra-vars` command-line parameter for `ansible-playbook`.
+                                    """,
+                                    out var extraVarsAnswer))
+                {
+                    if (!extraVarsAnswer.IsEmpty)
+                    {
+                        sendData[key] = extraVarsAnswer.Input;
+                        PrintPromptResult(label, extraVarsAnswer.Input);
+                    }
+                    else
+                    {
+                        PrintPromptResult(label, requirements.Defaults.ExtraVars, true);
+                    }
+                }
+                else { return false; }
+            }
+
+            // VariablesNeededToStart and Survey
+            if (requirements.VariablesNeededToStart.Length > 0 || (checkOptional && requirements.SurveyEnabled))
+            {
+                if (!AskSurvey(ResourceType.JobTemplate, Id, checkOptional, sendData))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
         {
             var requirements = GetResource<JobTemplateLaunchRequirements>($"{JobTemplate.PATH}{id}/launch/");
@@ -320,7 +942,13 @@ namespace AWX.Cmdlets
                 return null;
             }
             ShowJobTemplateInfo(requirements);
-            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", CreateSendData());
+            var sendData = CreateSendData();
+            if (!TryAskOnLaunch(requirements, sendData, checkOptional: Interactive))
+            {
+                WriteWarning("Launch canceled.");
+                return null;
+            }
+            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
             if (launchResult.IgnoredFields.Count > 0)
@@ -359,7 +987,7 @@ namespace AWX.Cmdlets
                     JobManager.Add(launchResult);
                 }
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
         protected override void EndProcessing()
         {
@@ -386,7 +1014,7 @@ namespace AWX.Cmdlets
                     WriteObject(launchResult, false);
                 }
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -24,7 +23,6 @@ namespace AWX.Resources
         /// <summary>
         /// The value used by the remote inventory source to uniquely identify the host.
         /// </summary>
-        [JsonPropertyName("instance_id")]
         string InstanceId { get; }
         /// <summary>
         /// Host variables in JSON or YAML format.
@@ -69,7 +67,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Host> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(PATH, query, getAll))
             {
                 foreach (var host in result.Contents.Results)
                 {
@@ -90,9 +88,9 @@ namespace AWX.Resources
                                                                      bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
@@ -111,9 +109,9 @@ namespace AWX.Resources
                                                                            bool getAll = false)
         {
             var path = $"{InventorySource.PATH}{inventorySourceId}/hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
@@ -132,9 +130,9 @@ namespace AWX.Resources
                                                                     bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/all_hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
@@ -153,22 +151,21 @@ namespace AWX.Resources
                                                                  bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
             }
         }
 
-        public record Summary(
-            InventorySummary Inventory,
-            [property: JsonPropertyName("last_job")] HostLastJobSummary? LastJob,
-            [property: JsonPropertyName("last_job_host_summary")] LastJobHostSummary? LastJobHostSummary,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            ListSummary<GroupSummary> Groups,
-            [property: JsonPropertyName("recent_jobs")] HostRecentJobSummary[] RecentJobs);
+        public record Summary(InventorySummary Inventory,
+                              HostLastJobSummary? LastJob,
+                              LastJobHostSummary? LastJobHostSummary,
+                              Capability UserCapabilities,
+                              ListSummary<GroupSummary> Groups,
+                              HostRecentJobSummary[] RecentJobs);
 
 
         public ulong Id { get; } = id;

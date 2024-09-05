@@ -1,5 +1,4 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
@@ -7,9 +6,7 @@ namespace AWX.Resources
     {
         string Name { get; }
         string Description { get; }
-        [JsonPropertyName("max_hosts")]
         int MaxHosts { get; }
-        [JsonPropertyName("default_environment")]
         int? DefaultEnvironment { get; }
     }
 
@@ -69,7 +66,7 @@ namespace AWX.Resources
                                                                                     bool getAll = false)
         {
             var path = $"{User.PATH}/{userId}/admin_of_organizations/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Organization>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Organization>(path, query, getAll))
             {
                 foreach (var org in result.Contents.Results)
                 {
@@ -99,13 +96,12 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            [property: JsonPropertyName("default_environment")] EnvironmentSummary? DefaultEnvironment,
-            [property: JsonPropertyName("created_by")] UserSummary CreatedBy,
-            [property: JsonPropertyName("modified_by")] UserSummary ModifiedBy,
-            [property: JsonPropertyName("object_roles")] Dictionary<string, OrganizationObjectRoleSummary> ObjectRoles,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities,
-            [property: JsonPropertyName("related_field_counts")] RelatedFieldCountsSummary RelatedFieldCounts);
+        public record Summary(EnvironmentSummary? DefaultEnvironment,
+                              UserSummary CreatedBy,
+                              UserSummary ModifiedBy,
+                              Dictionary<string, OrganizationObjectRoleSummary> ObjectRoles,
+                              Capability UserCapabilities,
+                              RelatedFieldCountsSummary RelatedFieldCounts);
 
 
         public ulong Id { get; } = id;
@@ -118,7 +114,6 @@ namespace AWX.Resources
         public string Name { get; } = name;
         public string Description { get; } = description;
         public int MaxHosts { get; } = maxHosts;
-        [JsonPropertyName("custom_virtualenv")]
         public string? CustomVirtualenv { get; } = customVirtualenv;
         public int? DefaultEnvironment { get; } = defaultEnvironment;
     }

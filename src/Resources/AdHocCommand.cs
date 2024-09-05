@@ -1,32 +1,29 @@
 using System.Collections.Specialized;
-using System.Text.Json.Serialization;
 
 namespace AWX.Resources
 {
     public interface IAdHocCommand : IUnifiedJob
     {
-        [JsonPropertyName("execution_node")]
         string ExecutionNode { get; }
-        [JsonPropertyName("controller_node")]
         string ControllerNode { get; }
 
-        [JsonPropertyName("job_type")]
         JobType JobType { get; }
         ulong Inventory { get; }
         string Limit { get; }
         ulong Credential { get; }
-        [JsonPropertyName("module_name")]
         string ModuleName { get; }
-        [JsonPropertyName("module_args")]
         string ModuleArgs { get; }
         byte Forks { get; }
         JobVerbosity Verbosity { get; }
-        [JsonPropertyName("extra_vars")]
         string ExtraVars { get; }
-        [JsonPropertyName("become_enabled")]
         bool BecomeEnabled { get; }
-        [JsonPropertyName("diff_mode")]
         bool DiffMode { get; }
+
+        /// <summary>
+        /// Deseriaze string <see cref="ExtraVars">ExtraVars</see>(JSON or YAML) to Dictionary
+        /// </summary>
+        /// <returns>result of deserialized <see cref="ExtraVars"/> to Dictionary</returns>
+        Dictionary<string, object?> GetExtraVars();
     }
 
     public class AdHocCommand(ulong id, ResourceType type, string url, RelatedDictionary related,
@@ -62,7 +59,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<AdHocCommand> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(PATH, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -83,7 +80,7 @@ namespace AWX.Resources
                                                                              bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/ad_hoc_commands/";
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -104,7 +101,7 @@ namespace AWX.Resources
                                                                          bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/ad_hoc_commands/";
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -125,7 +122,7 @@ namespace AWX.Resources
                                                                         bool getAll = false)
         {
             var path = $"{Host.PATH}{hostId}/ad_hoc_commands/";
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -134,13 +131,12 @@ namespace AWX.Resources
             }
         }
 
-        public record Summary(
-            InventorySummary Inventory,
-            [property: JsonPropertyName("execution_environment")] EnvironmentSummary? ExecutionEnvironment,
-            CredentialSummary Credential,
-            [property: JsonPropertyName("instance_group")] InstanceGroupSummary InstanceGroup,
-            [property: JsonPropertyName("created_by")] UserSummary? CreatedBy,
-            [property: JsonPropertyName("user_capabilities")] Capability UserCapabilities);
+        public record Summary(InventorySummary Inventory,
+                              EnvironmentSummary? ExecutionEnvironment,
+                              CredentialSummary Credential,
+                              InstanceGroupSummary InstanceGroup,
+                              UserSummary? CreatedBy,
+                              Capability UserCapabilities);
 
         public class Detail(ulong id, ResourceType type, string url, RelatedDictionary related,
                             AdHocCommand.Summary summaryFields, DateTime created, DateTime? modified, string name,
@@ -162,9 +158,7 @@ namespace AWX.Resources
             public string JobCwd { get; } = jobCwd;
             public Dictionary<string, string> JobEnv { get; } = jobEnv;
             public string ResultTraceback { get; } = resultTraceback;
-            [JsonPropertyName("event_processing_finished")]
             public bool EventProcessingFinished { get; } = eventProcessingFinished;
-            [JsonPropertyName("host_status_counts")]
             public Dictionary<string, int> HostStatusCounts { get; } = hostStatusCounts;
         }
         public RelatedDictionary Related { get; } = related;
@@ -183,5 +177,9 @@ namespace AWX.Resources
         public bool BecomeEnabled { get; } = becomeEnabled;
         public bool DiffMode { get; } = diffMode;
 
+        public Dictionary<string, object?> GetExtraVars()
+        {
+            return Yaml.DeserializeToDict(ExtraVars);
+        }
     }
 }
