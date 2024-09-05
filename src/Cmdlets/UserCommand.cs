@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "Me")]
     [OutputType(typeof(User))]
-    public class GetMeCommand: APICmdletBase
+    public class GetMeCommand : APICmdletBase
     {
         protected override void EndProcessing()
         {
@@ -68,7 +68,7 @@ namespace AWX.Cmdlets
         public string[]? UserName { get; set; }
 
         [Parameter(Position = 1)]
-        public string[]? Email {  get; set; }
+        public string[]? Email { get; set; }
 
         [Parameter()]
         public override string[] OrderBy { get; set; } = ["id"];

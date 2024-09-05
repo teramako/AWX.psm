@@ -174,7 +174,7 @@ namespace AWX.Cmdlets
                 var labelsVal = string.Join(", ", def.Labels?.Select(l => $"[{l.Id}] {l.Name}") ?? [])
                                 + (requirements.AskLabelsOnLaunch && Labels != null ? $" => {string.Join(',', Labels.Select(id => $"[{id}]"))}" : "");
                 WriteHost(string.Format(fmt, "Labels", labelsVal),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
+                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.JobTags) || Tags != null)
             {
@@ -494,7 +494,7 @@ namespace AWX.Cmdlets
             WriteVerbose($"Launch WorkflowJobTemplate:{id} => Job:[{launchResult.Id}]");
             if (launchResult.IgnoredFields.Count > 0)
             {
-                foreach (var (key ,val) in launchResult.IgnoredFields)
+                foreach (var (key, val) in launchResult.IgnoredFields)
                 {
                     WriteWarning($"Ignored field: {key} ({JsonSerializer.Serialize(val, Json.DeserializeOptions)})");
                 }

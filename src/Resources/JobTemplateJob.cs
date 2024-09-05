@@ -82,7 +82,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<JobTemplateJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<JobTemplateJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplateJob>(PATH, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -103,7 +103,7 @@ namespace AWX.Resources
                                                                                  bool getAll = false)
         {
             var path = $"{Resources.JobTemplate.PATH}{jobTemplateId}/jobs/";
-            await foreach(var result in RestAPI.GetResultSetAsync<JobTemplateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplateJob>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {

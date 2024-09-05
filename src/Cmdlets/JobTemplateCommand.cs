@@ -237,7 +237,7 @@ namespace AWX.Cmdlets
                 var labelsVal = string.Join(", ", def.Labels?.Select(l => $"[{l.Id}] {l.Name}") ?? [])
                                 + (requirements.AskLabelsOnLaunch && Labels != null ? $" => {string.Join(',', Labels.Select(id => $"[{id}]"))}" : "");
                 WriteHost(string.Format(fmt, "Labels", labelsVal),
-                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels ==  null ? implicitColor : explicitColor) : fixedColor);
+                            foregroundColor: requirements.AskLabelsOnLaunch ? (Labels == null ? implicitColor : explicitColor) : fixedColor);
             }
             if (!string.IsNullOrEmpty(def.JobTags) || Tags != null)
             {
@@ -521,7 +521,7 @@ namespace AWX.Cmdlets
             }
 
             // Credentials
-            if (requirements.CredentialNeededToStart || (checkOptional &&  requirements.AskCredentialOnLaunch))
+            if (requirements.CredentialNeededToStart || (checkOptional && requirements.AskCredentialOnLaunch))
             {
                 key = "credentials"; label = "Credentials";
                 if (sendData.ContainsKey(key))
@@ -987,7 +987,7 @@ namespace AWX.Cmdlets
                     JobManager.Add(launchResult);
                 }
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
         protected override void EndProcessing()
         {
@@ -1014,7 +1014,7 @@ namespace AWX.Cmdlets
                     WriteObject(launchResult, false);
                 }
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
     }
 }

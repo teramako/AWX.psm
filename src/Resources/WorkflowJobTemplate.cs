@@ -85,7 +85,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<WorkflowJobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(PATH, query, getAll))
             {
                 foreach (var jobTemplate in result.Contents.Results)
                 {
@@ -106,7 +106,7 @@ namespace AWX.Resources
                                                                                        bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/workflow_job_templates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJobTemplate>(path, query, getAll))
             {
                 foreach (var jobTemplate in result.Contents.Results)
                 {

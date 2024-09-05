@@ -206,7 +206,7 @@ namespace AWX.Cmdlets
         /// <param name="required"></param>
         /// <param name="answer"></param>
         /// <returns>Whether the prompt is inputed(<c>true</c>) or Canceled(<c>false</c>)</returns>
-        public bool Ask<T>(string label, string promptKey, T? defaultValue, string helpMessage, bool required, out Answer<T> answer) where T: struct
+        public bool Ask<T>(string label, string promptKey, T? defaultValue, string helpMessage, bool required, out Answer<T> answer) where T : struct
         {
             string helpIndicator;
             string help = helpMessage;
@@ -281,7 +281,7 @@ namespace AWX.Cmdlets
                         answer = new Answer<T>(LanguagePrimitives.ConvertTo<T>(inputString));
                         return true;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         WriteError(ex.Message);
                     }

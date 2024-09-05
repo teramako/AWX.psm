@@ -111,7 +111,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<CredentialType> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<CredentialType>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<CredentialType>(PATH, query, getAll))
             {
                 foreach (var credentialType in result.Contents.Results)
                 {

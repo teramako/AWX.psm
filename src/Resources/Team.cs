@@ -52,7 +52,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Team> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Team>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Team>(PATH, query, getAll))
             {
                 foreach (var team in result.Contents.Results)
                 {
@@ -73,7 +73,7 @@ namespace AWX.Resources
                                                                         bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/teams/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
             {
                 foreach (var team in result.Contents.Results)
                 {
@@ -94,7 +94,7 @@ namespace AWX.Resources
                                                                 bool getAll = false)
         {
             var path = $"{User.PATH}{userId}/teams/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
             {
                 foreach (var team in result.Contents.Results)
                 {
@@ -115,7 +115,7 @@ namespace AWX.Resources
                                                                    bool getAll = false)
         {
             var path = $"{Project.PATH}{projectId}/teams/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
             {
                 foreach (var team in result.Contents.Results)
                 {
@@ -136,7 +136,7 @@ namespace AWX.Resources
                                                                            bool getAll = false)
         {
             var path = $"{Credential.PATH}{credentialId}/owner_teams/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
             {
                 foreach (var team in result.Contents.Results)
                 {
@@ -157,7 +157,7 @@ namespace AWX.Resources
                                                                 bool getAll = false)
         {
             var path = $"{Role.PATH}{credentialId}/teams/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Team>(path, query, getAll))
             {
                 foreach (var team in result.Contents.Results)
                 {

@@ -56,7 +56,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Schedule> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Schedule>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Schedule>(PATH, query, getAll))
             {
                 foreach (var schedule in result.Contents.Results)
                 {

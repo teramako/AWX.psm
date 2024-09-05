@@ -111,7 +111,7 @@ namespace AWX.Cmdlets
                 WriteVerbose($"Launch SystemJobTemplate:{Id} => Job:[{job.Id}]");
                 JobManager.Add(job);
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
         protected override void EndProcessing()
         {
@@ -135,7 +135,7 @@ namespace AWX.Cmdlets
                 WriteVerbose($"Launch SystemJobTemplate:{Id} => Job:[{job.Id}]");
                 WriteObject(job);
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
     }
 }

@@ -56,7 +56,7 @@ namespace AWX.Cmdlets
             do
             {
                 UpdateAllProgressRecordType(ProgressRecordType.Processing);
-                for(var i = 1; i <= intervalSeconds; i++)
+                for (var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
                     JobManager.UpdateProgress(i);
@@ -69,7 +69,7 @@ namespace AWX.Cmdlets
                 ShowJobLog(suppressJobLog);
 
                 WriteObject(JobManager.CleanCompleted(), true);
-            } while(JobManager.Count > 0);
+            } while (JobManager.Count > 0);
         }
 
         private void UpdateAllProgressRecordType(ProgressRecordType type)
@@ -210,7 +210,7 @@ namespace AWX.Cmdlets
                             {
                                 extraVars[varName] = multiAnswer.Input;
                                 PrintPromptResult(varName, $"[{string.Join(", ", multiAnswer.Input.Select(x => $"\"{x}\""))}]", multiAnswer.IsEmpty);
-                            continue;
+                                continue;
                             }
                             return false;
                         case SurveySpecType.Password:
@@ -242,7 +242,7 @@ namespace AWX.Cmdlets
         [Parameter(ValueFromPipelineByPropertyName = true, DontShow = true)]
         public ResourceType? Type { get; set; }
 
-        protected readonly HashSet<ulong> IdSet  = [];
+        protected readonly HashSet<ulong> IdSet = [];
         protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
     }
     /// <summary>
@@ -384,13 +384,14 @@ namespace AWX.Cmdlets
         /// <param name="backgroundColor"></param>
         /// <param name="tags"></param>
         /// <param name="dontshow">Follow the <c>$InformationPreference</c> value, don't output to console forcely.</param>
-        protected void WriteHost (string message,
+        protected void WriteHost(string message,
                                   ConsoleColor? foregroundColor = null,
                                   ConsoleColor? backgroundColor = null,
                                   string[]? tags = null,
                                   bool dontshow = false)
         {
-            var msg = new HostInformationMessage() {
+            var msg = new HostInformationMessage()
+            {
                 Message = message,
                 ForegroundColor = foregroundColor ?? DefaultForegroundColor,
                 BackgroundColor = backgroundColor ?? DefaultBackgroundColor,
@@ -424,7 +425,7 @@ namespace AWX.Cmdlets
             {
                 WriteApiError(ex);
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 if (aex.InnerException is RestAPIException ex)
                 {
@@ -478,7 +479,7 @@ namespace AWX.Cmdlets
                     WriteApiError(ex);
                     break;
                 }
-                catch(AggregateException aex)
+                catch (AggregateException aex)
                 {
                     if (aex.InnerException is RestAPIException ex)
                     {
@@ -516,13 +517,13 @@ namespace AWX.Cmdlets
                 WriteVerboseResponse(result.Response);
                 return result;
             }
-            catch(RestAPIException ex)
+            catch (RestAPIException ex)
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
                 throw;
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 if (aex.InnerException is RestAPIException ex)
                 {

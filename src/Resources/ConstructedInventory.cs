@@ -113,7 +113,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<ConstructedInventory> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ConstructedInventory>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ConstructedInventory>(PATH, query, getAll))
             {
                 foreach (var inventory in result.Contents.Results)
                 {

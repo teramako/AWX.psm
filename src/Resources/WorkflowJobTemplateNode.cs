@@ -80,7 +80,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<WorkflowJobTemplateNode> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobTemplateNode>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJobTemplateNode>(PATH, query, getAll))
             {
                 foreach (var jobTemplateNode in result.Contents.Results)
                 {

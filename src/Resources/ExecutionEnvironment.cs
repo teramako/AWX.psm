@@ -71,7 +71,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<ExecutionEnvironment> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(PATH, query, getAll))
             {
                 foreach (var exeEnv in result.Contents.Results)
                 {
@@ -92,7 +92,7 @@ namespace AWX.Resources
                                                                                         bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/execution_environments/";
-            await foreach(var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ExecutionEnvironment>(path, query, getAll))
             {
                 foreach (var exeEnv in result.Contents.Results)
                 {

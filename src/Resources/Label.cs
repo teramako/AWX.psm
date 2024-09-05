@@ -46,7 +46,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Label> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Label>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Label>(PATH, query, getAll))
             {
                 foreach (var label in result.Contents.Results)
                 {

@@ -34,9 +34,9 @@ namespace AWX.Resources
                                                                            bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/job_host_summaries/";
-            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path , query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
             {
-                foreach(var jobHostSummary in result.Contents.Results)
+                foreach (var jobHostSummary in result.Contents.Results)
                 {
                     yield return jobHostSummary;
                 }
@@ -55,9 +55,9 @@ namespace AWX.Resources
                                                                           bool getAll = false)
         {
             var path = $"{Resources.Host.PATH}{hostId}/job_host_summaries/";
-            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path , query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
             {
-                foreach(var jobHostSummary in result.Contents.Results)
+                foreach (var jobHostSummary in result.Contents.Results)
                 {
                     yield return jobHostSummary;
                 }
@@ -76,9 +76,9 @@ namespace AWX.Resources
                                                                          bool getAll = false)
         {
             var path = $"{JobTemplateJob.PATH}{jobId}/job_host_summaries/";
-            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path , query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobHostSummary>(path, query, getAll))
             {
-                foreach(var jobHostSummary in result.Contents.Results)
+                foreach (var jobHostSummary in result.Contents.Results)
                 {
                     yield return jobHostSummary;
                 }

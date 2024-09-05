@@ -66,7 +66,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Credential> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(PATH, query, getAll))
             {
                 foreach (var credential in result.Contents.Results)
                 {
@@ -87,9 +87,9 @@ namespace AWX.Resources
                                                                               bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -108,9 +108,9 @@ namespace AWX.Resources
                                                                                     bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/galaxy_credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -129,9 +129,9 @@ namespace AWX.Resources
                                                                       bool getAll = false)
         {
             var path = $"{User.PATH}{userId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -150,9 +150,9 @@ namespace AWX.Resources
                                                                       bool getAll = false)
         {
             var path = $"{Team.PATH}{teamId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -171,9 +171,9 @@ namespace AWX.Resources
                                                                                 bool getAll = false)
         {
             var path = $"{Resources.CredentialType.PATH}{credentialTypeId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -192,9 +192,9 @@ namespace AWX.Resources
                                                                                  bool getAll = false)
         {
             var path = $"{InventorySource.PATH}{inventorySourceId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -213,9 +213,9 @@ namespace AWX.Resources
                                                                                     bool getAll = false)
         {
             var path = $"{InventoryUpdateJob.PATH}{inventoryUpdateJobId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -234,9 +234,9 @@ namespace AWX.Resources
                                                                              bool getAll = false)
         {
             var path = $"{JobTemplate.PATH}{jobTemplateId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -255,9 +255,9 @@ namespace AWX.Resources
                                                                                 bool getAll = false)
         {
             var path = $"{JobTemplateJob.PATH}{jobId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -276,9 +276,9 @@ namespace AWX.Resources
                                                                           bool getAll = false)
         {
             var path = $"{Schedule.PATH}{scheduleId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -297,9 +297,9 @@ namespace AWX.Resources
                                                                                          bool getAll = false)
         {
             var path = $"{WorkflowJobTemplateNode.PATH}{wjtnId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }
@@ -318,9 +318,9 @@ namespace AWX.Resources
                                                                                  bool getAll = false)
         {
             var path = $"{WorkflowJobNode.PATH}{wjnId}/credentials/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Credential>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }

@@ -141,7 +141,7 @@ namespace AWX.Cmdlets
                     WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
                     JobManager.Add(job);
                 }
-                catch (RestAPIException) {}
+                catch (RestAPIException) { }
             }
         }
         protected override void EndProcessing()
@@ -177,7 +177,7 @@ namespace AWX.Cmdlets
                     WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
                     WriteObject(job, false);
                 }
-                catch (RestAPIException) {}
+                catch (RestAPIException) { }
             }
         }
     }

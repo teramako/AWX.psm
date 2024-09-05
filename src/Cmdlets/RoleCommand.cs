@@ -61,7 +61,7 @@ namespace AWX.Cmdlets
             {
                 ResourceType.User => $"{User.PATH}{Id}/roles/",
                 ResourceType.Team => $"{Team.PATH}{Id}/roles/",
-               _ => Role.PATH
+                _ => Role.PATH
             };
             foreach (var resultSet in GetResultSet<Role>(path, Query, All))
             {

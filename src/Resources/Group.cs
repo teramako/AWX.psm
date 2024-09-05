@@ -56,7 +56,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Group> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(PATH, query, getAll))
             {
                 foreach (var group in result.Contents.Results)
                 {
@@ -77,9 +77,9 @@ namespace AWX.Resources
                                                                       bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -98,9 +98,9 @@ namespace AWX.Resources
                                                                               bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/root_groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -119,9 +119,9 @@ namespace AWX.Resources
                                                                             bool getAll = false)
         {
             var path = $"{InventorySource.PATH}{inventorySourceId}/groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -140,9 +140,9 @@ namespace AWX.Resources
                                                                     bool getAll = false)
         {
             var path = $"{Host.PATH}{hostId}/all_groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }
@@ -161,9 +161,9 @@ namespace AWX.Resources
                                                                  bool getAll = false)
         {
             var path = $"{Host.PATH}{hostId}/groups/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Group>(path, query, getAll))
             {
-                foreach(var group in result.Contents.Results)
+                foreach (var group in result.Contents.Results)
                 {
                     yield return group;
                 }

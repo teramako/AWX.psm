@@ -7,9 +7,9 @@ namespace AWX.Resources
     public enum JobTemplateAskOnLaunch
     {
         None = 0,
-        JobType    = 1 << 0,
-        Inventory  = 1 << 1,
-        ScmBranch  = 1 << 2,
+        JobType = 1 << 0,
+        Inventory = 1 << 1,
+        ScmBranch = 1 << 2,
         ExecutionEnvironment = 1 << 3,
         Credentials = 1 << 4,
         Labels = 1 << 5,
@@ -174,7 +174,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<JobTemplate> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<JobTemplate>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(PATH, query, getAll))
             {
                 foreach (var jobTemplate in result.Contents.Results)
                 {
@@ -197,7 +197,7 @@ namespace AWX.Resources
             var path = $"{Resources.Organization.PATH}{organizationId}/job_templates/";
             await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(path, query, getAll))
             {
-                foreach(var jobTemplate in result.Contents.Results)
+                foreach (var jobTemplate in result.Contents.Results)
                 {
                     yield return jobTemplate;
                 }
@@ -218,7 +218,7 @@ namespace AWX.Resources
             var path = $"{Resources.Inventory.PATH}{inventoryId}/job_templates/";
             await foreach (var result in RestAPI.GetResultSetAsync<JobTemplate>(path, query, getAll))
             {
-                foreach(var jobTemplate in result.Contents.Results)
+                foreach (var jobTemplate in result.Contents.Results)
                 {
                     yield return jobTemplate;
                 }
@@ -295,7 +295,7 @@ namespace AWX.Resources
         {
             get
             {
-                return (AskJobTypeOnLaunch ? JobTemplateAskOnLaunch.JobType: 0) |
+                return (AskJobTypeOnLaunch ? JobTemplateAskOnLaunch.JobType : 0) |
                        (AskInventoryOnLaunch ? JobTemplateAskOnLaunch.Inventory : 0) |
                        (AskScmBranchOnLaunch ? JobTemplateAskOnLaunch.ScmBranch : 0) |
                        (AskExecutionEnvironmentOnLaunch ? JobTemplateAskOnLaunch.ExecutionEnvironment : 0) |

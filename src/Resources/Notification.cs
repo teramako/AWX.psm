@@ -45,7 +45,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Notification> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Notification>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Notification>(PATH, query, getAll))
             {
                 foreach (var notification in result.Contents.Results)
                 {

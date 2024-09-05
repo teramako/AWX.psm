@@ -97,7 +97,7 @@ namespace AWX.Cmdlets
                 }
                 treatedIds.Add(Id);
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
         }
         protected override void EndProcessing()
         {

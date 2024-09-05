@@ -59,7 +59,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<ProjectUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(PATH, query, getAll))
             {
                 foreach (var projectUpdateJob in result.Contents.Results)
                 {
@@ -80,9 +80,9 @@ namespace AWX.Resources
                                                                                bool getAll = false)
         {
             var path = $"{Resources.Project.PATH}{projectId}/project_updates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ProjectUpdateJob>(path, query, getAll))
             {
-                foreach(var projectUpdateJob in result.Contents.Results)
+                foreach (var projectUpdateJob in result.Contents.Results)
                 {
                     yield return projectUpdateJob;
                 }

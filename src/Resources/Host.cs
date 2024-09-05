@@ -67,7 +67,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Host> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(PATH, query, getAll))
             {
                 foreach (var host in result.Contents.Results)
                 {
@@ -88,9 +88,9 @@ namespace AWX.Resources
                                                                      bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
@@ -109,9 +109,9 @@ namespace AWX.Resources
                                                                            bool getAll = false)
         {
             var path = $"{InventorySource.PATH}{inventorySourceId}/hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
@@ -130,9 +130,9 @@ namespace AWX.Resources
                                                                     bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/all_hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }
@@ -151,9 +151,9 @@ namespace AWX.Resources
                                                                  bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/hosts/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Host>(path, query, getAll))
             {
-                foreach(var host in result.Contents.Results)
+                foreach (var host in result.Contents.Results)
                 {
                     yield return host;
                 }

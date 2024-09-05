@@ -140,7 +140,7 @@ namespace AWX.Cmdlets
                 var apiResult = CreateResource<AdHocCommand>(GetPath(), SendData);
                 return apiResult.Contents;
             }
-            catch (RestAPIException) {}
+            catch (RestAPIException) { }
             return null;
         }
     }

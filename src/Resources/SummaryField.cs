@@ -20,8 +20,8 @@ namespace AWX.Resources
     [Flags]
     public enum Capability
     {
-        None  = 0,
-        Edit =  1 << 0,
+        None = 0,
+        Edit = 1 << 0,
         Delete = 1 << 1,
         Start = 1 << 2,
         Schedule = 1 << 3,
@@ -190,7 +190,8 @@ namespace AWX.Resources
     public record UnifiedJobTemplateSummary(ulong Id, string Name, string Description, ResourceType UnifiedJobType)
         : SummaryBase
     {
-        public ResourceType Type => UnifiedJobType switch {
+        public ResourceType Type => UnifiedJobType switch
+        {
             ResourceType.Job => ResourceType.JobTemplate,
             ResourceType.ProjectUpdate => ResourceType.Project,
             ResourceType.InventoryUpdate => ResourceType.InventorySource,

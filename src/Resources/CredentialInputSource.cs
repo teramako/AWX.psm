@@ -39,7 +39,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<CredentialInputSource> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<CredentialInputSource>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<CredentialInputSource>(PATH, query, getAll))
             {
                 foreach (var credential in result.Contents.Results)
                 {
@@ -60,9 +60,9 @@ namespace AWX.Resources
                                                                                        bool getAll = false)
         {
             var path = $"{Credential.PATH}{credentialId}/input_sources/";
-            await foreach(var result in RestAPI.GetResultSetAsync<CredentialInputSource>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<CredentialInputSource>(path, query, getAll))
             {
-                foreach(var credential in result.Contents.Results)
+                foreach (var credential in result.Contents.Results)
                 {
                     yield return credential;
                 }

@@ -65,7 +65,8 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            var path = Type switch {
+            var path = Type switch
+            {
                 ResourceType.User => $"{User.PATH}{Id}/" + (Admin ? "admin_of_organizations/" : "organizations/"),
                 _ => Organization.PATH
             };

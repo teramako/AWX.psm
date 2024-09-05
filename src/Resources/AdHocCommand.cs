@@ -59,7 +59,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<AdHocCommand> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(PATH, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -80,7 +80,7 @@ namespace AWX.Resources
                                                                              bool getAll = false)
         {
             var path = $"{Resources.Inventory.PATH}{inventoryId}/ad_hoc_commands/";
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -101,7 +101,7 @@ namespace AWX.Resources
                                                                          bool getAll = false)
         {
             var path = $"{Group.PATH}{groupId}/ad_hoc_commands/";
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {
@@ -122,7 +122,7 @@ namespace AWX.Resources
                                                                         bool getAll = false)
         {
             var path = $"{Host.PATH}{hostId}/ad_hoc_commands/";
-            await foreach(var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<AdHocCommand>(path, query, getAll))
             {
                 foreach (var job in result.Contents.Results)
                 {

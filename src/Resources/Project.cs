@@ -124,7 +124,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<Project> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Project>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Project>(PATH, query, getAll))
             {
                 foreach (var project in result.Contents.Results)
                 {

@@ -50,7 +50,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<ActivityStream> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<ActivityStream>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<ActivityStream>(PATH, query, getAll))
             {
                 foreach (var activity in result.Contents.Results)
                 {

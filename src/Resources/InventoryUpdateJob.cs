@@ -134,7 +134,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<InventoryUpdateJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(PATH, query, getAll))
             {
                 foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
@@ -155,9 +155,9 @@ namespace AWX.Resources
                                                                                        bool getAll = false)
         {
             var path = $"{ProjectUpdateJob.PATH}{projectUpdateId}/scm_inventory_updates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
             {
-                foreach(var inventoryUpdateJob in result.Contents.Results)
+                foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
                     yield return inventoryUpdateJob;
                 }
@@ -176,9 +176,9 @@ namespace AWX.Resources
                                                                                          bool getAll = false)
         {
             var path = $"{Resources.InventorySource.PATH}{inventorySourceId}/inventory_updates/";
-            await foreach(var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<InventoryUpdateJob>(path, query, getAll))
             {
-                foreach(var inventoryUpdateJob in result.Contents.Results)
+                foreach (var inventoryUpdateJob in result.Contents.Results)
                 {
                     yield return inventoryUpdateJob;
                 }
@@ -256,7 +256,7 @@ namespace AWX.Resources
         public bool OrgHostLimitError { get; } = orgHostLimitError;
         public ulong? SourceProjectUpdate { get; } = sourceProjectUpdate;
         public ulong? InstanceGroup { get; } = instanceGroup;
-        public string ScmRevision {  get; } = scmRevision;
+        public string ScmRevision { get; } = scmRevision;
     }
 
     public record CanUpdateInventorySource(ulong? InventorySource, bool CanUpdate);

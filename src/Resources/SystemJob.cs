@@ -52,7 +52,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static new async IAsyncEnumerable<SystemJob> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<SystemJob>(PATH, query, getAll))
             {
                 foreach (var systemJob in result.Contents.Results)
                 {

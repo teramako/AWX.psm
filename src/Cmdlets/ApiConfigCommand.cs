@@ -124,7 +124,8 @@ namespace AWX.Cmdlets
             else
             {
                 var path = SessionState.Path.GetResolvedPSPathFromPSPath(Path).First();
-                if (path == null) {
+                if (path == null)
+                {
                     return;
                 }
                 file = new FileInfo(path.Path);

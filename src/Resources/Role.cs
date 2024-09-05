@@ -32,7 +32,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Role> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Role>(PATH, query, getAll))
             {
                 foreach (var role in result.Contents.Results)
                 {

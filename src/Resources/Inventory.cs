@@ -81,7 +81,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<Inventory> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<Inventory>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Inventory>(PATH, query, getAll))
             {
                 foreach (var inventory in result.Contents.Results)
                 {
@@ -102,9 +102,9 @@ namespace AWX.Resources
                                                                              bool getAll = false)
         {
             var path = $"{Resources.Organization.PATH}{organizationId}/inventories/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Inventory>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Inventory>(path, query, getAll))
             {
-                foreach(var inventory in result.Contents.Results)
+                foreach (var inventory in result.Contents.Results)
                 {
                     yield return inventory;
                 }
@@ -123,9 +123,9 @@ namespace AWX.Resources
                                                                              bool getAll = false)
         {
             var path = $"{PATH}{inventoryId}/input_inventories/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Inventory>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Inventory>(path, query, getAll))
             {
-                foreach(var inventory in result.Contents.Results)
+                foreach (var inventory in result.Contents.Results)
                 {
                     yield return inventory;
                 }

@@ -66,7 +66,7 @@ namespace AWX.Resources
                                                                                     bool getAll = false)
         {
             var path = $"{User.PATH}/{userId}/admin_of_organizations/";
-            await foreach(var result in RestAPI.GetResultSetAsync<Organization>(path, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<Organization>(path, query, getAll))
             {
                 foreach (var org in result.Contents.Results)
                 {

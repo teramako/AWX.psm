@@ -94,7 +94,7 @@ namespace AWX.Resources
         /// <returns></returns>
         public static async IAsyncEnumerable<WorkflowJobNode> Find(NameValueCollection? query, bool getAll = false)
         {
-            await foreach(var result in RestAPI.GetResultSetAsync<WorkflowJobNode>(PATH, query, getAll))
+            await foreach (var result in RestAPI.GetResultSetAsync<WorkflowJobNode>(PATH, query, getAll))
             {
                 foreach (var jobNode in result.Contents.Results)
                 {

@@ -381,7 +381,7 @@ namespace AWX.Resources
         [ResourceSubPath("webhook_key", typeof(Dictionary<string, string>), Method = Method.POST, Description = "Create a Webhook Key for a Job Template")]
         JobTemplate,
 
-        [ResourcePath("jobs", typeof(ResultSet<JobTemplateJob>), Description = "List jobs" )]
+        [ResourcePath("jobs", typeof(ResultSet<JobTemplateJob>), Description = "List jobs")]
         [ResourceIdPath(Type = typeof(JobTemplateJob.Detail), Description = "Retrieve the detailed job.")]
         [ResourceIdPath(Method = Method.DELETE, Description = "Request delete to the job.")]
         [ResourceSubPath("activity_stream", typeof(ResultSet<ActivityStream>), Description = "List Activity Stream for a Job")]
