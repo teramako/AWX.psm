@@ -132,6 +132,11 @@ Accept wildcard characters: False
 ### -ExtraVars
 Specify extra variables.
 
+Specify in JSON or YAML format.
+You can also specify an object of type `IDictionary` as a parameter value.
+
+Example: `-ExtraVars @{ key1 = "string"; key2 = 10; key3 = Get-Date }`
+
 > [!NOTE]  
 > This parameter will be ignored if "Ask" flag is off, although the request will be sent.
 
