@@ -1,6 +1,7 @@
 using AWX.Resources;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Management.Automation;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -289,15 +290,35 @@ namespace AWX
                 // new ArrayConverter()
             }
         };
-        public static readonly JsonSerializerOptions SerializeOptions = new() {
+        public static readonly JsonSerializerOptions SerializeOptions = new()
+        {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
             Converters =
             {
+                new PSObjectConverter(),
                 new LocalDateTimeConverter(),
             }
         };
+        /// <summary>
+        /// Converter to deserialize PSObject while preventing circular references
+        /// </summary>
+        /// <remarks>
+        /// **Don't use for deserializing**
+        /// </remarks>
+        private class PSObjectConverter : JsonConverter<PSObject>
+        {
+            public override PSObject? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void Write(Utf8JsonWriter writer, PSObject value, JsonSerializerOptions options)
+            {
+                JsonSerializer.Serialize(writer, value.BaseObject, options);
+            }
+        }
         /// <summary>
         /// Deserialize JSON to <see cref="Dictionary{string, object?}"/> and serialize
         /// </summary>
@@ -355,11 +376,6 @@ namespace AWX
                         case JsonTokenType.False:
                             dict.Add(propertyName, reader.GetBoolean()); break;
                         case JsonTokenType.StartArray:
-                            /*
-                            Type arrayType = typeof(object?[]);
-                            var arrayConverter = (JsonConverter<object?[]>)options.GetConverter(arrayType);
-                            dict.Add(propertyName, arrayConverter.Read(ref reader, arrayType, options));
-                            */
                             dict.Add(propertyName, arrayConverter.Read(ref reader, typeof(IList), options));
                             break;
                         case JsonTokenType.StartObject:
