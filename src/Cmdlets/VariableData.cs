@@ -11,10 +11,10 @@ namespace AWX.Cmdlets
         [ValidateSet(nameof(ResourceType.Inventory),
                      nameof(ResourceType.Group),
                      nameof(ResourceType.Host))]
-        public ResourceType Type { get;set;}
+        public ResourceType Type { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, Position = 1)]
-        public ulong Id {get;set;}
+        public ulong Id { get; set; }
 
         protected override void ProcessRecord()
         {
