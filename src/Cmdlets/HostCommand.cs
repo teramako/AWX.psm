@@ -1,4 +1,5 @@
 using AWX.Resources;
+using System.Collections;
 using System.Management.Automation;
 
 namespace AWX.Cmdlets
@@ -75,6 +76,32 @@ namespace AWX.Cmdlets
             foreach (var resultSet in GetResultSet<Host>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Get, "HostFactsCache")]
+    [OutputType(typeof(Dictionary<string, object?>))]
+    public class GetHostFactsCacheCommand : GetCmdletBase
+    {
+        protected override void ProcessRecord()
+        {
+            if (Type != null && Type != ResourceType.Host)
+            {
+                return;
+            }
+            foreach (var id in Id)
+            {
+                if (!IdSet.Add(id))
+                {
+                    // skip already processed
+                    continue;
+                }
+                var facts = GetResource<Dictionary<string, object?>>($"{Host.PATH}{id}/ansible_facts/");
+                if (facts == null)
+                    return;
+
+                WriteObject(facts, false);
             }
         }
     }
