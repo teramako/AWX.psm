@@ -290,6 +290,9 @@ Retrieve (OAuth2) AccessTokens by the ID(s).
 ### [Get-User](Get-User.md)
 Retrieve Users by the ID(s).
 
+### [Get-VariableData](Get-VariableData.md)
+Retrieve Variable Data
+
 ### [Get-WorkflowApprovalRequest](Get-WorkflowApprovalRequest.md)
 Retrieve request jobs for WorkflowApproval by ID(s).
 
@@ -358,4 +361,3 @@ Switch to anothor config.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
-
