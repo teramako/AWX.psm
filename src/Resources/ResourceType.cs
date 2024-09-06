@@ -328,7 +328,7 @@ namespace AWX.Resources
         [ResourceSubPath("ad_hoc_commands", typeof(ResultSet<AdHocCommand>), Description = "List Ad Hoc Commands for a Host")]
         [ResourceSubPath("ad_hoc_commands", typeof(AdHocCommand), Method = Method.POST, Description = "Create an Ad Hoc Commmand for a Host")]
         [ResourceSubPath("all_groups", typeof(ResultSet<Group>), Description = "List All Groups for a Host")]
-        [ResourceSubPath("ansible_facts", Description = "Retrieve Ansible Facts for a Host")]
+        [ResourceSubPath("ansible_facts", typeof(Dictionary<string, object?>), Description = "Retrieve Ansible Facts for a Host")]
         [ResourceSubPath("groups", typeof(ResultSet<Group>), Description = "List Groups for a Host")]
         [ResourceSubPath("groups", typeof(Group), Method = Method.POST, Description = "Create a Group for a Host")]
         [ResourceSubPath("inventory_sources", typeof(ResultSet<InventorySource>), Description = "List Inventory Sources for a Host")]

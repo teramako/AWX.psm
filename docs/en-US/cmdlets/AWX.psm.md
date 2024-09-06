@@ -197,6 +197,9 @@ Retrieve Groups by the ID(s).
 ### [Get-Host](Get-Host.md)
 Retrieve Hosts by the ID(s).
 
+### [Get-HostFactsCache](Get-HostFactsCache.md)
+Retrieve Ansible Facts for a Host.
+
 ### [Get-HostMetric](Get-HostMetric.md)
 Retrieve HostMetrics by the ID(s).
 
