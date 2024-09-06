@@ -256,7 +256,7 @@ namespace AWX.Resources
         [ResourceSubPath("tree", Description = "Group Tree for an Inventory")]
         [ResourceSubPath("update_inventory_sources", Description = "")]
         [ResourceSubPath("update_inventory_sources", Method = Method.POST, Description = "Update Inventory Sources")]
-        [ResourceSubPath("variable_data", Description = "Retrieve Inventory Variable Data")]
+        [ResourceSubPath("variable_data", typeof(Dictionary<string, object?>), Description = "Retrieve Inventory Variable Data")]
         [ResourceSubPath("variable_data", Method = Method.PUT, Description = "Update Inventory Variable Data")]
         [ResourceSubPath("variable_data", Method = Method.PATCH, Description = "Update Inventory Variable Data")]
         Inventory,
@@ -313,7 +313,7 @@ namespace AWX.Resources
         [ResourceSubPath("job_events", typeof(ResultSet<JobEvent>), Description = "List Job Events for a Group")]
         [ResourceSubPath("job_host_summaries", typeof(ResultSet<JobHostSummary>), Description = "List Job Host Summaries for a Group")]
         [ResourceSubPath("potential_children", typeof(ResultSet<Group>), Description = "List Potential Child Groups for a Group")]
-        [ResourceSubPath("variable_data", Description = "Retrieve Group Variable Data")]
+        [ResourceSubPath("variable_data", typeof(Dictionary<string, object?>), Description = "Retrieve Group Variable Data")]
         [ResourceSubPath("variable_data", Method = Method.PUT, Description = "Update Group Variable Data")]
         [ResourceSubPath("variable_data", Method = Method.PATCH, Description = "Update Group Variable Data")]
         Group,
@@ -335,7 +335,7 @@ namespace AWX.Resources
         [ResourceSubPath("job_events", typeof(ResultSet<JobEvent>), Description = "List Job Events for a Host")]
         [ResourceSubPath("job_host_summaries", typeof(ResultSet<JobHostSummary>), Description = "List Job Host Summaries for a Host")]
         [ResourceSubPath("smart_inventories", typeof(ResultSet<Inventory>), Description = "List Smart Inventires for a Host")]
-        [ResourceSubPath("variable_data", Description = "Retrieve Group Variable Data")]
+        [ResourceSubPath("variable_data", typeof(Dictionary<string, object?>), Description = "Retrieve Group Variable Data")]
         [ResourceSubPath("variable_data", Method = Method.PUT, Description = "Update Group Variable Data")]
         [ResourceSubPath("variable_data", Method = Method.PATCH, Description = "Update Group Variable Data")]
         Host,
