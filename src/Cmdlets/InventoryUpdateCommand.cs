@@ -188,7 +188,7 @@ namespace AWX.Cmdlets
                         foreach (var job in UpdateInventory(Inventory))
                         {
                             WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
-                            JobManager.Add(job);
+                            JobProgressManager.Add(job);
                         }
 
                     }
@@ -211,7 +211,7 @@ namespace AWX.Cmdlets
                     {
                         var job = UpdateInventorySource(Id);
                         WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
-                        JobManager.Add(job);
+                        JobProgressManager.Add(job);
                     }
                     catch (RestAPIException) { }
                 }

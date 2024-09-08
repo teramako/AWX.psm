@@ -164,7 +164,7 @@ namespace AWX.Cmdlets
                 return;
             }
             WriteVerbose($"Invoke AdHocCommand:{job.Name} => Job:[{job.Id}]");
-            JobManager.Add(job);
+            JobProgressManager.Add(job);
         }
         protected override void EndProcessing()
         {

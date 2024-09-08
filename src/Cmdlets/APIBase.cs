@@ -11,7 +11,7 @@ namespace AWX.Cmdlets
 {
     public abstract class InvokeJobBase : APICmdletBase
     {
-        protected readonly JobProgressManager JobManager = [];
+        protected readonly JobProgressManager JobProgressManager = [];
         private Sleep? _sleep;
         protected void Sleep(int milliseconds)
         {
@@ -48,35 +48,35 @@ namespace AWX.Cmdlets
                                 int intervalSeconds,
                                 bool suppressJobLog)
         {
-            if (JobManager.Count == 0)
+            if (JobProgressManager.Count == 0)
             {
                 return;
             }
-            JobManager.Start(activityId, intervalSeconds);
+            JobProgressManager.Start(activityId, intervalSeconds);
             do
             {
                 UpdateAllProgressRecordType(ProgressRecordType.Processing);
                 for (var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
-                    JobManager.UpdateProgress(i);
-                    WriteProgress(JobManager.RootProgress);
+                    JobProgressManager.UpdateProgress(i);
+                    WriteProgress(JobProgressManager.RootProgress);
                 }
-                JobManager.UpdateJob();
+                JobProgressManager.UpdateJob();
                 // Remove Progressbar
                 UpdateAllProgressRecordType(ProgressRecordType.Completed);
 
                 ShowJobLog(suppressJobLog);
 
-                WriteObject(JobManager.CleanCompleted(), true);
-            } while (JobManager.Count > 0);
+                WriteObject(JobProgressManager.CleanCompleted(), true);
+            } while (JobProgressManager.Count > 0);
         }
 
         private void UpdateAllProgressRecordType(ProgressRecordType type)
         {
-            JobManager.RootProgress.RecordType = type;
-            WriteProgress(JobManager.RootProgress);
-            foreach (var jp in JobManager.GetAll())
+            JobProgressManager.RootProgress.RecordType = type;
+            WriteProgress(JobProgressManager.RootProgress);
+            foreach (var jp in JobProgressManager.GetAll())
             {
                 jp.Progress.RecordType = type;
                 WriteProgress(jp.Progress);
@@ -85,7 +85,7 @@ namespace AWX.Cmdlets
 
         protected void ShowJobLog(bool suppressJobLog)
         {
-            var jpList = JobManager.GetJobLog();
+            var jpList = JobProgressManager.GetJobLog();
             foreach (var jp in jpList)
             {
                 if (jp == null) continue;

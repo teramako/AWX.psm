@@ -525,7 +525,7 @@ namespace AWX.Cmdlets
                 var launchResult = Launch(Id);
                 if (launchResult != null)
                 {
-                    JobManager.Add(launchResult);
+                    JobProgressManager.Add(launchResult);
                 }
             }
             catch (RestAPIException) { }

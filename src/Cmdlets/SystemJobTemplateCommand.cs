@@ -109,7 +109,7 @@ namespace AWX.Cmdlets
             {
                 var job = Launch(Id);
                 WriteVerbose($"Launch SystemJobTemplate:{Id} => Job:[{job.Id}]");
-                JobManager.Add(job);
+                JobProgressManager.Add(job);
             }
             catch (RestAPIException) { }
         }

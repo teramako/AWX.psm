@@ -139,7 +139,7 @@ namespace AWX.Cmdlets
                 {
                     var job = UpdateProject(Id);
                     WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
-                    JobManager.Add(job);
+                    JobProgressManager.Add(job);
                 }
                 catch (RestAPIException) { }
             }
