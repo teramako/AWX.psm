@@ -84,10 +84,13 @@ namespace AWX.Cmdlets
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
+
         [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true, Position = 0)]
-        public JobTemplate? JobTemplate { get; set; }
+        [ResourceTransformation(AcceptableTypes = [ResourceType.JobTemplate])]
+        public IResource? JobTemplate { get; set; }
 
         [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
         public ulong? Inventory { get; set; }
 
         [Parameter()]
@@ -98,12 +101,14 @@ namespace AWX.Cmdlets
         public string? ScmBranch { get; set; }
 
         [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
         public ulong[]? Credentials { get; set; }
 
         [Parameter()]
         public string? Limit { get; set; }
 
         [Parameter()] // XXX: Should be string[] and created if not exists ?
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
         public ulong[]? Labels { get; set; }
 
         [Parameter()]
@@ -127,6 +132,7 @@ namespace AWX.Cmdlets
         public int? Forks { get; set; }
 
         [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
         public ulong? ExecutionEnvironment { get; set; }
 
         [Parameter()]
@@ -936,7 +942,7 @@ namespace AWX.Cmdlets
         }
         protected JobTemplateJob.LaunchResult? Launch(ulong id)
         {
-            var requirements = GetResource<JobTemplateLaunchRequirements>($"{JobTemplate.PATH}{id}/launch/");
+            var requirements = GetResource<JobTemplateLaunchRequirements>($"{Resources.JobTemplate.PATH}{id}/launch/");
             if (requirements == null)
             {
                 return null;
@@ -948,7 +954,7 @@ namespace AWX.Cmdlets
                 WriteWarning("Launch canceled.");
                 return null;
             }
-            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", sendData);
+            var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{Resources.JobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
             if (launchResult == null) return null;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
