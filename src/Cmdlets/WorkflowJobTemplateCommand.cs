@@ -70,19 +70,23 @@ namespace AWX.Cmdlets
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "JobTemplate", ValueFromPipeline = true, Position = 0)]
-        public WorkflowJobTemplate? WorkflowJobTemplate { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "WorkflowJobTemplate", ValueFromPipeline = true, Position = 0)]
+        [ResourceTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplate])]
+        public IResource? WorkflowJobTemplate { get; set; }
 
         [Parameter()]
         public string? Limit { get; set; }
 
         [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
         public ulong? Inventory { get; set; }
 
         [Parameter()]
         public string? ScmBranch { get; set; }
 
         [Parameter()] // XXX: Should be string[] and created if not exists ?
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
         public ulong[]? Labels { get; set; }
 
         [Parameter()]
@@ -133,7 +137,7 @@ namespace AWX.Cmdlets
         }
         protected void GetLaunchRequirements(ulong id)
         {
-            var res = base.GetResource<WorkflowJobTemplateLaunchRequirements>($"{WorkflowJobTemplate.PATH}{id}/launch/");
+            var res = base.GetResource<WorkflowJobTemplateLaunchRequirements>($"{Resources.WorkflowJobTemplate.PATH}{id}/launch/");
             if (res == null)
             {
                 return;
@@ -468,7 +472,7 @@ namespace AWX.Cmdlets
 
         protected WorkflowJob.LaunchResult? Launch(ulong id)
         {
-            var requirements = GetResource<WorkflowJobTemplateLaunchRequirements>($"{WorkflowJobTemplate.PATH}{id}/launch/");
+            var requirements = GetResource<WorkflowJobTemplateLaunchRequirements>($"{Resources.WorkflowJobTemplate.PATH}{id}/launch/");
             if (requirements == null)
             {
                 return null;
@@ -489,7 +493,7 @@ namespace AWX.Cmdlets
                 WriteWarning("Launch canceled.");
                 return null;
             }
-            var apiResult = CreateResource<WorkflowJob.LaunchResult>($"{WorkflowJobTemplate.PATH}{id}/launch/", sendData);
+            var apiResult = CreateResource<WorkflowJob.LaunchResult>($"{Resources.WorkflowJobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
             if (launchResult == null) return null;
             WriteVerbose($"Launch WorkflowJobTemplate:{id} => Job:[{launchResult.Id}]");

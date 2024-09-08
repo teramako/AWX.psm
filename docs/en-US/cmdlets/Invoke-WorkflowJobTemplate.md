@@ -19,11 +19,11 @@ Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <U
  [-ExtraVars <String>] [-Interactive] [<CommonParameters>]
 ```
 
-### JobTemplate
+### WorkflowJobTemplate
 ```
-Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog]
- [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>]
- [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-Interactive]
+Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-WorkflowJobTemplate] <IResource>
+ [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>]
+ [-SkipTags <String[]>] [-ExtraVars <String>] [-Interactive]
  [<CommonParameters>]
 ```
 
@@ -270,8 +270,8 @@ Accept wildcard characters: False
 WorkflowJobTempalte object to be launched.
 
 ```yaml
-Type: WorkflowJobTemplate
-Parameter Sets: JobTemplate
+Type: IResource
+Parameter Sets: WorkflowJobTemplate
 Aliases:
 
 Required: True

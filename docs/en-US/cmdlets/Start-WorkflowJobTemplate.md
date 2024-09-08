@@ -19,9 +19,9 @@ Start-WorkflowJobTemplate [-Id] <UInt64> [-Limit <String>] [-Inventory <UInt64>]
  [<CommonParameters>]
 ```
 
-### JobTemplate
+### WorkflowJobTemplate
 ```
-Start-WorkflowJobTemplate [-WorkflowJobTemplate] <WorkflowJobTemplate> [-Limit <String>] [-Inventory <UInt64>]
+Start-WorkflowJobTemplate [-WorkflowJobTemplate] <IResource> [-Limit <String>] [-Inventory <UInt64>]
  [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>]
  [-Interactive] [<CommonParameters>]
 ```
@@ -218,8 +218,8 @@ Accept wildcard characters: False
 WorkflowJobTempalte object to be launched.
 
 ```yaml
-Type: WorkflowJobTemplate
-Parameter Sets: JobTemplate
+Type: IResource
+Parameter Sets: WorkflowJobTemplate
 Aliases:
 
 Required: True
