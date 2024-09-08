@@ -14,7 +14,7 @@ namespace AWX.Resources
             return sb.ToString();
         }
     }
-    public abstract record ResourceSummary(ulong Id, ResourceType Type) : SummaryBase;
+    public abstract record ResourceSummary(ulong Id, ResourceType Type) : SummaryBase, IResource;
 
     [JsonConverter(typeof(Json.CapabilityConverter))]
     [Flags]

@@ -1,6 +1,6 @@
 namespace AWX.Resources
 {
-    public interface IResource<TSummary>
+    public interface IResource
     {
         /// <summary>
         /// Database ID for the resource
@@ -10,6 +10,12 @@ namespace AWX.Resources
         /// Data type for the resource
         /// </summary>
         ResourceType Type { get; }
+    }
+
+    record struct Resource(ResourceType Type, ulong Id) : IResource;
+
+    public interface IResource<TSummary> : IResource
+    {
         string Url { get; }
         /// <summary>
         /// Data structure with URLs of related resources.
