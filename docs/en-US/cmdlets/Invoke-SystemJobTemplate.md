@@ -20,7 +20,7 @@ Invoke-SystemJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UIn
 
 ### Template
 ```
-Invoke-SystemJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-SystemJobTemplate] <SystemJobTemplate>
+Invoke-SystemJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-SystemJobTemplate] <IResource>
  [-ExtraVars <IDictionary>] [<CommonParameters>]
 ```
 
@@ -145,7 +145,7 @@ Accept wildcard characters: False
 SystemJobTempalte object to be launched.
 
 ```yaml
-Type: SystemJobTemplate
+Type: IResource
 Parameter Sets: Template
 Aliases:
 

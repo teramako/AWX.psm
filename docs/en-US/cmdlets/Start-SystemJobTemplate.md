@@ -20,7 +20,7 @@ Start-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>]
 
 ### Template
 ```
-Start-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <IDictionary>]
+Start-SystemJobTemplate [-SystemJobTemplate] <IResource> [-ExtraVars <IDictionary>]
  [<CommonParameters>]
 ```
 
@@ -87,10 +87,10 @@ Accept wildcard characters: False
 ```
 
 ### -SystemJobTemplate
-SystemJobTempalte object to be launched.
+{{ Fill SystemJobTemplate Description }}
 
 ```yaml
-Type: SystemJobTemplate
+Type: IResource
 Parameter Sets: Template
 Aliases:
 
