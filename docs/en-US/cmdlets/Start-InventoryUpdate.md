@@ -22,27 +22,14 @@ Start-InventoryUpdate [-Id] <UInt64> [<CommonParameters>]
 Start-InventoryUpdate [-Id] <UInt64> [-Check] [<CommonParameters>]
 ```
 
-### InventorySource
+### Resource
 ```
-Start-InventoryUpdate [-InventorySource] <InventorySource>
- [<CommonParameters>]
-```
-
-### CheckInventorySource
-```
-Start-InventoryUpdate [-InventorySource] <InventorySource> [-Check]
- [<CommonParameters>]
+Start-InventoryUpdate [-Source] <IResource> [<CommonParameters>]
 ```
 
-### Inventory
+### CheckResource
 ```
-Start-InventoryUpdate [-Inventory] <Inventory> [<CommonParameters>]
-```
-
-### CheckInventory
-```
-Start-InventoryUpdate [-Inventory] <Inventory> [-Check]
- [<CommonParameters>]
+Start-InventoryUpdate [-Source] <IResource> [-Check] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -77,7 +64,7 @@ Check wheter InventorySource(s) can be updated.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: CheckId, CheckInventorySource, CheckInventory
+Parameter Sets: CheckId, CheckResource
 Aliases:
 
 Required: True
@@ -102,27 +89,14 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Inventory
-Inventory object containing the InventorySource to be updated.
+### -Source
+A `Inventory` or `InventorySource` object.
+
+If the value is `Inventory`, all of InventorySources in the Inventory will be updated or checked.
 
 ```yaml
-Type: Inventory
-Parameter Sets: Inventory, CheckInventory
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -InventorySource
-InventorySource object to be updated.
-
-```yaml
-Type: InventorySource
-Parameter Sets: InventorySource, CheckInventorySource
+Type: IResource
+Parameter Sets: Resource, CheckResource
 Aliases:
 
 Required: True

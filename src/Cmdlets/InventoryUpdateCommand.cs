@@ -67,18 +67,31 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "InventorySource", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "CheckInventorySource", ValueFromPipeline = true, Position = 0)]
-        public InventorySource? InventorySource { get; set; }
-        [Parameter(Mandatory = true, ParameterSetName = "Inventory", ValueFromPipeline = true, Position = 0)]
-        [Parameter(Mandatory = true, ParameterSetName = "CheckInventory", ValueFromPipeline = true, Position = 0)]
-        public Inventory? Inventory { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "Resource", ValueFromPipeline = true, Position = 0)]
+        [Parameter(Mandatory = true, ParameterSetName = "CheckResource", ValueFromPipeline = true, Position = 0)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Inventory,
+                ResourceType.InventorySource
+        ])]
+        public IResource? Source { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "CheckId")]
-        [Parameter(Mandatory = true, ParameterSetName = "CheckInventorySource")]
-        [Parameter(Mandatory = true, ParameterSetName = "CheckInventory")]
+        [Parameter(Mandatory = true, ParameterSetName = "CheckResource")]
         public SwitchParameter Check { get; set; }
 
+        protected void CheckCanUpdate(IResource source)
+        {
+            switch (source.Type)
+            {
+                case ResourceType.Inventory:
+                    CheckCanUpdateInventory(source.Id);
+                    break;
+                case ResourceType.InventorySource:
+                    CheckCanUpdateInventorySource(source.Id);
+                    break;
+            }
+        }
         protected void CheckCanUpdateInventorySource(ulong id)
         {
             var res = GetResource<CanUpdateInventorySource>($"{InventorySource.PATH}{id}/update/");
@@ -92,9 +105,9 @@ namespace AWX.Cmdlets
             psobject.Members.Add(new PSNoteProperty("CanUpdate", res.CanUpdate));
             WriteObject(psobject, false);
         }
-        protected void CheckCanUpdateInventory(Inventory inventory)
+        protected void CheckCanUpdateInventory(ulong id)
         {
-            var results = GetResource<CanUpdateInventorySource[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
+            var results = GetResource<CanUpdateInventorySource[]>($"{Inventory.PATH}{id}/update_inventory_sources/");
             if (results == null)
             {
                 return;
@@ -113,100 +126,54 @@ namespace AWX.Cmdlets
             var apiResult = CreateResource<InventoryUpdateJob.Detail>($"{InventorySource.PATH}{id}/update/");
             return apiResult.Contents ?? throw new NullReferenceException();
         }
-        protected InventoryUpdateJob.Detail[] UpdateInventory(Inventory inventory)
+        protected InventoryUpdateJob.Detail[] UpdateInventory(ulong id)
         {
-            var apiResult = CreateResource<InventoryUpdateJob.Detail[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
+            var apiResult = CreateResource<InventoryUpdateJob.Detail[]>($"{Inventory.PATH}{id}/update_inventory_sources/");
             return apiResult.Contents ?? throw new NullReferenceException();
-        }
-        protected override void ProcessRecord()
-        {
-            if (Inventory != null)
-            {
-                if (Check)
-                {
-                    CheckCanUpdateInventory(Inventory);
-                }
-                else
-                {
-                    try
-                    {
-                        UpdateInventory(Inventory);
-                    }
-                    catch (RestAPIException) { }
-                }
-            }
-            else
-            {
-                if (InventorySource != null)
-                {
-                    Id = InventorySource.Id;
-                }
-                if (Check)
-                {
-                    CheckCanUpdateInventorySource(Id);
-                }
-                else
-                {
-                    try
-                    {
-                        UpdateInventorySource(Id);
-                    }
-                    catch (RestAPIException) { }
-                }
-            }
         }
     }
 
     [Cmdlet(VerbsLifecycle.Invoke, "InventoryUpdate")]
-    [OutputType(typeof(InventoryUpdateJob), ParameterSetName = ["Id", "InventorySource", "Inventory"])]
-    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckInventorySource", "CheckInventory"])]
+    [OutputType(typeof(InventoryUpdateJob), ParameterSetName = ["Id", "Resource"])]
+    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckResource"])]
     public class InvokeInventoryUpdateCommand : LaunchInventoryUpdateCommandBase
     {
         [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "InventorySource")]
-        [Parameter(ParameterSetName = "Inventory")]
+        [Parameter(ParameterSetName = "Resource")]
         [ValidateRange(5, int.MaxValue)]
         public int IntervalSeconds { get; set; } = 5;
 
         [Parameter(ParameterSetName = "Id")]
-        [Parameter(ParameterSetName = "InventorySource")]
-        [Parameter(ParameterSetName = "Inventory")]
+        [Parameter(ParameterSetName = "Resource")]
         public SwitchParameter SuppressJobLog { get; set; }
 
         protected override void ProcessRecord()
         {
-            if (Inventory != null)
+            if (Source == null)
             {
-                if (Check)
-                {
-                    CheckCanUpdateInventory(Inventory);
-                }
-                else
-                {
+                Source = new Resource(ResourceType.InventorySource, Id);
+            }
+
+            if (Check)
+            {
+                CheckCanUpdate(Source);
+                return;
+            }
+
+            switch (Source.Type)
+            {
+                case ResourceType.Inventory:
                     try
                     {
-                        foreach (var job in UpdateInventory(Inventory))
+                        foreach (var job in UpdateInventory(Source.Id))
                         {
                             WriteVerbose($"Update InventorySource:{job.InventorySource} => Job:[{job.Id}]");
                             JobProgressManager.Add(job);
                         }
-
                     }
                     catch (RestAPIException) { }
-                }
-            }
-            else
-            {
-                if (InventorySource != null)
-                {
-                    Id = InventorySource.Id;
-                }
-                if (Check)
-                {
-                    CheckCanUpdateInventorySource(Id);
-                }
-                else
-                {
+                    break;
+                case ResourceType.InventorySource:
                     try
                     {
                         var job = UpdateInventorySource(Id);
@@ -214,7 +181,7 @@ namespace AWX.Cmdlets
                         JobProgressManager.Add(job);
                     }
                     catch (RestAPIException) { }
-                }
+                    break;
             }
         }
         protected override void EndProcessing()
@@ -228,47 +195,41 @@ namespace AWX.Cmdlets
     }
 
     [Cmdlet(VerbsLifecycle.Start, "InventoryUpdate")]
-    [OutputType(typeof(InventoryUpdateJob.Detail), ParameterSetName = ["AsyncId", "AsyncInventorySource", "AsyncInventory"])]
-    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckInventorySource", "CheckInventory"])]
+    [OutputType(typeof(InventoryUpdateJob.Detail), ParameterSetName = ["Id", "Resource"])]
+    [OutputType(typeof(PSObject), ParameterSetName = ["CheckId", "CheckResource"])]
     public class StartInventoryUpdateCommand : LaunchInventoryUpdateCommandBase
     {
         protected override void ProcessRecord()
         {
-            if (Inventory != null)
+            if (Source == null)
             {
-                if (Check)
-                {
-                    CheckCanUpdateInventory(Inventory);
-                }
-                else
-                {
+                Source = new Resource(ResourceType.InventorySource, Id);
+            }
+
+            if (Check)
+            {
+                CheckCanUpdate(Source);
+                return;
+            }
+
+            switch (Source.Type)
+            {
+                case ResourceType.Inventory:
                     try
                     {
-                        var jobs = UpdateInventory(Inventory);
+                        var jobs = UpdateInventory(Source.Id);
                         WriteObject(jobs, true);
                     }
                     catch (RestAPIException) { }
-                }
-            }
-            else
-            {
-                if (InventorySource != null)
-                {
-                    Id = InventorySource.Id;
-                }
-                if (Check)
-                {
-                    CheckCanUpdateInventorySource(Id);
-                }
-                else
-                {
+                    break;
+                case ResourceType.InventorySource:
                     try
                     {
-                        var job = UpdateInventorySource(Id);
+                        var job = UpdateInventorySource(Source.Id);
                         WriteObject(job, false);
                     }
                     catch (RestAPIException) { }
-                }
+                    break;
             }
         }
     }
