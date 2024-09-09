@@ -81,9 +81,11 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
+
         [Parameter(Mandatory = true, ParameterSetName = "Project", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckProject", ValueFromPipeline = true, Position = 0)]
-        public Project? Project { get; set; }
+        [ResourceTransformation(AcceptableTypes = [ResourceType.Project])]
+        public IResource? Project { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "CheckId")]
         [Parameter(Mandatory = true, ParameterSetName = "CheckProject")]
@@ -91,7 +93,7 @@ namespace AWX.Cmdlets
 
         protected void CheckCanUpdate(ulong projectId)
         {
-            var res = GetResource<CanUpdateProject>($"{Project.PATH}{projectId}/update/");
+            var res = GetResource<CanUpdateProject>($"{Resources.Project.PATH}{projectId}/update/");
             if (res == null)
             {
                 return;
@@ -104,7 +106,7 @@ namespace AWX.Cmdlets
         }
         protected ProjectUpdateJob.Detail UpdateProject(ulong projectId)
         {
-            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
+            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Resources.Project.PATH}{projectId}/update/");
             return apiResult.Contents ?? throw new NullReferenceException();
         }
     }

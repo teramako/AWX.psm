@@ -20,7 +20,7 @@ Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64>
 
 ### Project
 ```
-Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Project] <Project>
+Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Project] <IResource>
  [<CommonParameters>]
 ```
 
@@ -31,7 +31,7 @@ Invoke-ProjectUpdate [-Id] <UInt64> [-Check] [<CommonParameters>]
 
 ### CheckProject
 ```
-Invoke-ProjectUpdate [-Project] <Project> [-Check] [<CommonParameters>]
+Invoke-ProjectUpdate [-Project] <IResource> [-Check] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -125,7 +125,7 @@ Accept wildcard characters: False
 Project object to be updated.
 
 ```yaml
-Type: Project
+Type: IResource
 Parameter Sets: Project, CheckProject
 Aliases:
 
