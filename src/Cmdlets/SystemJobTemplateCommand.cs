@@ -94,9 +94,11 @@ namespace AWX.Cmdlets
     [OutputType(typeof(SystemJob))]
     public class InvokeSystemJobTemplateCommand : LaunchSystemJobTemplateCommandBase
     {
+        [Parameter()]
         [ValidateRange(5, int.MaxValue)]
         public int IntervalSeconds { get; set; } = 5;
 
+        [Parameter()]
         public SwitchParameter SuppressJobLog { get; set; }
 
         protected override void ProcessRecord()

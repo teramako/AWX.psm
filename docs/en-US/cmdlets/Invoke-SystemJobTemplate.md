@@ -14,14 +14,14 @@ Invoke (launch) a SystemJobTemplate and wait unti the job is finished.
 
 ### Id
 ```
-Invoke-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>]
+Invoke-SystemJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [-ExtraVars <IDictionary>]
  [<CommonParameters>]
 ```
 
 ### Template
 ```
-Invoke-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <IDictionary>]
- [<CommonParameters>]
+Invoke-SystemJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-SystemJobTemplate] <SystemJobTemplate>
+ [-ExtraVars <IDictionary>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -98,6 +98,46 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -IntervalSeconds
+Interval to confirm job completion (seconds).
+Default is 5 seconds.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 5
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SuppressJobLog
+Suppress display job log.
+
+> [!TIP]  
+> If you need the job log, use `-InformationVariable` parameter likes following:  
+>  
+>     PS C:\> Invoke-SystemJobTemplate ... -SuppressJobLog -InformationVariable joblog  
+>     (snip)  
+>     PS C:\> $joblog  
+>     ==> [463] SystemJob
+>     (snip)  
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
