@@ -80,4 +80,36 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Label", SupportsShouldProcess = true)]
+    [OutputType(typeof(Label))]
+    public class NewLabelCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter(Mandatory = true)]
+        [ValidateRange(1, ulong.MaxValue)]
+        public ulong Organization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "organization", Organization },
+            };
+
+            var newDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {newDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Label>(Label.PATH, sendData);
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

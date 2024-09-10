@@ -338,6 +338,9 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Label](New-Label.md)
+Create a Label.
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 
