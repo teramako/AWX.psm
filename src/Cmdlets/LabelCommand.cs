@@ -195,4 +195,56 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Remove, "Label", SupportsShouldProcess = true)]
+    public class RemoveLabelCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Inventory,
+                ResourceType.JobTemplate,
+                ResourceType.Schedule,
+                ResourceType.WorkflowJobTemplate,
+                ResourceType.WorkflowJobTemplateNode
+        ])]
+        public IResource? From { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
+        public ulong Id { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (From == null) return;
+
+            var path = From.Type switch
+            {
+                ResourceType.Inventory => $"{Inventory.PATH}{From.Id}/labels/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{From.Id}/labels/",
+                ResourceType.Schedule => $"{Schedule.PATH}{From.Id}/labels/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{From.Id}/labels/",
+                ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{From.Id}/labels/",
+                _ => throw new ArgumentException($"Invalid resource type: {From.Type}")
+            };
+
+            if (ShouldProcess($"Label {Id}", $"Remove from {From.Type} [{From.Id}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  Id },
+                    { "disassociate", true }
+                };
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Label {Id} is removed from {From.Type} [{From.Id}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+
+        }
+    }
 }

@@ -344,6 +344,9 @@ Create config file that should be used by this module.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [Remove-Label](Remove-Label.md)
+Remove a Label.
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 
