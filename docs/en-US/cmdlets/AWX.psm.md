@@ -371,5 +371,8 @@ Stop (cancel) a running job.
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
 
+### [Update-Label](Update-Label.md)
+Update a Label.
+
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.

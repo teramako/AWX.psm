@@ -247,4 +247,45 @@ namespace AWX.Cmdlets
 
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Label", SupportsShouldProcess = true)]
+    [OutputType(typeof(Label))]
+    public class UpdateLabelCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Organization > 0)
+                sendData.Add("organization", Organization);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var updateDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            var path = $"{Label.PATH}{Id}/";
+
+            if (ShouldProcess($"Label {Id}", $"Update [{updateDescription}]"))
+            {
+                try
+                {
+                    var after = PatchResource<Label>(path, sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
