@@ -11,6 +11,9 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
+### [Add-Label](Add-Label.md)
+Add a Label.
+
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 
