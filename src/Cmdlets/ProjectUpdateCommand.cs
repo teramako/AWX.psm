@@ -105,7 +105,7 @@ namespace AWX.Cmdlets
         protected ProjectUpdateJob.Detail UpdateProject(ulong projectId)
         {
             var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
-            return apiResult.Contents;
+            return apiResult.Contents ?? throw new NullReferenceException();
         }
     }
 

@@ -52,49 +52,62 @@ namespace AWX.Cmdlets
                 pathAndQuery = Path;
             }
         }
+        private IRestAPIResult<string> InvokeAPI(string pathAndQuery)
+        {
+            switch (Method)
+            {
+                case Method.GET:
+                    {
+                        var task = RestAPI.GetAsync<string>(pathAndQuery);
+                        task.Wait();
+                        return task.Result;
+                    }
+                case Method.POST:
+                    {
+                        var task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
+                        task.Wait();
+                        return task.Result;
+                    }
+                case Method.PUT:
+                    if (SenData != null)
+                    {
+                        var task = RestAPI.PutJsonAsync<string>(pathAndQuery, SenData);
+                        task.Wait();
+                        return task.Result;
+                    }
+                    throw new ArgumentNullException(nameof(SenData));
+                case Method.PATCH:
+                    if (SenData != null)
+                    {
+                        var task = RestAPI.PatchJsonAsync<string>(pathAndQuery, SenData);
+                        task.Wait();
+                        return task.Result;
+                    }
+                    throw new ArgumentNullException(nameof(SenData));
+                case Method.DELETE:
+                    {
+                        var task = RestAPI.DeleteAsync(pathAndQuery);
+                        task.Wait();
+                        return task.Result;
+                    }
+                case Method.OPTIONS:
+                    {
+                        var task = RestAPI.OptionsJsonAsync<string>(pathAndQuery);
+                        task.Wait();
+                        return task.Result;
+                    }
+                default:
+                    throw new NotSupportedException();
+            }
+        }
         protected override void ProcessRecord()
         {
             if (string.IsNullOrEmpty(pathAndQuery)) { return; }
             WriteVerboseRequest(pathAndQuery, Method);
 
-            Task<RestAPIResult<string>>? task;
-
-            switch (Method)
-            {
-                case Method.GET:
-                    task = RestAPI.GetAsync<string>(pathAndQuery);
-                    break;
-                case Method.POST:
-                    task = RestAPI.PostJsonAsync<string>(pathAndQuery, SenData);
-                    break;
-                case Method.PUT:
-                    if (SenData == null)
-                    {
-                        throw new ArgumentNullException(nameof(SenData));
-                    }
-                    task = RestAPI.PutJsonAsync<string>(pathAndQuery, SenData);
-                    break;
-                case Method.PATCH:
-                    if (SenData == null)
-                    {
-                        throw new ArgumentNullException(nameof(SenData));
-                    }
-                    task = RestAPI.PatchJsonAsync<string>(pathAndQuery, SenData);
-                    break;
-                case Method.DELETE:
-                    task = RestAPI.DeleteAsync(pathAndQuery);
-                    break;
-                case Method.OPTIONS:
-                    task = RestAPI.OptionsJsonAsync<string>(pathAndQuery);
-                    break;
-                default:
-                    throw new NotSupportedException();
-
-            }
-            task.Wait();
-            var result = task.Result;
+            var result = InvokeAPI(pathAndQuery);
             WriteVerboseResponse(result.Response);
-            if (!AsRawString && result.Response.ContentType == "application/json")
+            if (!AsRawString && result.Response.ContentType == "application/json" && result.Contents != null)
             {
                 if (APIPath.TryGetTypeFromPath(pathAndQuery, Method, out var type))
                 {

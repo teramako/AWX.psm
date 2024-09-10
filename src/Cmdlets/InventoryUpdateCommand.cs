@@ -111,12 +111,12 @@ namespace AWX.Cmdlets
         protected InventoryUpdateJob.Detail UpdateInventorySource(ulong id)
         {
             var apiResult = CreateResource<InventoryUpdateJob.Detail>($"{InventorySource.PATH}{id}/update/");
-            return apiResult.Contents;
+            return apiResult.Contents ?? throw new NullReferenceException();
         }
         protected InventoryUpdateJob.Detail[] UpdateInventory(Inventory inventory)
         {
             var apiResult = CreateResource<InventoryUpdateJob.Detail[]>($"{Inventory.PATH}{inventory.Id}/update_inventory_sources/");
-            return apiResult.Contents;
+            return apiResult.Contents ?? throw new NullReferenceException();
         }
         protected override void ProcessRecord()
         {

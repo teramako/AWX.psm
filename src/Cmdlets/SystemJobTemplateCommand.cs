@@ -86,7 +86,7 @@ namespace AWX.Cmdlets
         protected SystemJob.Detail Launch(ulong id)
         {
             var apiResult = CreateResource<SystemJob.Detail>($"{SystemJobTemplate.PATH}{id}/launch/", CreateSendData());
-            return apiResult.Contents;
+            return apiResult.Contents ?? throw new NullReferenceException();
         }
     }
 

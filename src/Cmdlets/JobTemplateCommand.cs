@@ -950,6 +950,7 @@ namespace AWX.Cmdlets
             }
             var apiResult = CreateResource<JobTemplateJob.LaunchResult>($"{JobTemplate.PATH}{id}/launch/", sendData);
             var launchResult = apiResult.Contents;
+            if (launchResult == null) return null;
             WriteVerbose($"Launch JobTemplate:{id} => Job:[{launchResult.Id}]");
             if (launchResult.IgnoredFields.Count > 0)
             {

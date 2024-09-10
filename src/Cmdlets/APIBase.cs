@@ -505,7 +505,7 @@ namespace AWX.Cmdlets
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
         /// <exception cref="RestAPIException"/>
-        protected virtual RestAPIResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
+        protected virtual RestAPIPostResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.POST);
@@ -513,7 +513,7 @@ namespace AWX.Cmdlets
             {
                 using var apiTask = RestAPI.PostJsonAsync<TValue>(pathAndQuery, sendData);
                 apiTask.Wait();
-                RestAPIResult<TValue> result = apiTask.Result;
+                RestAPIPostResult<TValue> result = apiTask.Result;
                 WriteVerboseResponse(result.Response);
                 return result;
             }
