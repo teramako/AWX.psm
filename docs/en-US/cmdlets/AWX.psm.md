@@ -344,6 +344,9 @@ Create config file that should be used by this module.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [New-Team](New-Team.md)
+Create a Team.
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
