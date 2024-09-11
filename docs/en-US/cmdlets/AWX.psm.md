@@ -380,5 +380,8 @@ Switch to anothor config.
 ### [Update-Label](Update-Label.md)
 Update a Label.
 
+### [Update-Team](Update-Team.md)
+Update a Team.
+
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.

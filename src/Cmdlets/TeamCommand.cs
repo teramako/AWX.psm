@@ -136,4 +136,48 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Team", SupportsShouldProcess = true)]
+    [OutputType(typeof(Team))]
+    public class UpdateTeamCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Team])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (Organization > 0)
+                sendData.Add("organization", Organization);
+
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Team [{Id}]", $"Update [{dataDescription}]"))
+            {
+                try
+                {
+                    var after = PatchResource<Team>($"{Team.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
