@@ -260,4 +260,76 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "User", SupportsShouldProcess = true)]
+    [OutputType(typeof(User))]
+    public class UpdateUserCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.User])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string UserName { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? FirstName { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? LastName { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Email { get; set; }
+
+        [Parameter()]
+        public bool? IsSuperUser { get; set; } = null;
+
+        [Parameter()]
+        public bool? IsSystemAuditor { get; set; } = null;
+
+        [Parameter()]
+        public SecureString? Password { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(UserName))
+                sendData.Add("username", UserName);
+            if (FirstName != null)
+                sendData.Add("first_name", FirstName);
+            if (LastName != null)
+                sendData.Add("last_name", LastName);
+            if (Email != null)
+                sendData.Add("email", Email);
+            if (IsSuperUser != null)
+                sendData.Add("is_superuser", IsSuperUser);
+            if (IsSystemAuditor != null)
+                sendData.Add("is_system_auditor", IsSystemAuditor);
+            if (Password != null)
+            {
+                var passwordString = Marshal.PtrToStringUni(Marshal.SecureStringToGlobalAllocUnicode(Password));
+                Password.Dispose();
+                if (!string.IsNullOrEmpty(passwordString))
+                    sendData.Add("password", passwordString);
+            }
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv =>
+                        kv.Key == "password" ? "password => ***" : $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"User [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedUser = PatchResource<User>($"{User.PATH}{Id}/", sendData);
+                    WriteObject(updatedUser, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

@@ -386,5 +386,8 @@ Update a Label.
 ### [Update-Team](Update-Team.md)
 Update a Team.
 
+### [Update-User](Update-User.md)
+Update a User.
+
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
