@@ -344,8 +344,14 @@ Create config file that should be used by this module.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [New-Team](New-Team.md)
+Create a Team.
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
+
+### [Remove-Team](Remove-Team.md)
+Remove a Team
 
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
@@ -373,6 +379,9 @@ Switch to anothor config.
 
 ### [Update-Label](Update-Label.md)
 Update a Label.
+
+### [Update-Team](Update-Team.md)
+Update a Team.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
