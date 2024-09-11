@@ -112,4 +112,28 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Remove, "Team", SupportsShouldProcess = true)]
+    public class RemoveTeamCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Team])]
+        public ulong Id { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (ShouldProcess($"Team [{Id}]"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Team.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Team {Id} is removed.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

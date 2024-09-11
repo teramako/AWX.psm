@@ -350,6 +350,9 @@ Create a Team.
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
+### [Remove-Team](Remove-Team.md)
+Remove a Team
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 
