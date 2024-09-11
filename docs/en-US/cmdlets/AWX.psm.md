@@ -11,6 +11,9 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
+### [Add-Label](Add-Label.md)
+Add a Label.
+
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 
@@ -338,6 +341,12 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Label](New-Label.md)
+Create a Label.
+
+### [Remove-Label](Remove-Label.md)
+Remove a Label.
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 
@@ -361,6 +370,9 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Update-Label](Update-Label.md)
+Update a Label.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
