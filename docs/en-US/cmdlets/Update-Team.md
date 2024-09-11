@@ -143,3 +143,11 @@ Updated Team object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Team](Get-Team.md)
+
+[Find-Team](Find-Team.md)
+
+[New-Team](New-Team.md)
+
+[Remove-Team](Remove-Team.md)
