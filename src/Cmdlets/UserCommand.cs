@@ -1,5 +1,7 @@
 using AWX.Resources;
 using System.Management.Automation;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace AWX.Cmdlets
 {
@@ -145,6 +147,116 @@ namespace AWX.Cmdlets
             foreach (var resultSet in GetResultSet<User>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.New, "User", SupportsShouldProcess = true, DefaultParameterSetName = "Credential")]
+    [OutputType(typeof(User))]
+    public class NewUserCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ParameterSetName = "Credential", Position = 0)]
+        [Credential]
+        public PSCredential? Credential { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "SecureString", Position = 0)]
+        public string UserName { get; set; } = string.Empty;
+
+        [Parameter(ParameterSetName = "SecureString")]
+        public SecureString? Password { get; set; }
+
+        [Parameter()]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string LastName { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Email { get; set; } = string.Empty;
+
+        [Parameter()]
+        public SwitchParameter IsSuperUser { get; set; }
+
+        [Parameter()]
+        public SwitchParameter IsSystemAuditor { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            string? user = null;
+            string? passwordString = null;
+            if (Credential != null)
+            {
+                user = Credential.UserName;
+                passwordString = Marshal.PtrToStringUni(Marshal.SecureStringToGlobalAllocUnicode(Credential.Password));
+                Credential.Password.Dispose();
+            }
+            else 
+            {
+                user = UserName;
+                if (Password != null)
+                {
+                    passwordString = Marshal.PtrToStringUni(Marshal.SecureStringToGlobalAllocUnicode(Password));
+                    Password.Dispose();
+                }
+                else
+                {
+                    if (CommandRuntime.Host == null)
+                        throw new NullReferenceException();
+
+                    var prompt = new AskPrompt(CommandRuntime.Host);
+                    if (!prompt.AskPassword($"Password for {user}", "Password", "", out var pass))
+                    {
+                        return;
+                    }
+                    passwordString = pass.Input;
+                }
+            }
+
+            if (string.IsNullOrEmpty(user))
+            {
+                WriteError(new ErrorRecord(new ArgumentException("UserName should not be empty."),
+                                           "Invalid Argument",
+                                           ErrorCategory.InvalidArgument,
+                                           null));
+                return;
+            }
+
+            if (string.IsNullOrEmpty(passwordString))
+            {
+                WriteError(new ErrorRecord(new ArgumentException("Password should not be empty."),
+                                           "Invalid Argument",
+                                           ErrorCategory.InvalidArgument,
+                                           null));
+                return;
+            }
+
+
+            var sendData = new Dictionary<string, object>()
+            {
+                { "username", user },
+                { "password", passwordString },
+            };
+            if (!string.IsNullOrEmpty(FirstName))
+                sendData.Add("first_name", FirstName);
+            if (!string.IsNullOrEmpty(LastName))
+                sendData.Add("last_name", LastName);
+            if (!string.IsNullOrEmpty(Email))
+                sendData.Add("email", Email);
+            if (IsSuperUser)
+                sendData.Add("is_superuser", IsSuperUser);
+            if (IsSystemAuditor)
+                sendData.Add("is_system_auditor", IsSystemAuditor);
+
+            var dataDescription = string.Join(", ", sendData.Select(kv =>
+                        kv.Key == "password" ? "password = ***" : $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"[{dataDescription}]"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<User>(User.PATH, sendData);
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
             }
         }
     }

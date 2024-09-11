@@ -347,6 +347,9 @@ Create a Label.
 ### [New-Team](New-Team.md)
 Create a Team.
 
+### [New-User](New-User.md)
+Create a User.
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
