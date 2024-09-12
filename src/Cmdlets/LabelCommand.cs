@@ -196,7 +196,7 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Remove, "Label", SupportsShouldProcess = true)]
+    [Cmdlet(VerbsCommon.Remove, "Label", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     public class RemoveLabelCommand : APICmdletBase
     {
         [Parameter(Mandatory = true, Position = 0)]
@@ -213,6 +213,9 @@ namespace AWX.Cmdlets
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
         public ulong Id { get; set; }
 
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
         protected override void ProcessRecord()
         {
             if (From == null) return;
@@ -227,7 +230,7 @@ namespace AWX.Cmdlets
                 _ => throw new ArgumentException($"Invalid resource type: {From.Type}")
             };
 
-            if (ShouldProcess($"Label {Id}", $"Remove from {From.Type} [{From.Id}]"))
+            if (Force || ShouldProcess($"Label {Id}", $"Disassociate from {From.Type} [{From.Id}]"))
             {
                 var sendData = new Dictionary<string, object>()
                 {
@@ -239,7 +242,7 @@ namespace AWX.Cmdlets
                     var apiResult = CreateResource<string>(path, sendData);
                     if (apiResult.Response.IsSuccessStatusCode)
                     {
-                        WriteVerbose($"Label {Id} is removed from {From.Type} [{From.Id}].");
+                        WriteVerbose($"Label {Id} is disassociate from {From.Type} [{From.Id}].");
                     }
                 }
                 catch (RestAPIException) { }
