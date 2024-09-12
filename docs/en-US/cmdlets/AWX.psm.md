@@ -14,6 +14,9 @@ PowerShell module to operate AWX/AnsibleTower using Rest API.
 ### [Add-Label](Add-Label.md)
 Add a Label.
 
+### [Add-User](Add-User.md)
+Associate a Uesr to.
+
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 

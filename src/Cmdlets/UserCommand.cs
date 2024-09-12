@@ -332,4 +332,47 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Add, "User", SupportsShouldProcess = true)]
+    public class AddUserCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.User])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Team,
+                ResourceType.Role
+        ])]
+        public IResource To { get; set; } = new Resource(0, 0);
+
+        protected override void ProcessRecord()
+        {
+            var path = To.Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{To.Id}/users/",
+                ResourceType.Team => $"{Team.PATH}{To.Id}/users/",
+                ResourceType.Role => $"{Role.PATH}{To.Id}/users/",
+                _ => throw new ArgumentException($"Invalid resource type: {To.Type}")
+            };
+            if (ShouldProcess($"User [{Id}]", $"Associate to {To.Type} [{To.Id}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  Id },
+                };
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"User {Id} is associated to {To.Type} [{To.Id}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
