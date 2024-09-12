@@ -218,3 +218,9 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Team](Get-Team.md)
+
+[New-Team](New-Team.md)
+
+[Update-Team](Update-Team.md)
+
+[Remove-Team](Remove-Team.md)
