@@ -359,6 +359,9 @@ Remove a Label.
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
 
+### [Remove-User](Remove-User.md)
+Remove a User
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 

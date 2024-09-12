@@ -375,4 +375,81 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Remove, "User", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveUserCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.User])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Team,
+                ResourceType.Role
+        ])]
+        public IResource? From { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        private void Disassociate(ulong id, IResource from)
+        {
+            var path = from.Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{from.Id}/users/",
+                ResourceType.Team => $"{Team.PATH}{from.Id}/users/",
+                ResourceType.Role => $"{Role.PATH}{from.Id}/users/",
+                _ => throw new ArgumentException($"Invalid resource type: {from.Type}")
+            };
+
+            if (Force || ShouldProcess($"User [{id}]", $"Disassociate from {from.Type} [{from.Id}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  id },
+                    { "disassociate", true }
+                };
+
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"User {id} is disassociated from {from.Type} [{from.Id}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"User [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{User.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"User {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            if (From != null) // disassociate
+            {
+                Disassociate(Id, From);
+            }
+            else
+            {
+                Delete(Id);
+            }
+        }
+    }
 }
