@@ -251,6 +251,14 @@ Database ID for the ResourceType
 
 [Get-User](Get-User.md)
 
+[New-User](New-User.md)
+
+[Add-User](Add-User.md)
+
+[Update-User](Update-User.md)
+
+[Remove-User](Remove-User.md)
+
 [Get-Team](Get-Team.md)
 
 [Find-Team](Find-Team.md)

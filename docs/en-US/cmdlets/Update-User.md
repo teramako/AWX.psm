@@ -198,3 +198,13 @@ Updated User object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-User](Get-User.md)
+
+[Find-User](Find-User.md)
+
+[New-User](New-User.md)
+
+[Add-User](Add-User.md)
+
+[Remove-User](Remove-User.md)

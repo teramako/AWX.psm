@@ -236,3 +236,13 @@ New created User object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-User](Get-User.md)
+
+[Find-User](Find-User.md)
+
+[Add-User](Add-User.md)
+
+[Update-User](Update-User.md)
+
+[Remove-User](Remove-User.md)
