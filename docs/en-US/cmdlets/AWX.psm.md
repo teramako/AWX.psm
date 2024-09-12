@@ -14,6 +14,9 @@ PowerShell module to operate AWX/AnsibleTower using Rest API.
 ### [Add-Label](Add-Label.md)
 Add a Label.
 
+### [Add-User](Add-User.md)
+Associate a Uesr to.
+
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 
@@ -347,11 +350,17 @@ Create a Label.
 ### [New-Team](New-Team.md)
 Create a Team.
 
+### [New-User](New-User.md)
+Create a User.
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
+
+### [Remove-User](Remove-User.md)
+Remove a User
 
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
@@ -382,6 +391,9 @@ Update a Label.
 
 ### [Update-Team](Update-Team.md)
 Update a Team.
+
+### [Update-User](Update-User.md)
+Update a User.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
