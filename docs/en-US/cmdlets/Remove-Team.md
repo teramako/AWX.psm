@@ -20,7 +20,7 @@ Remove-Team [-Id] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 Remove a Team.
 
 Implements following Rest API:  
-- `/api/v2/teams/` (DELETE)
+- `/api/v2/teams/{id}/` (DELETE)
 
 ## EXAMPLES
 
