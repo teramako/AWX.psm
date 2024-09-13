@@ -11,21 +11,21 @@ namespace AWX.Cmdlets
             switch (inputData)
             {
                 case IList list:
-                    return TransformList(engineIntrinsics, list);
+                    return TransformList(list);
                 default:
-                    return TransformToId(engineIntrinsics, inputData);
+                    return TransformToId(inputData);
             }
         }
-        private IList<ulong> TransformList(EngineIntrinsics engineIntrinsics, IList list)
+        private IList<ulong> TransformList(IList list)
         {
             var arr = new List<ulong>();
             foreach (var inputItem in list)
             {
-                arr.Add(TransformToId(engineIntrinsics, inputItem));
+                arr.Add(TransformToId(inputItem));
             }
             return arr;
         }
-        private ulong TransformToId(EngineIntrinsics engineIntrinsics, object inputData)
+        private ulong TransformToId(object inputData)
         {
             if (inputData is PSObject pso)
                 inputData = pso.BaseObject;
