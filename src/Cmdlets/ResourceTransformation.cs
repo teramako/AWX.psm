@@ -58,7 +58,7 @@ namespace AWX.Cmdlets
         private bool Validate(IResource resource)
         {
             if (resource.Id == 0) return false;
-            if (AcceptableTypes.Length == 0)
+            if (AcceptableTypes.Length != 0)
                 return AcceptableTypes.Any(type => resource.Type == type);
             return true;
         }
