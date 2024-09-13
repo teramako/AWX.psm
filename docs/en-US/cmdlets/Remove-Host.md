@@ -73,7 +73,7 @@ Accept wildcard characters: False
 ```
 
 ### -FromGroup
-Grop ID.
+Group ID.
 
 ```yaml
 Type: UInt64
