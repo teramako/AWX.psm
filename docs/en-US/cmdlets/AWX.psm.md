@@ -368,6 +368,9 @@ Create a Team.
 ### [New-User](New-User.md)
 Create a User.
 
+### [Remove-Group](Remove-Group.md)
+Remove a Group.
+
 ### [Remove-Host](Remove-Host.md)
 Remove a Host
 
