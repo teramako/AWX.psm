@@ -87,5 +87,196 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Group", SupportsShouldProcess = true)]
+    [OutputType(typeof(Group))]
+    public class NewGroupCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong Inventory { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "inventory", Inventory },
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (!string.IsNullOrEmpty(Variables))
+                sendData.Add("variables", Variables);
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Group>(Group.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "Group", SupportsShouldProcess = true)]
+    [OutputType(typeof(Group))]
+    public class UpdateGroupCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Variables != null)
+                sendData.Add("variables", Variables);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Group [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedGroup = PatchResource<Group>($"{Group.PATH}{Id}/", sendData);
+                    WriteObject(updatedGroup, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Add, "Group", SupportsShouldProcess = true)]
+    public class AddGroupCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong ToGroup { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var path = $"{Group.PATH}{ToGroup}/children/";
+
+            if (ShouldProcess($"Group [{Id}]", $"Associate to group [{ToGroup}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  Id },
+                };
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Group {Id} is associated to group [{ToGroup}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "Group", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveGroupCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong FromGroup { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        private void Disassociate(ulong childGroupId, ulong parentGroupId)
+        {
+            var path = $"{Group.PATH}{parentGroupId}/children/";
+
+            if (Force || ShouldProcess($"Group [{childGroupId}]", $"Disassociate from group [{parentGroupId}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  childGroupId },
+                    { "disassociate", true }
+                };
+
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Group {childGroupId} is disassociated from group [{parentGroupId}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"Group [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Group.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Group {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        protected override void ProcessRecord()
+        {
+            if (FromGroup > 0) // disassociate
+            {
+                Disassociate(Id, FromGroup);
+            }
+            else
+            {
+                Delete(Id);
+            }
+        }
+    }
 }
 

@@ -11,6 +11,9 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
+### [Add-Group](Add-Group.md)
+Associate the Group to a Group.
+
 ### [Add-Host](Add-Host.md)
 Associate a Host to a Group.
 
@@ -350,6 +353,9 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Group](New-Group.md)
+Create a Group.
+
 ### [New-Host](New-Host.md)
 Create a Host.
 
@@ -361,6 +367,9 @@ Create a Team.
 
 ### [New-User](New-User.md)
 Create a User.
+
+### [Remove-Group](Remove-Group.md)
+Remove a Group.
 
 ### [Remove-Host](Remove-Host.md)
 Remove a Host
@@ -400,6 +409,9 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Update-Group](Update-Group.md)
+Update a Group.
 
 ### [Update-Host](Update-Host.md)
 Update a Host.

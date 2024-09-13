@@ -206,7 +206,7 @@ namespace AWX.Cmdlets
                 return; // do nothing
 
             var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"User [{Id}]", $"[{dataDescription}]"))
+            if (ShouldProcess($"Host [{Id}]", $"[{dataDescription}]"))
             {
                 try
                 {
