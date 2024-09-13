@@ -11,6 +11,9 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
+### [Add-Group](Add-Group.md)
+Associate the Group to a Group.
+
 ### [Add-Host](Add-Host.md)
 Associate a Host to a Group.
 
