@@ -108,6 +108,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+User ID.
+
 ## OUTPUTS
 
 ### None
