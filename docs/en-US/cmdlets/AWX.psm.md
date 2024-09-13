@@ -395,6 +395,9 @@ Stop (cancel) a running job.
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
 
+### [Update-Host](Update-Host.md)
+Update a Host.
+
 ### [Update-Label](Update-Label.md)
 Update a Label.
 

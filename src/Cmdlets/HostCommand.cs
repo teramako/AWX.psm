@@ -160,5 +160,62 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Host", SupportsShouldProcess = true)]
+    [OutputType(typeof(Host))]
+    public class UpdateHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public bool? Enabled { get; set; } = null;
+
+        [Parameter()]
+        public string? InstanceId { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Enabled != null)
+                sendData.Add("enabled", Enabled);
+            if (InstanceId != null)
+                sendData.Add("instance_id", InstanceId);
+            if (Variables != null)
+                sendData.Add("variables", Variables);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"User [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedHost = PatchResource<Host>($"{Host.PATH}{Id}/", sendData);
+                    WriteObject(updatedHost, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
 
