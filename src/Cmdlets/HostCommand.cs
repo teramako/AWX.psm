@@ -251,5 +251,70 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Remove, "Host", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong FromGroup { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        private void Disassociate(ulong hostId, ulong groupId)
+        {
+            var path = $"{Group.PATH}{groupId}/hosts/";
+
+            if (Force || ShouldProcess($"Host [{hostId}]", $"Disassociate from group [{groupId}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  hostId },
+                    { "disassociate", true }
+                };
+
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Host {hostId} is disassociated from group [{groupId}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"Host [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Host.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Host {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        protected override void ProcessRecord()
+        {
+            if (FromGroup > 0) // disassociate
+            {
+                Disassociate(Id, FromGroup);
+            }
+            else
+            {
+                Delete(Id);
+            }
+        }
+    }
 }
 

@@ -362,6 +362,9 @@ Create a Team.
 ### [New-User](New-User.md)
 Create a User.
 
+### [Remove-Host](Remove-Host.md)
+Remove a Host
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
