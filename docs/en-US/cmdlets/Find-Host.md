@@ -251,3 +251,11 @@ Database ID for the ResourceType
 [Get-Group](Get-Group.md)
 
 [Find-Group](Find-Group.md)
+
+[New-Host](New-Host.md)
+
+[Add-Host](Add-Host.md)
+
+[Update-Host](Update-Host.md)
+
+[Remove-Host](Remove-Host.md)

@@ -174,3 +174,13 @@ Updated Host object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Host](Get-Host.md)
+
+[Find-Host](Find-Host.md)
+
+[New-Host](New-Host.md)
+
+[Add-Host](Add-Host.md)
+
+[Remove-Host](Remove-Host.md)

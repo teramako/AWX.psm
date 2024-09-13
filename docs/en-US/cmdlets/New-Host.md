@@ -173,3 +173,13 @@ New created Host object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Host](Get-Host.md)
+
+[Find-Host](Find-Host.md)
+
+[Add-Host](Add-Host.md)
+
+[Update-Host](Update-Host.md)
+
+[Remove-Host](Remove-Host.md)
