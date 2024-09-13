@@ -365,6 +365,9 @@ Remove a Team
 ### [Remove-User](Remove-User.md)
 Remove a User
 
+### [Revoke-Role](Revoke-Role.md)
+Revoke Roles.
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 

@@ -159,4 +159,50 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsSecurity.Revoke, "Role", SupportsShouldProcess = true)]
+    public class RevokeRoleCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [ResourceTransformation(AcceptableTypes = [ResourceType.Role])]
+        public IResource[] Roles { get; set; } = [];
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [ResourceType.User, ResourceType.Team])]
+        public IResource From { get; set; } = new Resource(0, 0);
+
+        protected override void ProcessRecord()
+        {
+            var path = From.Type switch
+            {
+                ResourceType.User => $"{User.PATH}{From.Id}/roles/",
+                ResourceType.Team => $"{Team.PATH}{From.Id}/roles/",
+                _ => throw new ArgumentException($"Invalid Resource Type: {From.Type}")
+            };
+
+            if (Roles.Length == 0)
+                return;
+
+            foreach (var role in Roles)
+            {
+                if (ShouldProcess($"{From.Type} [{From.Id}]", $"Revoke role [{role.Id}]"))
+                {
+                    var sendData = new Dictionary<string, object>()
+                    {
+                        { "id", role.Id },
+                        { "disassociate", true }
+                    };
+                    try
+                    {
+                        var apiResult = CreateResource<string>(path, sendData);
+                        if (apiResult.Response.IsSuccessStatusCode)
+                        {
+                            WriteVerbose("Success");
+                        }
+                    }
+                    catch (RestAPIException) { }
+                }
+            }
+        }
+    }
 }
