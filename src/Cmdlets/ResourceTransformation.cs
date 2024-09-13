@@ -43,11 +43,8 @@ namespace AWX.Cmdlets
                     return id;
             }
 
-            var resource = base.Transform(engineIntrinsics, inputData) as IResource;
-            if (resource != null)
-                return resource.Id;
-
-            throw new ArgumentException();
+            var resource = TransformToResource(inputData);
+            return resource.Id;
         }
     }
 
@@ -65,11 +62,13 @@ namespace AWX.Cmdlets
 
         public override object Transform(EngineIntrinsics engineIntrinsics, object inputData)
         {
-            if (inputData is PSObject pso)
+            switch (inputData)
             {
-                inputData = pso.BaseObject;
+                case IList list:
+                    return TransformToList(list);
+                default:
+                    return TransformToResource(inputData);
             }
-            return TransformToResource(inputData);
         }
         protected ResourceType ToResourceType(object? data)
         {
@@ -101,8 +100,20 @@ namespace AWX.Cmdlets
             }
             throw new ArgumentException($"Could not convert to ulong: {data} ({data?.GetType().Name})");
         }
+        protected IList<IResource> TransformToList(IList list)
+        {
+            var arr = new List<IResource>();
+            foreach (var inputItem in list)
+            {
+                arr.Add(TransformToResource(inputItem));
+            }
+            return arr;
+        }
         protected IResource TransformToResource(object inputData)
         {
+            if (inputData is PSObject pso)
+                inputData = pso.BaseObject;
+
             switch (inputData)
             {
                 case IResource resource:
