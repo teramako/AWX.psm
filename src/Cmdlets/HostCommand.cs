@@ -104,5 +104,217 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Host", SupportsShouldProcess = true)]
+    [OutputType(typeof(Host))]
+    public class NewHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong Inventory { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public string? InstanceId { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Disabled { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "inventory", Inventory },
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (!string.IsNullOrEmpty(InstanceId))
+                sendData.Add("instance_id", InstanceId);
+            if (!string.IsNullOrEmpty(Variables))
+                sendData.Add("variables", Variables);
+            if (Disabled)
+                sendData.Add("enabled", false);
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Host>(Host.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "Host", SupportsShouldProcess = true)]
+    [OutputType(typeof(Host))]
+    public class UpdateHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public bool? Enabled { get; set; } = null;
+
+        [Parameter()]
+        public string? InstanceId { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Enabled != null)
+                sendData.Add("enabled", Enabled);
+            if (InstanceId != null)
+                sendData.Add("instance_id", InstanceId);
+            if (Variables != null)
+                sendData.Add("variables", Variables);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"User [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedHost = PatchResource<Host>($"{Host.PATH}{Id}/", sendData);
+                    WriteObject(updatedHost, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Add, "Host", SupportsShouldProcess = true)]
+    public class AddHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong ToGroup { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var path = $"{Group.PATH}{ToGroup}/hosts/";
+
+            if (ShouldProcess($"Host [{Id}]", $"Associate to group [{ToGroup}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  Id },
+                };
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Host {Id} is associated to group [{ToGroup}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "Host", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong FromGroup { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        private void Disassociate(ulong hostId, ulong groupId)
+        {
+            var path = $"{Group.PATH}{groupId}/hosts/";
+
+            if (Force || ShouldProcess($"Host [{hostId}]", $"Disassociate from group [{groupId}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  hostId },
+                    { "disassociate", true }
+                };
+
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Host {hostId} is disassociated from group [{groupId}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"Host [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Host.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Host {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        protected override void ProcessRecord()
+        {
+            if (FromGroup > 0) // disassociate
+            {
+                Disassociate(Id, FromGroup);
+            }
+            else
+            {
+                Delete(Id);
+            }
+        }
+    }
 }
 
