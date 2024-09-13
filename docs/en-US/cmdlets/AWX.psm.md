@@ -320,6 +320,9 @@ Retrieve WorkflowJobTemplates by the ID(s).
 ### [Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
 Retrieve nodes for WorkflowJobTemplate by ID(s).
 
+### [Grant-Role](Grant-Role.md)
+Grant Roles
+
 ### [Invoke-AdHocCommand](Invoke-AdHocCommand.md)
 Invoke (launch) an AdHocCommand and wait until the job is finished.
 
