@@ -104,5 +104,61 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Host", SupportsShouldProcess = true)]
+    [OutputType(typeof(Host))]
+    public class NewHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong Inventory { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public string? InstanceId { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Disabled { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "inventory", Inventory },
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (!string.IsNullOrEmpty(InstanceId))
+                sendData.Add("instance_id", InstanceId);
+            if (!string.IsNullOrEmpty(Variables))
+                sendData.Add("variables", Variables);
+            if (Disabled)
+                sendData.Add("enabled", false);
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Host>(Host.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
 

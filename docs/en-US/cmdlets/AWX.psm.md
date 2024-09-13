@@ -347,6 +347,9 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Host](New-Host.md)
+Create a Host.
+
 ### [New-Label](New-Label.md)
 Create a Label.
 
