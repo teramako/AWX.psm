@@ -214,3 +214,7 @@ Database ID for the ResourceType
 [Get-Role](Get-Role.md)
 
 [Find-ObjectRole](Find-ObjectRole.md)
+
+[Grant-Role](Grant-Role.md)
+
+[Revoke-Role](Revoke-Role.md)
