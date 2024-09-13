@@ -217,5 +217,39 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Add, "Host", SupportsShouldProcess = true)]
+    public class AddHostCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong ToGroup { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var path = $"{Group.PATH}{ToGroup}/hosts/";
+
+            if (ShouldProcess($"Host [{Id}]", $"Associate to group [{ToGroup}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  Id },
+                };
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Host {Id} is associated to group [{ToGroup}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
 
