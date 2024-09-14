@@ -377,6 +377,9 @@ Remove a Group.
 ### [Remove-Host](Remove-Host.md)
 Remove a Host
 
+### [Remove-Inventory](Remove-Inventory.md)
+Remove an Inventory.
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
