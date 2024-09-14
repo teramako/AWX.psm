@@ -419,6 +419,9 @@ Update a Group.
 ### [Update-Host](Update-Host.md)
 Update a Host.
 
+### [Update-Inventory](Update-Inventory.md)
+Update an Inventory.
+
 ### [Update-Label](Update-Label.md)
 Update a Label.
 

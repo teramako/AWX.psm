@@ -155,4 +155,61 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Inventory", SupportsShouldProcess = true)]
+    [OutputType(typeof(Inventory))]
+    public class UpdateInventoryCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? HostFilter { get; set; }
+
+        [Parameter()]
+        public bool? PreventInstanceGroupFallback { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Variables != null)
+                sendData.Add("variables", Variables);
+            if (HostFilter != null)
+                sendData.Add("host_filter", HostFilter);
+            if (PreventInstanceGroupFallback != null)
+                sendData.Add("prevent_instance_group_fallback", PreventInstanceGroupFallback);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Inventory [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedInventory = PatchResource<Inventory>($"{Inventory.PATH}{Id}/", sendData);
+                    WriteObject(updatedInventory, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
