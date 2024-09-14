@@ -76,4 +76,50 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Organization", SupportsShouldProcess = true)]
+    [OutputType(typeof(Organization))]
+    public class NewOrganizationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public uint MaxHosts { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong DefaultEnvironment { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name }
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (MaxHosts > 0)
+                sendData.Add("max_hosts", MaxHosts);
+            if (DefaultEnvironment > 0)
+                sendData.Add("default_environment", DefaultEnvironment);
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Organization>(Organization.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

@@ -365,6 +365,9 @@ Create an Inventory.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [New-Organization](New-Organization.md)
+Create an Organization.
+
 ### [New-Team](New-Team.md)
 Create a Team.
 
