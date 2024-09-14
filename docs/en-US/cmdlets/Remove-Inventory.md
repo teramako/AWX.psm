@@ -109,3 +109,11 @@ Inventory Id.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Inventory](Get-Inventory.md)
+
+[Find-Inventory](Find-Inventory.md)
+
+[New-Inventory](New-Inventory.md)
+
+[Update-Inventory](Update-Inventory.md)

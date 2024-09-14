@@ -176,3 +176,11 @@ Updated Inventory object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Inventory](Get-Inventory.md)
+
+[Find-Inventory](Find-Inventory.md)
+
+[New-Inventory](New-Inventory.md)
+
+[Remove-Inventory](Remove-Inventory.md)

@@ -196,3 +196,11 @@ New created Inventory object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Inventory](Get-Inventory.md)
+
+[Find-Inventory](Find-Inventory.md)
+
+[Update-Inventory](Update-Inventory.md)
+
+[Remove-Inventory](Remove-Inventory.md)
