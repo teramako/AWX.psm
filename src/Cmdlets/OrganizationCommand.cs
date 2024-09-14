@@ -122,4 +122,55 @@ namespace AWX.Cmdlets
             }
         }
     }
+    
+    [Cmdlet(VerbsData.Update, "Organization", SupportsShouldProcess = true)]
+    [OutputType(typeof(Organization))]
+    public class UpdateOrganizationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public uint? MaxHosts { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        [AllowNull]
+        public ulong? DefaultEnvironment { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (MaxHosts != null)
+                sendData.Add("max_hosts", MaxHosts);
+            if (DefaultEnvironment != null)
+                sendData.Add("default_environment", DefaultEnvironment == 0 ? null : DefaultEnvironment);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => kv.Value == null ? $"{kv.Key} => (null)" : $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Organization [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedOrg = PatchResource<Organization>($"{Organization.PATH}{Id}/", sendData);
+                    WriteObject(updatedOrg, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

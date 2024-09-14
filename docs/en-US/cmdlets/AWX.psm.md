@@ -431,6 +431,9 @@ Update an Inventory.
 ### [Update-Label](Update-Label.md)
 Update a Label.
 
+### [Update-Organization](Update-Organization.md)
+Update an Organization.
+
 ### [Update-Team](Update-Team.md)
 Update a Team.
 
