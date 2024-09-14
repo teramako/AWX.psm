@@ -386,6 +386,9 @@ Remove an Inventory.
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
+### [Remove-Organization](Remove-Organization.md)
+Remove an Organization.
+
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
 
