@@ -359,6 +359,9 @@ Create a Group.
 ### [New-Host](New-Host.md)
 Create a Host.
 
+### [New-Inventory](New-Inventory.md)
+Create an Inventory.
+
 ### [New-Label](New-Label.md)
 Create a Label.
 

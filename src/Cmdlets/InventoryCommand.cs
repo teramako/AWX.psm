@@ -92,4 +92,67 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Inventory", SupportsShouldProcess = true, DefaultParameterSetName = "NormalInventory")]
+    [OutputType(typeof(Inventory))]
+    public class NewInventoryCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        [Parameter()]
+        public SwitchParameter PreventInstanceGroupFallback { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "SmartInventory")]
+        public SwitchParameter AsSmartInventory { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "SmartInventory")]
+        public string HostFilter { get; set; } = string.Empty;
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "organization", Organization },
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (!string.IsNullOrEmpty(Variables))
+                sendData.Add("variables", Variables);
+            if (PreventInstanceGroupFallback)
+                sendData.Add("prevent_instance_group_fallback", true);
+
+            if (AsSmartInventory)
+            {
+                sendData.Add("kind", "smart");
+                sendData.Add("host_filter", HostFilter);
+            }
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Inventory>(Inventory.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
