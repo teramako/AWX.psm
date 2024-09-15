@@ -12,6 +12,8 @@ namespace AWX.Cmdlets
             {
                 case IList list:
                     return TransformList(list);
+                case null:
+                    return 0;
                 default:
                     return TransformToId(inputData);
             }
@@ -66,6 +68,8 @@ namespace AWX.Cmdlets
             {
                 case IList list:
                     return TransformToList(list);
+                case null:
+                    return new Resource(0, 0);
                 default:
                     return TransformToResource(inputData);
             }
