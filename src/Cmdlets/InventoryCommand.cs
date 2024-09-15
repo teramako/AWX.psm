@@ -92,4 +92,155 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Inventory", SupportsShouldProcess = true, DefaultParameterSetName = "NormalInventory")]
+    [OutputType(typeof(Inventory))]
+    public class NewInventoryCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        [Parameter()]
+        public SwitchParameter PreventInstanceGroupFallback { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "SmartInventory")]
+        public SwitchParameter AsSmartInventory { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "SmartInventory")]
+        public string HostFilter { get; set; } = string.Empty;
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "organization", Organization },
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (!string.IsNullOrEmpty(Variables))
+                sendData.Add("variables", Variables);
+            if (PreventInstanceGroupFallback)
+                sendData.Add("prevent_instance_group_fallback", true);
+
+            if (AsSmartInventory)
+            {
+                sendData.Add("kind", "smart");
+                sendData.Add("host_filter", HostFilter);
+            }
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Inventory>(Inventory.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "Inventory", SupportsShouldProcess = true)]
+    [OutputType(typeof(Inventory))]
+    public class UpdateInventoryCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ExtraVarsArgumentTransformation]
+        public string? Variables { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? HostFilter { get; set; }
+
+        [Parameter()]
+        public bool? PreventInstanceGroupFallback { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Variables != null)
+                sendData.Add("variables", Variables);
+            if (HostFilter != null)
+                sendData.Add("host_filter", HostFilter);
+            if (PreventInstanceGroupFallback != null)
+                sendData.Add("prevent_instance_group_fallback", PreventInstanceGroupFallback);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Inventory [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedInventory = PatchResource<Inventory>($"{Inventory.PATH}{Id}/", sendData);
+                    WriteObject(updatedInventory, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "Inventory", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveInventoryCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"Inventory [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Inventory.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Inventory {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        protected override void ProcessRecord()
+        {
+            Delete(Id);
+        }
+    }
 }

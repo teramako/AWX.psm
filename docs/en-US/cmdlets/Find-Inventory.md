@@ -235,3 +235,9 @@ Database ID for the ResourceType
 [Get-InventorySource](Get-InventorySource.md)
 
 [Find-InventorySource](Find-InventorySource.md)
+
+[New-Inventory](New-Inventory.md)
+
+[Update-Inventory](Update-Inventory.md)
+
+[Remove-Inventory](Remove-Inventory.md)

@@ -359,6 +359,9 @@ Create a Group.
 ### [New-Host](New-Host.md)
 Create a Host.
 
+### [New-Inventory](New-Inventory.md)
+Create an Inventory.
+
 ### [New-Label](New-Label.md)
 Create a Label.
 
@@ -373,6 +376,9 @@ Remove a Group.
 
 ### [Remove-Host](Remove-Host.md)
 Remove a Host
+
+### [Remove-Inventory](Remove-Inventory.md)
+Remove an Inventory.
 
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
@@ -415,6 +421,9 @@ Update a Group.
 
 ### [Update-Host](Update-Host.md)
 Update a Host.
+
+### [Update-Inventory](Update-Inventory.md)
+Update an Inventory.
 
 ### [Update-Label](Update-Label.md)
 Update a Label.
