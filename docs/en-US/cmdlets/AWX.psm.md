@@ -365,6 +365,9 @@ Create an Inventory.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [New-Organization](New-Organization.md)
+Create an Organization.
+
 ### [New-Team](New-Team.md)
 Create a Team.
 
@@ -382,6 +385,9 @@ Remove an Inventory.
 
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
+
+### [Remove-Organization](Remove-Organization.md)
+Remove an Organization.
 
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
@@ -427,6 +433,9 @@ Update an Inventory.
 
 ### [Update-Label](Update-Label.md)
 Update a Label.
+
+### [Update-Organization](Update-Organization.md)
+Update an Organization.
 
 ### [Update-Team](Update-Team.md)
 Update a Team.
