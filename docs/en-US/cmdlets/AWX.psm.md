@@ -368,6 +368,9 @@ Create a Label.
 ### [New-Organization](New-Organization.md)
 Create an Organization.
 
+### [New-Project](New-Project.md)
+Create a Project.
+
 ### [New-Team](New-Team.md)
 Create a Team.
 
