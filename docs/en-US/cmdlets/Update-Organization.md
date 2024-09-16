@@ -52,6 +52,8 @@ Accept wildcard characters: False
 ### -DefaultEnvironment
 ExecutionEnvironment ID.
 
+Specify `0` or `$null` if want to set empty.
+
 ```yaml
 Type: UInt64
 Parameter Sets: (All)
