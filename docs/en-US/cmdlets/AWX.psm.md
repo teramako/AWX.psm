@@ -443,6 +443,9 @@ Update a Label.
 ### [Update-Organization](Update-Organization.md)
 Update an Organization.
 
+### [Update-Project](Update-Project.md)
+Update a Project.
+
 ### [Update-Team](Update-Team.md)
 Update a Team.
 

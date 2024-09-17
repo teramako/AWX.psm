@@ -298,4 +298,152 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Project", SupportsShouldProcess = true)]
+    [OutputType(typeof(Project))]
+    public class UpdateProjectCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Project])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ValidateSet("", "Manual", "Git", "Subversion", "Insights", "RemoteArchive")]
+        public string? ScmType { get; set; }
+
+        [Parameter()]
+        [AllowNull]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? DefaultEnvironment { get; set; }
+
+        [Parameter()]
+        [AllowNull]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? SignatureValidationCredential { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? LocalPath { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmUrl { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmRefspec { get; set; }
+
+        [Parameter()]
+        [AllowNull]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? Credential { get; set; }
+
+        [Parameter()]
+        public bool? ScmClean { get; set; }
+
+        [Parameter()]
+        public bool? ScmDeleteOnUpdate { get; set; }
+
+        [Parameter()]
+        public bool? ScmTrackSubmodules { get; set; }
+
+        [Parameter()]
+        public bool? ScmUpdateOnLaunch { get; set; }
+
+        [Parameter()]
+        public bool? AllowOverride { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Timeout { get; set; }
+
+        private Dictionary<string, object?> CreateSendData()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Organization > 0)
+                sendData.Add("organization", Organization);
+            if (ScmType != null)
+            {
+                var scmType = ScmType switch
+                {
+                    "Git" => "git",
+                    "Subversion" => "svn",
+                    "Insights" => "insights",
+                    "RemoteArchive" => "archive",
+                    "" => string.Empty,
+                    "Manual" => string.Empty,
+                    _ => throw new ArgumentException()
+                };
+                sendData.Add("scm_type", scmType);
+            }
+            if (DefaultEnvironment != null)
+                sendData.Add("default_environment", DefaultEnvironment == 0 ? null : DefaultEnvironment);
+            if (SignatureValidationCredential != null)
+                sendData.Add("signature_validation_credential",
+                        SignatureValidationCredential == 0 ? null : SignatureValidationCredential);
+            if (LocalPath != null)
+                sendData.Add("local_path", LocalPath);
+            if (ScmUrl != null)
+                sendData.Add("scm_url", ScmUrl);
+            if (ScmBranch != null)
+                sendData.Add("scm_branch", ScmBranch);
+            if (ScmRefspec != null)
+                sendData.Add("scm_refspec", ScmRefspec);
+            if (Credential != null)
+                sendData.Add("credential", Credential == 0 ? null : Credential);
+            if (ScmClean != null)
+                sendData.Add("scm_clean", ScmClean);
+            if (ScmDeleteOnUpdate != null)
+                sendData.Add("scm_delete_on_update", ScmDeleteOnUpdate);
+            if (ScmTrackSubmodules != null)
+                sendData.Add("scm_track_submodules", ScmTrackSubmodules);
+            if (ScmUpdateOnLaunch != null)
+                sendData.Add("scm_update_on_launch", ScmUpdateOnLaunch);
+            if (AllowOverride != null)
+                sendData.Add("allow_override", AllowOverride);
+            if (Timeout != null)
+                sendData.Add("timeout", Timeout);
+
+            return sendData;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Project [{Id}]", $"Update [{dataDescription}]"))
+            {
+                try
+                {
+                    var after = PatchResource<Project>($"{Project.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
