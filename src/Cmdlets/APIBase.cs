@@ -542,7 +542,7 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? UpdateResource<TValue>(string pathAndQuery, object sendData)
+        protected virtual TValue UpdateResource<TValue>(string pathAndQuery, object sendData)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.PUT);
@@ -558,8 +558,18 @@ namespace AWX.Cmdlets
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
+                throw;
             }
-            return null;
+            catch (AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send a request to modify part of the resource.
@@ -569,7 +579,7 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? PatchResource<TValue>(string pathAndQuery, object sendData)
+        protected virtual TValue PatchResource<TValue>(string pathAndQuery, object sendData)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.PATCH);
@@ -585,9 +595,18 @@ namespace AWX.Cmdlets
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
-
+                throw;
             }
-            return null;
+            catch (AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send a request to delete the resource.
@@ -595,7 +614,7 @@ namespace AWX.Cmdlets
         /// </summary>
         /// <param name="pathAndQuery"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual IRestAPIResponse? DeleteResource(string pathAndQuery)
+        protected virtual IRestAPIResponse DeleteResource(string pathAndQuery)
         {
             WriteVerboseRequest(pathAndQuery, Method.DELETE);
             try
@@ -604,13 +623,24 @@ namespace AWX.Cmdlets
                 apiTask.Wait();
                 RestAPIResult<string> result = apiTask.Result;
                 WriteVerboseResponse(result.Response);
+                return result.Response;
             }
             catch (RestAPIException ex)
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
+                throw;
             }
-            return null;
+            catch (AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send and get a API Help of the URI.
