@@ -175,7 +175,7 @@ if ($New) {
     $NewParams = @{
         Module = $moduleName;
         OutputFolder = $OutputFolder;
-        AlphabeticParamsOrder = $false;
+        AlphabeticParamsOrder = $true;
         ExcludeDontShow = $true;
         Encoding = $Utf8NoBomEncoding;
     }
@@ -184,7 +184,7 @@ if ($New) {
     $UpdateParams = @{
         Path = $OutputFolder;
         RefreshModulePage = $true;
-        AlphabeticParamsOrder = $false;
+        AlphabeticParamsOrder = $true;
         ExcludeDontShow = $true;
         UpdateInputOutput = $false;
         Encoding = $Utf8NoBomEncoding;
