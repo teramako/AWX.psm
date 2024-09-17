@@ -353,6 +353,9 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Application](New-Application.md)
+Create an Application.
+
 ### [New-Group](New-Group.md)
 Create a Group.
 

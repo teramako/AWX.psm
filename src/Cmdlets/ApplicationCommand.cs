@@ -66,4 +66,62 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Application", SupportsShouldProcess = true)]
+    [OutputType(typeof(Application))]
+    public class NewApplicationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter(Mandatory = true)]
+        public ulong Organization { get; set; }
+
+        [Parameter(Mandatory = true)]
+        [ValidateSet("password", "authorization-code")]
+        public string AuthorizationGrantType { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string RedirectUris { get; set; } = string.Empty;
+
+        [Parameter(Mandatory = true)]
+        public ApplicationClientType ClientType { get; set; }
+
+        [Parameter()]
+        public SwitchParameter SkipAuthorization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "organization", Organization },
+                { "authorization_grant_type", AuthorizationGrantType },
+                { "client_type", $"{ClientType}".ToLowerInvariant() }
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (!string.IsNullOrEmpty(RedirectUris))
+                sendData.Add("redirect_uris", RedirectUris);
+            if (SkipAuthorization)
+                sendData.Add("skip_authorization", true);
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess($"{{ {dataDescription} }}"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Application>(Application.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
