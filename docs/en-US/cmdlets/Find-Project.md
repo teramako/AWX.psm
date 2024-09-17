@@ -214,3 +214,9 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Project](Get-Project.md)
+
+[New-Project](New-Project.md)
+
+[Update-Project](Update-Project.md)
+
+[Remove-Project](Remove-Project.md)
