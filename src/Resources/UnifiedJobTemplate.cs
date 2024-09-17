@@ -32,7 +32,7 @@ namespace AWX.Resources
         Successful,
         Failed,
         Error,
-        Cancled,
+        Canceled,
         NeverUpdated,
         OK,
         Missing,
