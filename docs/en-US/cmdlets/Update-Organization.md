@@ -37,7 +37,8 @@ Change the name for the Organization of Id 2.
 ### -DefaultEnvironment
 ExecutionEnvironment ID.
 
-Specify `0` or `$null` if want to set empty.
+> [!TIP]  
+> Specify `0` or `$null` if want to set empty.
 
 ```yaml
 Type: UInt64
@@ -151,7 +152,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### AWX.Resources.Organization
-New created Organization object.
+Updated Organization object.
 
 ## NOTES
 
