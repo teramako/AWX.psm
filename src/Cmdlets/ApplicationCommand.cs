@@ -124,4 +124,61 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Application", SupportsShouldProcess = true)]
+    [OutputType(typeof(Application))]
+    public class UpdateApplicationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.OAuth2Application])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public ulong? Organization { get; set; }
+
+        [Parameter()]
+        public string? RedirectUris { get; set; }
+
+        [Parameter()]
+        public ApplicationClientType? ClientType { get; set; }
+
+        [Parameter()]
+        public SwitchParameter SkipAuthorization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Organization != null)
+                sendData.Add("organization", Organization);
+            if (RedirectUris != null)
+                sendData.Add("redirect_uris", RedirectUris);
+            if (ClientType != null)
+                sendData.Add("client_type", $"{ClientType}".ToLowerInvariant());
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => kv.Value == null ? $"{kv.Key} => (null)" : $"{kv.Key} => {kv.Value}"));
+            if (ShouldProcess($"Application [{Id}]", $"[{dataDescription}]"))
+            {
+                try
+                {
+                    var updatedApp = PatchResource<Application>($"{Application.PATH}{Id}/", sendData);
+                    WriteObject(updatedApp, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

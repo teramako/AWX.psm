@@ -431,6 +431,9 @@ Stop (cancel) a running job.
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
 
+### [Update-Application](Update-Application.md)
+Update an Application.
+
 ### [Update-Group](Update-Group.md)
 Update a Group.
 
