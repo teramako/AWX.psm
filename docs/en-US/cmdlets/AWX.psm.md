@@ -368,6 +368,9 @@ Create a Label.
 ### [New-Organization](New-Organization.md)
 Create an Organization.
 
+### [New-Project](New-Project.md)
+Create a Project.
+
 ### [New-Team](New-Team.md)
 Create a Team.
 
@@ -388,6 +391,9 @@ Remove a Label.
 
 ### [Remove-Organization](Remove-Organization.md)
 Remove an Organization.
+
+### [Remove-Project](Remove-Project.md)
+Remove a Project.
 
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
@@ -436,6 +442,9 @@ Update a Label.
 
 ### [Update-Organization](Update-Organization.md)
 Update an Organization.
+
+### [Update-Project](Update-Project.md)
+Update a Project.
 
 ### [Update-Team](Update-Team.md)
 Update a Team.
