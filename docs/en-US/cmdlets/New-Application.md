@@ -188,3 +188,11 @@ New created Application object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Application](Get-Application.md)
+
+[Find-Application](Find-Application.md)
+
+[Update-Application](Update-Application.md)
+
+[Remove-Application](Remove-Application.md)
