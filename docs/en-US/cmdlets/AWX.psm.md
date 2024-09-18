@@ -407,6 +407,9 @@ Remove a Project.
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
 
+### [Remove-Token](Remove-Token.md)
+Remove an AccessToken.
+
 ### [Remove-User](Remove-User.md)
 Remove a User
 
