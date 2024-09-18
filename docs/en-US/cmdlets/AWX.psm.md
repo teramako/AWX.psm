@@ -464,6 +464,9 @@ Update a Project.
 ### [Update-Team](Update-Team.md)
 Update a Team.
 
+### [Update-Token](Update-Token.md)
+Update an AccessToken.
+
 ### [Update-User](Update-User.md)
 Update a User.
 
