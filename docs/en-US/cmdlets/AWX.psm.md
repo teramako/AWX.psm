@@ -377,6 +377,9 @@ Create a Project.
 ### [New-Team](New-Team.md)
 Create a Team.
 
+### [New-Token](New-Token.md)
+Create an AccessToken.
+
 ### [New-User](New-User.md)
 Create a User.
 
@@ -403,6 +406,9 @@ Remove a Project.
 
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
+
+### [Remove-Token](Remove-Token.md)
+Remove an AccessToken.
 
 ### [Remove-User](Remove-User.md)
 Remove a User
@@ -457,6 +463,9 @@ Update a Project.
 
 ### [Update-Team](Update-Team.md)
 Update a Team.
+
+### [Update-Token](Update-Token.md)
+Update an AccessToken.
 
 ### [Update-User](Update-User.md)
 Update a User.
