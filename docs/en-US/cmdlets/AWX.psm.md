@@ -380,6 +380,9 @@ Create a Team.
 ### [New-User](New-User.md)
 Create a User.
 
+### [Remove-Application](Remove-Application.md)
+Remove an Application.
+
 ### [Remove-Group](Remove-Group.md)
 Remove a Group.
 
