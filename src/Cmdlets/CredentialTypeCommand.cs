@@ -1,5 +1,7 @@
 using AWX.Resources;
+using System.Collections;
 using System.Management.Automation;
+using System.Text.Json;
 
 namespace AWX.Cmdlets
 {
@@ -134,6 +136,60 @@ namespace AWX.Cmdlets
                     {
                         WriteVerbose($"CredentialType {Id} is removed.");
                     }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "CredentialType", SupportsShouldProcess = true)]
+    [OutputType(typeof(CredentialType))]
+    public class UpdateCredentialTypeCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.CredentialType])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ValidateSet("net", "cloud")]
+        public string? Kind { get; set; }
+
+        [Parameter()]
+        public IDictionary? Inputs { get; set; }
+
+        [Parameter()]
+        public IDictionary? Injectors { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Kind != null)
+                sendData.Add("kind", Kind);
+            if (Inputs != null)
+                sendData.Add("inputs", Inputs);
+            if (Injectors != null)
+                sendData.Add("injectors", Injectors);
+
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = JsonSerializer.Serialize(sendData, Json.SerializeOptions);
+            if (ShouldProcess($"CredentialType [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<CredentialType>($"{CredentialType.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
                 }
                 catch (RestAPIException) { }
             }

@@ -449,6 +449,9 @@ Switch to anothor config.
 ### [Update-Application](Update-Application.md)
 Update an Application.
 
+### [Update-CredentialType](Update-CredentialType.md)
+Update a CredentialType.
+
 ### [Update-Group](Update-Group.md)
 Update a Group.
 
