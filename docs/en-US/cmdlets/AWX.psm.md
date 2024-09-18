@@ -353,6 +353,9 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Application](New-Application.md)
+Create an Application.
+
 ### [New-Group](New-Group.md)
 Create a Group.
 
@@ -376,6 +379,9 @@ Create a Team.
 
 ### [New-User](New-User.md)
 Create a User.
+
+### [Remove-Application](Remove-Application.md)
+Remove an Application.
 
 ### [Remove-Group](Remove-Group.md)
 Remove a Group.
@@ -427,6 +433,9 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Update-Application](Update-Application.md)
+Update an Application.
 
 ### [Update-Group](Update-Group.md)
 Update a Group.
