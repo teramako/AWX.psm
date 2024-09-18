@@ -92,4 +92,64 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Token", SupportsShouldProcess = true, DefaultParameterSetName = "Application")]
+    [OutputType(typeof(OAuth2AccessToken))]
+    public class AddTokenCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ParameterSetName = "User", Position = 0)]
+        public SwitchParameter ForMe { get; set; }
+
+        [Parameter(Mandatory = true, ParameterSetName = "Application", Position = 0)]
+        [Parameter(ParameterSetName = "User", Position = 1)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.OAuth2Application])]
+        public ulong? Application { get; set; }
+
+        [Parameter()]
+        [ValidateSet("read", "write")]
+        public string Scope { get; set; } = "write";
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            sendData.Add("scope", Scope);
+
+            ulong? id;
+            string path;
+            string target;
+            if (ForMe)
+            {
+                id = 0;
+                target = "PersonalAccessToken";
+                path = $"{Resources.User.PATH}{id}/tokens/";
+                if (Application != null)
+                    sendData.Add("application", Application);
+            }
+            else
+            {
+                id = Application;
+                target = $"Application [{id}]";
+                path = $"{Resources.Application.PATH}{id}/tokens/";
+            }
+
+            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
+            if (ShouldProcess(target, $"Create Token [{dataDescription}]"))
+            {
+                try
+                {
+                    var apiResult = CreateResource<OAuth2AccessToken>(path, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
