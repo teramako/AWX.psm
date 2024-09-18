@@ -151,3 +151,11 @@ New created CredentialType object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-CredentialType](Get-CredentialType.md)
+
+[Find-CredentialType](Find-CredentialType.md)
+
+[Update-CredentialType](Update-CredentialType.md)
+
+[Remove-CredentialType](Remove-CredentialType.md)

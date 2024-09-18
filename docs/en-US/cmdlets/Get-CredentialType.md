@@ -64,3 +64,9 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-CredentialType](Find-CredentialType.md)
+
+[New-CredentialType](New-CredentialType.md)
+
+[Update-CredentialType](Update-CredentialType.md)
+
+[Remove-CredentialType](Remove-CredentialType.md)

@@ -168,3 +168,11 @@ Updated CredentialType object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-CredentialType](Get-CredentialType.md)
+
+[Find-CredentialType](Find-CredentialType.md)
+
+[New-CredentialType](New-CredentialType.md)
+
+[Remove-CredentialType](Remove-CredentialType.md)

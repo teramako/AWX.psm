@@ -181,3 +181,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [Get-Credential](Get-Credential.md)
 
 [Find-Credential](Find-Credential.md)
+
+[New-CredentialType](New-CredentialType.md)
+
+[Update-CredentialType](Update-CredentialType.md)
+
+[Remove-CredentialType](Remove-CredentialType.md)

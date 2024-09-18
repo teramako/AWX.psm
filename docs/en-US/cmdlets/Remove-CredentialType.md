@@ -107,3 +107,11 @@ CredentialType ID.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-CredentialType](Get-CredentialType.md)
+
+[Find-CredentialType](Find-CredentialType.md)
+
+[New-CredentialType](New-CredentialType.md)
+
+[Update-CredentialType](Update-CredentialType.md)
