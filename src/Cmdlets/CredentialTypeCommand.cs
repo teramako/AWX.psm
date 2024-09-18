@@ -66,4 +66,50 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "CredentialType", SupportsShouldProcess = true)]
+    [OutputType(typeof(CredentialType))]
+    public class NewCredentialTypeCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ValidateSet("net", "cloud")]
+        public string Kind { get; set; } = string.Empty;
+
+        [Parameter()]
+        public IDictionary Inputs { get; set; } = new Hashtable();
+
+        [Parameter()]
+        public IDictionary Injectors { get; set; } = new Hashtable();
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "description", Description },
+                { "kind", Kind },
+                { "inputs", Inputs },
+                { "injectors", Injectors }
+            };
+            var dataDescription = JsonSerializer.Serialize(sendData, Json.SerializeOptions);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<CredentialType>(CredentialType.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
