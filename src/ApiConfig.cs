@@ -1,6 +1,7 @@
 using System.Management.Automation;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AWX.Resources;
 
 namespace AWX
 {
@@ -138,5 +139,42 @@ namespace AWX
         }
         const string ENV_CONFIG = "ANSIBLE_API_CONFIG";
         const string DEFULT_CONFIG_NAME = ".ansible_api_config.json";
+
+        private User? _user = null;
+        private ulong? _userId = null;
+        private string? _userName = null;
+        internal User LoadUser(bool save = false, bool force = false)
+        {
+            if (force || _user == null)
+            {
+                var task = Resources.User.GetMe();
+                task.Wait();
+                _user = task.Result;
+            }
+            _userId = _user.Id;
+            _userName = _user.Username;
+            if (save && File != null)
+                Save();
+
+            return _user;
+        }
+        public ulong? UserId {
+            get
+            {
+                if (_userId == null)
+                    LoadUser(save: true);
+                return _userId;
+            }
+            init { _userId = value; }
+        }
+        public string? UserName {
+            get
+            {
+                if (string.IsNullOrEmpty(_userName))
+                    LoadUser(save: true);
+                return _userName;
+            }
+            init { _userName = value; }
+        }
     }
 }
