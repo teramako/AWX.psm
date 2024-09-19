@@ -1,7 +1,6 @@
 using AWX.Resources;
 using System.Collections;
 using System.Management.Automation;
-using System.Text.Json;
 
 namespace AWX.Cmdlets
 {
@@ -99,7 +98,7 @@ namespace AWX.Cmdlets
                 { "inputs", Inputs },
                 { "injectors", Injectors }
             };
-            var dataDescription = JsonSerializer.Serialize(sendData, Json.SerializeOptions);
+            var dataDescription = Json.Stringify(sendData, pretty: true);
             if (ShouldProcess(dataDescription))
             {
                 try
@@ -183,7 +182,7 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return;
 
-            var dataDescription = JsonSerializer.Serialize(sendData, Json.SerializeOptions);
+            var dataDescription = Json.Stringify(sendData, pretty: true);
             if (ShouldProcess($"CredentialType [{Id}]", $"Update {dataDescription}"))
             {
                 try
