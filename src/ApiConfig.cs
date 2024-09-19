@@ -73,7 +73,7 @@ namespace AWX
             }
             LastSaved = DateTime.UtcNow;
             using var fs = fileInfo.OpenWrite();
-            JsonSerializer.Serialize(fs, this);
+            JsonSerializer.Serialize(fs, this, Json.DeserializeOptions);
         }
         public static ApiConfig Load(ApiConfig config)
         {
@@ -94,7 +94,7 @@ namespace AWX
                 return Load(new ApiConfig());
             }
             using var fs = fileInfo.OpenRead();
-            var config = JsonSerializer.Deserialize<ApiConfig>(fs)
+            var config = JsonSerializer.Deserialize<ApiConfig>(fs, Json.DeserializeOptions)
                 ?? throw new Exception($"Could not load config.");
             config.File = fileInfo;
             return Load(config);
