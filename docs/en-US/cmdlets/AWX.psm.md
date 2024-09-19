@@ -392,6 +392,9 @@ Create a User.
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
 
+### [Remove-Credential](Remove-Credential.md)
+Remove a Credential.
+
 ### [Remove-CredentialType](Remove-CredentialType.md)
 Remove a CredentialType.
 
