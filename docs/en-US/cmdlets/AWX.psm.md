@@ -356,6 +356,9 @@ Create config file that should be used by this module.
 ### [New-Application](New-Application.md)
 Create an Application.
 
+### [New-Credential](New-Credential.md)
+Create a Credential.
+
 ### [New-CredentialType](New-CredentialType.md)
 Create a CredentialType.
 

@@ -99,4 +99,79 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Credential", SupportsShouldProcess = true)]
+    [OutputType(typeof(Credential))]
+    public class NewCredentialCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.CredentialType])]
+        public ulong CredentialType { get; set; }
+
+        [Parameter(Mandatory = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter()]
+        public IDictionary Inputs { get; set; } = new Hashtable();
+
+        [Parameter()]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Team,
+                ResourceType.User
+        ])]
+        public IResource? Owner { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "credential_type", CredentialType },
+                { "inputs", Inputs }
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (Owner != null)
+            {
+                switch (Owner.Type)
+                {
+                    case ResourceType.Organization:
+                        sendData.Add("organization", Owner.Id);
+                        break;
+                    case ResourceType.Team:
+                        sendData.Add("team", Owner.Id);
+                        break;
+                    case ResourceType.User:
+                        sendData.Add("user", Owner.Id);
+                        break;
+                }
+            }
+            else
+            {
+                var userId = ApiConfig.Instance.UserId;
+                if (userId != null)
+                    sendData.Add("user", userId);
+            }
+
+            // FIXME: Validation of Inputs value from CredentialType data
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Credential>(Credential.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
