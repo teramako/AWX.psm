@@ -137,8 +137,8 @@ namespace AWX.Cmdlets
                 path = $"{Resources.Application.PATH}{id}/tokens/";
             }
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess(target, $"Create Token [{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(target, $"Create Token {dataDescription}"))
             {
                 try
                 {
@@ -206,8 +206,8 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return;
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"Token [{Id}]", $"Update [{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Token [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {

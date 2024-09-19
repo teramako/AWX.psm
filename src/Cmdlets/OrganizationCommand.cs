@@ -107,8 +107,8 @@ namespace AWX.Cmdlets
             if (DefaultEnvironment > 0)
                 sendData.Add("default_environment", DefaultEnvironment);
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess($"{{ {dataDescription} }}"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
             {
                 try
                 {
@@ -161,8 +161,8 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return; // do nothing
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => kv.Value == null ? $"{kv.Key} => (null)" : $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"Organization [{Id}]", $"[{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Organization [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {

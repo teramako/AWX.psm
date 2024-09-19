@@ -145,8 +145,8 @@ namespace AWX.Cmdlets
             if (Disabled)
                 sendData.Add("enabled", false);
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess($"{{ {dataDescription} }}"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
             {
                 try
                 {
@@ -205,8 +205,8 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return; // do nothing
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"Host [{Id}]", $"[{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Host [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {

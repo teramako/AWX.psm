@@ -118,8 +118,8 @@ namespace AWX.Cmdlets
             if (!string.IsNullOrEmpty(Variables))
                 sendData.Add("variables", Variables);
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess($"{{ {dataDescription} }}"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
             {
                 try
                 {
@@ -167,8 +167,8 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return; // do nothing
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"Group [{Id}]", $"[{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Group [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {

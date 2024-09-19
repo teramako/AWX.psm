@@ -234,7 +234,7 @@ namespace AWX.Cmdlets
             var sendData = new Dictionary<string, object>()
             {
                 { "username", user },
-                { "password", passwordString },
+                { "password", "***" }, // dummy
             };
             if (!string.IsNullOrEmpty(FirstName))
                 sendData.Add("first_name", FirstName);
@@ -247,9 +247,10 @@ namespace AWX.Cmdlets
             if (IsSystemAuditor)
                 sendData.Add("is_system_auditor", IsSystemAuditor);
 
-            var dataDescription = string.Join(", ", sendData.Select(kv =>
-                        kv.Key == "password" ? "password = ***" : $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess($"[{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            sendData["password"] = passwordString; // set password string after `sendData` is stringified
+
+            if (ShouldProcess(dataDescription))
             {
                 try
                 {
@@ -296,6 +297,7 @@ namespace AWX.Cmdlets
         protected override void ProcessRecord()
         {
             var sendData = new Dictionary<string, object>();
+            string dataDescription = string.Empty;
             if (!string.IsNullOrEmpty(UserName))
                 sendData.Add("username", UserName);
             if (FirstName != null)
@@ -313,15 +315,20 @@ namespace AWX.Cmdlets
                 var passwordString = Marshal.PtrToStringUni(Marshal.SecureStringToGlobalAllocUnicode(Password));
                 Password.Dispose();
                 if (!string.IsNullOrEmpty(passwordString))
-                    sendData.Add("password", passwordString);
+                {
+                    sendData.Add("password", "***"); // dummy
+                    dataDescription = Json.Stringify(sendData, pretty: true);
+                    sendData["password"] = passwordString;
+                }
             }
 
             if (sendData.Count == 0)
                 return; // do nothing
 
-            var dataDescription = string.Join(", ", sendData.Select(kv =>
-                        kv.Key == "password" ? "password => ***" : $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"User [{Id}]", $"[{dataDescription}]"))
+            if (string.IsNullOrEmpty(dataDescription))
+                dataDescription = Json.Stringify(sendData, pretty: true);
+
+            if (ShouldProcess($"User [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {

@@ -109,8 +109,8 @@ namespace AWX.Cmdlets
             if (SkipAuthorization)
                 sendData.Add("skip_authorization", true);
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess($"{{ {dataDescription} }}"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
             {
                 try
                 {
@@ -169,8 +169,8 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return; // do nothing
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => kv.Value == null ? $"{kv.Key} => (null)" : $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"Application [{Id}]", $"[{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Application [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {

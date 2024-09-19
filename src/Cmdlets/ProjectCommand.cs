@@ -255,8 +255,8 @@ namespace AWX.Cmdlets
         {
             var sendData = CreateSendData();
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} = {kv.Value}"));
-            if (ShouldProcess($"{{ {dataDescription} }}"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
             {
                 try
                 {
@@ -434,8 +434,8 @@ namespace AWX.Cmdlets
             if (sendData.Count == 0)
                 return;
 
-            var dataDescription = string.Join(", ", sendData.Select(kv => $"{kv.Key} => {kv.Value}"));
-            if (ShouldProcess($"Project [{Id}]", $"Update [{dataDescription}]"))
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Project [{Id}]", $"Update {dataDescription}"))
             {
                 try
                 {
