@@ -1,6 +1,7 @@
 using System.Management.Automation;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AWX.Resources;
 
 namespace AWX
 {
@@ -73,7 +74,7 @@ namespace AWX
             }
             LastSaved = DateTime.UtcNow;
             using var fs = fileInfo.OpenWrite();
-            JsonSerializer.Serialize(fs, this);
+            JsonSerializer.Serialize(fs, this, Json.DeserializeOptions);
         }
         public static ApiConfig Load(ApiConfig config)
         {
@@ -94,7 +95,7 @@ namespace AWX
                 return Load(new ApiConfig());
             }
             using var fs = fileInfo.OpenRead();
-            var config = JsonSerializer.Deserialize<ApiConfig>(fs)
+            var config = JsonSerializer.Deserialize<ApiConfig>(fs, Json.DeserializeOptions)
                 ?? throw new Exception($"Could not load config.");
             config.File = fileInfo;
             return Load(config);
@@ -138,5 +139,42 @@ namespace AWX
         }
         const string ENV_CONFIG = "ANSIBLE_API_CONFIG";
         const string DEFULT_CONFIG_NAME = ".ansible_api_config.json";
+
+        private User? _user = null;
+        private ulong? _userId = null;
+        private string? _userName = null;
+        internal User LoadUser(bool save = false, bool force = false)
+        {
+            if (force || _user == null)
+            {
+                var task = Resources.User.GetMe();
+                task.Wait();
+                _user = task.Result;
+            }
+            _userId = _user.Id;
+            _userName = _user.Username;
+            if (save && File != null)
+                Save();
+
+            return _user;
+        }
+        public ulong? UserId {
+            get
+            {
+                if (_userId == null)
+                    LoadUser(save: true);
+                return _userId;
+            }
+            init { _userId = value; }
+        }
+        public string? UserName {
+            get
+            {
+                if (string.IsNullOrEmpty(_userName))
+                    LoadUser(save: true);
+                return _userName;
+            }
+            init { _userName = value; }
+        }
     }
 }
