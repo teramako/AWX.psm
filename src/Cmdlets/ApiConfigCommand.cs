@@ -1,4 +1,3 @@
-using AWX.Resources;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Host;
@@ -86,9 +85,7 @@ namespace AWX.Cmdlets
             try
             {
                 Host.UI.WriteLine($"Try to retrieve the user information from: {config.Origin}");
-                var task = User.GetMe();
-                task.Wait();
-                var me = task.Result;
+                var me = config.LoadUser(save: false);
                 Host.UI.WriteLine($"Success: {me.Username}({me.Email})");
             }
             catch (Exception ex)
