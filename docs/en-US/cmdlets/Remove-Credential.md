@@ -107,3 +107,11 @@ Credential ID.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Credential](Get-Credential.md)
+
+[Find-Credential](Find-Credential.md)
+
+[New-Credential](New-Credential.md)
+
+[Update-Credential](Update-Credential.md)

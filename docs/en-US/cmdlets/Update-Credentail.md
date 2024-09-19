@@ -169,3 +169,11 @@ Updated Credential object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-Credential](Get-Credential.md)
+
+[Find-Credential](Find-Credential.md)
+
+[New-Credential](New-Credential.md)
+
+[Remove-Credential](Remove-Credential.md)

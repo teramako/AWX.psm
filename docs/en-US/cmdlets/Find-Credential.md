@@ -287,3 +287,9 @@ Database ID for the ResourceType
 [Get-CredentialType](Get-CredentialType.md)
 
 [Find-CredentialType](Find-CredentialType.md)
+
+[New-Credential](New-Credential.md)
+
+[Update-Credential](Update-Credential.md)
+
+[Remove-Credential](Remove-Credential.md)
