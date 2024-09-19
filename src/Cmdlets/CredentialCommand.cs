@@ -1,4 +1,5 @@
 using AWX.Resources;
+using System.Collections;
 using System.Management.Automation;
 
 namespace AWX.Cmdlets
@@ -196,6 +197,63 @@ namespace AWX.Cmdlets
                     {
                         WriteVerbose($"Credential {Id} is removed.");
                     }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "Credentail", SupportsShouldProcess = true)]
+    [OutputType(typeof(Credential))]
+    public class UpdateCredentialCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.CredentialType])]
+        public ulong? CredentialType { get; set; }
+
+        [Parameter()]
+        public IDictionary? Inputs { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (CredentialType != null)
+                sendData.Add("credential_type", CredentialType);
+            if (Inputs != null)
+                sendData.Add("inputs", Inputs);
+            if (Organization != null)
+                sendData.Add("organization", Organization);
+
+            if (sendData.Count == 0)
+                return;
+
+            // FIXME: Validation of Inputs value from CredentialType data
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Credential [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<Credential>($"{Credential.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
                 }
                 catch (RestAPIException) { }
             }

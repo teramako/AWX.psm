@@ -455,6 +455,9 @@ Switch to anothor config.
 ### [Update-Application](Update-Application.md)
 Update an Application.
 
+### [Update-Credentail](Update-Credentail.md)
+Update a Credential.
+
 ### [Update-CredentialType](Update-CredentialType.md)
 Update a CredentialType.
 
