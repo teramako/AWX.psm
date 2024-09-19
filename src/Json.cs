@@ -12,6 +12,11 @@ namespace AWX
 {
     public class Json
     {
+        public static string Stringify(object obj, bool pretty = false)
+        {
+            var options = pretty ? SerializeOptions : DeserializeOptions;
+            return JsonSerializer.Serialize(obj, options);
+        }
         public static OrderedDictionary ToDict(JsonElement json)
         {
             var dict = new OrderedDictionary();
