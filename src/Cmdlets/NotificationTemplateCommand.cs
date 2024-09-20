@@ -1,4 +1,5 @@
 using AWX.Resources;
+using System.Collections;
 using System.Management.Automation;
 
 namespace AWX.Cmdlets
@@ -216,6 +217,56 @@ namespace AWX.Cmdlets
             foreach (var resultSet in GetResultSet<NotificationTemplate>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.New, "NotificationTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(NotificationTemplate))]
+    public class NewNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter(Mandatory = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        [Parameter(Mandatory = true)]
+        public NotificationType Type { get; set; }
+
+        [Parameter()]
+        public IDictionary Configuration { get; set; } = new Hashtable();
+
+        [Parameter()]
+        public IDictionary Messages { get; set; } = new Hashtable();
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "description", Description },
+                { "organization", Organization },
+                { "notification_type", $"{Type}".ToLowerInvariant() },
+                { "notification_configuration", Configuration },
+                { "messages", Messages }
+            };
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<NotificationTemplate>(NotificationTemplate.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
             }
         }
     }

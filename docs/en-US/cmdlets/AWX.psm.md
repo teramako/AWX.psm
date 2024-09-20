@@ -371,6 +371,9 @@ Create an Inventory.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [New-NotificationTemplate](New-NotificationTemplate.md)
+Create a NotificationTemplate.
+
 ### [New-Organization](New-Organization.md)
 Create an Organization.
 
