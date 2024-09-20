@@ -356,6 +356,9 @@ Create config file that should be used by this module.
 ### [New-Application](New-Application.md)
 Create an Application.
 
+### [New-Credential](New-Credential.md)
+Create a Credential.
+
 ### [New-CredentialType](New-CredentialType.md)
 Create a CredentialType.
 
@@ -388,6 +391,9 @@ Create a User.
 
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
+
+### [Remove-Credential](Remove-Credential.md)
+Remove a Credential.
 
 ### [Remove-CredentialType](Remove-CredentialType.md)
 Remove a CredentialType.
@@ -448,6 +454,9 @@ Switch to anothor config.
 
 ### [Update-Application](Update-Application.md)
 Update an Application.
+
+### [Update-Credentail](Update-Credentail.md)
+Update a Credential.
 
 ### [Update-CredentialType](Update-CredentialType.md)
 Update a CredentialType.

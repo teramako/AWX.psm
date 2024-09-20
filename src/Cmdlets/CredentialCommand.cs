@@ -1,4 +1,5 @@
 using AWX.Resources;
+using System.Collections;
 using System.Management.Automation;
 
 namespace AWX.Cmdlets
@@ -96,6 +97,165 @@ namespace AWX.Cmdlets
             foreach (var resultSet in GetResultSet<Credential>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.New, "Credential", SupportsShouldProcess = true)]
+    [OutputType(typeof(Credential))]
+    public class NewCredentialCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.CredentialType])]
+        public ulong CredentialType { get; set; }
+
+        [Parameter(Mandatory = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter()]
+        public IDictionary Inputs { get; set; } = new Hashtable();
+
+        [Parameter()]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Team,
+                ResourceType.User
+        ])]
+        public IResource? Owner { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "credential_type", CredentialType },
+                { "inputs", Inputs }
+            };
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (Owner != null)
+            {
+                switch (Owner.Type)
+                {
+                    case ResourceType.Organization:
+                        sendData.Add("organization", Owner.Id);
+                        break;
+                    case ResourceType.Team:
+                        sendData.Add("team", Owner.Id);
+                        break;
+                    case ResourceType.User:
+                        sendData.Add("user", Owner.Id);
+                        break;
+                }
+            }
+            else
+            {
+                var userId = ApiConfig.Instance.UserId;
+                if (userId != null)
+                    sendData.Add("user", userId);
+            }
+
+            // FIXME: Validation of Inputs value from CredentialType data
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Credential>(Credential.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "Credential", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveCredentialCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"Credential [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Credential.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Credential {Id} is removed.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "Credentail", SupportsShouldProcess = true)]
+    [OutputType(typeof(Credential))]
+    public class UpdateCredentialCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.CredentialType])]
+        public ulong? CredentialType { get; set; }
+
+        [Parameter()]
+        public IDictionary? Inputs { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (CredentialType != null)
+                sendData.Add("credential_type", CredentialType);
+            if (Inputs != null)
+                sendData.Add("inputs", Inputs);
+            if (Organization != null)
+                sendData.Add("organization", Organization);
+
+            if (sendData.Count == 0)
+                return;
+
+            // FIXME: Validation of Inputs value from CredentialType data
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Credential [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<Credential>($"{Credential.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
             }
         }
     }
