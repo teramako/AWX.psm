@@ -407,6 +407,9 @@ Remove an Inventory.
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
+### [Remove-NotificationTemplate](Remove-NotificationTemplate.md)
+Remove a NotificationTemplate.
+
 ### [Remove-Organization](Remove-Organization.md)
 Remove an Organization.
 
