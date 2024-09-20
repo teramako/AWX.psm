@@ -467,6 +467,9 @@ Update an Inventory.
 ### [Update-Label](Update-Label.md)
 Update a Label.
 
+### [Update-NotificationTemplate](Update-NotificationTemplate.md)
+Update a NotificationTemplate.
+
 ### [Update-Organization](Update-Organization.md)
 Update an Organization.
 

@@ -270,4 +270,64 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "NotificationTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(NotificationTemplate))]
+    public class UpdateNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.NotificationTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        [Parameter()]
+        public NotificationType? Type { get; set; }
+
+        [Parameter()]
+        public IDictionary? Configuration { get; set; }
+
+        [Parameter()]
+        public IDictionary? Messages { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (!string.IsNullOrEmpty(Description))
+                sendData.Add("description", Description);
+            if (Organization != null)
+                sendData.Add("organization", Organization);
+            if (Type != null)
+                sendData.Add("notification_type", $"{Type}".ToLowerInvariant());
+            if (Configuration != null)
+                sendData.Add("notification_configuration", Configuration);
+            if (Messages != null)
+                sendData.Add("messages", Messages.Count == 0 ? null : Messages);
+
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"NotificationTemplate [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<NotificationTemplate>($"{NotificationTemplate.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
