@@ -169,3 +169,15 @@ New created NotificationType object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-NotificationTemplate](Get-NotificationTemplate.md)
+
+[Find-NotificationTemplate](Find-NotificationTemplate.md)
+
+[Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+
+[Disable-NotificationTemplate](Diable-NotificationTemplate.md)
+
+[Update-NotificationTemplate](Update-NotificationTemplate.md)
+
+[Remove-NotificationTemplate](Remove-NotificationTemplate.md)

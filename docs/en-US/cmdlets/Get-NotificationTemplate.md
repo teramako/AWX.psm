@@ -81,3 +81,13 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-NotificationTemplate](Find-NotificationTemplate.md)
+
+[New-NotificationTemplate](New-NotificationTemplate.md)
+
+[Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+
+[Disable-NotificationTemplate](Diable-NotificationTemplate.md)
+
+[Update-NotificationTemplate](Update-NotificationTemplate.md)
+
+[Remove-NotificationTemplate](Remove-NotificationTemplate.md)

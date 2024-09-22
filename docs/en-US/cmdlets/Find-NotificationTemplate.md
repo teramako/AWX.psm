@@ -227,3 +227,13 @@ Database ID for `Organization`
 [Get-Notification](Get-Notification.md)
 
 [Find-Notification](Find-Notification.md)
+
+[New-NotificationTemplate](New-NotificationTemplate.md)
+
+[Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+
+[Disable-NotificationTemplate](Diable-NotificationTemplate.md)
+
+[Update-NotificationTemplate](Update-NotificationTemplate.md)
+
+[Remove-NotificationTemplate](Remove-NotificationTemplate.md)

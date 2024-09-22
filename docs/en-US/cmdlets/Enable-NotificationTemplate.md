@@ -158,3 +158,15 @@ NotificationTemplate ID.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-NotificationTemplate](Get-NotificationTemplate.md)
+
+[Find-NotificationTemplate](Find-NotificationTemplate.md)
+
+[New-NotificationTemplate](New-NotificationTemplate.md)
+
+[Disable-NotificationTemplate](Disable-NotificationTemplate.md)
+
+[Update-NotificationTemplate](Update-NotificationTemplate.md)
+
+[Remove-NotificationTemplate](Remove-NotificationTemplate.md)
