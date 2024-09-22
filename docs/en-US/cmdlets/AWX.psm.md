@@ -29,6 +29,9 @@ Approve requests for WorkflowApproval.
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
 Deny requests for WorkflowApproval.
 
+### [Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+Enable a NotificationTemplate.
+
 ### [Find-AccessList](Find-AccessList.md)
 Retrieve Users accessible to a resource.
 
