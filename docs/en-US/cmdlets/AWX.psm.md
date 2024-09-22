@@ -29,6 +29,9 @@ Approve requests for WorkflowApproval.
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
 Deny requests for WorkflowApproval.
 
+### [Disable-NotificationTemplate](Disable-NotificationTemplate.md)
+Disable a NotificationTemplate.
+
 ### [Enable-NotificationTemplate](Enable-NotificationTemplate.md)
 Enable a NotificationTemplate.
 

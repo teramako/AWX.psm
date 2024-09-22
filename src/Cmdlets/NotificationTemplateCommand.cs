@@ -425,4 +425,76 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsLifecycle.Disable, "NotificationTemplate", SupportsShouldProcess = true)]
+    public class DisableNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.NotificationTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Project,
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.SystemJobTemplate,
+                ResourceType.WorkflowJobTemplate
+        ])]
+        public IResource For { get; set; } = new Resource(0, 0);
+
+        [Parameter(Mandatory = true, Position = 2)]
+        [ValidateSet("Started", "Success", "Error", "Approval")]
+        public string[] On { get; set; } = [];
+
+        protected override void ProcessRecord()
+        {
+            var path1 = For.Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{For.Id}/",
+                ResourceType.Project => $"{Project.PATH}{For.Id}/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{For.Id}/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{For.Id}/",
+                ResourceType.SystemJobTemplate => $"{SystemJobTemplate.PATH}{For.Id}/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{For.Id}/",
+                _ => throw new ArgumentException($"Invalid resource type: {For.Type}")
+            };
+            foreach (var timing in On)
+            {
+                if (timing == "Approval" && (For.Type != ResourceType.Organization
+                                             && For.Type != ResourceType.WorkflowJobTemplate))
+                {
+                    WriteWarning($"{For.Type} has no \"{timing}\" notifications.");
+                    continue;
+                }
+                var path2 = timing switch
+                {
+                    "Started" => "notification_templates_started/",
+                    "Success" => "notification_templates_success/",
+                    "Error" => "notification_templates_error/",
+                    "Approval" => "notification_templates_approvals/",
+                    _ => throw new ArgumentException($"(Invalid timing value: {timing}")
+                };
+                if (ShouldProcess($"NotificationTemplate [{Id}]", $"Disable to {For.Type} [{For.Id}] on {timing}"))
+                {
+                    var path = path1 + path2;
+                    var sendData = new Dictionary<string, object>()
+                    {
+                        { "id", Id },
+                        { "disassociate", true }
+                    };
+                    try
+                    {
+                        var apiResult = CreateResource<string>(path, sendData);
+                        if (apiResult.Response.IsSuccessStatusCode)
+                        {
+                            WriteVerbose($"NotificationTemplate {Id} is disabled to {For.Type} [{For.Id}] on {timing}.");
+                        }
+                    }
+                    catch (RestAPIException) { }
+                }
+            }
+        }
+    }
 }
