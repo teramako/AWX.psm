@@ -29,6 +29,12 @@ Approve requests for WorkflowApproval.
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
 Deny requests for WorkflowApproval.
 
+### [Disable-NotificationTemplate](Disable-NotificationTemplate.md)
+Disable a NotificationTemplate.
+
+### [Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+Enable a NotificationTemplate.
+
 ### [Find-AccessList](Find-AccessList.md)
 Retrieve Users accessible to a resource.
 
@@ -374,6 +380,9 @@ Create an Inventory.
 ### [New-Label](New-Label.md)
 Create a Label.
 
+### [New-NotificationTemplate](New-NotificationTemplate.md)
+Create a NotificationTemplate.
+
 ### [New-Organization](New-Organization.md)
 Create an Organization.
 
@@ -409,6 +418,9 @@ Remove an Inventory.
 
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
+
+### [Remove-NotificationTemplate](Remove-NotificationTemplate.md)
+Remove a NotificationTemplate.
 
 ### [Remove-Organization](Remove-Organization.md)
 Remove an Organization.
@@ -472,6 +484,9 @@ Update an Inventory.
 
 ### [Update-Label](Update-Label.md)
 Update a Label.
+
+### [Update-NotificationTemplate](Update-NotificationTemplate.md)
+Update a NotificationTemplate.
 
 ### [Update-Organization](Update-Organization.md)
 Update an Organization.
