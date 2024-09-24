@@ -209,4 +209,126 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "Schedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(Schedule))]
+    public class UpdateScheduleCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Schedule])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public string RRule { get; set; } = string.Empty;
+
+        [Parameter()]
+        public bool? Enable { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
+        public string? ExtraData { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
+
+        protected IDictionary<string, object?> CreateSendData()
+        {
+            var dict = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                dict.Add("name", Name);
+            if (Description != null)
+                dict.Add("description", Description);
+            if (!string.IsNullOrEmpty(RRule))
+                dict.Add("rrule", RRule);
+            if (Enable != null)
+                dict.Add("enabled", Enable);
+            if (!string.IsNullOrEmpty(ExtraData))
+                dict.Add("extra_data", ExtraData);
+            if (Inventory != null)
+                dict.Add("inventory", Inventory);
+            if (ScmBranch != null)
+                dict.Add("scm_branch", ScmBranch);
+            if (JobType != null)
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            if (Tags != null)
+                dict.Add("job_tags", Tags);
+            if (SkipTags != null)
+                dict.Add("skip_tags", SkipTags);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (DiffMode != null)
+                dict.Add("diff_mode", DiffMode);
+            if (Verbosity != null)
+                dict.Add("verbosity", (int)Verbosity);
+            if (Forks != null)
+                dict.Add("forks", Forks);
+            if (ExecutionEnvironment != null)
+                dict.Add("execution_environment", ExecutionEnvironment);
+            if (JobSliceCount != null)
+                dict.Add("job_slice_count", JobSliceCount);
+            if (Timeout != null)
+                dict.Add("timeout", Timeout);
+
+            return dict;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Schedule [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<Schedule>($"{Schedule.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

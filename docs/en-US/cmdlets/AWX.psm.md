@@ -497,6 +497,9 @@ Update an Organization.
 ### [Update-Project](Update-Project.md)
 Update a Project.
 
+### [Update-Schedule](Update-Schedule.md)
+Update a Schedule.
+
 ### [Update-Team](Update-Team.md)
 Update a Team.
 
