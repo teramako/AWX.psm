@@ -389,6 +389,9 @@ Create an Organization.
 ### [New-Project](New-Project.md)
 Create a Project.
 
+### [New-Schedule](New-Schedule.md)
+Create a Schedule.
+
 ### [New-Team](New-Team.md)
 Create a Team.
 
