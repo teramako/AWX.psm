@@ -389,6 +389,9 @@ Create an Organization.
 ### [New-Project](New-Project.md)
 Create a Project.
 
+### [New-Schedule](New-Schedule.md)
+Create a Schedule.
+
 ### [New-Team](New-Team.md)
 Create a Team.
 
@@ -427,6 +430,9 @@ Remove an Organization.
 
 ### [Remove-Project](Remove-Project.md)
 Remove a Project.
+
+### [Remove-Schedule](Remove-Schedule.md)
+Remove a Schedule.
 
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
@@ -493,6 +499,9 @@ Update an Organization.
 
 ### [Update-Project](Update-Project.md)
 Update a Project.
+
+### [Update-Schedule](Update-Schedule.md)
+Update a Schedule.
 
 ### [Update-Team](Update-Team.md)
 Update a Team.

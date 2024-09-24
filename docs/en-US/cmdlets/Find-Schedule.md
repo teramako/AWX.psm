@@ -218,3 +218,11 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Schedule](Get-Schedule.md)
+
+[Find-Schedule](Find-Schedule.md)
+
+[New-Schedule](New-Schedule.md)
+
+[Update-Schedule](Update-Schedule.md)
+
+[Remove-Schedule](Remove-Schedule.md)

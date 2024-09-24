@@ -74,4 +74,288 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Schedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(Schedule))]
+    public class NewScheduleCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter(Mandatory = true)]
+        public string RRule { get; set; } = string.Empty;
+
+        [Parameter()]
+        public SwitchParameter Disabled { get; set; }
+
+        [Parameter(Mandatory = true)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Project,
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.SystemJobTemplate,
+                ResourceType.WorkflowJobTemplate
+        ])]
+        public IResource Template { get; set; } = new Resource(0, 0);
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
+        public string? ExtraData { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
+
+        protected IDictionary<string, object?> CreateSendData()
+        {
+            var dict = new Dictionary<string, object?>()
+            {
+                { "name", Name },
+                { "description", Description },
+                { "rrule", RRule }
+            };
+            if (Disabled)
+                dict.Add("enabled", false);
+            if (!string.IsNullOrEmpty(ExtraData))
+                dict.Add("extra_data", ExtraData);
+            if (Inventory != null)
+                dict.Add("inventory", Inventory);
+            if (!string.IsNullOrEmpty(ScmBranch))
+                dict.Add("scm_branch", ScmBranch);
+            if (JobType != null)
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            if (!string.IsNullOrEmpty(Tags))
+                dict.Add("job_tags", Tags);
+            if (!string.IsNullOrEmpty(SkipTags))
+                dict.Add("skip_tags", SkipTags);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (DiffMode != null)
+                dict.Add("diff_mode", DiffMode);
+            if (Verbosity != null)
+                dict.Add("verbosity", (int)Verbosity);
+            if (Forks != null)
+                dict.Add("forks", Forks);
+            if (ExecutionEnvironment != null)
+                dict.Add("execution_environment", ExecutionEnvironment);
+            if (JobSliceCount != null)
+                dict.Add("job_slice_count", JobSliceCount);
+            if (Timeout != null)
+                dict.Add("timeout", Timeout);
+
+            return dict;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var path = Template.Type switch
+            {
+                ResourceType.Project => $"{Project.PATH}{Template.Id}/schedules/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{Template.Id}/schedules/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{Template.Id}/schedules/",
+                ResourceType.SystemJobTemplate => $"{SystemJobTemplate.PATH}{Template.Id}/schedules/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{Template.Id}/schedules/",
+                _ => throw new ArgumentException("Invalid type")
+            };
+            var sendData = CreateSendData();
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                var apiResult = CreateResource<Schedule>(path, sendData);
+                if (apiResult.Contents == null)
+                    return;
+
+                WriteObject(apiResult.Contents, false);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "Schedule", SupportsShouldProcess = true)]
+    [OutputType(typeof(Schedule))]
+    public class UpdateScheduleCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Schedule])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public string RRule { get; set; } = string.Empty;
+
+        [Parameter()]
+        public bool? Enable { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
+        public string? ExtraData { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
+
+        protected IDictionary<string, object?> CreateSendData()
+        {
+            var dict = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                dict.Add("name", Name);
+            if (Description != null)
+                dict.Add("description", Description);
+            if (!string.IsNullOrEmpty(RRule))
+                dict.Add("rrule", RRule);
+            if (Enable != null)
+                dict.Add("enabled", Enable);
+            if (!string.IsNullOrEmpty(ExtraData))
+                dict.Add("extra_data", ExtraData);
+            if (Inventory != null)
+                dict.Add("inventory", Inventory);
+            if (ScmBranch != null)
+                dict.Add("scm_branch", ScmBranch);
+            if (JobType != null)
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            if (Tags != null)
+                dict.Add("job_tags", Tags);
+            if (SkipTags != null)
+                dict.Add("skip_tags", SkipTags);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (DiffMode != null)
+                dict.Add("diff_mode", DiffMode);
+            if (Verbosity != null)
+                dict.Add("verbosity", (int)Verbosity);
+            if (Forks != null)
+                dict.Add("forks", Forks);
+            if (ExecutionEnvironment != null)
+                dict.Add("execution_environment", ExecutionEnvironment);
+            if (JobSliceCount != null)
+                dict.Add("job_slice_count", JobSliceCount);
+            if (Timeout != null)
+                dict.Add("timeout", Timeout);
+
+            return dict;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Schedule [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<Schedule>($"{Schedule.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "Schedule", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveScheduleCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Schedule])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"Schedule [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Schedule.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Schedule {Id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
