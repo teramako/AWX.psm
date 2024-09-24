@@ -377,6 +377,9 @@ Create a Host.
 ### [New-Inventory](New-Inventory.md)
 Create an Inventory.
 
+### [New-JobTemplate](New-JobTemplate.md)
+Create a JobTemplate.
+
 ### [New-Label](New-Label.md)
 Create a Label.
 
