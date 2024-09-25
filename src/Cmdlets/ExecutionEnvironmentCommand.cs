@@ -63,4 +63,62 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "ExecutionEnvironment", SupportsShouldProcess = true)]
+    [OutputType(typeof(ExecutionEnvironment))]
+    public class AddExecutionEnvironmentCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter(Mandatory = true)]
+        public string Image { get; set; } = string.Empty;
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? Credential { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ValidateSet("", "always", "missing", "never")]
+        public string? Pull { get; set; } = string.Empty;
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "description", Description },
+                { "image", Image },
+            };
+            if (Organization != null)
+                sendData.Add("organization", Organization);
+            if (Credential != null)
+                sendData.Add("credential", Credential);
+            if (Pull != null)
+                sendData.Add("pull", Pull);
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<ExecutionEnvironment>(ExecutionEnvironment.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

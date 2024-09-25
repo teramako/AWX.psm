@@ -368,6 +368,9 @@ Create a Credential.
 ### [New-CredentialType](New-CredentialType.md)
 Create a CredentialType.
 
+### [New-ExecutionEnvironment](New-ExecutionEnvironment.md)
+Create an ExecutionEnvironment.
+
 ### [New-Group](New-Group.md)
 Create a Group.
 
