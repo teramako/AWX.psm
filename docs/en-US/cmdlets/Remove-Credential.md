@@ -13,8 +13,8 @@ Remove a Credential.
 ## SYNTAX
 
 ```
-Remove-Credential [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Credential [-Id] <UInt64> [-From <IResource>] [-Force] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,6 +37,28 @@ Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -From
+Target resource to be removed from.
+
+Following resource is available:  
+- `Organization` (galaxy-token only)  
+- `InventorySource`  
+- `JobTemplate`  
+- `Schedule`  
+- `WorkflowJobTemplateNode`
+
+```yaml
+Type: IResource
 Parameter Sets: (All)
 Aliases:
 

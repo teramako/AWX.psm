@@ -230,21 +230,73 @@ namespace AWX.Cmdlets
         public ulong Id { get; set; }
 
         [Parameter()]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.Schedule,
+                ResourceType.WorkflowJobTemplateNode
+        ])]
+        public IResource? From { get; set; }
+
+        [Parameter()]
         public SwitchParameter Force { get; set; }
 
-        protected override void ProcessRecord()
+        private void Disassociate(ulong credentialId, IResource from)
         {
-            if (Force || ShouldProcess($"Credential [{Id}]", "Delete completely"))
+            var path = from.Type switch
             {
+                ResourceType.Organization => $"{Organization.PATH}{from.Id}/galaxy_credentials/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{from.Id}/credentials/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{from.Id}/credentials/",
+                ResourceType.Schedule => $"{Schedule.PATH}{from.Id}/credentials/",
+                ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{from.Id}/credentials/",
+                _ => throw new ArgumentException($"Invalid Resource Type: {from.Type}")
+            };
+
+            if (Force || ShouldProcess($"Credential [{credentialId}]", $"Disassociate from {from.Type} [{from.Id}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  credentialId },
+                    { "disassociate", true }
+                };
+
                 try
                 {
-                    var apiResult = DeleteResource($"{Credential.PATH}{Id}/");
-                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
                     {
-                        WriteVerbose($"Credential {Id} is removed.");
+                        WriteVerbose($"Credential {credentialId} is disassociated from {from.Type} [{from.Id}].");
                     }
                 }
                 catch (RestAPIException) { }
+            }
+        }
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"Credential [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Credential.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Credential {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+        protected override void ProcessRecord()
+        {
+            if (From != null) // disassociate
+            {
+                Disassociate(Id, From);
+            }
+            else
+            {
+                Delete(Id);
             }
         }
     }
