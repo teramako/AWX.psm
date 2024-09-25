@@ -491,6 +491,9 @@ Update a Host.
 ### [Update-Inventory](Update-Inventory.md)
 Update an Inventory.
 
+### [Update-JobTemplate](Update-JobTemplate.md)
+{{ Fill in the Synopsis }}
+
 ### [Update-Label](Update-Label.md)
 Update a Label.
 
