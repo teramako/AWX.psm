@@ -416,6 +416,9 @@ Remove a Credential.
 ### [Remove-CredentialType](Remove-CredentialType.md)
 Remove a CredentialType.
 
+### [Remove-ExecutionEnvironment](Remove-ExecutionEnvironment.md)
+Remove an ExecutionEnvironment.
+
 ### [Remove-Group](Remove-Group.md)
 Remove a Group.
 
