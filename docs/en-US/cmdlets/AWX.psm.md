@@ -422,6 +422,9 @@ Remove a Host
 ### [Remove-Inventory](Remove-Inventory.md)
 Remove an Inventory.
 
+### [Remove-JobTemplate](Remove-JobTemplate.md)
+Remove a JobTemplate.
+
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
 
