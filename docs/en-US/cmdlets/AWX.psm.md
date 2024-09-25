@@ -377,6 +377,9 @@ Create a Host.
 ### [New-Inventory](New-Inventory.md)
 Create an Inventory.
 
+### [New-JobTemplate](New-JobTemplate.md)
+Create a JobTemplate.
+
 ### [New-Label](New-Label.md)
 Create a Label.
 
@@ -418,6 +421,9 @@ Remove a Host
 
 ### [Remove-Inventory](Remove-Inventory.md)
 Remove an Inventory.
+
+### [Remove-JobTemplate](Remove-JobTemplate.md)
+Remove a JobTemplate.
 
 ### [Remove-Label](Remove-Label.md)
 Remove a Label.
@@ -487,6 +493,9 @@ Update a Host.
 
 ### [Update-Inventory](Update-Inventory.md)
 Update an Inventory.
+
+### [Update-JobTemplate](Update-JobTemplate.md)
+{{ Fill in the Synopsis }}
 
 ### [Update-Label](Update-Label.md)
 Update a Label.

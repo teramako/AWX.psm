@@ -64,3 +64,13 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-JobTemplate](Find-JobTemplate.md)
+
+[New-Jobtemplate](New-JobTemplate.md)
+
+[Update-JobTemplate](Update-JobTemplate.md)
+
+[Remove-JobTemplate](Remove-JobTemplate.md)
+
+[Invoke-JobTemplate](Invoke-JobTemplate.md)
+
+[Start-JobTemplate](Start-JobTemplate.md)

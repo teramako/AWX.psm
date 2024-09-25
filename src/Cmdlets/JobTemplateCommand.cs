@@ -1024,4 +1024,494 @@ namespace AWX.Cmdlets
             catch (RestAPIException) { }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "JobTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(JobTemplate))]
+    public class NewJobTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string Description { get; set; } = string.Empty;
+
+        [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Project])]
+        public ulong? Project { get; set; }
+
+        [Parameter(Mandatory = true)]
+        public string Playbook { get; set; } = string.Empty;
+
+        [Parameter()]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
+        public string? ExtraVars { get; set; }
+
+        [Parameter()]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public SwitchParameter ForceHandlers { get; set; }
+
+        [Parameter()]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        public string? StartAtTask { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
+
+        [Parameter()]
+        public SwitchParameter UseFactCache { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        public string? HostConfigKey { get; set; }
+
+        [Parameter()]
+        public SwitchParameter AskScmBranch { get; set; }
+        [Parameter()]
+        public SwitchParameter AskDiffMode { get; set; }
+        [Parameter()]
+        public SwitchParameter AskVariables { get; set; }
+        [Parameter()]
+        public SwitchParameter AskLimit { get; set; }
+        [Parameter()]
+        public SwitchParameter AskTags { get; set; }
+        [Parameter()]
+        public SwitchParameter AskSkipTags { get; set; }
+        [Parameter()]
+        public SwitchParameter AskJobType { get; set; }
+        [Parameter()]
+        public SwitchParameter AskVerbosity { get; set; }
+        [Parameter()]
+        public SwitchParameter AskInventory { get; set; }
+        [Parameter()]
+        public SwitchParameter AskCredential { get; set; }
+        [Parameter()]
+        public SwitchParameter AskExecutionEnvironment { get; set; }
+        [Parameter()]
+        public SwitchParameter AskLabels { get; set; }
+        [Parameter()]
+        public SwitchParameter AskForks { get; set; }
+        [Parameter()]
+        public SwitchParameter AskJobSliceCount { get; set; }
+
+        [Parameter()]
+        public SwitchParameter BecomeEnabled { get; set; }
+
+        [Parameter()]
+        public SwitchParameter DiffMode { get; set; }
+
+        [Parameter()]
+        public SwitchParameter AllowSimultaneous { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        [ValidateSet("github", "gitlab")]
+        public string? WebhookService { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? WebhookCredential { get; set; }
+
+        [Parameter()]
+        public SwitchParameter PreventInstanceGroupFallback { get; set; }
+
+        protected IDictionary<string, object> CreateSendData()
+        {
+            var dict = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "description", Description },
+                { "playbook", Playbook },
+            };
+            if (JobType != null)
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            if (Inventory != null)
+                dict.Add("inventory", Inventory);
+            if (Project != null)
+                dict.Add("project", Project);
+            if (ScmBranch != null)
+                dict.Add("scm_branch", ScmBranch);
+            if (Forks != null)
+                dict.Add("forks", Forks);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (Verbosity != null)
+                dict.Add("verbosity", (int)Verbosity);
+            if (!string.IsNullOrEmpty(ExtraVars))
+                dict.Add("extra_vars", ExtraVars);
+            if (Tags != null)
+                dict.Add("job_tags", Tags);
+            if (ForceHandlers)
+                dict.Add("force_handlers", true);
+            if (SkipTags != null)
+                dict.Add("skip_tags", SkipTags);
+            if (StartAtTask != null)
+                dict.Add("start_at_task", StartAtTask);
+            if (Timeout != null)
+                dict.Add("timeout", Timeout);
+            if (UseFactCache)
+                dict.Add("use_fact_cache", true);
+            if (ExecutionEnvironment != null)
+                dict.Add("execution_environment", ExecutionEnvironment);
+            if (HostConfigKey != null)
+                dict.Add("host_config_key", HostConfigKey);
+            if (AskScmBranch)
+                dict.Add("ask_scm_branch_on_launch", true);
+            if (AskDiffMode)
+                dict.Add("ask_diff_mode_on_launch", true);
+            if (AskVariables)
+                dict.Add("ask_variables_on_launch", true);
+            if (AskLimit)
+                dict.Add("ask_limit_on_launch", true);
+            if (AskTags)
+                dict.Add("ask_tags_on_launch", true);
+            if (AskSkipTags)
+                dict.Add("ask_skip_tags_on_launch", true);
+            if (AskJobType)
+                dict.Add("ask_job_type_on_launch", true);
+            if (AskVerbosity)
+                dict.Add("ask_verbosity_on_launch", true);
+            if (AskInventory)
+                dict.Add("ask_inventory_on_launch", true);
+            if (AskCredential)
+                dict.Add("ask_credential_on_launch", true);
+            if (AskExecutionEnvironment)
+                dict.Add("ask_execution_environment_on_launch", true);
+            if (AskLabels)
+                dict.Add("ask_labels_on_launch", true);
+            if (AskForks)
+                dict.Add("ask_forks_on_launch", true);
+            if (AskJobSliceCount)
+                dict.Add("ask_job_slice_count_on_launch", true);
+            if (BecomeEnabled)
+                dict.Add("become_enabled", true);
+            if (DiffMode)
+                dict.Add("diff_mode", true);
+            if (AllowSimultaneous)
+                dict.Add("allow_simultaneous", true);
+            if (JobSliceCount != null)
+                dict.Add("job_slice_count", JobSliceCount);
+            if (WebhookService != null)
+                dict.Add("webhook_service", WebhookService);
+            if (WebhookCredential != null)
+                dict.Add("webhook_credential", WebhookCredential);
+            if (PreventInstanceGroupFallback)
+                dict.Add("prevent_instance_group_fallback", true);
+
+            return dict;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                var apiResult = CreateResource<JobTemplate>(JobTemplate.PATH, sendData);
+                if (apiResult.Contents == null)
+                    return;
+
+                WriteObject(apiResult.Contents, false);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "JobTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(JobTemplate))]
+    public class UpdateJobTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.JobTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
+        public JobType? JobType { get; set; }
+
+        [Parameter()]
+        [AllowNull]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        [AllowNull]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Project])]
+        public ulong? Project { get; set; }
+
+        [Parameter()]
+        public string? Playbook { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
+        [AllowEmptyString]
+        public string? ExtraVars { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public bool? ForceHandlers { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? StartAtTask { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
+
+        [Parameter()]
+        public bool? UseFactCache { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? HostConfigKey { get; set; }
+
+        [Parameter()]
+        public bool? AskScmBranch { get; set; }
+        [Parameter()]
+        public bool? AskDiffMode { get; set; }
+        [Parameter()]
+        public bool? AskVariables { get; set; }
+        [Parameter()]
+        public bool? AskLimit { get; set; }
+        [Parameter()]
+        public bool? AskTags { get; set; }
+        [Parameter()]
+        public bool? AskSkipTags { get; set; }
+        [Parameter()]
+        public bool? AskJobType { get; set; }
+        [Parameter()]
+        public bool? AskVerbosity { get; set; }
+        [Parameter()]
+        public bool? AskInventory { get; set; }
+        [Parameter()]
+        public bool? AskCredential { get; set; }
+        [Parameter()]
+        public bool? AskExecutionEnvironment { get; set; }
+        [Parameter()]
+        public bool? AskLabels { get; set; }
+        [Parameter()]
+        public bool? AskForks { get; set; }
+        [Parameter()]
+        public bool? AskJobSliceCount { get; set; }
+
+        [Parameter()]
+        public bool? BecomeEnabled { get; set; }
+
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
+        [Parameter()]
+        public bool? AllowSimultaneous { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ValidateSet("github", "gitlab", "")]
+        public string? WebhookService { get; set; }
+
+        [Parameter()]
+        [AllowNull]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? WebhookCredential { get; set; }
+
+        [Parameter()]
+        public bool? PreventInstanceGroupFallback { get; set; }
+
+        protected IDictionary<string, object?> CreateSendData()
+        {
+            var dict = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                dict.Add("name", Name);
+            if (Description != null)
+                dict.Add("description", Description);
+            if (Playbook != null)
+                dict.Add("playbook", Playbook);
+            if (JobType != null)
+                dict.Add("job_type", $"{JobType}".ToLowerInvariant());
+            if (Inventory != null)
+                dict.Add("inventory", Inventory == 0 ? null : Inventory);
+            if (Project != null)
+                dict.Add("project", Project == 0 ? null : Project);
+            if (ScmBranch != null)
+                dict.Add("scm_branch", ScmBranch);
+            if (Forks != null)
+                dict.Add("forks", Forks);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (Verbosity != null)
+                dict.Add("verbosity", (int)Verbosity);
+            if (ExtraVars != null)
+                dict.Add("extra_vars", ExtraVars);
+            if (Tags != null)
+                dict.Add("job_tags", Tags);
+            if (ForceHandlers != null)
+                dict.Add("force_handlers", ForceHandlers);
+            if (SkipTags != null)
+                dict.Add("skip_tags", SkipTags);
+            if (StartAtTask != null)
+                dict.Add("start_at_task", StartAtTask);
+            if (Timeout != null)
+                dict.Add("timeout", Timeout);
+            if (UseFactCache != null)
+                dict.Add("use_fact_cache", UseFactCache);
+            if (ExecutionEnvironment != null)
+                dict.Add("execution_environment", ExecutionEnvironment == 0 ? null : ExecutionEnvironment);
+            if (HostConfigKey != null)
+                dict.Add("host_config_key", HostConfigKey);
+            if (AskScmBranch != null)
+                dict.Add("ask_scm_branch_on_launch", AskScmBranch);
+            if (AskDiffMode != null)
+                dict.Add("ask_diff_mode_on_launch", AskDiffMode);
+            if (AskVariables != null)
+                dict.Add("ask_variables_on_launch", AskVariables);
+            if (AskLimit != null)
+                dict.Add("ask_limit_on_launch", AskLimit);
+            if (AskTags != null)
+                dict.Add("ask_tags_on_launch", AskTags);
+            if (AskSkipTags != null)
+                dict.Add("ask_skip_tags_on_launch", AskSkipTags);
+            if (AskJobType != null)
+                dict.Add("ask_job_type_on_launch", AskJobType);
+            if (AskVerbosity != null)
+                dict.Add("ask_verbosity_on_launch", AskVerbosity);
+            if (AskInventory != null)
+                dict.Add("ask_inventory_on_launch", AskInventory);
+            if (AskCredential != null)
+                dict.Add("ask_credential_on_launch", AskCredential);
+            if (AskExecutionEnvironment != null)
+                dict.Add("ask_execution_environment_on_launch", AskExecutionEnvironment);
+            if (AskLabels != null)
+                dict.Add("ask_labels_on_launch", AskLabels);
+            if (AskForks != null)
+                dict.Add("ask_forks_on_launch", AskForks);
+            if (AskJobSliceCount != null)
+                dict.Add("ask_job_slice_count_on_launch", AskJobSliceCount);
+            if (BecomeEnabled != null)
+                dict.Add("become_enabled", BecomeEnabled);
+            if (DiffMode != null)
+                dict.Add("diff_mode", DiffMode);
+            if (AllowSimultaneous != null)
+                dict.Add("allow_simultaneous", AllowSimultaneous);
+            if (JobSliceCount != null)
+                dict.Add("job_slice_count", JobSliceCount);
+            if (WebhookService != null)
+                dict.Add("webhook_service", WebhookService);
+            if (WebhookCredential != null)
+                dict.Add("webhook_credential", WebhookCredential == 0 ? null : WebhookCredential);
+            if (PreventInstanceGroupFallback != null)
+                dict.Add("prevent_instance_group_fallback", PreventInstanceGroupFallback);
+
+            return dict;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"JobTemplate [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<JobTemplate>($"{JobTemplate.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "JobTemplate", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveJobTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.JobTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"JobTemplate [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{JobTemplate.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"JobTemplate {Id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
