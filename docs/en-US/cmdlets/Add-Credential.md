@@ -5,50 +5,54 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-Credential
+# Add-Credential
 
 ## SYNOPSIS
-Remove a Credential.
+Register a Credential.
 
 ## SYNTAX
 
 ```
-Remove-Credential [-Id] <UInt64> [-From <IResource>] [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Add-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a Credential.
+Register a Credential to the specified resource.
 
 Implements following Rest API:  
-- `/api/v2/credentials/{id}/` (DELETE)
+- `/api/v2/organizations/{id}/galaxy_credentials/` (POST)  
+- `/api/v2/inventory_sources/{id}/credentials/` (POST)  
+- `/api/v2/job_templates/{id}/credentials/` (POST)  
+- `/api/v2/schedules/{id}/credentials/` (POST)  
+- `/api/v2/workflow_job_template_nodes/{id}/credentials/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-Credential -Id 2
+PS C:\> Add-Credential -Id 3 -To @{Type="JobTemplate"; Id=10}
 ```
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
+### -Id
+Credential ID.
 
 ```yaml
-Type: SwitchParameter
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -From
-Target resource to be removed from.
+### -To
+Target resource to be added to.
 
 Following resource is available:  
 - `Organization` (galaxy-token only)  
@@ -62,25 +66,10 @@ Type: IResource
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Id
-Credential ID to be removed.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -121,11 +110,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-Credential ID.
-
 ## OUTPUTS
 
-### None
+### System.Object
 ## NOTES
 
 ## RELATED LINKS
@@ -136,6 +123,6 @@ Credential ID.
 
 [New-Credential](New-Credential.md)
 
-[Add-Credential](Add-Credential.md)
-
 [Update-Credential](Update-Credential.md)
+
+[Remove-Credential](Remove-Credential.md)

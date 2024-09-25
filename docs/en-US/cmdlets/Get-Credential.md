@@ -69,4 +69,6 @@ One or more database IDs.
 
 [Update-Credential](Update-Credential.md)
 
+[Add-Credential](Add-Credential.md)
+
 [Remove-Credential](Remove-Credential.md)

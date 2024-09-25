@@ -292,4 +292,6 @@ Database ID for the ResourceType
 
 [Update-Credential](Update-Credential.md)
 
+[Add-Credential](Add-Credential.md)
+
 [Remove-Credential](Remove-Credential.md)
