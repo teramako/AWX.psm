@@ -114,4 +114,6 @@ Credential ID.
 
 [New-Credential](New-Credential.md)
 
+[Add-Credential](Add-Credential.md)
+
 [Update-Credential](Update-Credential.md)

@@ -5,36 +5,39 @@ online version:
 schema: 2.0.0
 ---
 
-# New-Credential
+# Add-Credential
 
 ## SYNOPSIS
-Create a Credential.
+Register a Credential.
 
 ## SYNTAX
 
 ```
-New-Credential -CredentialType <UInt64> -Name <String> [-Description <String>] [-Inputs <IDictionary>]
- [-Owner <IResource>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Add-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Create a Credential.
+Register a Credential to the specified resource.
 
 Implements following Rest API:  
-- `/api/v2/credentials/` (POST)
+- `/api/v2/organizations/{id}/galaxy_credentials/` (POST)  
+- `/api/v2/inventory_sources/{id}/credentials/` (POST)  
+- `/api/v2/job_templates/{id}/credentials/` (POST)  
+- `/api/v2/schedules/{id}/credentials/` (POST)  
+- `/api/v2/workflow_job_template_nodes/{id}/credentials/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> $inputs = @{ username = "foo_user"; password = "P@ssw0rd" }
-PS C:\> New-Credential -CredentialType 1 -Name Foo-Cred -Input $inputs -Owner (Get-Organization -Id 2)
+PS C:\> Add-Credential -Id 3 -To @{Type="JobTemplate"; Id=10}
 ```
 
 ## PARAMETERS
 
-### -CredentialType
-CredentialType ID.
+### -Id
+Credential ID.
 
 ```yaml
 Type: UInt64
@@ -42,67 +45,29 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Description
-Optional description of the Credential.
+### -To
+Target resource to be added to.
 
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Inputs
-
-```yaml
-Type: IDictionary
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Name
-Name of the Credential.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Owner
-Grant role of the specified resource as owner.
-If ommited, used User ID of the current config.
+Following resource is available:  
+- `Organization` (galaxy-token only)  
+- `InventorySource`  
+- `JobTemplate`  
+- `Schedule`  
+- `WorkflowJobTemplateNode`
 
 ```yaml
 Type: IResource
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -144,12 +109,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
+### System.UInt64
 ## OUTPUTS
 
-### AWX.Resources.Credential
-New created Credential object.
-
+### System.Object
 ## NOTES
 
 ## RELATED LINKS
@@ -158,8 +121,8 @@ New created Credential object.
 
 [Find-Credential](Find-Credential.md)
 
-[Update-Credential](Update-Credential.md)
+[New-Credential](New-Credential.md)
 
-[Add-Credential](Add-Credential.md)
+[Update-Credential](Update-Credential.md)
 
 [Remove-Credential](Remove-Credential.md)

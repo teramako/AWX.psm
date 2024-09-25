@@ -176,6 +176,52 @@ namespace AWX.Cmdlets
         }
     }
 
+    [Cmdlet(VerbsCommon.Add, "Credential", SupportsShouldProcess = true)]
+    public class AddCredentialCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.Schedule,
+                ResourceType.WorkflowJobTemplateNode
+        ])]
+        public IResource To { get; set; } = new Resource(0 ,0);
+
+        protected override void ProcessRecord()
+        {
+            var path = To.Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{To.Id}/galaxy_credentials/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{To.Id}/credentials/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{To.Id}/credentials/",
+                ResourceType.Schedule => $"{Schedule.PATH}{To.Id}/credentials/",
+                ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{To.Id}/credentials/",
+                _ => throw new ArgumentException($"Invalid resource type: {To.Type}")
+            };
+            if (ShouldProcess($"Credential [{Id}]", $"Add to {To.Type} [{To.Id}]"))
+            {
+                var sendData = new Dictionary<string, object>()
+                {
+                    { "id",  Id },
+                };
+                try
+                {
+                    var apiResult = CreateResource<string>(path, sendData);
+                    if (apiResult.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Credential {Id} is added to {To.Type} [{To.Id}].");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
     [Cmdlet(VerbsCommon.Remove, "Credential", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     public class RemoveCredentialCommand : APICmdletBase
     {

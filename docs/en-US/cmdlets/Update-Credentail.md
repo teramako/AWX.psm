@@ -176,4 +176,6 @@ Updated Credential object.
 
 [New-Credential](New-Credential.md)
 
+[Add-Credential](Add-Credential.md)
+
 [Remove-Credential](Remove-Credential.md)
