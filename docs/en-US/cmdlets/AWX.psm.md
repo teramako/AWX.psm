@@ -11,6 +11,9 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
+### [Add-Credential](Add-Credential.md)
+Register a Credential.
+
 ### [Add-Group](Add-Group.md)
 Associate the Group to a Group.
 
@@ -495,7 +498,7 @@ Update a Host.
 Update an Inventory.
 
 ### [Update-JobTemplate](Update-JobTemplate.md)
-{{ Fill in the Synopsis }}
+Update a JobTemplate.
 
 ### [Update-Label](Update-Label.md)
 Update a Label.
