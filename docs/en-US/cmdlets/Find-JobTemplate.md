@@ -232,6 +232,12 @@ Database ID for the ResourceType
 
 [Get-JobTemplate](Get-JobTemplate.md)
 
+[New-Jobtemplate](New-JobTemplate.md)
+
+[Update-JobTemplate](Update-JobTemplate.md)
+
+[Remove-JobTemplate](Remove-JobTemplate.md)
+
 [Find-UnifiedJobTemplate](Find-UnifiedJobTemplate.md)
 
 [Invoke-JobTemplate](Invoke-JobTemplate.md)

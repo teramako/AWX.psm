@@ -689,3 +689,11 @@ New created JobTemplate object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-JobTemplate](Get-JobTemplate.md)
+
+[Find-JobTemplate](Find-JobTemplate.md)
+
+[Update-Jobtemplate](Update-JobTemplate.md)
+
+[Remove-JobTemplate](Remove-JobTemplate.md)

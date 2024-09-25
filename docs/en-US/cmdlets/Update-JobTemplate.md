@@ -707,3 +707,11 @@ Updated JobTemplate object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-JobTemplate](Get-JobTemplate.md)
+
+[Find-JobTemplate](Find-JobTemplate.md)
+
+[New-Jobtemplate](New-JobTemplate.md)
+
+[Remove-JobTemplate](Remove-JobTemplate.md)
