@@ -28,7 +28,7 @@ New-JobTemplate -Name <String> [-Description <String>] [-JobType <JobType>] [-In
 Create a JobTemplate.
 
 Implementation of following API:  
-- `/api/v2/job_templates/{id}/` (POST)
+- `/api/v2/job_templates/` (POST)
 
 ## EXAMPLES
 
