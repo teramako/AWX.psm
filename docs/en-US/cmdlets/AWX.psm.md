@@ -371,6 +371,9 @@ Create a Credential.
 ### [New-CredentialType](New-CredentialType.md)
 Create a CredentialType.
 
+### [New-ExecutionEnvironment](New-ExecutionEnvironment.md)
+Create an ExecutionEnvironment.
+
 ### [New-Group](New-Group.md)
 Create a Group.
 
@@ -415,6 +418,9 @@ Remove a Credential.
 
 ### [Remove-CredentialType](Remove-CredentialType.md)
 Remove a CredentialType.
+
+### [Remove-ExecutionEnvironment](Remove-ExecutionEnvironment.md)
+Remove an ExecutionEnvironment.
 
 ### [Remove-Group](Remove-Group.md)
 Remove a Group.
@@ -487,6 +493,9 @@ Update a Credential.
 
 ### [Update-CredentialType](Update-CredentialType.md)
 Update a CredentialType.
+
+### [Update-ExecutionEnvironment](Update-ExecutionEnvironment.md)
+Update an ExecutionEnvironment.
 
 ### [Update-Group](Update-Group.md)
 Update a Group.
