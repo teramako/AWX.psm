@@ -75,6 +75,7 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter(Mandatory = true)]
@@ -85,7 +86,8 @@ namespace AWX.Cmdlets
         public string AuthorizationGrantType { get; set; } = string.Empty;
 
         [Parameter()]
-        public string RedirectUris { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? RedirectUris { get; set; }
 
         [Parameter(Mandatory = true)]
         public ApplicationClientType ClientType { get; set; }
@@ -102,9 +104,9 @@ namespace AWX.Cmdlets
                 { "authorization_grant_type", AuthorizationGrantType },
                 { "client_type", $"{ClientType}".ToLowerInvariant() }
             };
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
-            if (!string.IsNullOrEmpty(RedirectUris))
+            if (RedirectUris != null)
                 sendData.Add("redirect_uris", RedirectUris);
             if (SkipAuthorization)
                 sendData.Add("skip_authorization", true);

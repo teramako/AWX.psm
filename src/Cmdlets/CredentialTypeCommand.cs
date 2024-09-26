@@ -76,7 +76,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter(Mandatory = true, Position = 1)]
         [ValidateSet("net", "cloud")]
@@ -93,11 +94,12 @@ namespace AWX.Cmdlets
             var sendData = new Dictionary<string, object>()
             {
                 { "name", Name },
-                { "description", Description },
                 { "kind", Kind },
                 { "inputs", Inputs },
                 { "injectors", Injectors }
             };
+            if (Description != null)
+                sendData.Add("description", Description);
             var dataDescription = Json.Stringify(sendData, pretty: true);
             if (ShouldProcess(dataDescription))
             {
@@ -153,6 +155,7 @@ namespace AWX.Cmdlets
         public string? Name { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]

@@ -229,7 +229,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter(Mandatory = true)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
@@ -249,12 +250,14 @@ namespace AWX.Cmdlets
             var sendData = new Dictionary<string, object>()
             {
                 { "name", Name },
-                { "description", Description },
                 { "organization", Organization },
                 { "notification_type", $"{Type}".ToLowerInvariant() },
                 { "notification_configuration", Configuration },
                 { "messages", Messages }
             };
+            if (Description != null)
+                sendData.Add("description", Description);
+
             var dataDescription = Json.Stringify(sendData, pretty: true);
             if (ShouldProcess(dataDescription))
             {
@@ -304,7 +307,7 @@ namespace AWX.Cmdlets
             var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
                 sendData.Add("name", Name);
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
             if (Organization != null)
                 sendData.Add("organization", Organization);

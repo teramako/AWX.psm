@@ -113,7 +113,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter()]
         public IDictionary Inputs { get; set; } = new Hashtable();
@@ -134,7 +135,7 @@ namespace AWX.Cmdlets
                 { "credential_type", CredentialType },
                 { "inputs", Inputs }
             };
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
             if (Owner != null)
             {
@@ -313,6 +314,7 @@ namespace AWX.Cmdlets
         public string? Name { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]

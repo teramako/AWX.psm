@@ -83,7 +83,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter(Mandatory = true)]
         public string RRule { get; set; } = string.Empty;
@@ -102,6 +103,7 @@ namespace AWX.Cmdlets
         public IResource Template { get; set; } = new Resource(0, 0);
 
         [Parameter()]
+        [AllowEmptyString]
         [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
         public string? ExtraData { get; set; }
 
@@ -110,6 +112,7 @@ namespace AWX.Cmdlets
         public ulong? Inventory { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? ScmBranch { get; set; }
 
         [Parameter()]
@@ -117,12 +120,15 @@ namespace AWX.Cmdlets
         public JobType? JobType { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Tags { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? SkipTags { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Limit { get; set; }
 
         [Parameter()]
@@ -151,22 +157,23 @@ namespace AWX.Cmdlets
             var dict = new Dictionary<string, object?>()
             {
                 { "name", Name },
-                { "description", Description },
                 { "rrule", RRule }
             };
+            if (Description != null)
+                dict.Add("description", Description);
             if (Disabled)
                 dict.Add("enabled", false);
-            if (!string.IsNullOrEmpty(ExtraData))
+            if (ExtraData != null)
                 dict.Add("extra_data", ExtraData);
             if (Inventory != null)
                 dict.Add("inventory", Inventory);
-            if (!string.IsNullOrEmpty(ScmBranch))
+            if (ScmBranch != null)
                 dict.Add("scm_branch", ScmBranch);
             if (JobType != null)
                 dict.Add("job_type", $"{JobType}".ToLowerInvariant());
-            if (!string.IsNullOrEmpty(Tags))
+            if (Tags != null)
                 dict.Add("job_tags", Tags);
-            if (!string.IsNullOrEmpty(SkipTags))
+            if (SkipTags != null)
                 dict.Add("skip_tags", SkipTags);
             if (Limit != null)
                 dict.Add("limit", Limit);
@@ -222,6 +229,7 @@ namespace AWX.Cmdlets
         public string? Name { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]
@@ -231,6 +239,7 @@ namespace AWX.Cmdlets
         public bool? Enable { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
         public string? ExtraData { get; set; }
 
@@ -239,6 +248,7 @@ namespace AWX.Cmdlets
         public ulong? Inventory { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? ScmBranch { get; set; }
 
         [Parameter()]
@@ -246,12 +256,15 @@ namespace AWX.Cmdlets
         public JobType? JobType { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Tags { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? SkipTags { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Limit { get; set; }
 
         [Parameter()]
@@ -286,7 +299,7 @@ namespace AWX.Cmdlets
                 dict.Add("rrule", RRule);
             if (Enable != null)
                 dict.Add("enabled", Enable);
-            if (!string.IsNullOrEmpty(ExtraData))
+            if (ExtraData != null)
                 dict.Add("extra_data", ExtraData);
             if (Inventory != null)
                 dict.Add("inventory", Inventory);

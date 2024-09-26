@@ -1033,7 +1033,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter()]
         [ValidateSet(nameof(Resources.JobType.Run), nameof(Resources.JobType.Check))]
@@ -1051,6 +1052,7 @@ namespace AWX.Cmdlets
         public string Playbook { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? ScmBranch { get; set; }
 
         [Parameter()]
@@ -1058,25 +1060,30 @@ namespace AWX.Cmdlets
         public int? Forks { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Limit { get; set; }
 
         [Parameter()]
         public JobVerbosity? Verbosity { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         [ExtraVarsArgumentTransformation] // Translate IDictionary to JSON string
         public string? ExtraVars { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Tags { get; set; }
 
         [Parameter()]
         public SwitchParameter ForceHandlers { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? SkipTags { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? StartAtTask { get; set; }
 
         [Parameter()]
@@ -1090,6 +1097,7 @@ namespace AWX.Cmdlets
         public ulong? ExecutionEnvironment { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? HostConfigKey { get; set; }
 
         [Parameter()]
@@ -1135,7 +1143,8 @@ namespace AWX.Cmdlets
         public int? JobSliceCount { get; set; }
 
         [Parameter()]
-        [ValidateSet("github", "gitlab")]
+        [AllowEmptyString]
+        [ValidateSet("github", "gitlab", "")]
         public string? WebhookService { get; set; }
 
         [Parameter()]
@@ -1150,9 +1159,10 @@ namespace AWX.Cmdlets
             var dict = new Dictionary<string, object>()
             {
                 { "name", Name },
-                { "description", Description },
                 { "playbook", Playbook },
             };
+            if (Description != null)
+                dict.Add("description", Description);
             if (JobType != null)
                 dict.Add("job_type", $"{JobType}".ToLowerInvariant());
             if (Inventory != null)
@@ -1167,7 +1177,7 @@ namespace AWX.Cmdlets
                 dict.Add("limit", Limit);
             if (Verbosity != null)
                 dict.Add("verbosity", (int)Verbosity);
-            if (!string.IsNullOrEmpty(ExtraVars))
+            if (ExtraVars != null)
                 dict.Add("extra_vars", ExtraVars);
             if (Tags != null)
                 dict.Add("job_tags", Tags);
@@ -1287,6 +1297,7 @@ namespace AWX.Cmdlets
         public int? Forks { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Limit { get; set; }
 
         [Parameter()]

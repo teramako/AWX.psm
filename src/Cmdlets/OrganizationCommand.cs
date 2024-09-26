@@ -85,6 +85,7 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]
@@ -100,7 +101,7 @@ namespace AWX.Cmdlets
             {
                 { "name", Name }
             };
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
             if (MaxHosts > 0)
                 sendData.Add("max_hosts", MaxHosts);

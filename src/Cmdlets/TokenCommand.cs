@@ -110,12 +110,13 @@ namespace AWX.Cmdlets
         public string Scope { get; set; } = "write";
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         protected override void ProcessRecord()
         {
             var sendData = new Dictionary<string, object>();
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
             sendData.Add("scope", Scope);
 
@@ -189,6 +190,7 @@ namespace AWX.Cmdlets
         public ulong Id { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]

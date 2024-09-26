@@ -137,7 +137,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter(Mandatory = true)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
@@ -161,9 +162,11 @@ namespace AWX.Cmdlets
 
         [Parameter(ParameterSetName = "Git")]
         [Parameter(ParameterSetName = "Svn")]
+        [AllowEmptyString]
         public string ScmBranch { get; set; } = string.Empty;
 
         [Parameter(ParameterSetName = "Git")]
+        [AllowEmptyString]
         public string ScmRefspec { get; set; } = string.Empty;
 
         [Parameter(ParameterSetName = "Git")]
@@ -230,9 +233,9 @@ namespace AWX.Cmdlets
                 sendData.Add("local_path", LocalPath);
             if (!string.IsNullOrEmpty(ScmUrl))
                 sendData.Add("scm_url", ScmUrl);
-            if (!string.IsNullOrEmpty(ScmBranch))
+            if (ScmBranch != null)
                 sendData.Add("scm_branch", ScmBranch);
-            if (!string.IsNullOrEmpty(ScmRefspec))
+            if (ScmRefspec != null)
                 sendData.Add("scm_refspec", ScmRefspec);
             if (Credential > 0)
                 sendData.Add("credential", Credential);

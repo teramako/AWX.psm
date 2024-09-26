@@ -100,9 +100,11 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         [ExtraVarsArgumentTransformation]
         public string? Variables { get; set; }
 
@@ -113,9 +115,9 @@ namespace AWX.Cmdlets
                 { "name", Name },
                 { "inventory", Inventory },
             };
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
-            if (!string.IsNullOrEmpty(Variables))
+            if (Variables != null)
                 sendData.Add("variables", Variables);
 
             var dataDescription = Json.Stringify(sendData, pretty: true);

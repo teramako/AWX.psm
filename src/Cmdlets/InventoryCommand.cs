@@ -105,9 +105,11 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         [ExtraVarsArgumentTransformation]
         public string? Variables { get; set; }
 
@@ -127,9 +129,9 @@ namespace AWX.Cmdlets
                 { "name", Name },
                 { "organization", Organization },
             };
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
-            if (!string.IsNullOrEmpty(Variables))
+            if (Variables != null)
                 sendData.Add("variables", Variables);
             if (PreventInstanceGroupFallback)
                 sendData.Add("prevent_instance_group_fallback", true);

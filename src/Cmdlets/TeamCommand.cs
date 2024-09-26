@@ -87,6 +87,7 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string Description { get; set; } = string.Empty;
 
         protected override void ProcessRecord()
@@ -152,7 +153,8 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
-        public string Description { get; set; } = string.Empty;
+        [AllowEmptyString]
+        public string? Description { get; set; }
 
         [Parameter()]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
@@ -163,7 +165,7 @@ namespace AWX.Cmdlets
             var sendData = new Dictionary<string, object>();
             if (!string.IsNullOrEmpty(Name))
                 sendData.Add("name", Name);
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
             if (Organization > 0)
                 sendData.Add("organization", Organization);

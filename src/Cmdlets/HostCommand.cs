@@ -117,12 +117,15 @@ namespace AWX.Cmdlets
         public string Name { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? Description { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string? InstanceId { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         [ExtraVarsArgumentTransformation]
         public string? Variables { get; set; }
 
@@ -136,11 +139,11 @@ namespace AWX.Cmdlets
                 { "name", Name },
                 { "inventory", Inventory },
             };
-            if (!string.IsNullOrEmpty(Description))
+            if (Description != null)
                 sendData.Add("description", Description);
-            if (!string.IsNullOrEmpty(InstanceId))
+            if (InstanceId != null)
                 sendData.Add("instance_id", InstanceId);
-            if (!string.IsNullOrEmpty(Variables))
+            if (Variables != null)
                 sendData.Add("variables", Variables);
             if (Disabled)
                 sendData.Add("enabled", false);
@@ -181,6 +184,7 @@ namespace AWX.Cmdlets
         public bool? Enabled { get; set; } = null;
 
         [Parameter()]
+        [AllowEmptyString]
         public string? InstanceId { get; set; }
 
         [Parameter()]

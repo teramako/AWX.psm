@@ -166,12 +166,15 @@ namespace AWX.Cmdlets
         public SecureString? Password { get; set; }
 
         [Parameter()]
+        [AllowEmptyString]
         public string FirstName { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string LastName { get; set; } = string.Empty;
 
         [Parameter()]
+        [AllowEmptyString]
         public string Email { get; set; } = string.Empty;
 
         [Parameter()]
