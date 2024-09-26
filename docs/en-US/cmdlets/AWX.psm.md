@@ -527,5 +527,8 @@ Update an AccessToken.
 ### [Update-User](Update-User.md)
 Update a User.
 
+### [Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+Update a WorkflowJobTemplate.
+
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.

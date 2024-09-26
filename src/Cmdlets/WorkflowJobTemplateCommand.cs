@@ -689,4 +689,134 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "WorkflowJobTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(WorkflowJobTemplate))]
+    public class UpdateWorkflowJobTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? ExtraVars { get; set; }
+
+        [Parameter()]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        public bool? AskScmBranch { get; set; }
+        [Parameter()]
+        public bool? AskVariables { get; set; }
+        [Parameter()]
+        public bool? AskLimit { get; set; }
+        [Parameter()]
+        public bool? AskTags { get; set; }
+        [Parameter()]
+        public bool? AskSkipTags { get; set; }
+        [Parameter()]
+        public bool? AskInventory { get; set; }
+        [Parameter()]
+        public bool? AskLabels { get; set; }
+
+        [Parameter()]
+        [ValidateSet("github", "gitlab")]
+        public string? WebhookService { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? WebhookCredential { get; set; }
+
+        [Parameter()]
+        public bool? AllowSimultaneous { get; set; }
+
+        protected IDictionary<string, object?> CreateSendData()
+        {
+            var dict = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                dict.Add("name", Name);
+            if (Description != null)
+                dict.Add("description", Description);
+            if (Organization != null)
+                dict.Add("organization", Organization == 0 ? null : Organization);
+            if (Inventory != null)
+                dict.Add("inventory", Inventory == 0 ? null : Inventory);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (ScmBranch != null)
+                dict.Add("scm_branch", ScmBranch);
+            if (ExtraVars != null)
+                dict.Add("extra_vars", ExtraVars);
+            if (Tags != null)
+                dict.Add("job_tags", Tags);
+            if (SkipTags != null)
+                dict.Add("skip_tags", SkipTags);
+            if (AskScmBranch != null)
+                dict.Add("ask_scm_branch_on_launch", AskScmBranch);
+            if (AskVariables != null)
+                dict.Add("ask_variables_on_launch", AskVariables);
+            if (AskLimit != null)
+                dict.Add("ask_limit_on_launch", AskLimit);
+            if (AskTags != null)
+                dict.Add("ask_tags_on_launch", AskTags );
+            if (AskSkipTags != null)
+                dict.Add("ask_skip_tags_on_launch", AskSkipTags);
+            if (AskInventory != null)
+                dict.Add("ask_inventory_on_launch", AskInventory);
+            if (AskLabels != null)
+                dict.Add("ask_labels_on_launch", AskLabels);
+            if (WebhookService != null)
+                dict.Add("webhook_service", WebhookService);
+            if (WebhookCredential != null)
+                dict.Add("webhook_credential", WebhookCredential);
+            if (AllowSimultaneous != null)
+                dict.Add("allow_simultaneous", AllowSimultaneous);
+
+            return dict;
+        }
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"WorkflowJobTemplate [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<WorkflowJobTemplate>($"{WorkflowJobTemplate.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
