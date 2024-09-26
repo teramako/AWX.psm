@@ -410,6 +410,9 @@ Create an AccessToken.
 ### [New-User](New-User.md)
 Create a User.
 
+### [New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
+Create a WorkflowJobTemplate.
+
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
 
@@ -457,6 +460,9 @@ Remove an AccessToken.
 
 ### [Remove-User](Remove-User.md)
 Remove a User
+
+### [Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
+Remove a WorkflowJobTemplate.
 
 ### [Revoke-Role](Revoke-Role.md)
 Revoke Roles.
@@ -532,6 +538,9 @@ Update an AccessToken.
 
 ### [Update-User](Update-User.md)
 Update a User.
+
+### [Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+Update a WorkflowJobTemplate.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
