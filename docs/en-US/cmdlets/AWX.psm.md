@@ -455,6 +455,9 @@ Remove an AccessToken.
 ### [Remove-User](Remove-User.md)
 Remove a User
 
+### [Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
+Remove a WorkflowJobTemplate.
+
 ### [Revoke-Role](Revoke-Role.md)
 Revoke Roles.
 
