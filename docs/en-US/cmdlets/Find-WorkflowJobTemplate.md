@@ -218,6 +218,12 @@ Database ID for `Organization`
 
 [Find-UnifiedJobTemplate](Find-UnifiedJobTemplate.md)
 
+[New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
+
+[Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+
+[Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
+
 [Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
 
 [Find-WorkflowJobTemplateNode](Find-WorkflowJobTemplateNode.md)

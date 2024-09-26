@@ -370,3 +370,11 @@ New created WorkflowJobTemplate object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-WorkflowJobTemplate](Get-WorkflowJobTemplate.md)
+
+[Find-WorkflowJobTemplate](Find-WorkflowJobTemplate.md)
+
+[Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+
+[Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
