@@ -407,6 +407,9 @@ Create an AccessToken.
 ### [New-User](New-User.md)
 Create a User.
 
+### [New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
+Create a WorkflowJobTemplate.
+
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
 

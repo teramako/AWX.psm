@@ -562,4 +562,131 @@ namespace AWX.Cmdlets
             catch (RestAPIException) { }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "WorkflowJobTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(WorkflowJobTemplate))]
+    public class NewWorkflowJobTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        public string? ExtraVars { get; set; }
+
+        [Parameter()]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        public SwitchParameter AskScmBranch { get; set; }
+        [Parameter()]
+        public SwitchParameter AskVariables { get; set; }
+        [Parameter()]
+        public SwitchParameter AskLimit { get; set; }
+        [Parameter()]
+        public SwitchParameter AskTags { get; set; }
+        [Parameter()]
+        public SwitchParameter AskSkipTags { get; set; }
+        [Parameter()]
+        public SwitchParameter AskInventory { get; set; }
+        [Parameter()]
+        public SwitchParameter AskLabels { get; set; }
+
+        [Parameter()]
+        [ValidateSet("github", "gitlab")]
+        public string? WebhookService { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? WebhookCredential { get; set; }
+
+        [Parameter()]
+        public SwitchParameter AllowSimultaneous { get; set; }
+
+        protected IDictionary<string, object> CreateSendData()
+        {
+            var dict = new Dictionary<string, object>()
+            {
+                { "name", Name },
+            };
+            if (Description != null)
+                dict.Add("description", Description);
+            if (Organization != null)
+                dict.Add("organization", Organization);
+            if (Inventory != null)
+                dict.Add("inventory", Inventory);
+            if (Limit != null)
+                dict.Add("limit", Limit);
+            if (ScmBranch != null)
+                dict.Add("scm_branch", ScmBranch);
+            if (ExtraVars != null)
+                dict.Add("extra_vars", ExtraVars);
+            if (Tags != null)
+                dict.Add("job_tags", Tags);
+            if (SkipTags != null)
+                dict.Add("skip_tags", SkipTags);
+            if (AskScmBranch)
+                dict.Add("ask_scm_branch_on_launch", true);
+            if (AskVariables)
+                dict.Add("ask_variables_on_launch", true);
+            if (AskLimit)
+                dict.Add("ask_limit_on_launch", true);
+            if (AskTags)
+                dict.Add("ask_tags_on_launch", true);
+            if (AskSkipTags)
+                dict.Add("ask_skip_tags_on_launch", true);
+            if (AskInventory)
+                dict.Add("ask_inventory_on_launch", true);
+            if (AskLabels)
+                dict.Add("ask_labels_on_launch", true);
+            if (WebhookService != null)
+                dict.Add("webhook_service", WebhookService);
+            if (WebhookCredential != null)
+                dict.Add("webhook_credential", WebhookCredential);
+            if (AllowSimultaneous)
+                dict.Add("allow_simultaneous", true);
+
+            return dict;
+        }
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<WorkflowJobTemplate>(WorkflowJobTemplate.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
