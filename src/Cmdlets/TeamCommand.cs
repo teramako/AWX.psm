@@ -77,7 +77,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.New, "Team", SupportsShouldProcess = true)]
     [OutputType(typeof(Team))]
-    public class AddTeamCommand : APICmdletBase
+    public class NewTeamCommand : APICmdletBase
     {
         [Parameter(Mandatory = true)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
