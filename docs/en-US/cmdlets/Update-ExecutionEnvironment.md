@@ -13,7 +13,7 @@ Update an ExecutionEnvironment.
 ## SYNTAX
 
 ```
-Update-ExecutionEnvironment [-Id] <UInt64> [-Name <String>] [-Description <String>] -Image <String>
+Update-ExecutionEnvironment [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Image <String>]
  [-Organization <UInt64>] [-Credential <UInt64>] [-Pull <String>]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
@@ -23,7 +23,6 @@ Update an ExecutionEnvironment.
 
 Implements following Rest API:  
 - `/api/v2/execution_environments/{id}/` (PATCH)
-
 
 ## EXAMPLES
 
@@ -88,7 +87,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
