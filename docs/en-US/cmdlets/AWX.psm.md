@@ -545,5 +545,8 @@ Update a User.
 ### [Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
 Update a WorkflowJobTemplate.
 
+### [Update-WorkflowJobTemplateNode](Update-WorkflowJobTemplateNode.md)
+Update a WorkflowJobTemplateNode.
+
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.

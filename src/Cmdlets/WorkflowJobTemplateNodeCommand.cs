@@ -346,4 +346,138 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "WorkflowJobTemplateNode", SupportsShouldProcess = true)]
+    [OutputType(typeof(WorkflowJobTemplateNode))]
+    public class UpdateWorkflowJobTemplateNodeCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        [Alias("Template")]
+        [ResourceIdTransformation(AcceptableTypes = [
+                ResourceType.Project,
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.SystemJobTemplate,
+                ResourceType.WorkflowJobTemplate,
+        ])]
+        public ulong? UnifiedJobTemplate { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ExtraVarsArgumentTransformation]
+        public string? ExtraData { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Inventory])]
+        public ulong? Inventory { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        [ValidateSet("run", "check", "")]
+        public string? JobType { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Tags { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? SkipTags { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        public bool? DiffMode { get; set; }
+
+        [Parameter()]
+        public JobVerbosity? Verbosity { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Forks { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? JobSliceCount { get; set; }
+
+        [Parameter()]
+        public int? Timeout { get; set; }
+
+        [Parameter()]
+        public bool? AllParentsMustConverge { get; set; }
+
+        [Parameter()]
+        public string? Identifier { get; set; }
+
+        private Dictionary<string, object?> CreateSendData()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (UnifiedJobTemplate != null)
+                sendData.Add("unified_job_template", UnifiedJobTemplate == 0 ? null : UnifiedJobTemplate);
+            if (ExtraData != null)
+                sendData.Add("extra_data", Yaml.DeserializeToDict(ExtraData));
+            if (Inventory != null)
+                sendData.Add("inventory", Inventory == 0 ? null : Inventory);
+            if (ScmBranch != null)
+                sendData.Add("scm_branch", ScmBranch);
+            if (JobType != null)
+                sendData.Add("job_type", JobType);
+            if (Tags != null)
+                sendData.Add("job_tags", Tags);
+            if (SkipTags != null)
+                sendData.Add("skip_tags", SkipTags);
+            if (Limit != null)
+                sendData.Add("limit", Limit);
+            if (DiffMode != null)
+                sendData.Add("diff_mode", DiffMode);
+            if (Verbosity != null)
+                sendData.Add("verbosity", (int)Verbosity);
+            if (ExecutionEnvironment != null)
+                sendData.Add("execution_environment", ExecutionEnvironment == 0 ? null : ExecutionEnvironment);
+            if (Forks != null)
+                sendData.Add("forks", Forks);
+            if (JobSliceCount != null)
+                sendData.Add("job_slice_count", JobSliceCount);
+            if (Timeout != null)
+                sendData.Add("timeout", Timeout);
+            if (AllParentsMustConverge != null)
+                sendData.Add("all_parents_must_converge", AllParentsMustConverge);
+            if (Identifier != null)
+                sendData.Add("identifier", Identifier);
+            return sendData;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var path = $"{WorkflowJobTemplateNode.PATH}{Id}/";
+            var sendData = CreateSendData();
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"WorkflowJobTemplateNode [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<WorkflowJobTemplateNode>($"{WorkflowJobTemplateNode.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
