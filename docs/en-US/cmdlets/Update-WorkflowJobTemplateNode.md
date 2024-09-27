@@ -345,3 +345,15 @@ Updated WorkflowJobTemplateNode object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
+
+[Find-WorkflowJobTemplateNode](Find-WorkflowJobTemplateNode.md)
+
+[New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
+
+[Remove-WorkflowJobTemplateNode](Remove-WorkflowJobTemplateNode.md)
+
+[Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
+
+[Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)

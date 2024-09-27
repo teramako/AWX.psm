@@ -68,3 +68,13 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-WorkflowJobTemplateNode](Find-WorkflowJobTemplateNode.md)
+
+[New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
+
+[Update-WorkflowJobTemplateNode](Update-WorkflowJobTemplateNode.md)
+
+[Remove-WorkflowJobTemplateNode](Remove-WorkflowJobTemplateNode.md)
+
+[Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
+
+[Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
