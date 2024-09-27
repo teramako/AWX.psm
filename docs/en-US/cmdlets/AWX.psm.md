@@ -413,6 +413,9 @@ Create a User.
 ### [New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
 Create a WorkflowJobTemplate.
 
+### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
+Create a WorkflowJobTemplateNode.
+
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
 
