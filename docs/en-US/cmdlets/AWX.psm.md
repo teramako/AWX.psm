@@ -500,6 +500,9 @@ Stop (cancel) a running job.
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
 
+### [Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
+Unlink WorkflowJobTemplateNode from the parent.
+
 ### [Update-Application](Update-Application.md)
 Update an Application.
 

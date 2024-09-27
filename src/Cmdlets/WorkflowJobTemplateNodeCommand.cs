@@ -520,6 +520,73 @@ namespace AWX.Cmdlets
         }
     }
 
+    [Cmdlet(VerbsLifecycle.Unregister, "WorkflowJobTemplateNode", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
+    public class UnregisterWorkflowJobTemplateNodeCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
+        public ulong From { get; set; }
+
+        private WorkflowJobTemplateNode? _parentNode;
+        private string GetUpon()
+        {
+            if (_parentNode == null)
+                return string.Empty;
+
+            if (_parentNode.SuccessNodes.Any(id => id == Id))
+                return "success";
+            else if (_parentNode.FailureNodes.Any(id => id == Id))
+                return "failure";
+            else if (_parentNode.AlwaysNodes.Any(id => id == Id))
+                return "always";
+
+            return string.Empty;
+        }
+
+        protected override void BeginProcessing()
+        {
+            var node = GetResource<WorkflowJobTemplateNode>($"{WorkflowJobTemplateNode.PATH}{From}/");
+            if (node == null)
+                StopProcessing();
+
+            _parentNode = node;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var upon = GetUpon();
+            if (string.IsNullOrEmpty(upon))
+            {
+                WriteVerbose($"Not found Node[{Id}] in the ParentNode [{From}]");
+                return;
+            }
+
+            var path = $"{WorkflowJobTemplateNode.PATH}{From}/{upon}_nodes/";
+            var sendData = new Dictionary<string, object>()
+            {
+                { "id", Id },
+                { "disassociate", true }
+            };
+            if (ShouldProcess($"Link Node[{Id}] from Node[{From}] upon {upon}"))
+            {
+                try
+                {
+                    var apiResponse = CreateResource<string>(path, sendData);
+                    if (apiResponse.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Node {Id} is unlinked from Node[{From}] upon {upon}.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
     [Cmdlet(VerbsCommon.Remove, "WorkflowJobTemplateNode", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     [OutputType(typeof(void))]
     public class RemoveWorkflowJobTemplateNodeCommand : APICmdletBase
