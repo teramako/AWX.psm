@@ -481,6 +481,45 @@ namespace AWX.Cmdlets
         }
     }
 
+    [Cmdlet(VerbsLifecycle.Register, "WorkflowJobTemplateNode", SupportsShouldProcess = true)]
+    [OutputType(typeof(void))]
+    public class RegisterWorkflowJobTemplateNodeCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
+        public ulong To { get; set; }
+
+        [Parameter()]
+        [Alias("Upon")]
+        [ValidateSet("success", "failure", "always")]
+        public string RunUpon { get; set; } = "success";
+
+        protected override void ProcessRecord()
+        {
+            var path = $"{WorkflowJobTemplateNode.PATH}{To}/{RunUpon}_nodes/";
+            var sendData = new Dictionary<string, object>()
+            {
+                { "id", Id }
+            };
+            if (ShouldProcess($"Link Node[{Id}] to Node[{To}] Upon {RunUpon}"))
+            {
+                try
+                {
+                    var apiResponse = CreateResource<string>(path, sendData);
+                    if (apiResponse.Response.IsSuccessStatusCode)
+                    {
+                        WriteVerbose($"Node {Id} is linked to Node[{To}] upon {RunUpon}.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
     [Cmdlet(VerbsCommon.Remove, "WorkflowJobTemplateNode", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     [OutputType(typeof(void))]
     public class RemoveWorkflowJobTemplateNodeCommand : APICmdletBase
