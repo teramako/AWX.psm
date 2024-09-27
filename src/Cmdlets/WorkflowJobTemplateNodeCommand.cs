@@ -480,4 +480,32 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Remove, "WorkflowJobTemplateNode", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    [OutputType(typeof(void))]
+    public class RemoveWorkflowJobTemplateNodeCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"WorkflowJobTemplateNode [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{WorkflowJobTemplateNode.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"WorkflowJobTemplateNode {Id} is removed.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }

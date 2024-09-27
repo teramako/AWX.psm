@@ -467,6 +467,9 @@ Remove a User
 ### [Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
 Remove a WorkflowJobTemplate.
 
+### [Remove-WorkflowJobTemplateNode](Remove-WorkflowJobTemplateNode.md)
+Remove a WorkflowJobTemplateNode.
+
 ### [Revoke-Role](Revoke-Role.md)
 Revoke Roles.
 
