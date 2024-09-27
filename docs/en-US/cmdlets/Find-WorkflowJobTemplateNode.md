@@ -219,3 +219,13 @@ Database ID for `WorkflowJobTemplate`
 [Get-WorkflowJobTemplate](Get-WorkflowJobTemplate.md)
 
 [Find-WorkflowJobTemplate](Find-WorkflowJobTemplate.md)
+
+[New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
+
+[Update-WorkflowJobTemplateNode](Update-WorkflowJobTemplateNode.md)
+
+[Remove-WorkflowJobTemplateNode](Remove-WorkflowJobTemplateNode.md)
+
+[Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
+
+[Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)

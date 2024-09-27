@@ -413,6 +413,12 @@ Create a User.
 ### [New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
 Create a WorkflowJobTemplate.
 
+### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
+Create a WorkflowJobTemplateNode.
+
+### [Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
+Link WorkflowJobTemplateNode to the parent.
+
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
 
@@ -464,6 +470,9 @@ Remove a User
 ### [Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
 Remove a WorkflowJobTemplate.
 
+### [Remove-WorkflowJobTemplateNode](Remove-WorkflowJobTemplateNode.md)
+Remove a WorkflowJobTemplateNode.
+
 ### [Revoke-Role](Revoke-Role.md)
 Revoke Roles.
 
@@ -490,6 +499,9 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
+Unlink WorkflowJobTemplateNode from the parent.
 
 ### [Update-Application](Update-Application.md)
 Update an Application.
@@ -541,6 +553,9 @@ Update a User.
 
 ### [Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
 Update a WorkflowJobTemplate.
+
+### [Update-WorkflowJobTemplateNode](Update-WorkflowJobTemplateNode.md)
+Update a WorkflowJobTemplateNode.
 
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.

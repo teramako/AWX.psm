@@ -68,3 +68,9 @@ One or more database IDs.
 To get the ID number of the WorkflowApprovalTemplate, see `Template ID` column in the nodes from `Find-WorkflowJobTemplateNode` command or `ApprovalTemplate` column in the jobs from `Find-WorkflowApprovalRequest` command.
 
 ## RELATED LINKS
+
+[Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
+
+[Find-WorkflowJobTemplateNode](Find-WorkflowJobTemplateNode.md)
+
+[New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
