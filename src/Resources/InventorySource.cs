@@ -35,9 +35,9 @@ namespace AWX.Resources
         /// </summary>
         VMware,
         /// <summary>
-        /// Red Hat Satelite 6
+        /// Red Hat Satellite 6
         /// </summary>
-        Satelite6,
+        Satellite6,
         /// <summary>
         /// OpenStack
         /// </summary>
