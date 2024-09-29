@@ -383,6 +383,9 @@ Create a Host.
 ### [New-Inventory](New-Inventory.md)
 Create an Inventory.
 
+### [New-InventorySource](New-InventorySource.md)
+Create an InventorySource.
+
 ### [New-JobTemplate](New-JobTemplate.md)
 Create a JobTemplate.
 
