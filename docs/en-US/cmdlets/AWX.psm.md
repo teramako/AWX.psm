@@ -383,6 +383,9 @@ Create a Host.
 ### [New-Inventory](New-Inventory.md)
 Create an Inventory.
 
+### [New-InventorySource](New-InventorySource.md)
+Create an InventorySource.
+
 ### [New-JobTemplate](New-JobTemplate.md)
 Create a JobTemplate.
 
@@ -439,6 +442,9 @@ Remove a Host
 
 ### [Remove-Inventory](Remove-Inventory.md)
 Remove an Inventory.
+
+### [Remove-InventorySource](Remove-InventorySource.md)
+Remove an InventorySource.
 
 ### [Remove-JobTemplate](Remove-JobTemplate.md)
 Remove a JobTemplate.
@@ -523,6 +529,9 @@ Update a Host.
 
 ### [Update-Inventory](Update-Inventory.md)
 Update an Inventory.
+
+### [Update-InventorySource](Update-InventorySource.md)
+Update an InventorySource.
 
 ### [Update-JobTemplate](Update-JobTemplate.md)
 Update a JobTemplate.
