@@ -527,6 +527,9 @@ Update a Host.
 ### [Update-Inventory](Update-Inventory.md)
 Update an Inventory.
 
+### [Update-InventorySource](Update-InventorySource.md)
+Update an InventorySource.
+
 ### [Update-JobTemplate](Update-JobTemplate.md)
 Update a JobTemplate.
 

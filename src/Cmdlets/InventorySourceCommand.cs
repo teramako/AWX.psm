@@ -213,4 +213,143 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsData.Update, "InventorySource", SupportsShouldProcess = true)]
+    [OutputType(typeof(InventorySource))]
+    public class UpdateInventorySourceCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.InventorySource])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public InventorySourceSource? Source { get ;set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Project])]
+        public ulong? SourceProject { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? SourcePath { get; set; }
+
+        [Parameter()]
+        [ExtraVarsArgumentTransformation]
+        [AllowEmptyString]
+        public string? SourceVars { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? ScmBranch { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong? Credential { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? EnabledVar { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? EnabledValue { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? HostFilter { get; set; }
+
+        [Parameter()]
+        public bool? Overwrite { get; set; }
+
+        [Parameter()]
+        public bool? OverwriteVars { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, int.MaxValue)]
+        public int? Timeout { get; set; }
+
+        [Parameter()]
+        [ValidateRange(0, 2)]
+        public int? Verbosity { get; set; }
+
+        [Parameter()]
+        public string? Limit { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong? ExecutionEnvironment { get; set; }
+
+        [Parameter()]
+        public bool? UpdateOnLaunch { get; set; }
+
+        [Parameter()]
+        public int? UpdateCacheTimeout { get; set; }
+
+        private Dictionary<string, object?> CreateSendData()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Source != null)
+                sendData.Add("source", $"{Source}".ToLowerInvariant());
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (SourceProject != null)
+                sendData.Add("source_project", SourceProject == 0 ? null : SourceProject);
+            if (SourcePath != null)
+                sendData.Add("source_path", SourcePath);
+            if (SourceVars != null)
+                sendData.Add("source_vars", SourceVars);
+            if (Credential != null)
+                sendData.Add("credential", Credential == 0 ? null : Credential);
+            if (EnabledVar != null)
+                sendData.Add("enabled_var", EnabledVar);
+            if (EnabledValue != null)
+                sendData.Add("enabled_value", EnabledValue);
+            if (HostFilter != null)
+                sendData.Add("host_filter", HostFilter);
+            if (Overwrite != null)
+                sendData.Add("overwrite", Overwrite);
+            if (OverwriteVars != null)
+                sendData.Add("overwrite_vars", OverwriteVars);
+            if (Timeout != null)
+                sendData.Add("timeout", Timeout);
+            if (Verbosity != null)
+                sendData.Add("verbosity", Verbosity);
+            if (Limit != null)
+                sendData.Add("limit", Limit);
+            if (ExecutionEnvironment != null)
+                sendData.Add("execution_environment", ExecutionEnvironment == 0 ? null : ExecutionEnvironment);
+            if (UpdateOnLaunch != null)
+                sendData.Add("update_on_launch", UpdateOnLaunch);
+            if (UpdateCacheTimeout != null)
+                sendData.Add("update_cache_timeout", UpdateCacheTimeout);
+            return sendData;
+        }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = CreateSendData();
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"InventorySource [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<InventorySource>($"{InventorySource.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
