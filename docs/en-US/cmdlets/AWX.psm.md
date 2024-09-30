@@ -443,6 +443,9 @@ Remove a Host
 ### [Remove-Inventory](Remove-Inventory.md)
 Remove an Inventory.
 
+### [Remove-InventorySource](Remove-InventorySource.md)
+Remove an InventorySource.
+
 ### [Remove-JobTemplate](Remove-JobTemplate.md)
 Remove a JobTemplate.
 
