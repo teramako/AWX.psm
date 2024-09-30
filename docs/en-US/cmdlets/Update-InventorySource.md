@@ -409,3 +409,11 @@ Updated InventorySource object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-InventorySource](Get-InventorySource.md)
+
+[Find-InventorySource](Find-InventorySource.md)
+
+[New-InventorySource](New-InventorySource.md)
+
+[Remove-InventorySource](Remove-InventorySource.md)

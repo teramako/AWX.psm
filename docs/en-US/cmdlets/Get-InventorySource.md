@@ -64,3 +64,9 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-InventorySource](Find-InventorySource.md)
+
+[New-InventorySource](New-InventorySource.md)
+
+[Update-InventorySource](Update-InventorySource.md)
+
+[Remove-InventorySource](Remove-InventorySource.md)
