@@ -233,4 +233,31 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.Remove, "InventoryUpdateJob", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveInventoryUpdateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.InventoryUpdate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"InventoryUpdate [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{InventoryUpdateJob.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"InventoryUpdate {Id} is removed.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
 }
