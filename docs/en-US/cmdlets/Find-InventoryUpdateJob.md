@@ -213,6 +213,8 @@ Database ID for the ResourceType
 
 [Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
 
+[Remove-InventoryUpdateJob](Remove-InventoryUpdateJob.md)
+
 [Invoke-InventoryUpdate](Invoke-InventoryUpdate.md)
 
 [Start-InventoryUpdate](Start-InventoryUpdate.md)
