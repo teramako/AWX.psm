@@ -71,3 +71,5 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-AdHocCommandJob](Find-AdHocCommandJob.md)
+
+[Remove-AdHocCommandJob](Remove-AdHocCommandJob.md)

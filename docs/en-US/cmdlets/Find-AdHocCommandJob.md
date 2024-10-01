@@ -219,4 +219,6 @@ Database ID for the ResourceType
 
 [Get-AdHocCommand](Get-AdHocCommandJob.md)
 
+[Remove-AdHocCommandJob](Remove-AdHocCommandJob.md)
+
 [Invoke-AdHocCommand](Invoke-AdHocCommand.md)

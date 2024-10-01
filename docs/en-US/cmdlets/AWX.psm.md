@@ -422,6 +422,9 @@ Create a WorkflowJobTemplateNode.
 ### [Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
 Link WorkflowJobTemplateNode to the parent.
 
+### [Remove-AdHocCommandJob](Remove-AdHocCommandJob.md)
+Remove an AdHocCommand job.
+
 ### [Remove-Application](Remove-Application.md)
 Remove an Application.
 
