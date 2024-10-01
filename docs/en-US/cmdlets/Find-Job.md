@@ -269,6 +269,8 @@ Database ID for `JobTemplate`
 
 [Get-Job](Get-Job.md)
 
+[Remove-Job](Remove-Job.md)
+
 [Get-JobTemplate](Get-JobTemplate.md)
 
 [Find-JobTemplate](Find-JobTemplate.md)

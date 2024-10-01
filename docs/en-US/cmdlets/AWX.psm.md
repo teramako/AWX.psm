@@ -449,6 +449,9 @@ Remove an InventorySource.
 ### [Remove-InventoryUpdateJob](Remove-InventoryUpdateJob.md)
 Remove an InventoryUpdate job.
 
+### [Remove-Job](Remove-Job.md)
+Remove a JobTemplate job.
+
 ### [Remove-JobTemplate](Remove-JobTemplate.md)
 Remove a JobTemplate.
 
