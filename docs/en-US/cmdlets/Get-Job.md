@@ -64,3 +64,5 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-Job](Find-Job.md)
+
+[Remove-Job](Remove-Job.md)
