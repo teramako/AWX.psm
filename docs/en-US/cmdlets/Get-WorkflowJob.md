@@ -68,3 +68,5 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-WorkflowJob](Find-WorkflowJob.md)
+
+[Remove-WorkflowJob](Remove-WorkflowJob.md)
