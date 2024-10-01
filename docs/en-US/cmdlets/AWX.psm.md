@@ -461,6 +461,9 @@ Remove an Organization.
 ### [Remove-Project](Remove-Project.md)
 Remove a Project.
 
+### [Remove-ProjectUpdateJob](Remove-ProjectUpdateJob.md)
+Remove a ProjectUpdate Job.
+
 ### [Remove-Schedule](Remove-Schedule.md)
 Remove a Schedule.
 
