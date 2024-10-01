@@ -256,3 +256,5 @@ Database ID for `Project`
 [Get-Project](Get-Project.md)
 
 [Find-Project](Find-Project.md)
+
+[Remove-ProjectUpdateJob](Remove-ProjectUpdateJob.md)
