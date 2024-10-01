@@ -68,3 +68,5 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-SystemJob](Find-SystemJob.md)
+
+[Remove-SystemJob](Remove-SystemJob.md)

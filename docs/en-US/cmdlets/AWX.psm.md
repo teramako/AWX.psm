@@ -473,6 +473,9 @@ Remove a ProjectUpdate Job.
 ### [Remove-Schedule](Remove-Schedule.md)
 Remove a Schedule.
 
+### [Remove-SystemJob](Remove-SystemJob.md)
+Remove a System job.
+
 ### [Remove-Team](Remove-Team.md)
 Remove a Team
 
