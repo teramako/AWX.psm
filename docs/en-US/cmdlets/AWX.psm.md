@@ -488,6 +488,9 @@ Remove an AccessToken.
 ### [Remove-User](Remove-User.md)
 Remove a User
 
+### [Remove-WorkflowApprovalRequest](Remove-WorkflowApprovalRequest.md)
+Remove a WorkflowApproval.
+
 ### [Remove-WorkflowJob](Remove-WorkflowJob.md)
 Remove a Workflow job.
 
