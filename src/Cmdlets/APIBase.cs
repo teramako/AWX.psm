@@ -1,7 +1,6 @@
 using AWX.Resources;
 using System.Collections.Frozen;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
@@ -366,14 +365,6 @@ namespace AWX.Cmdlets
 
     public abstract class APICmdletBase : Cmdlet
     {
-        [Conditional("DEBUG")]
-        protected static void Dump(string msg)
-        {
-            var currentColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"Debug: {msg}");
-            Console.ForegroundColor = currentColor;
-        }
         private readonly ConsoleColor DefaultForegroundColor = Console.ForegroundColor;
         private readonly ConsoleColor DefaultBackgroundColor = Console.BackgroundColor;
         /// <summary>
