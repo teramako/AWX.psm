@@ -12,16 +12,9 @@ Add a Label.
 
 ## SYNTAX
 
-### Association
 ```
-Add-Label [-To] <IResource> [-Id] <UInt64> [-WhatIf] [-Confirm]
+Add-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm]
  [<CommonParameters>]
-```
-
-### New
-```
-Add-Label [-To] <IResource> [-Name] <String> [-Organization] <UInt64>
- [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,43 +43,13 @@ Label ID.
 
 ```yaml
 Type: UInt64
-Parameter Sets: Association
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 1
+Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -Name
-Label name
-
-```yaml
-Type: String
-Parameter Sets: New
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -Organization
-Organization ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: New
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -106,7 +69,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
