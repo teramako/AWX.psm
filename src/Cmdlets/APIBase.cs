@@ -663,26 +663,24 @@ namespace AWX.Cmdlets
             WriteVerbose($"> Host: {uri.Host}:{uri.Port}");
             WriteVerbose($"> {method} {pathAndQuery}");
         }
-        protected virtual void WriteVerboseResponse(IRestAPIResponse response, bool onlyContentHeaders = false)
+        protected virtual void WriteVerboseResponse(IRestAPIResponse response)
         {
+            WriteDebugHeaders(response.RequestHeaders, '>');
             WriteVerbose($"HTTP/{response.HttpVersion} {response.StatusCode:d} {response.ReasonPhrase}");
-            WriteVerboseHeaders(response.ContentHeaders, '<');
-            if (!onlyContentHeaders)
-            {
-                WriteVerboseHeaders(response.ResponseHeaders, '<');
-            }
+            WriteDebugHeaders(response.ContentHeaders, '<');
+            WriteDebugHeaders(response.ResponseHeaders, '<');
         }
-        private void WriteVerboseHeaders(FrozenDictionary<string, IEnumerable<string>>? headers, char indicator)
+        private void WriteDebugHeaders(FrozenDictionary<string, IEnumerable<string>>? headers, char indicator)
         {
             if (headers == null) return;
             foreach (var header in headers)
             {
                 if (header.Key == "Authorization")
                 {
-                    WriteVerbose($"{indicator} {header.Key}: Bearer ************");
+                    WriteDebug($"{indicator} {header.Key}: Bearer ************");
                     continue;
                 }
-                WriteVerbose($"{indicator} {header.Key}: {string.Join(", ", header.Value)}");
+                WriteDebug($"{indicator} {header.Key}: {string.Join(", ", header.Value)}");
             }
         }
         protected void WriteApiError(RestAPIException ex)
