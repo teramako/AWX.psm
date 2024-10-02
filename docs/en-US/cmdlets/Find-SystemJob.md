@@ -232,6 +232,8 @@ Database ID for `SystemJobTemplate`
 
 [Get-SystemJob](Get-SystemJob.md)
 
+[Remove-SystemJob](Remove-SystemJob.md)
+
 [Get-SystemJobTemplate](Get-SystemJobTemplate.md)
 
 [Find-SystemJobTemplate](Find-SystemJobTemplate.md)
