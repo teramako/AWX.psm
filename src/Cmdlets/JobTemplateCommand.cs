@@ -1130,6 +1130,9 @@ namespace AWX.Cmdlets
         public SwitchParameter AskJobSliceCount { get; set; }
 
         [Parameter()]
+        public SwitchParameter SurveyEnabled { get; set; }
+
+        [Parameter()]
         public SwitchParameter BecomeEnabled { get; set; }
 
         [Parameter()]
@@ -1223,6 +1226,8 @@ namespace AWX.Cmdlets
                 dict.Add("ask_forks_on_launch", true);
             if (AskJobSliceCount)
                 dict.Add("ask_job_slice_count_on_launch", true);
+            if (SurveyEnabled)
+                dict.Add("survey_enabled", true);
             if (BecomeEnabled)
                 dict.Add("become_enabled", true);
             if (DiffMode)
@@ -1368,6 +1373,9 @@ namespace AWX.Cmdlets
         public bool? AskJobSliceCount { get; set; }
 
         [Parameter()]
+        public bool? SurveyEnabled { get; set; }
+
+        [Parameter()]
         public bool? BecomeEnabled { get; set; }
 
         [Parameter()]
@@ -1462,6 +1470,8 @@ namespace AWX.Cmdlets
                 dict.Add("ask_forks_on_launch", AskForks);
             if (AskJobSliceCount != null)
                 dict.Add("ask_job_slice_count_on_launch", AskJobSliceCount);
+            if (SurveyEnabled != null)
+                dict.Add("survey_enabled", SurveyEnabled);
             if (BecomeEnabled != null)
                 dict.Add("become_enabled", BecomeEnabled);
             if (DiffMode != null)

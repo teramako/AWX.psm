@@ -21,10 +21,10 @@ Update-JobTemplate [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Job
  [-AskDiffMode <Boolean>] [-AskVariables <Boolean>] [-AskLimit <Boolean>] [-AskTags <Boolean>]
  [-AskSkipTags <Boolean>] [-AskJobType <Boolean>] [-AskVerbosity <Boolean>] [-AskInventory <Boolean>]
  [-AskCredential <Boolean>] [-AskExecutionEnvironment <Boolean>] [-AskLabels <Boolean>] [-AskForks <Boolean>]
- [-AskJobSliceCount <Boolean>] [-BecomeEnabled <Boolean>] [-DiffMode <Boolean>] [-AllowSimultaneous <Boolean>]
- [-JobSliceCount <Int32>] [-WebhookService <String>] [-WebhookCredential <UInt64>]
- [-PreventInstanceGroupFallback <Boolean>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-AskJobSliceCount <Boolean>] [-SurveyEnabled <Boolean>] [-BecomeEnabled <Boolean>] [-DiffMode <Boolean>]
+ [-AllowSimultaneous <Boolean>] [-JobSliceCount <Int32>] [-WebhookService <String>]
+ [-WebhookCredential <UInt64>] [-PreventInstanceGroupFallback <Boolean>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -558,6 +558,20 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SurveyEnabled
+
+```yaml
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
