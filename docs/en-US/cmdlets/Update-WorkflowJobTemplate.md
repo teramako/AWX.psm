@@ -17,8 +17,8 @@ Update-WorkflowJobTemplate [-Id] <UInt64> [-Name <String>] [-Description <String
  [-Inventory <UInt64>] [-Limit <String>] [-ScmBranch <String>] [-ExtraVars <String>] [-Tags <String>]
  [-SkipTags <String>] [-AskScmBranch <Boolean>] [-AskVariables <Boolean>] [-AskLimit <Boolean>]
  [-AskTags <Boolean>] [-AskSkipTags <Boolean>] [-AskInventory <Boolean>] [-AskLabels <Boolean>]
- [-WebhookService <String>] [-WebhookCredential <UInt64>] [-AllowSimultaneous <Boolean>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-SurveyEnabled <Boolean>] [-WebhookService <String>] [-WebhookCredential <UInt64>]
+ [-AllowSimultaneous <Boolean>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -285,6 +285,20 @@ Skip tags. (commas `,` separated)
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SurveyEnabled
+
+```yaml
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 

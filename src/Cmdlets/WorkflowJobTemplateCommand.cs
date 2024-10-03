@@ -616,6 +616,9 @@ namespace AWX.Cmdlets
         public SwitchParameter AskLabels { get; set; }
 
         [Parameter()]
+        public SwitchParameter SurveyEnabled { get; set; }
+
+        [Parameter()]
         [ValidateSet("github", "gitlab")]
         public string? WebhookService { get; set; }
 
@@ -662,6 +665,8 @@ namespace AWX.Cmdlets
                 dict.Add("ask_inventory_on_launch", true);
             if (AskLabels)
                 dict.Add("ask_labels_on_launch", true);
+            if (SurveyEnabled)
+                dict.Add("survey_enabled", true);
             if (WebhookService != null)
                 dict.Add("webhook_service", WebhookService);
             if (WebhookCredential != null)
@@ -747,6 +752,9 @@ namespace AWX.Cmdlets
         public bool? AskLabels { get; set; }
 
         [Parameter()]
+        public bool? SurveyEnabled { get; set; }
+
+        [Parameter()]
         [ValidateSet("github", "gitlab")]
         public string? WebhookService { get; set; }
 
@@ -792,6 +800,8 @@ namespace AWX.Cmdlets
                 dict.Add("ask_inventory_on_launch", AskInventory);
             if (AskLabels != null)
                 dict.Add("ask_labels_on_launch", AskLabels);
+            if (SurveyEnabled != null)
+                dict.Add("survey_enabled", SurveyEnabled);
             if (WebhookService != null)
                 dict.Add("webhook_service", WebhookService);
             if (WebhookCredential != null)

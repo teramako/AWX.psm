@@ -16,7 +16,7 @@ Create a WorkflowJobTemplate.
 New-WorkflowJobTemplate -Name <String> [-Description <String>] [-Organization <UInt64>] [-Inventory <UInt64>]
  [-Limit <String>] [-ScmBranch <String>] [-ExtraVars <String>] [-Tags <String>] [-SkipTags <String>]
  [-AskScmBranch] [-AskVariables] [-AskLimit] [-AskTags] [-AskSkipTags] [-AskInventory] [-AskLabels]
- [-WebhookService <String>] [-WebhookCredential <UInt64>] [-AllowSimultaneous]
+ [-SurveyEnabled] [-WebhookService <String>] [-WebhookCredential <UInt64>] [-AllowSimultaneous]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
@@ -269,6 +269,20 @@ Skip tags. (commas `,` separated)
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SurveyEnabled
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
