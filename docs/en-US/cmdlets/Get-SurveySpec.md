@@ -93,6 +93,10 @@ Database ID for the ResourceType
 
 ## RELATED LINKS
 
+[Register-SurveySpec](Register-SurveySpec.md)
+
+[Remove-SurveySpec](Remove-SurveySpec.md)
+
 [Get-JobTemplate](Get-JobTemplate.md)
 
 [Find-JobTemplate](Find-JobTemplate.md)

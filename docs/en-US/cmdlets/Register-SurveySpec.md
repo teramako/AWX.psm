@@ -167,3 +167,7 @@ JobTemplate or WorkflowJobTemplate object.
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-SurveySpec](Get-SurveySpec.md)
+
+[Remove-SurveySpec](Remove-SurveySpec.md)
