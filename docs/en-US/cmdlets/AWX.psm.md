@@ -419,6 +419,9 @@ Create a WorkflowJobTemplate.
 ### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
 Create a WorkflowJobTemplateNode.
 
+### [Register-SurveySpec](Register-SurveySpec.md)
+Register SurveySpecs.
+
 ### [Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
 Link WorkflowJobTemplateNode to the parent.
 
