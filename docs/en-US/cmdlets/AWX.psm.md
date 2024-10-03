@@ -479,6 +479,9 @@ Remove a ProjectUpdate Job.
 ### [Remove-Schedule](Remove-Schedule.md)
 Remove a Schedule.
 
+### [Remove-SurveySpec](Remove-SurveySpec.md)
+Remove SurveySpecs.
+
 ### [Remove-SystemJob](Remove-SystemJob.md)
 Remove a System job.
 
