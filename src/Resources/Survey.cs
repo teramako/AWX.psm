@@ -12,11 +12,11 @@ namespace AWX.Resources
     ///   <item><c>/api/v2/workflow_job_templates/{id}/survey_spec/</c></item>
     /// </list>
     /// </summary>
-    public class Survey(string name, string description, SurveySpec[] spec)
+    public class Survey
     {
-        public string? Name { get; } = name;
-        public string? Description { get; } = description;
-        public SurveySpec[]? Spec { get; } = spec;
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public SurveySpec[] Spec { get; set; } = [];
     }
 
     public enum SurveySpecType
@@ -27,16 +27,16 @@ namespace AWX.Resources
     [JsonConverter(typeof(SurveySpecConverter))]
     public class SurveySpec
     {
-        public string QuestionName { get; internal set; } = string.Empty;
-        public string QuestionDescription { get; internal set; } = string.Empty;
-        public SurveySpecType Type { get; internal set; }
-        public bool Required { get; internal set; } = false;
-        public string Variable { get; internal set; } = string.Empty;
-        public object? Default { get; internal set; }
-        public object Choices { get; internal set; } = string.Empty;
-        public int Min { get; internal set; }
-        public int Max { get; internal set; }
-        public bool NewQuestion { get; internal set; }
+        public string QuestionName { get; set; } = string.Empty;
+        public string QuestionDescription { get; set; } = string.Empty;
+        public SurveySpecType Type { get; set; }
+        public bool Required { get; set; } = false;
+        public string Variable { get; set; } = string.Empty;
+        public object? Default { get; set; }
+        public object Choices { get; set; } = string.Empty;
+        public int Min { get; set; } = 0;
+        public int Max { get; set; } = 1024;
+        public bool NewQuestion { get; set; }
 
         public override string ToString()
         {
