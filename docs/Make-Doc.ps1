@@ -2,6 +2,7 @@
 .SYNOPSIS
 Create Documents with platyPS
 #>
+[CmdletBinding()]
 param(
     [string] $Locale = "en-US",
     [switch] $New
