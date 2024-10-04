@@ -13,8 +13,7 @@ Remove a Project.
 ## SYNTAX
 
 ```
-Remove-Project [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Project [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

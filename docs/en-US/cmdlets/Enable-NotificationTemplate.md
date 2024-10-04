@@ -13,8 +13,8 @@ Enable a NotificationTemplate.
 ## SYNTAX
 
 ```
-Enable-NotificationTemplate [-Id] <UInt64> [-For] <IResource> [-On] <String[]>
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Enable-NotificationTemplate [-Id] <UInt64> [-For] <IResource> [-On] <String[]> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

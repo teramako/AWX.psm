@@ -13,8 +13,8 @@ Create a Group.
 ## SYNTAX
 
 ```
-New-Group [-Inventory] <UInt64> [-Name] <String> [-Description <String>] [-Variables <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+New-Group [-Inventory] <UInt64> [-Name] <String> [-Description <String>] [-Variables <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

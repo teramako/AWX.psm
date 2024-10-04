@@ -21,8 +21,7 @@ Find-InstanceGroup [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValu
 ### AssociatedWith
 ```
 Find-InstanceGroup -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

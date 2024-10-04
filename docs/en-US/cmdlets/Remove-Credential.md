@@ -13,8 +13,7 @@ Remove a Credential.
 ## SYNTAX
 
 ```
-Remove-Credential [-Id] <UInt64> [-From <IResource>] [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-Credential [-Id] <UInt64> [-From <IResource>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

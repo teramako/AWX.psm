@@ -13,8 +13,8 @@ Link WorkflowJobTemplateNode to the parent.
 ## SYNTAX
 
 ```
-Register-WorkflowJobTemplateNode [-Id] <UInt64> -To <UInt64> [-RunUpon <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-WorkflowJobTemplateNode [-Id] <UInt64> -To <UInt64> [-RunUpon <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Remove a Workflow job.
 ## SYNTAX
 
 ```
-Remove-WorkflowJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-WorkflowJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

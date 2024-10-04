@@ -13,8 +13,7 @@ Retrieve Variable Data
 ## SYNTAX
 
 ```
-Get-VariableData [-Type] <ResourceType> [-Id] <UInt64>
- [<CommonParameters>]
+Get-VariableData [-Type] <ResourceType> [-Id] <UInt64> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

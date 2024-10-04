@@ -13,8 +13,7 @@ Remove a NotificationTemplate.
 ## SYNTAX
 
 ```
-Remove-NotificationTemplate [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-NotificationTemplate [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

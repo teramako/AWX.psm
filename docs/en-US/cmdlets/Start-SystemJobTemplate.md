@@ -14,14 +14,12 @@ Invoke (launch) a SystemJobTemplate.
 
 ### Id
 ```
-Start-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>]
- [<CommonParameters>]
+Start-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>] [<CommonParameters>]
 ```
 
 ### Template
 ```
-Start-SystemJobTemplate [-SystemJobTemplate] <IResource> [-ExtraVars <IDictionary>]
- [<CommonParameters>]
+Start-SystemJobTemplate [-SystemJobTemplate] <IResource> [-ExtraVars <IDictionary>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

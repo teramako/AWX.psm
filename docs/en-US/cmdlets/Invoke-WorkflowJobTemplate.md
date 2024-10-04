@@ -23,8 +23,7 @@ Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <U
 ```
 Invoke-WorkflowJobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-WorkflowJobTemplate] <IResource>
  [-Limit <String>] [-Inventory <UInt64>] [-ScmBranch <String>] [-Labels <UInt64[]>] [-Tags <String[]>]
- [-SkipTags <String[]>] [-ExtraVars <String>] [-Interactive]
- [<CommonParameters>]
+ [-SkipTags <String[]>] [-ExtraVars <String>] [-Interactive] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

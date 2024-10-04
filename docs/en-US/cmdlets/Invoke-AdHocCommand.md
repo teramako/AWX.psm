@@ -15,15 +15,13 @@ Invoke (launch) an AdHocCommand and wait until the job is finished.
 ### Host
 ```
 Invoke-AdHocCommand [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Host] <Host> [-ModuleName] <String>
- [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Check]
- [<CommonParameters>]
+ [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Check] [<CommonParameters>]
 ```
 
 ### Group
 ```
 Invoke-AdHocCommand [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Group] <Group> [-ModuleName] <String>
- [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Check]
- [<CommonParameters>]
+ [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Check] [<CommonParameters>]
 ```
 
 ### Inventory
@@ -36,8 +34,7 @@ Invoke-AdHocCommand [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Inventory] <I
 ### InventoryId
 ```
 Invoke-AdHocCommand [-IntervalSeconds <Int32>] [-SuppressJobLog] [-InventoryId] <UInt64> [-ModuleName] <String>
- [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Limit <String>] [-Check]
- [<CommonParameters>]
+ [[-ModuleArgs] <String>] [-Credential] <UInt64> [-Limit <String>] [-Check] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

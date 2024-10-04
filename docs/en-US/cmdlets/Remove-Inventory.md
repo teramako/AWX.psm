@@ -13,8 +13,7 @@ Remove an Inventory.
 ## SYNTAX
 
 ```
-Remove-Inventory [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Inventory [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

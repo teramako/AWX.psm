@@ -13,8 +13,8 @@ Update a Team.
 ## SYNTAX
 
 ```
-Update-Team [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Organization <UInt64>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-Team [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Organization <UInt64>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Grant Roles.
 ## SYNTAX
 
 ```
-Grant-Role [-Roles] <IResource[]> [-To] <IResource> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Grant-Role [-Roles] <IResource[]> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Associate a Uesr to.
 ## SYNTAX
 
 ```
-Add-User [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Add-User [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

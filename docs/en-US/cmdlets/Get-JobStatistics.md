@@ -13,8 +13,7 @@ Retrieve statistics for job runs.
 ## SYNTAX
 
 ```
-Get-JobStatistics [[-Period] <String>] [[-JobType] <String>]
- [<CommonParameters>]
+Get-JobStatistics [[-Period] <String>] [[-JobType] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

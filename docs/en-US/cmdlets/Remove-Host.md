@@ -13,8 +13,7 @@ Remove a Host
 ## SYNTAX
 
 ```
-Remove-Host [-Id] <UInt64> [-FromGroup <UInt64>] [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-Host [-Id] <UInt64> [-FromGroup <UInt64>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

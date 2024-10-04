@@ -13,8 +13,7 @@ Remove a User
 ## SYNTAX
 
 ```
-Remove-User [-Id] <UInt64> [-From <IResource>] [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-User [-Id] <UInt64> [-From <IResource>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

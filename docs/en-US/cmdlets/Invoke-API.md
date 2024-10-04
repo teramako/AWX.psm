@@ -14,8 +14,7 @@ Execute Ansible's (low-level) Rest API.
 
 ### NonSendData (Default)
 ```
-Invoke-API [-Method] <Method> [-Path] <String> [[-QueryString] <String>] [-AsRawString]
- [<CommonParameters>]
+Invoke-API [-Method] <Method> [-Path] <String> [[-QueryString] <String>] [-AsRawString] [<CommonParameters>]
 ```
 
 ### SendData

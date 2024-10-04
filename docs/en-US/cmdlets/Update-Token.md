@@ -13,8 +13,7 @@ Update an AccessToken.
 ## SYNTAX
 
 ```
-Update-Token [-Id] <UInt64> [-Description <String>] [-Scope <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-Token [-Id] <UInt64> [-Description <String>] [-Scope <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Remove a Label.
 ## SYNTAX
 
 ```
-Remove-Label [-From] <IResource> [-Id] <UInt64> [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-Label [-From] <IResource> [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Associate a Host to a Group.
 ## SYNTAX
 
 ```
-Add-Host [-Id] <UInt64> [-ToGroup] <UInt64> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Add-Host [-Id] <UInt64> [-ToGroup] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

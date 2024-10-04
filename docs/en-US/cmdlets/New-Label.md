@@ -13,8 +13,7 @@ Create a Label.
 ## SYNTAX
 
 ```
-New-Label -Name <String> -Organization <UInt64> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+New-Label -Name <String> -Organization <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

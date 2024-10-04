@@ -13,8 +13,7 @@ Remove a JobTemplate.
 ## SYNTAX
 
 ```
-Remove-JobTemplate [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-JobTemplate [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

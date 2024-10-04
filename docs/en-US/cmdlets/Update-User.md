@@ -14,8 +14,8 @@ Update a User.
 
 ```
 Update-User [-Id] <UInt64> [-UserName <String>] [-FirstName <String>] [-LastName <String>] [-Email <String>]
- [-IsSuperUser <Boolean>] [-IsSystemAuditor <Boolean>] [-Password <SecureString>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-IsSuperUser <Boolean>] [-IsSystemAuditor <Boolean>] [-Password <SecureString>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

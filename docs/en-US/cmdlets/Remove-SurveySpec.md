@@ -13,8 +13,7 @@ Remove SurveySpecs.
 ## SYNTAX
 
 ```
-Remove-SurveySpec [-Template] <IResource> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-SurveySpec [-Template] <IResource> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

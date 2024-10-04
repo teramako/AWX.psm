@@ -13,8 +13,7 @@ Remove a CredentialType.
 ## SYNTAX
 
 ```
-Remove-CredentialType [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-CredentialType [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -14,8 +14,7 @@ Retrieve job logs.
 
 ### StdOut (Default)
 ```
-Get-JobLog -Id <UInt64> [-Type <ResourceType>] [-Format <JobLogFormat>] [-Dark]
- [<CommonParameters>]
+Get-JobLog -Id <UInt64> [-Type <ResourceType>] [-Format <JobLogFormat>] [-Dark] [<CommonParameters>]
 ```
 
 ### Download

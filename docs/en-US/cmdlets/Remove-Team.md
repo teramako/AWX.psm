@@ -13,8 +13,7 @@ Remove a Team
 ## SYNTAX
 
 ```
-Remove-Team [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Team [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

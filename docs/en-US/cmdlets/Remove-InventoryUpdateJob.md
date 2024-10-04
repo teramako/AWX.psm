@@ -13,8 +13,7 @@ Remove an InventoryUpdate job.
 ## SYNTAX
 
 ```
-Remove-InventoryUpdateJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-InventoryUpdateJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

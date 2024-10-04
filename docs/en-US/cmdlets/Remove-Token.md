@@ -13,8 +13,7 @@ Remove an AccessToken.
 ## SYNTAX
 
 ```
-Remove-Token [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Token [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

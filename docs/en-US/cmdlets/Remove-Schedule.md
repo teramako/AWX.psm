@@ -13,8 +13,7 @@ Remove a Schedule.
 ## SYNTAX
 
 ```
-Remove-Schedule [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Schedule [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

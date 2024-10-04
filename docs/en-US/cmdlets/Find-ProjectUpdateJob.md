@@ -15,8 +15,7 @@ Retrieve jobs for ProjectUpdate.
 ### All (Default)
 ```
 Find-ProjectUpdateJob [[-Name] <String[]>] [-Status <String[]>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith

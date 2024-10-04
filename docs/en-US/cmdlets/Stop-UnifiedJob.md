@@ -19,8 +19,7 @@ Stop-UnifiedJob [-Type] <ResourceType> [-Id] <UInt64> [<CommonParameters>]
 
 ### Determine
 ```
-Stop-UnifiedJob [-Type] <ResourceType> [-Id] <UInt64> [-Determine]
- [<CommonParameters>]
+Stop-UnifiedJob [-Type] <ResourceType> [-Id] <UInt64> [-Determine] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

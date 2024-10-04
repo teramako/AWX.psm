@@ -13,8 +13,8 @@ Disable a NotificationTemplate.
 ## SYNTAX
 
 ```
-Disable-NotificationTemplate [-Id] <UInt64> [-For] <IResource> [-On] <String[]>
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Disable-NotificationTemplate [-Id] <UInt64> [-For] <IResource> [-On] <String[]> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

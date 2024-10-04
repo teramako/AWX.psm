@@ -13,8 +13,7 @@ Add a Label.
 ## SYNTAX
 
 ```
-Add-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Add-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

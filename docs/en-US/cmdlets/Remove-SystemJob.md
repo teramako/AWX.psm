@@ -13,8 +13,7 @@ Remove a System job.
 ## SYNTAX
 
 ```
-Remove-SystemJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-SystemJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Remove a WorkflowApproval.
 ## SYNTAX
 
 ```
-Remove-WorkflowApprovalRequest [-Id] <UInt64> [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-WorkflowApprovalRequest [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -14,8 +14,8 @@ Update a NotificationTemplate.
 
 ```
 Update-NotificationTemplate [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Organization <UInt64>]
- [-Type <NotificationType>] [-Configuration <IDictionary>] [-Messages <IDictionary>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Type <NotificationType>] [-Configuration <IDictionary>] [-Messages <IDictionary>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

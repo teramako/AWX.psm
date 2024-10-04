@@ -21,8 +21,8 @@ New-Inventory [-Organization] <UInt64> [-Name] <String> [-Description <String>] 
 ### SmartInventory
 ```
 New-Inventory [-Organization] <UInt64> [-Name] <String> [-Description <String>] [-Variables <String>]
- [-PreventInstanceGroupFallback] [-AsSmartInventory] -HostFilter <String>
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-PreventInstanceGroupFallback] [-AsSmartInventory] -HostFilter <String> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

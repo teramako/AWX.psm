@@ -13,8 +13,8 @@ Create a Team.
 ## SYNTAX
 
 ```
-New-Team -Organization <UInt64> -Name <String> [-Description <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+New-Team -Organization <UInt64> -Name <String> [-Description <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

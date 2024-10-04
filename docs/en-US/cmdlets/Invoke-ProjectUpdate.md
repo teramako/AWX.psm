@@ -14,14 +14,12 @@ Invoke (update) a Project and wait until the job is finished.
 
 ### Id
 ```
-Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64>
- [<CommonParameters>]
+Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [<CommonParameters>]
 ```
 
 ### Project
 ```
-Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Project] <IResource>
- [<CommonParameters>]
+Invoke-ProjectUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Project] <IResource> [<CommonParameters>]
 ```
 
 ### CheckId

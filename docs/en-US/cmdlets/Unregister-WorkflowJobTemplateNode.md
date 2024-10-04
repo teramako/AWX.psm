@@ -13,8 +13,7 @@ Unlink WorkflowJobTemplateNode from the parent.
 ## SYNTAX
 
 ```
-Unregister-WorkflowJobTemplateNode [-Id] <UInt64> -From <UInt64> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Unregister-WorkflowJobTemplateNode [-Id] <UInt64> -From <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Register a Credential.
 ## SYNTAX
 
 ```
-Add-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Add-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

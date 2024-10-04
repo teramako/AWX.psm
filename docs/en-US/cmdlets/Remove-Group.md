@@ -13,8 +13,7 @@ Remove a Group.
 ## SYNTAX
 
 ```
-Remove-Group [-Id] <UInt64> [-FromGroup <UInt64>] [-Force] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Remove-Group [-Id] <UInt64> [-FromGroup <UInt64>] [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

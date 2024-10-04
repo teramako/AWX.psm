@@ -13,8 +13,7 @@ Revoke Roles.
 ## SYNTAX
 
 ```
-Revoke-Role [-Roles] <IResource[]> [-From] <IResource> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Revoke-Role [-Roles] <IResource[]> [-From] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

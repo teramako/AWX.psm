@@ -13,8 +13,7 @@ Remove an Organization.
 ## SYNTAX
 
 ```
-Remove-Organization [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Organization [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

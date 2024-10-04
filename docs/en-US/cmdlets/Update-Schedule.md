@@ -16,8 +16,8 @@ Update a Schedule.
 Update-Schedule [-Id] <UInt64> [-Name <String>] [-Description <String>] [-RRule <String>] [-Enable <Boolean>]
  [-ExtraData <String>] [-Inventory <UInt64>] [-ScmBranch <String>] [-JobType <JobType>] [-Tags <String>]
  [-SkipTags <String>] [-Limit <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>] [-Forks <Int32>]
- [-ExecutionEnvironment <UInt64>] [-JobSliceCount <Int32>] [-Timeout <Int32>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-ExecutionEnvironment <UInt64>] [-JobSliceCount <Int32>] [-Timeout <Int32>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

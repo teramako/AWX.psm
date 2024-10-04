@@ -13,8 +13,7 @@ Remove an InventorySource.
 ## SYNTAX
 
 ```
-Remove-InventorySource [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-InventorySource [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

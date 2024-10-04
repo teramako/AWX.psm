@@ -13,8 +13,7 @@ Remove an AdHocCommand job.
 ## SYNTAX
 
 ```
-Remove-AdHocCommandJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-AdHocCommandJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

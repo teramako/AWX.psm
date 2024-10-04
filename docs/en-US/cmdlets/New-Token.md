@@ -14,14 +14,14 @@ Create an AccessToken.
 
 ### Application (Default)
 ```
-New-Token [-Application] <UInt64> [-Scope <String>] [-Description <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+New-Token [-Application] <UInt64> [-Scope <String>] [-Description <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### User
 ```
-New-Token [-ForMe] [[-Application] <UInt64>] [-Scope <String>] [-Description <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+New-Token [-ForMe] [[-Application] <UInt64>] [-Scope <String>] [-Description <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION

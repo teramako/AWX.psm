@@ -13,8 +13,7 @@ Associate the Group to a Group.
 ## SYNTAX
 
 ```
-Add-Group [-Id] <UInt64> [-ToGroup] <UInt64> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Add-Group [-Id] <UInt64> [-ToGroup] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

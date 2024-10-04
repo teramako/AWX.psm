@@ -13,8 +13,7 @@ Remove a WorkflowJobTemplate.
 ## SYNTAX
 
 ```
-Remove-WorkflowJobTemplate [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-WorkflowJobTemplate [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

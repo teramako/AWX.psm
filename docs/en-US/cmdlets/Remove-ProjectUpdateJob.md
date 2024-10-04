@@ -13,8 +13,7 @@ Remove a ProjectUpdate Job.
 ## SYNTAX
 
 ```
-Remove-ProjectUpdateJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-ProjectUpdateJob [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

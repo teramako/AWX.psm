@@ -21,8 +21,7 @@ Find-WorkflowJobTemplateNode [-OrderBy <String[]>] [-Search <String[]>] [-Filter
 ### AssociatedWith
 ```
 Find-WorkflowJobTemplateNode [-Type <ResourceType>] -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

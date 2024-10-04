@@ -14,8 +14,7 @@ Update a CredentialType.
 
 ```
 Update-CredentialType [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Kind <String>]
- [-Inputs <IDictionary>] [-Injectors <IDictionary>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-Inputs <IDictionary>] [-Injectors <IDictionary>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

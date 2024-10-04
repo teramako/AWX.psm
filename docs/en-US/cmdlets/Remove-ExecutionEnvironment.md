@@ -13,8 +13,7 @@ Remove an ExecutionEnvironment.
 ## SYNTAX
 
 ```
-Remove-ExecutionEnvironment [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-ExecutionEnvironment [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -13,8 +13,7 @@ Remove an Application.
 ## SYNTAX
 
 ```
-Remove-Application [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-Application [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

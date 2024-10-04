@@ -21,8 +21,7 @@ Find-Host [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollecti
 ### AssociatedWith
 ```
 Find-Host -Type <ResourceType> -Id <UInt64> [-OnlyChildren] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

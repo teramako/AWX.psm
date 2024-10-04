@@ -14,14 +14,12 @@ Invoke (update) an InventorySource and wait until the job is finished.
 
 ### Id
 ```
-Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64>
- [<CommonParameters>]
+Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [<CommonParameters>]
 ```
 
 ### Resource
 ```
-Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Source] <IResource>
- [<CommonParameters>]
+Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Source] <IResource> [<CommonParameters>]
 ```
 
 ### CheckId

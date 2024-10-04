@@ -24,8 +24,7 @@ New-Project [-Local] -Name <String> [-Description <String>] -Organization <UInt6
 New-Project [-Git] -Name <String> [-Description <String>] -Organization <UInt64> [-DefaultEnvironment <UInt64>]
  [-SignatureValidationCredential <UInt64>] -ScmUrl <String> [-ScmBranch <String>] [-ScmRefspec <String>]
  [-Credential <UInt64>] [-ScmClean] [-ScmDeleteOnUpdate] [-ScmTrackSubmodules] [-ScmUpdateOnLaunch]
- [-AllowOverride] [-Timeout <Int32>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-AllowOverride] [-Timeout <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Svn
@@ -33,16 +32,14 @@ New-Project [-Git] -Name <String> [-Description <String>] -Organization <UInt64>
 New-Project [-Subversion] -Name <String> [-Description <String>] -Organization <UInt64>
  [-DefaultEnvironment <UInt64>] [-SignatureValidationCredential <UInt64>] -ScmUrl <String>
  [-ScmBranch <String>] [-Credential <UInt64>] [-ScmClean] [-ScmDeleteOnUpdate] [-ScmUpdateOnLaunch]
- [-AllowOverride] [-Timeout <Int32>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-AllowOverride] [-Timeout <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Insights
 ```
 New-Project [-Insights] -Name <String> [-Description <String>] -Organization <UInt64>
  [-DefaultEnvironment <UInt64>] [-SignatureValidationCredential <UInt64>] -Credential <UInt64> [-ScmClean]
- [-ScmDeleteOnUpdate] [-ScmUpdateOnLaunch] [-Timeout <Int32>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+ [-ScmDeleteOnUpdate] [-ScmUpdateOnLaunch] [-Timeout <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Archive

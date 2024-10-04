@@ -13,8 +13,7 @@ Update a Label.
 ## SYNTAX
 
 ```
-Update-Label [-Id] <UInt64> [-Name <String>] [-Organization <UInt64>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-Label [-Id] <UInt64> [-Name <String>] [-Organization <UInt64>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

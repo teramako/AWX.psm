@@ -17,8 +17,7 @@ New-InventorySource -Name <String> [-Description <String>] -Inventory <UInt64> -
  [-SourceProject <UInt64>] [-SourcePath <String>] [-SourceVars <String>] [-ScmBranch <String>]
  [-Credential <UInt64>] [-EnabledVar <String>] [-EnabledValue <String>] [-HostFilter <String>] [-Overwrite]
  [-OverwriteVars] [-Timeout <Int32>] [-Verbosity <Int32>] [-Limit <String>] [-ExecutionEnvironment <UInt64>]
- [-UpdateOnLaunch] [-UpdateCacheTimeout <Int32>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-UpdateOnLaunch] [-UpdateCacheTimeout <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

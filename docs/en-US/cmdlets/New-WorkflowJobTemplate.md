@@ -16,8 +16,8 @@ Create a WorkflowJobTemplate.
 New-WorkflowJobTemplate -Name <String> [-Description <String>] [-Organization <UInt64>] [-Inventory <UInt64>]
  [-Limit <String>] [-ScmBranch <String>] [-ExtraVars <String>] [-Tags <String>] [-SkipTags <String>]
  [-AskScmBranch] [-AskVariables] [-AskLimit] [-AskTags] [-AskSkipTags] [-AskInventory] [-AskLabels]
- [-SurveyEnabled] [-WebhookService <String>] [-WebhookCredential <UInt64>] [-AllowSimultaneous]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-SurveyEnabled] [-WebhookService <String>] [-WebhookCredential <UInt64>] [-AllowSimultaneous] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
