@@ -81,9 +81,11 @@ namespace AWX.Cmdlets
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckId", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
+
         [Parameter(Mandatory = true, ParameterSetName = "Project", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckProject", ValueFromPipeline = true, Position = 0)]
-        public Project? Project { get; set; }
+        [ResourceTransformation(AcceptableTypes = [ResourceType.Project])]
+        public IResource? Project { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = "CheckId")]
         [Parameter(Mandatory = true, ParameterSetName = "CheckProject")]
@@ -91,7 +93,7 @@ namespace AWX.Cmdlets
 
         protected void CheckCanUpdate(ulong projectId)
         {
-            var res = GetResource<CanUpdateProject>($"{Project.PATH}{projectId}/update/");
+            var res = GetResource<CanUpdateProject>($"{Resources.Project.PATH}{projectId}/update/");
             if (res == null)
             {
                 return;
@@ -104,8 +106,8 @@ namespace AWX.Cmdlets
         }
         protected ProjectUpdateJob.Detail UpdateProject(ulong projectId)
         {
-            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Project.PATH}{projectId}/update/");
-            return apiResult.Contents;
+            var apiResult = CreateResource<ProjectUpdateJob.Detail>($"{Resources.Project.PATH}{projectId}/update/");
+            return apiResult.Contents ?? throw new NullReferenceException();
         }
     }
 
@@ -139,7 +141,7 @@ namespace AWX.Cmdlets
                 {
                     var job = UpdateProject(Id);
                     WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
-                    JobManager.Add(job);
+                    JobProgressManager.Add(job);
                 }
                 catch (RestAPIException) { }
             }
@@ -176,6 +178,33 @@ namespace AWX.Cmdlets
                     var job = UpdateProject(Id);
                     WriteVerbose($"Update Project:{Id} => Job:[{job.Id}]");
                     WriteObject(job, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "ProjectUpdateJob", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveProjectUpdateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ProjectUpdate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"ProjectUpdate [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{ProjectUpdateJob.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"ProjectUpdate {Id} is removed.");
+                    }
                 }
                 catch (RestAPIException) { }
             }

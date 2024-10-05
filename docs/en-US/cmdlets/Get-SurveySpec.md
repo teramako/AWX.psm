@@ -19,6 +19,10 @@ Get-SurveySpec [-Type] <ResourceType> [-Id] <UInt64> [<CommonParameters>]
 ## DESCRIPTION
 Retrieve Survey specifications for JobTemplate or WorkflowJobTemplate.
 
+Implements following Rest API:  
+- `/api/v2/job_templates/{id}/survey_spec/`  
+- `/api/v2/workflow_job_templates/{id}/survey_spec/`
+
 ## EXAMPLES
 
 ### Example 1
@@ -88,6 +92,10 @@ Database ID for the ResourceType
 ## NOTES
 
 ## RELATED LINKS
+
+[Register-SurveySpec](Register-SurveySpec.md)
+
+[Remove-SurveySpec](Remove-SurveySpec.md)
 
 [Get-JobTemplate](Get-JobTemplate.md)
 

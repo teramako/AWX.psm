@@ -68,3 +68,9 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-WorkflowJobTemplate](Find-WorkflowJobTemplate.md)
+
+[New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
+
+[Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+
+[Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)

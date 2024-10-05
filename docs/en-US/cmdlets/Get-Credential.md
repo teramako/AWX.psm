@@ -64,3 +64,11 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-Credential](Find-Credential.md)
+
+[New-Credential](New-Credential.md)
+
+[Update-Credential](Update-Credential.md)
+
+[Add-Credential](Add-Credential.md)
+
+[Remove-Credential](Remove-Credential.md)

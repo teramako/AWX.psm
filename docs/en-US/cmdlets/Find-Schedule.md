@@ -21,8 +21,7 @@ Find-Schedule [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueColl
 ### AssociatedWith
 ```
 Find-Schedule -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -218,3 +217,11 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Schedule](Get-Schedule.md)
+
+[Find-Schedule](Find-Schedule.md)
+
+[New-Schedule](New-Schedule.md)
+
+[Update-Schedule](Update-Schedule.md)
+
+[Remove-Schedule](Remove-Schedule.md)

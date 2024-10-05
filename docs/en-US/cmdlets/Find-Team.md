@@ -21,8 +21,7 @@ Find-Team [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollecti
 ### AssociatedWith
 ```
 Find-Team -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -218,3 +217,9 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Team](Get-Team.md)
+
+[New-Team](New-Team.md)
+
+[Update-Team](Update-Team.md)
+
+[Remove-Team](Remove-Team.md)

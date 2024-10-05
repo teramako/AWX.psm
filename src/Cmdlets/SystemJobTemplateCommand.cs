@@ -68,8 +68,10 @@ namespace AWX.Cmdlets
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
+
         [Parameter(Mandatory = true, ParameterSetName = "Template", ValueFromPipeline = true, Position = 0)]
-        public SystemJobTemplate? SystemJobTemplate { get; set; }
+        [ResourceTransformation(AcceptableTypes = [ResourceType.SystemJobTemplate])]
+        public IResource? SystemJobTemplate { get; set; }
 
         [Parameter()]
         public IDictionary? ExtraVars { get; set; }
@@ -85,8 +87,8 @@ namespace AWX.Cmdlets
         }
         protected SystemJob.Detail Launch(ulong id)
         {
-            var apiResult = CreateResource<SystemJob.Detail>($"{SystemJobTemplate.PATH}{id}/launch/", CreateSendData());
-            return apiResult.Contents;
+            var apiResult = CreateResource<SystemJob.Detail>($"{Resources.SystemJobTemplate.PATH}{id}/launch/", CreateSendData());
+            return apiResult.Contents ?? throw new NullReferenceException();
         }
     }
 
@@ -94,9 +96,11 @@ namespace AWX.Cmdlets
     [OutputType(typeof(SystemJob))]
     public class InvokeSystemJobTemplateCommand : LaunchSystemJobTemplateCommandBase
     {
+        [Parameter()]
         [ValidateRange(5, int.MaxValue)]
         public int IntervalSeconds { get; set; } = 5;
 
+        [Parameter()]
         public SwitchParameter SuppressJobLog { get; set; }
 
         protected override void ProcessRecord()
@@ -109,7 +113,7 @@ namespace AWX.Cmdlets
             {
                 var job = Launch(Id);
                 WriteVerbose($"Launch SystemJobTemplate:{Id} => Job:[{job.Id}]");
-                JobManager.Add(job);
+                JobProgressManager.Add(job);
             }
             catch (RestAPIException) { }
         }

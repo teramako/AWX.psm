@@ -15,15 +15,13 @@ Retrieve request jobs for WorkflowApproval.
 ### All (Default)
 ```
 Find-WorkflowApprovalRequest [-Status <JobStatus[]>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
 ```
 Find-WorkflowApprovalRequest -Id <UInt64> [-Status <JobStatus[]>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -207,3 +205,5 @@ Database ID for `WorkflowApprovalTemplate`
 [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 
 [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
+
+[Remove-WorkflowApprovalRequest](Remove-WorkflowApprovalRequest.md)

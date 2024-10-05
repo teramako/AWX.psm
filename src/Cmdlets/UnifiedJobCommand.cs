@@ -147,13 +147,13 @@ namespace AWX.Cmdlets
 
         protected override void ProcessRecord()
         {
-            JobManager.Add(Id, new JobProgress(Id, Type));
+            JobProgressManager.Add(Id, new JobProgress(Id, Type));
         }
         protected override void EndProcessing()
         {
-            JobManager.UpdateJob();
+            JobProgressManager.UpdateJob();
             ShowJobLog(SuppressJobLog);
-            JobManager.CleanCompleted();
+            JobProgressManager.CleanCompleted();
             WaitJobs("Wait Job", IntervalSeconds, SuppressJobLog);
         }
     }

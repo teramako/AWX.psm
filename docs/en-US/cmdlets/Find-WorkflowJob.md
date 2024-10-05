@@ -264,6 +264,8 @@ Database ID for the ResourceType
 
 [Get-WorkflowJob](Get-WorkflowJob.md)
 
+[Remove-WorkflowJob](Remove-WorkflowJob.md)
+
 [Get-WorkflowJobTemplate](Get-WorkflowJobTemplate.md)
 
 [Find-WorkflowJobTemplate](Find-WorkflowJobTemplate.md)

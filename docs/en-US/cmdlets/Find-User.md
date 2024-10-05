@@ -15,8 +15,7 @@ Retrieve Users.
 ### All (Default)
 ```
 Find-User [[-UserName] <String[]>] [[-Email] <String[]>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
@@ -250,6 +249,14 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-User](Get-User.md)
+
+[New-User](New-User.md)
+
+[Add-User](Add-User.md)
+
+[Update-User](Update-User.md)
+
+[Remove-User](Remove-User.md)
 
 [Get-Team](Get-Team.md)
 

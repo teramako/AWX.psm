@@ -15,8 +15,7 @@ Retrieve JobTemplates.
 ### All (Default)
 ```
 Find-JobTemplate [[-Name] <String[]>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
@@ -231,6 +230,12 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-JobTemplate](Get-JobTemplate.md)
+
+[New-Jobtemplate](New-JobTemplate.md)
+
+[Update-JobTemplate](Update-JobTemplate.md)
+
+[Remove-JobTemplate](Remove-JobTemplate.md)
 
 [Find-UnifiedJobTemplate](Find-UnifiedJobTemplate.md)
 

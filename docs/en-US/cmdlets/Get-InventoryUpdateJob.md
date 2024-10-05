@@ -64,3 +64,5 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-InventoryUpdateJob](Find-InventoryUpdateJob.md)
+
+[Remove-InventoryUpdateJob](Remove-InventoryUpdateJob.md)

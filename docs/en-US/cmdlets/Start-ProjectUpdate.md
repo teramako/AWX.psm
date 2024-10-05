@@ -24,12 +24,12 @@ Start-ProjectUpdate [-Id] <UInt64> [-Check] [<CommonParameters>]
 
 ### Project
 ```
-Start-ProjectUpdate [-Project] <Project> [<CommonParameters>]
+Start-ProjectUpdate [-Project] <IResource> [<CommonParameters>]
 ```
 
 ### CheckProject
 ```
-Start-ProjectUpdate [-Project] <Project> [-Check] [<CommonParameters>]
+Start-ProjectUpdate [-Project] <IResource> [-Check] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -91,7 +91,7 @@ Accept wildcard characters: False
 Project object to be updated.
 
 ```yaml
-Type: Project
+Type: IResource
 Parameter Sets: Project, CheckProject
 Aliases:
 

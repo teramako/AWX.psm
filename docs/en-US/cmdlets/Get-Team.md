@@ -68,3 +68,9 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-Team](Find-Team.md)
+
+[New-Team](New-Team.md)
+
+[Update-Team](Update-Team.md)
+
+[Remove-Team](Remove-Team.md)

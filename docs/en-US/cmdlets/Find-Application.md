@@ -21,8 +21,7 @@ Find-Application [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueC
 ### AssociatedWith
 ```
 Find-Application -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -216,3 +215,11 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Application](Get-Application.md)
+
+[Find-Application](Find-Application.md)
+
+[New-Application](New-Application.md)
+
+[Update-Application](Update-Application.md)
+
+[Remove-Application](Remove-Application.md)

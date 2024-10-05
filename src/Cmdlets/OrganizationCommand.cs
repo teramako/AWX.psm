@@ -76,4 +76,134 @@ namespace AWX.Cmdlets
             }
         }
     }
+
+    [Cmdlet(VerbsCommon.New, "Organization", SupportsShouldProcess = true)]
+    [OutputType(typeof(Organization))]
+    public class NewOrganizationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public uint MaxHosts { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        public ulong DefaultEnvironment { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name }
+            };
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (MaxHosts > 0)
+                sendData.Add("max_hosts", MaxHosts);
+            if (DefaultEnvironment > 0)
+                sendData.Add("default_environment", DefaultEnvironment);
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<Organization>(Organization.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+    
+    [Cmdlet(VerbsData.Update, "Organization", SupportsShouldProcess = true)]
+    [OutputType(typeof(Organization))]
+    public class UpdateOrganizationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        public uint? MaxHosts { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
+        [AllowNull]
+        public ulong? DefaultEnvironment { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (MaxHosts != null)
+                sendData.Add("max_hosts", MaxHosts);
+            if (DefaultEnvironment != null)
+                sendData.Add("default_environment", DefaultEnvironment == 0 ? null : DefaultEnvironment);
+
+            if (sendData.Count == 0)
+                return; // do nothing
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"Organization [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var updatedOrg = PatchResource<Organization>($"{Organization.PATH}{Id}/", sendData);
+                    WriteObject(updatedOrg, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "Organization", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveOrganizationCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        private void Delete(ulong id)
+        {
+            if (Force || ShouldProcess($"Organization [{id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{Organization.PATH}{id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Organization {id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            Delete(Id);
+        }
+    }
 }

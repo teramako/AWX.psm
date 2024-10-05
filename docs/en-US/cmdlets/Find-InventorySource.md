@@ -21,8 +21,7 @@ Find-InventorySource [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameVa
 ### AssociatedWith
 ```
 Find-InventorySource -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -214,3 +213,11 @@ Database ID for the ResourceType
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-InventorySource](Get-InventorySource.md)
+
+[New-InventorySource](New-InventorySource.md)
+
+[Update-InventorySource](Update-InventorySource.md)
+
+[Remove-InventorySource](Remove-InventorySource.md)

@@ -21,8 +21,7 @@ Find-Label [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollect
 ### AssociatedWith
 ```
 Find-Label -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -217,3 +216,11 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Label](Get-Label.md)
+
+[New-Label](New-Label.md)
+
+[Add-Label](Add-Label.md)
+
+[Remove-Label](Remove-Label.md)
+
+[Update-Label](Update-Label.md)

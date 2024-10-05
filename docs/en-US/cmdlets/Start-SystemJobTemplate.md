@@ -14,14 +14,12 @@ Invoke (launch) a SystemJobTemplate.
 
 ### Id
 ```
-Start-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>]
- [<CommonParameters>]
+Start-SystemJobTemplate [-Id] <UInt64> [-ExtraVars <IDictionary>] [<CommonParameters>]
 ```
 
 ### Template
 ```
-Start-SystemJobTemplate [-SystemJobTemplate] <SystemJobTemplate> [-ExtraVars <IDictionary>]
- [<CommonParameters>]
+Start-SystemJobTemplate [-SystemJobTemplate] <IResource> [-ExtraVars <IDictionary>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -87,10 +85,10 @@ Accept wildcard characters: False
 ```
 
 ### -SystemJobTemplate
-SystemJobTempalte object to be launched.
+{{ Fill SystemJobTemplate Description }}
 
 ```yaml
-Type: SystemJobTemplate
+Type: IResource
 Parameter Sets: Template
 Aliases:
 

@@ -14,20 +14,12 @@ Invoke (update) an InventorySource and wait until the job is finished.
 
 ### Id
 ```
-Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64>
- [<CommonParameters>]
+Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [<CommonParameters>]
 ```
 
-### InventorySource
+### Resource
 ```
-Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-InventorySource] <InventorySource>
- [<CommonParameters>]
-```
-
-### Inventory
-```
-Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Inventory] <Inventory>
- [<CommonParameters>]
+Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Source] <IResource> [<CommonParameters>]
 ```
 
 ### CheckId
@@ -35,16 +27,9 @@ Invoke-InventoryUpdate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Inventory]
 Invoke-InventoryUpdate [-Id] <UInt64> [-Check] [<CommonParameters>]
 ```
 
-### CheckInventorySource
+### CheckResource
 ```
-Invoke-InventoryUpdate [-InventorySource] <InventorySource> [-Check]
- [<CommonParameters>]
-```
-
-### CheckInventory
-```
-Invoke-InventoryUpdate [-Inventory] <Inventory> [-Check]
- [<CommonParameters>]
+Invoke-InventoryUpdate [-Source] <IResource> [-Check] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -104,7 +89,7 @@ Check wheter InventorySource(s) can be updated.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: CheckId, CheckInventorySource, CheckInventory
+Parameter Sets: CheckId, CheckResource
 Aliases:
 
 Required: True
@@ -135,7 +120,7 @@ Default is 5 seconds.
 
 ```yaml
 Type: Int32
-Parameter Sets: Id, InventorySource, Inventory
+Parameter Sets: Id, Resource
 Aliases:
 
 Required: False
@@ -145,27 +130,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Inventory
-Inventory object containing the InventorySource to be updated.
+### -Source
+A `Inventory` or `InventorySource` object.
+
+If the value is `Inventory`, all of InventorySources in the Inventory will be updated or checked.
 
 ```yaml
-Type: Inventory
-Parameter Sets: Inventory, CheckInventory
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -InventorySource
-InventorySource object to be updated.
-
-```yaml
-Type: InventorySource
-Parameter Sets: InventorySource, CheckInventorySource
+Type: IResource
+Parameter Sets: Resource, CheckResource
 Aliases:
 
 Required: True
@@ -190,7 +162,7 @@ Suppress display job log.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Id, InventorySource, Inventory
+Parameter Sets: Id, Resource
 Aliases:
 
 Required: False

@@ -88,22 +88,6 @@ namespace AWX
             }
 
         }
-        private static async Task<RestAPIResult<string>> HandleResponse(HttpResponseMessage response)
-        {
-            long contentLength = response.Content.Headers.ContentLength ?? 0;
-            var contentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty;
-            if (response.IsSuccessStatusCode)
-            {
-                if (contentLength == 0)
-                {
-                    return new RestAPIResult<string>(response, contents: string.Empty);
-                }
-                string stringContent = await response.Content.ReadAsStringAsync();
-                return new RestAPIResult<string>(response, stringContent);
-            }
-            // Error handling
-            throw await CreateException(response, contentType);
-        }
         /// <summary>
         /// Handle HTTP response contents.<br/>
         /// Returns JSON deserialized object if the HTTP status is success code and <c>Content-Type</c> is <c>application/json</c>.
@@ -114,15 +98,17 @@ namespace AWX
         /// <exception cref="RestAPIException"></exception>"
         private static async Task<RestAPIResult<T>> HandleResponse<T>(HttpResponseMessage response) where T : class
         {
-            if (typeof(T) == typeof(string))
-            {
-                var stringTask = await HandleResponse(response) as RestAPIResult<T>
-                        ?? throw new RestAPIException($"Could not retrieve contents", response);
-                return stringTask;
-            }
             var contentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty;
             if (response.IsSuccessStatusCode)
             {
+                if (typeof(T) == typeof(string))
+                {
+                    long contentLength = response.Content.Headers.ContentLength ?? 0;
+                    T? stringContents = (contentLength == 0 ? string.Empty : await response.Content.ReadAsStringAsync()) as T;
+                    if (stringContents == null)
+                        throw new NullReferenceException();
+                    return new RestAPIResult<T>(response, stringContents);
+                }
                 if (contentType == JsonContentType)
                 {
                     try
@@ -141,6 +127,51 @@ namespace AWX
                 {
                     throw new RestAPIException($"Invalid Content-Type: {contentType}", response);
 
+                }
+            }
+            // Error handling
+            throw await CreateException(response, contentType);
+        }
+        /// <summary>
+        /// Handle HTTP response contents.<br/>
+        /// Returns JSON deserialized object if the HTTP status is success code and <c>Content-Type</c> is <c>application/json</c>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response"></param>
+        /// <returns>The contents object or exception is wrapped <see cref="RestAPIResult{T}"/></returns>
+        /// <exception cref="RestAPIException"></exception>"
+        private static async Task<RestAPIPostResult<T>> HandlePostResponse<T>(HttpResponseMessage response) where T : class
+        {
+            var contentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty;
+            if (response.IsSuccessStatusCode)
+            {
+                long contentLength = response.Content.Headers.ContentLength ?? 0;
+                if (typeof(T) == typeof(string))
+                {
+                    string stringContents = (contentLength == 0 ? string.Empty : await response.Content.ReadAsStringAsync());
+                    return new RestAPIPostResult<T>(response, stringContents as T);
+                }
+                else if (contentLength == 0 || response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    return new RestAPIPostResult<T>(response);
+                }
+                else if (contentType == JsonContentType)
+                {
+                    try
+                    {
+                        var obj = await response.Content.ReadFromJsonAsync<T>(Json.DeserializeOptions)
+                            ?? throw new RestAPIException("Failed to read JSON. The result is null.", response);
+                        return new RestAPIPostResult<T>(response, obj);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new RestAPIException($"Could not deserialize JSON to {typeof(T)}", response, ex);
+                    }
+                }
+                else
+                {
+                    throw new RestAPIException($"Invalid Content-Type: {contentType}", response);
                 }
             }
             // Error handling
@@ -281,11 +312,11 @@ namespace AWX
         /// <param name="data"></param>
         /// <returns></returns>
         /// <exception cref="RestAPIException"></exception>
-        public static async Task<RestAPIResult<T>> PostJsonAsync<T>(string path, object? data) where T : class
+        public static async Task<RestAPIPostResult<T>> PostJsonAsync<T>(string path, object? data) where T : class
         {
             using var jsonContent = GetStringContent(data);
             using HttpResponseMessage response = await Client.PostAsync(path, jsonContent);
-            return await HandleResponse<T>(response);
+            return await HandlePostResponse<T>(response);
         }
         /// <summary>
         /// Request <see cref="HttpMethod.Put">PUT</see> to AWX

@@ -68,3 +68,5 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-ProjectUpdateJob](Find-ProjectUpdateJob.md)
+
+[Remove-ProjectUpdateJob](Remove-ProjectUpdateJob.md)

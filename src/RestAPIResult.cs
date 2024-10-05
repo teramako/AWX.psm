@@ -41,7 +41,7 @@ namespace AWX
         /// <summary>
         /// Json deserialized object or contents string.
         /// </summary>
-        TValue Contents { get; }
+        TValue? Contents { get; }
         /// <summary>
         /// HTTP response
         /// </summary>
@@ -55,6 +55,21 @@ namespace AWX
     public class RestAPIResult<T>(HttpResponseMessage response, T contents) : IRestAPIResult<T>
     {
         public T Contents { get; } = contents;
+        public RestAPIResponse Response { get; } = new RestAPIResponse(response);
+        public override string ToString()
+        {
+            return $"{typeof(T).Name} ({Response.StatusCode:d} {Response.ReasonPhrase}: {Response.Method} {Response.RequestUri?.PathAndQuery})";
+        }
+    }
+
+    /// <summary>
+    /// The contents of <see cref="RestAPI"/>.
+    /// The response contents may be null especially HTTP status code is 204 (NotContent).
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class RestAPIPostResult<T>(HttpResponseMessage response, T? contents = default(T)) : IRestAPIResult<T>
+    {
+        public T? Contents { get; } = contents;
         public RestAPIResponse Response { get; } = new RestAPIResponse(response);
         public override string ToString()
         {

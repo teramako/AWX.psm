@@ -21,8 +21,7 @@ Find-NotificationTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Filter <N
 ### AssociatedWith
 ```
 Find-NotificationTemplate [-Type <ResourceType>] -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -227,3 +226,13 @@ Database ID for `Organization`
 [Get-Notification](Get-Notification.md)
 
 [Find-Notification](Find-Notification.md)
+
+[New-NotificationTemplate](New-NotificationTemplate.md)
+
+[Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+
+[Disable-NotificationTemplate](Diable-NotificationTemplate.md)
+
+[Update-NotificationTemplate](Update-NotificationTemplate.md)
+
+[Remove-NotificationTemplate](Remove-NotificationTemplate.md)

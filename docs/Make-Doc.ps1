@@ -2,6 +2,7 @@
 .SYNOPSIS
 Create Documents with platyPS
 #>
+[CmdletBinding()]
 param(
     [string] $Locale = "en-US",
     [switch] $New
@@ -89,6 +90,11 @@ function Update-CommonParameterFromMarkdown {
                 $updateFile = $true
             }
         }
+
+        if (-not $IsWindows) {
+            $newContent = $content -replace "`r?`n", "`n"
+        }
+
         # Save file if content has changed
         if ($updateFile) {
             $newContent | Out-File -Encoding utf8 -FilePath $p
@@ -170,7 +176,7 @@ if ($New) {
     $NewParams = @{
         Module = $moduleName;
         OutputFolder = $OutputFolder;
-        AlphabeticParamsOrder = $false;
+        AlphabeticParamsOrder = $true;
         ExcludeDontShow = $true;
         Encoding = $Utf8NoBomEncoding;
     }
@@ -179,7 +185,7 @@ if ($New) {
     $UpdateParams = @{
         Path = $OutputFolder;
         RefreshModulePage = $true;
-        AlphabeticParamsOrder = $false;
+        AlphabeticParamsOrder = $true;
         ExcludeDontShow = $true;
         UpdateInputOutput = $false;
         Encoding = $Utf8NoBomEncoding;
@@ -191,6 +197,11 @@ if ($resultFiles.Count -gt 0) {
     Repair-PlatyPSMarkdown -Path $resultFiles
 }
 
+$moduleMarkdownFile = Join-Path $OutputFolder "$moduleName.md"
+if (-not $IsWindows -and (Test-Path -Path $moduleMarkdownFile -PathType Leaf)) {
+    $content = (Get-Content -Path $moduleMarkdownFile -Raw).TrimEnd() -replace "`r?`n", "`n"
+    $content | Out-File -FilePath $moduleMarkdownFile -Encoding utf8NoBOM
+}
 
 # $externalHelpDirPath = Join-Path $PSScriptRoot ..\out\$Locale
 $externalHelpDirPath = Join-Path $module.ModuleBase $Locale

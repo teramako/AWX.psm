@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Management.Automation;
 using System.Reflection;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,6 +12,11 @@ namespace AWX
 {
     public class Json
     {
+        public static string Stringify(object obj, bool pretty = false)
+        {
+            var options = pretty ? SerializeOptions : DeserializeOptions;
+            return JsonSerializer.Serialize(obj, options);
+        }
         public static OrderedDictionary ToDict(JsonElement json)
         {
             var dict = new OrderedDictionary();
@@ -41,7 +45,7 @@ namespace AWX
                     {
                         if (val.TryGetProperty("type", out var typeValue))
                         {
-                            var key = ToUpperCamelCase(typeValue.GetString() ?? string.Empty);
+                            var key = Utils.ToUpperCamelCase(typeValue.GetString() ?? string.Empty);
                             var fieldInfo = typeof(ResourceType).GetField(key);
                             if (fieldInfo != null)
                             {
@@ -113,61 +117,6 @@ namespace AWX
                     // throw new ArgumentNullException(nameof(val));
             }
         }
-        static string ToUpperCamelCase(string value)
-        {
-            if (value.Length < 2)
-            {
-                return value.ToUpperInvariant();
-            }
-            var sb = new StringBuilder();
-            sb.Append(char.ToUpperInvariant(value[0]));
-            for (var i = 1; i < value.Length; i++)
-            {
-                char c = value[i];
-                switch (c)
-                {
-                    case ' ':
-                    case '_':
-                    case '-':
-                        if (i < value.Length - 1)
-                        {
-                            sb.Append(char.ToUpperInvariant(value[++i]));
-                        }
-                        else
-                        {
-                            sb.Append(c);
-                        }
-                        break;
-                    default:
-                        sb.Append(char.ToLowerInvariant(c)); break;
-                }
-            }
-            return sb.ToString();
-
-        }
-        static string ToSnakeCase(string value)
-        {
-            if (value.Length < 2)
-            {
-                return value.ToLowerInvariant();
-            }
-            var sb = new StringBuilder();
-            sb.Append(char.ToLowerInvariant(value[0]));
-            for (var i = 1; i < value.Length; i++)
-            {
-                char c = value[i];
-                if (char.IsUpper(c))
-                {
-                    sb.Append('_');
-                    sb.Append(char.ToLowerInvariant(c));
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString();
-        }
         /// <summary>
         /// "related" property converter.<br/>
         /// See <see cref="RelatedDictionary"/>
@@ -238,7 +187,7 @@ namespace AWX
             public override TEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
                 var val = reader.GetString() ?? throw new JsonException($"The value of Type {typeToConvert.Name} must not be null");
-                string upperCamelCaseName = ToUpperCamelCase(val);
+                string upperCamelCaseName = Utils.ToUpperCamelCase(val);
                 if (Enum.TryParse(upperCamelCaseName, true, out TEnum enumVal))
                 {
                     return enumVal;
@@ -248,7 +197,7 @@ namespace AWX
 
             public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)
             {
-                string val = ToSnakeCase(value.ToString());
+                string val = Utils.ToSnakeCase(value.ToString());
                 writer.WriteStringValue(val);
             }
         }

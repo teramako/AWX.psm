@@ -21,8 +21,7 @@ Find-InventoryUpdateJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <Nam
 ### AssociatedWith
 ```
 Find-InventoryUpdateJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -212,6 +211,8 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-InventoryUpdateJob](Get-InventoryUpdateJob.md)
+
+[Remove-InventoryUpdateJob](Remove-InventoryUpdateJob.md)
 
 [Invoke-InventoryUpdate](Invoke-InventoryUpdate.md)
 

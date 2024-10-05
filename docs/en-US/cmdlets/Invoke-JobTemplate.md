@@ -23,7 +23,7 @@ Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-Id] <UInt64> [
 
 ### JobTemplate
 ```
-Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <JobTemplate>
+Invoke-JobTemplate [-IntervalSeconds <Int32>] [-SuppressJobLog] [-JobTemplate] <IResource>
  [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>] [-Credentials <UInt64[]>] [-Limit <String>]
  [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>] [-ExtraVars <String>] [-DiffMode <Boolean>]
  [-Verbosity <JobVerbosity>] [-Forks <Int32>] [-ExecutionEnvironment <UInt64>] [-JobSliceCount <Int32>]
@@ -257,7 +257,7 @@ Accept wildcard characters: False
 JobTempalte object to be launched.
 
 ```yaml
-Type: JobTemplate
+Type: IResource
 Parameter Sets: JobTemplate
 Aliases:
 

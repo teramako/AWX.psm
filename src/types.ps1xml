@@ -1814,7 +1814,7 @@
               <Name>OrganizationName</Name>
               <Name>NotificationType</Name>
               <Name>NotificationConfiguration</Name>
-              <Name>StartMessage</Name>
+              <Name>StartedMessage</Name>
               <Name>SuccessMessage</Name>
               <Name>ErrorMessage</Name>
               <Name>ApprovedMessage</Name>
@@ -1829,7 +1829,7 @@
         <GetScriptBlock>$this.SummaryFields.Organization.Name</GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
-        <Name>StartMessage</Name>
+        <Name>StartedMessage</Name>
         <GetScriptBlock>$this.Messages.Started</GetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>

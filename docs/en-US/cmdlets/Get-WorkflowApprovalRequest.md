@@ -72,3 +72,5 @@ One or more database IDs.
 [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 
 [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
+
+[Remove-WorkflowApprovalRequest](Remove-WorkflowApprovalRequest.md)

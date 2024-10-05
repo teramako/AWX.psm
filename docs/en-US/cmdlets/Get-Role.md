@@ -68,3 +68,7 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-Role](Find-Role.md)
+
+[Grant-Role](Grant-Role.md)
+
+[Revoke-Role](Revoke-Role.md)

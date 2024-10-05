@@ -21,8 +21,7 @@ Find-Host [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueCollecti
 ### AssociatedWith
 ```
 Find-Host -Type <ResourceType> -Id <UInt64> [-OnlyChildren] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -251,3 +250,11 @@ Database ID for the ResourceType
 [Get-Group](Get-Group.md)
 
 [Find-Group](Find-Group.md)
+
+[New-Host](New-Host.md)
+
+[Add-Host](Add-Host.md)
+
+[Update-Host](Update-Host.md)
+
+[Remove-Host](Remove-Host.md)

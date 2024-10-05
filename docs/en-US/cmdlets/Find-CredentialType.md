@@ -14,8 +14,7 @@ Retrieve CredentialTypes.
 
 ```
 Find-CredentialType [-Kind <CredentialTypeKind[]>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -181,3 +180,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [Get-Credential](Get-Credential.md)
 
 [Find-Credential](Find-Credential.md)
+
+[New-CredentialType](New-CredentialType.md)
+
+[Update-CredentialType](Update-CredentialType.md)
+
+[Remove-CredentialType](Remove-CredentialType.md)

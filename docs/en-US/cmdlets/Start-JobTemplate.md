@@ -23,7 +23,7 @@ Start-JobTemplate [-Id] <UInt64> [-Inventory <UInt64>] [-JobType <JobType>] [-Sc
 
 ### JobTemplate
 ```
-Start-JobTemplate [-JobTemplate] <JobTemplate> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
+Start-JobTemplate [-JobTemplate] <IResource> [-Inventory <UInt64>] [-JobType <JobType>] [-ScmBranch <String>]
  [-Credentials <UInt64[]>] [-Limit <String>] [-Labels <UInt64[]>] [-Tags <String[]>] [-SkipTags <String[]>]
  [-ExtraVars <String>] [-DiffMode <Boolean>] [-Verbosity <JobVerbosity>] [-Forks <Int32>]
  [-ExecutionEnvironment <UInt64>] [-JobSliceCount <Int32>] [-Timeout <Int32>] [-Interactive]
@@ -257,7 +257,7 @@ Accept wildcard characters: False
 JobTempalte object to be launched.
 
 ```yaml
-Type: JobTemplate
+Type: IResource
 Parameter Sets: JobTemplate
 Aliases:
 

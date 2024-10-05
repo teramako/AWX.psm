@@ -1,7 +1,6 @@
 using AWX.Resources;
 using System.Collections.Frozen;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Management.Automation;
 using System.Text;
 using System.Text.Json;
@@ -11,7 +10,7 @@ namespace AWX.Cmdlets
 {
     public abstract class InvokeJobBase : APICmdletBase
     {
-        protected readonly JobProgressManager JobManager = [];
+        protected readonly JobProgressManager JobProgressManager = [];
         private Sleep? _sleep;
         protected void Sleep(int milliseconds)
         {
@@ -48,35 +47,35 @@ namespace AWX.Cmdlets
                                 int intervalSeconds,
                                 bool suppressJobLog)
         {
-            if (JobManager.Count == 0)
+            if (JobProgressManager.Count == 0)
             {
                 return;
             }
-            JobManager.Start(activityId, intervalSeconds);
+            JobProgressManager.Start(activityId, intervalSeconds);
             do
             {
                 UpdateAllProgressRecordType(ProgressRecordType.Processing);
                 for (var i = 1; i <= intervalSeconds; i++)
                 {
                     Sleep(1000);
-                    JobManager.UpdateProgress(i);
-                    WriteProgress(JobManager.RootProgress);
+                    JobProgressManager.UpdateProgress(i);
+                    WriteProgress(JobProgressManager.RootProgress);
                 }
-                JobManager.UpdateJob();
+                JobProgressManager.UpdateJob();
                 // Remove Progressbar
                 UpdateAllProgressRecordType(ProgressRecordType.Completed);
 
                 ShowJobLog(suppressJobLog);
 
-                WriteObject(JobManager.CleanCompleted(), true);
-            } while (JobManager.Count > 0);
+                WriteObject(JobProgressManager.CleanCompleted(), true);
+            } while (JobProgressManager.Count > 0);
         }
 
         private void UpdateAllProgressRecordType(ProgressRecordType type)
         {
-            JobManager.RootProgress.RecordType = type;
-            WriteProgress(JobManager.RootProgress);
-            foreach (var jp in JobManager.GetAll())
+            JobProgressManager.RootProgress.RecordType = type;
+            WriteProgress(JobProgressManager.RootProgress);
+            foreach (var jp in JobProgressManager.GetAll())
             {
                 jp.Progress.RecordType = type;
                 WriteProgress(jp.Progress);
@@ -85,7 +84,7 @@ namespace AWX.Cmdlets
 
         protected void ShowJobLog(bool suppressJobLog)
         {
-            var jpList = JobManager.GetJobLog();
+            var jpList = JobProgressManager.GetJobLog();
             foreach (var jp in jpList)
             {
                 if (jp == null) continue;
@@ -366,14 +365,6 @@ namespace AWX.Cmdlets
 
     public abstract class APICmdletBase : Cmdlet
     {
-        [Conditional("DEBUG")]
-        protected static void Dump(string msg)
-        {
-            var currentColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine($"Debug: {msg}");
-            Console.ForegroundColor = currentColor;
-        }
         private readonly ConsoleColor DefaultForegroundColor = Console.ForegroundColor;
         private readonly ConsoleColor DefaultBackgroundColor = Console.BackgroundColor;
         /// <summary>
@@ -505,7 +496,7 @@ namespace AWX.Cmdlets
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
         /// <exception cref="RestAPIException"/>
-        protected virtual RestAPIResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
+        protected virtual RestAPIPostResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.POST);
@@ -513,7 +504,7 @@ namespace AWX.Cmdlets
             {
                 using var apiTask = RestAPI.PostJsonAsync<TValue>(pathAndQuery, sendData);
                 apiTask.Wait();
-                RestAPIResult<TValue> result = apiTask.Result;
+                RestAPIPostResult<TValue> result = apiTask.Result;
                 WriteVerboseResponse(result.Response);
                 return result;
             }
@@ -542,7 +533,7 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? UpdateResource<TValue>(string pathAndQuery, object sendData)
+        protected virtual TValue UpdateResource<TValue>(string pathAndQuery, object sendData)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.PUT);
@@ -558,8 +549,18 @@ namespace AWX.Cmdlets
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
+                throw;
             }
-            return null;
+            catch (AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send a request to modify part of the resource.
@@ -569,7 +570,7 @@ namespace AWX.Cmdlets
         /// <param name="pathAndQuery"></param>
         /// <param name="sendData"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual TValue? PatchResource<TValue>(string pathAndQuery, object sendData)
+        protected virtual TValue PatchResource<TValue>(string pathAndQuery, object sendData)
             where TValue : class
         {
             WriteVerboseRequest(pathAndQuery, Method.PATCH);
@@ -585,9 +586,18 @@ namespace AWX.Cmdlets
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
-
+                throw;
             }
-            return null;
+            catch (AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send a request to delete the resource.
@@ -595,7 +605,7 @@ namespace AWX.Cmdlets
         /// </summary>
         /// <param name="pathAndQuery"></param>
         /// <returns>Return the result if success, otherwise null</returns>
-        protected virtual IRestAPIResponse? DeleteResource(string pathAndQuery)
+        protected virtual IRestAPIResponse DeleteResource(string pathAndQuery)
         {
             WriteVerboseRequest(pathAndQuery, Method.DELETE);
             try
@@ -604,13 +614,24 @@ namespace AWX.Cmdlets
                 apiTask.Wait();
                 RestAPIResult<string> result = apiTask.Result;
                 WriteVerboseResponse(result.Response);
+                return result.Response;
             }
             catch (RestAPIException ex)
             {
                 WriteVerboseResponse(ex.Response);
                 WriteApiError(ex);
+                throw;
             }
-            return null;
+            catch (AggregateException aex)
+            {
+                if (aex.InnerException is RestAPIException ex)
+                {
+                    WriteVerboseResponse(ex.Response);
+                    WriteApiError(ex);
+                    throw ex;
+                }
+                throw;
+            }
         }
         /// <summary>
         /// Send and get a API Help of the URI.
@@ -642,26 +663,24 @@ namespace AWX.Cmdlets
             WriteVerbose($"> Host: {uri.Host}:{uri.Port}");
             WriteVerbose($"> {method} {pathAndQuery}");
         }
-        protected virtual void WriteVerboseResponse(IRestAPIResponse response, bool onlyContentHeaders = false)
+        protected virtual void WriteVerboseResponse(IRestAPIResponse response)
         {
+            WriteDebugHeaders(response.RequestHeaders, '>');
             WriteVerbose($"HTTP/{response.HttpVersion} {response.StatusCode:d} {response.ReasonPhrase}");
-            WriteVerboseHeaders(response.ContentHeaders, '<');
-            if (!onlyContentHeaders)
-            {
-                WriteVerboseHeaders(response.ResponseHeaders, '<');
-            }
+            WriteDebugHeaders(response.ContentHeaders, '<');
+            WriteDebugHeaders(response.ResponseHeaders, '<');
         }
-        private void WriteVerboseHeaders(FrozenDictionary<string, IEnumerable<string>>? headers, char indicator)
+        private void WriteDebugHeaders(FrozenDictionary<string, IEnumerable<string>>? headers, char indicator)
         {
             if (headers == null) return;
             foreach (var header in headers)
             {
                 if (header.Key == "Authorization")
                 {
-                    WriteVerbose($"{indicator} {header.Key}: Bearer ************");
+                    WriteDebug($"{indicator} {header.Key}: Bearer ************");
                     continue;
                 }
-                WriteVerbose($"{indicator} {header.Key}: {string.Join(", ", header.Value)}");
+                WriteDebug($"{indicator} {header.Key}: {string.Join(", ", header.Value)}");
             }
         }
         protected void WriteApiError(RestAPIException ex)

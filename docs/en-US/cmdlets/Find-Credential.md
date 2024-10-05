@@ -15,8 +15,7 @@ Retrieve Credentials.
 ### All (Default)
 ```
 Find-Credential [-Kind <String>] [-Galaxy] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
@@ -287,3 +286,11 @@ Database ID for the ResourceType
 [Get-CredentialType](Get-CredentialType.md)
 
 [Find-CredentialType](Find-CredentialType.md)
+
+[New-Credential](New-Credential.md)
+
+[Update-Credential](Update-Credential.md)
+
+[Add-Credential](Add-Credential.md)
+
+[Remove-Credential](Remove-Credential.md)

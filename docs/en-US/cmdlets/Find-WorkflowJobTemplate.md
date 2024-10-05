@@ -21,8 +21,7 @@ Find-WorkflowJobTemplate [-OrderBy <String[]>] [-Search <String[]>] [-Filter <Na
 ### AssociatedWith
 ```
 Find-WorkflowJobTemplate [-Type <ResourceType>] -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -217,6 +216,12 @@ Database ID for `Organization`
 [Get-WorkflowJobTemplate](Get-WorkflowJobTemplate.md)
 
 [Find-UnifiedJobTemplate](Find-UnifiedJobTemplate.md)
+
+[New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
+
+[Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+
+[Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
 
 [Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
 

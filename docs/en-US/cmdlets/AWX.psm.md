@@ -11,11 +11,32 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
+### [Add-Credential](Add-Credential.md)
+Register a Credential.
+
+### [Add-Group](Add-Group.md)
+Associate the Group to a Group.
+
+### [Add-Host](Add-Host.md)
+Associate a Host to a Group.
+
+### [Add-Label](Add-Label.md)
+Add a Label.
+
+### [Add-User](Add-User.md)
+Associate a Uesr to.
+
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 
 ### [Deny-WorkflowApprovalRequest](Deny-WorkflowApprovalRequest.md)
 Deny requests for WorkflowApproval.
+
+### [Disable-NotificationTemplate](Disable-NotificationTemplate.md)
+Disable a NotificationTemplate.
+
+### [Enable-NotificationTemplate](Enable-NotificationTemplate.md)
+Enable a NotificationTemplate.
 
 ### [Find-AccessList](Find-AccessList.md)
 Retrieve Users accessible to a resource.
@@ -197,6 +218,9 @@ Retrieve Groups by the ID(s).
 ### [Get-Host](Get-Host.md)
 Retrieve Hosts by the ID(s).
 
+### [Get-HostFactsCache](Get-HostFactsCache.md)
+Retrieve Ansible Facts for a Host.
+
 ### [Get-HostMetric](Get-HostMetric.md)
 Retrieve HostMetrics by the ID(s).
 
@@ -290,6 +314,9 @@ Retrieve (OAuth2) AccessTokens by the ID(s).
 ### [Get-User](Get-User.md)
 Retrieve Users by the ID(s).
 
+### [Get-VariableData](Get-VariableData.md)
+Retrieve Variable Data
+
 ### [Get-WorkflowApprovalRequest](Get-WorkflowApprovalRequest.md)
 Retrieve request jobs for WorkflowApproval by ID(s).
 
@@ -307,6 +334,9 @@ Retrieve WorkflowJobTemplates by the ID(s).
 
 ### [Get-WorkflowJobTemplateNode](Get-WorkflowJobTemplateNode.md)
 Retrieve nodes for WorkflowJobTemplate by ID(s).
+
+### [Grant-Role](Grant-Role.md)
+Grant Roles.
 
 ### [Invoke-AdHocCommand](Invoke-AdHocCommand.md)
 Invoke (launch) an AdHocCommand and wait until the job is finished.
@@ -332,6 +362,153 @@ Invoke (update) a WorkflowJobTemplate and wait until the job is finished.
 ### [New-ApiConfig](New-ApiConfig.md)
 Create config file that should be used by this module.
 
+### [New-Application](New-Application.md)
+Create an Application.
+
+### [New-Credential](New-Credential.md)
+Create a Credential.
+
+### [New-CredentialType](New-CredentialType.md)
+Create a CredentialType.
+
+### [New-ExecutionEnvironment](New-ExecutionEnvironment.md)
+Create an ExecutionEnvironment.
+
+### [New-Group](New-Group.md)
+Create a Group.
+
+### [New-Host](New-Host.md)
+Create a Host.
+
+### [New-Inventory](New-Inventory.md)
+Create an Inventory.
+
+### [New-InventorySource](New-InventorySource.md)
+Create an InventorySource.
+
+### [New-JobTemplate](New-JobTemplate.md)
+Create a JobTemplate.
+
+### [New-Label](New-Label.md)
+Create a Label.
+
+### [New-NotificationTemplate](New-NotificationTemplate.md)
+Create a NotificationTemplate.
+
+### [New-Organization](New-Organization.md)
+Create an Organization.
+
+### [New-Project](New-Project.md)
+Create a Project.
+
+### [New-Schedule](New-Schedule.md)
+Create a Schedule.
+
+### [New-Team](New-Team.md)
+Create a Team.
+
+### [New-Token](New-Token.md)
+Create an AccessToken.
+
+### [New-User](New-User.md)
+Create a User.
+
+### [New-WorkflowJobTemplate](New-WorkflowJobTemplate.md)
+Create a WorkflowJobTemplate.
+
+### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
+Create a WorkflowJobTemplateNode.
+
+### [Register-SurveySpec](Register-SurveySpec.md)
+Register SurveySpecs.
+
+### [Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
+Link WorkflowJobTemplateNode to the parent.
+
+### [Remove-AdHocCommandJob](Remove-AdHocCommandJob.md)
+Remove an AdHocCommand job.
+
+### [Remove-Application](Remove-Application.md)
+Remove an Application.
+
+### [Remove-Credential](Remove-Credential.md)
+Remove a Credential.
+
+### [Remove-CredentialType](Remove-CredentialType.md)
+Remove a CredentialType.
+
+### [Remove-ExecutionEnvironment](Remove-ExecutionEnvironment.md)
+Remove an ExecutionEnvironment.
+
+### [Remove-Group](Remove-Group.md)
+Remove a Group.
+
+### [Remove-Host](Remove-Host.md)
+Remove a Host
+
+### [Remove-Inventory](Remove-Inventory.md)
+Remove an Inventory.
+
+### [Remove-InventorySource](Remove-InventorySource.md)
+Remove an InventorySource.
+
+### [Remove-InventoryUpdateJob](Remove-InventoryUpdateJob.md)
+Remove an InventoryUpdate job.
+
+### [Remove-Job](Remove-Job.md)
+Remove a JobTemplate job.
+
+### [Remove-JobTemplate](Remove-JobTemplate.md)
+Remove a JobTemplate.
+
+### [Remove-Label](Remove-Label.md)
+Remove a Label.
+
+### [Remove-NotificationTemplate](Remove-NotificationTemplate.md)
+Remove a NotificationTemplate.
+
+### [Remove-Organization](Remove-Organization.md)
+Remove an Organization.
+
+### [Remove-Project](Remove-Project.md)
+Remove a Project.
+
+### [Remove-ProjectUpdateJob](Remove-ProjectUpdateJob.md)
+Remove a ProjectUpdate Job.
+
+### [Remove-Schedule](Remove-Schedule.md)
+Remove a Schedule.
+
+### [Remove-SurveySpec](Remove-SurveySpec.md)
+Remove SurveySpecs.
+
+### [Remove-SystemJob](Remove-SystemJob.md)
+Remove a System job.
+
+### [Remove-Team](Remove-Team.md)
+Remove a Team
+
+### [Remove-Token](Remove-Token.md)
+Remove an AccessToken.
+
+### [Remove-User](Remove-User.md)
+Remove a User
+
+### [Remove-WorkflowApprovalRequest](Remove-WorkflowApprovalRequest.md)
+Remove a WorkflowApproval.
+
+### [Remove-WorkflowJob](Remove-WorkflowJob.md)
+Remove a Workflow job.
+
+### [Remove-WorkflowJobTemplate](Remove-WorkflowJobTemplate.md)
+Remove a WorkflowJobTemplate.
+
+### [Remove-WorkflowJobTemplateNode](Remove-WorkflowJobTemplateNode.md)
+Remove a WorkflowJobTemplateNode.
+
+### [Revoke-Role](Revoke-Role.md)
+Revoke Roles.
+
 ### [Start-AdHocCommand](Start-AdHocCommand.md)
 Invoke (launch) an AdHocCommand.
 
@@ -356,6 +533,65 @@ Stop (cancel) a running job.
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
 
+### [Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
+Unlink WorkflowJobTemplateNode from the parent.
+
+### [Update-Application](Update-Application.md)
+Update an Application.
+
+### [Update-Credentail](Update-Credentail.md)
+Update a Credential.
+
+### [Update-CredentialType](Update-CredentialType.md)
+Update a CredentialType.
+
+### [Update-ExecutionEnvironment](Update-ExecutionEnvironment.md)
+Update an ExecutionEnvironment.
+
+### [Update-Group](Update-Group.md)
+Update a Group.
+
+### [Update-Host](Update-Host.md)
+Update a Host.
+
+### [Update-Inventory](Update-Inventory.md)
+Update an Inventory.
+
+### [Update-InventorySource](Update-InventorySource.md)
+Update an InventorySource.
+
+### [Update-JobTemplate](Update-JobTemplate.md)
+Update a JobTemplate.
+
+### [Update-Label](Update-Label.md)
+Update a Label.
+
+### [Update-NotificationTemplate](Update-NotificationTemplate.md)
+Update a NotificationTemplate.
+
+### [Update-Organization](Update-Organization.md)
+Update an Organization.
+
+### [Update-Project](Update-Project.md)
+Update a Project.
+
+### [Update-Schedule](Update-Schedule.md)
+Update a Schedule.
+
+### [Update-Team](Update-Team.md)
+Update a Team.
+
+### [Update-Token](Update-Token.md)
+Update an AccessToken.
+
+### [Update-User](Update-User.md)
+Update a User.
+
+### [Update-WorkflowJobTemplate](Update-WorkflowJobTemplate.md)
+Update a WorkflowJobTemplate.
+
+### [Update-WorkflowJobTemplateNode](Update-WorkflowJobTemplateNode.md)
+Update a WorkflowJobTemplateNode.
+
 ### [Wait-UnifiedJob](Wait-UnifiedJob.md)
 Wait until jobs are finished.
-

@@ -21,8 +21,7 @@ Find-AdHocCommandJob [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameVa
 ### AssociatedWith
 ```
 Find-AdHocCommandJob -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -218,5 +217,7 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-AdHocCommand](Get-AdHocCommandJob.md)
+
+[Remove-AdHocCommandJob](Remove-AdHocCommandJob.md)
 
 [Invoke-AdHocCommand](Invoke-AdHocCommand.md)

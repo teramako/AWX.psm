@@ -15,8 +15,7 @@ Retrieve Inventories.
 ### All (Default)
 ```
 Find-Inventory [-Kind <InventoryKind>] [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ### AssociatedWith
@@ -235,3 +234,9 @@ Database ID for the ResourceType
 [Get-InventorySource](Get-InventorySource.md)
 
 [Find-InventorySource](Find-InventorySource.md)
+
+[New-Inventory](New-Inventory.md)
+
+[Update-Inventory](Update-Inventory.md)
+
+[Remove-Inventory](Remove-Inventory.md)

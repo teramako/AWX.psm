@@ -1,4 +1,5 @@
 using AWX.Resources;
+using System.Collections;
 using System.Management.Automation;
 
 namespace AWX.Cmdlets
@@ -216,6 +217,286 @@ namespace AWX.Cmdlets
             foreach (var resultSet in GetResultSet<NotificationTemplate>(path, Query, All))
             {
                 WriteObject(resultSet.Results, true);
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.New, "NotificationTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(NotificationTemplate))]
+    public class NewNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, Position = 0)]
+        public string Name { get; set; } = string.Empty;
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter(Mandatory = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong Organization { get; set; }
+
+        [Parameter(Mandatory = true)]
+        public NotificationType Type { get; set; }
+
+        [Parameter()]
+        public IDictionary Configuration { get; set; } = new Hashtable();
+
+        [Parameter()]
+        public IDictionary Messages { get; set; } = new Hashtable();
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object>()
+            {
+                { "name", Name },
+                { "organization", Organization },
+                { "notification_type", $"{Type}".ToLowerInvariant() },
+                { "notification_configuration", Configuration },
+                { "messages", Messages }
+            };
+            if (Description != null)
+                sendData.Add("description", Description);
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess(dataDescription))
+            {
+                try
+                {
+                    var apiResult = CreateResource<NotificationTemplate>(NotificationTemplate.PATH, sendData);
+                    if (apiResult.Contents == null)
+                        return;
+
+                    WriteObject(apiResult.Contents, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsData.Update, "NotificationTemplate", SupportsShouldProcess = true)]
+    [OutputType(typeof(NotificationTemplate))]
+    public class UpdateNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.NotificationTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public string? Name { get; set; }
+
+        [Parameter()]
+        [AllowEmptyString]
+        public string? Description { get; set; }
+
+        [Parameter()]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
+        public ulong? Organization { get; set; }
+
+        [Parameter()]
+        public NotificationType? Type { get; set; }
+
+        [Parameter()]
+        public IDictionary? Configuration { get; set; }
+
+        [Parameter()]
+        public IDictionary? Messages { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var sendData = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(Name))
+                sendData.Add("name", Name);
+            if (Description != null)
+                sendData.Add("description", Description);
+            if (Organization != null)
+                sendData.Add("organization", Organization);
+            if (Type != null)
+                sendData.Add("notification_type", $"{Type}".ToLowerInvariant());
+            if (Configuration != null)
+                sendData.Add("notification_configuration", Configuration);
+            if (Messages != null)
+                sendData.Add("messages", Messages.Count == 0 ? null : Messages);
+
+            if (sendData.Count == 0)
+                return;
+
+            var dataDescription = Json.Stringify(sendData, pretty: true);
+            if (ShouldProcess($"NotificationTemplate [{Id}]", $"Update {dataDescription}"))
+            {
+                try
+                {
+                    var after = PatchResource<NotificationTemplate>($"{NotificationTemplate.PATH}{Id}/", sendData);
+                    WriteObject(after, false);
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "NotificationTemplate", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.NotificationTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter()]
+        public SwitchParameter Force { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            if (Force || ShouldProcess($"NotificationTemplate [{Id}]", "Delete completely"))
+            {
+                try
+                {
+                    var apiResult = DeleteResource($"{NotificationTemplate.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"NotificationTemplate {Id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Enable, "NotificationTemplate", SupportsShouldProcess = true)]
+    public class EnableNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.NotificationTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Project,
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.SystemJobTemplate,
+                ResourceType.WorkflowJobTemplate
+        ])]
+        public IResource For { get; set; } = new Resource(0, 0);
+
+        [Parameter(Mandatory = true, Position = 2)]
+        [ValidateSet("Started", "Success", "Error", "Approval")]
+        public string[] On { get; set; } = [];
+
+        protected override void ProcessRecord()
+        {
+            var path1 = For.Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{For.Id}/",
+                ResourceType.Project => $"{Project.PATH}{For.Id}/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{For.Id}/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{For.Id}/",
+                ResourceType.SystemJobTemplate => $"{SystemJobTemplate.PATH}{For.Id}/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{For.Id}/",
+                _ => throw new ArgumentException($"Invalid resource type: {For.Type}")
+            };
+            foreach (var timing in On)
+            {
+                if (timing == "Approval" && (For.Type != ResourceType.Organization
+                                             && For.Type != ResourceType.WorkflowJobTemplate))
+                {
+                    WriteWarning($"{For.Type} has no \"{timing}\" notifications.");
+                    continue;
+                }
+                var path2 = timing switch
+                {
+                    "Started" => "notification_templates_started/",
+                    "Success" => "notification_templates_success/",
+                    "Error" => "notification_templates_error/",
+                    "Approval" => "notification_templates_approvals/",
+                    _ => throw new ArgumentException($"(Invalid timing value: {timing}")
+                };
+                if (ShouldProcess($"NotificationTemplate [{Id}]", $"Enable to {For.Type} [{For.Id}] on {timing}"))
+                {
+                    var path = path1 + path2;
+                    var sendData = new Dictionary<string, object>() { { "id", Id } };
+                    try
+                    {
+                        var apiResult = CreateResource<string>(path, sendData);
+                        if (apiResult.Response.IsSuccessStatusCode)
+                        {
+                            WriteVerbose($"NotificationTemplate {Id} is enabled to {For.Type} [{For.Id}] on {timing}.");
+                        }
+                    }
+                    catch (RestAPIException) { }
+                }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Disable, "NotificationTemplate", SupportsShouldProcess = true)]
+    public class DisableNotificationTemplateCommand : APICmdletBase
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.NotificationTemplate])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Project,
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.SystemJobTemplate,
+                ResourceType.WorkflowJobTemplate
+        ])]
+        public IResource For { get; set; } = new Resource(0, 0);
+
+        [Parameter(Mandatory = true, Position = 2)]
+        [ValidateSet("Started", "Success", "Error", "Approval")]
+        public string[] On { get; set; } = [];
+
+        protected override void ProcessRecord()
+        {
+            var path1 = For.Type switch
+            {
+                ResourceType.Organization => $"{Organization.PATH}{For.Id}/",
+                ResourceType.Project => $"{Project.PATH}{For.Id}/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{For.Id}/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{For.Id}/",
+                ResourceType.SystemJobTemplate => $"{SystemJobTemplate.PATH}{For.Id}/",
+                ResourceType.WorkflowJobTemplate => $"{WorkflowJobTemplate.PATH}{For.Id}/",
+                _ => throw new ArgumentException($"Invalid resource type: {For.Type}")
+            };
+            foreach (var timing in On)
+            {
+                if (timing == "Approval" && (For.Type != ResourceType.Organization
+                                             && For.Type != ResourceType.WorkflowJobTemplate))
+                {
+                    WriteWarning($"{For.Type} has no \"{timing}\" notifications.");
+                    continue;
+                }
+                var path2 = timing switch
+                {
+                    "Started" => "notification_templates_started/",
+                    "Success" => "notification_templates_success/",
+                    "Error" => "notification_templates_error/",
+                    "Approval" => "notification_templates_approvals/",
+                    _ => throw new ArgumentException($"(Invalid timing value: {timing}")
+                };
+                if (ShouldProcess($"NotificationTemplate [{Id}]", $"Disable to {For.Type} [{For.Id}] on {timing}"))
+                {
+                    var path = path1 + path2;
+                    var sendData = new Dictionary<string, object>()
+                    {
+                        { "id", Id },
+                        { "disassociate", true }
+                    };
+                    try
+                    {
+                        var apiResult = CreateResource<string>(path, sendData);
+                        if (apiResult.Response.IsSuccessStatusCode)
+                        {
+                            WriteVerbose($"NotificationTemplate {Id} is disabled to {For.Type} [{For.Id}] on {timing}.");
+                        }
+                    }
+                    catch (RestAPIException) { }
+                }
             }
         }
     }

@@ -64,3 +64,9 @@ One or more database IDs.
 ## RELATED LINKS
 
 [Find-Inventory](Find-Inventory.md)
+
+[New-Inventory](New-Inventory.md)
+
+[Update-Inventory](Update-Inventory.md)
+
+[Remove-Inventory](Remove-Inventory.md)

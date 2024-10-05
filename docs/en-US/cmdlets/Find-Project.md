@@ -21,8 +21,7 @@ Find-Project [-OrderBy <String[]>] [-Search <String[]>] [-Filter <NameValueColle
 ### AssociatedWith
 ```
 Find-Project -Type <ResourceType> -Id <UInt64> [-OrderBy <String[]>] [-Search <String[]>]
- [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All]
- [<CommonParameters>]
+ [-Filter <NameValueCollection>] [-Count <UInt16>] [-Page <UInt32>] [-All] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -214,3 +213,9 @@ Database ID for the ResourceType
 ## RELATED LINKS
 
 [Get-Project](Get-Project.md)
+
+[New-Project](New-Project.md)
+
+[Update-Project](Update-Project.md)
+
+[Remove-Project](Remove-Project.md)
