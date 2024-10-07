@@ -125,7 +125,7 @@ namespace AWX.Cmdlets
                 typeof(SystemJob),
                 typeof(AdHocCommand),
                 typeof(WorkflowJob))]
-    public class WaitJobCommand : InvokeJobBase
+    public class WaitJobCommand : LaunchJobCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, Position = 0)]
         [ValidateSet(nameof(ResourceType.Job),

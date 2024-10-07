@@ -80,7 +80,7 @@ namespace AWX.Cmdlets
         }
     }
 
-    public abstract class LaunchJobTemplateCommandBase : InvokeJobBase
+    public abstract class LaunchJobTemplateCommandBase : LaunchJobCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }

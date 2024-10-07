@@ -62,7 +62,7 @@ namespace AWX.Cmdlets
         }
     }
 
-    public class LaunchInventoryUpdateCommandBase : InvokeJobBase
+    public class LaunchInventoryUpdateCommandBase : LaunchJobCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         [Parameter(Mandatory = true, ParameterSetName = "CheckId", ValueFromPipeline = true, Position = 0)]

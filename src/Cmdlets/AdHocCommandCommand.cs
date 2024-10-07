@@ -94,7 +94,7 @@ namespace AWX.Cmdlets
         }
     }
 
-    public abstract class LaunchAdHocCommandBase : InvokeJobBase
+    public abstract class LaunchAdHocCommandBase : LaunchJobCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Host", ValueFromPipeline = true, Position = 0)]
         public Host? Host { get; set; }

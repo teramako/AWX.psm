@@ -66,7 +66,7 @@ namespace AWX.Cmdlets
         }
     }
 
-    public abstract class LaunchWorkflowJobTemplateCommandBase : InvokeJobBase
+    public abstract class LaunchWorkflowJobTemplateCommandBase : LaunchJobCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "Id", ValueFromPipeline = true, Position = 0)]
         public ulong Id { get; set; }
