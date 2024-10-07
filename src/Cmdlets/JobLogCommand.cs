@@ -21,17 +21,16 @@ namespace AWX.Cmdlets
     [OutputType(typeof(FileInfo), ParameterSetName = ["Download"])]
     public class GetJobLogCommand : APICmdletBase
     {
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        public ulong Id { get; set; }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        [ValidateSet(nameof(ResourceType.Job),
-                     nameof(ResourceType.ProjectUpdate),
-                     nameof(ResourceType.InventoryUpdate),
-                     nameof(ResourceType.SystemJob),
-                     nameof(ResourceType.WorkflowJob),
-                     nameof(ResourceType.AdHocCommand))]
-        public ResourceType Type { get; set; } = ResourceType.Job;
-
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Job,
+                ResourceType.ProjectUpdate,
+                ResourceType.InventoryUpdate,
+                ResourceType.SystemJob,
+                ResourceType.WorkflowJob,
+                ResourceType.AdHocCommand
+        ])]
+        public IResource Job { get; set; } = new Resource(0, 0);
 
         [Parameter(Mandatory = true, ParameterSetName = "Download")]
         public DirectoryInfo? Download { get; set; }
@@ -47,13 +46,8 @@ namespace AWX.Cmdlets
         /// HashSet to avoid duplicate retrieval of the same job
         /// </summary>
         private readonly HashSet<ulong> _jobIdSet = [];
-        private readonly List<Job> _jobs = [];
+        private readonly List<IResource> _jobs = [];
 
-        class Job(ulong id, ResourceType type)
-        {
-            public ulong Id { get; set; } = id;
-            public ResourceType Type { get; set; } = type;
-        }
         /// <summary>
         /// Get the executed (<c>do_not_run=false</c>) WorkflowJobNode from the WorkflowJob's <paramref name="id"/> and
         /// Get the Id and Type of the Job.
@@ -83,7 +77,7 @@ namespace AWX.Cmdlets
                         default:
                             if (_jobIdSet.Add(node.Id))
                             {
-                                _jobs.Add(new Job(jobId, type));
+                                _jobs.Add(node.SummaryFields.Job);
                             }
                             break;
                     }
@@ -111,15 +105,18 @@ namespace AWX.Cmdlets
         }
         protected override void ProcessRecord()
         {
-            switch (Type)
+            if (Job.Id == 0)
+                return;
+
+            switch (Job.Type)
             {
                 case ResourceType.WorkflowJob:
-                    GetJobsFromWorkflowJob(Id);
+                    GetJobsFromWorkflowJob(Job.Id);
                     break;
                 default:
-                    if (_jobIdSet.Add(Id))
+                    if (_jobIdSet.Add(Job.Id))
                     {
-                        _jobs.Add(new Job(Id, Type));
+                        _jobs.Add(Job);
                     }
                     break;
             }
@@ -153,7 +150,7 @@ namespace AWX.Cmdlets
                 }
             }
         }
-        private IEnumerable<string?> StdoutLogs(IEnumerable<Job> jobs)
+        private IEnumerable<string?> StdoutLogs(IEnumerable<IResource> jobs)
         {
             foreach (var job in jobs)
             {
