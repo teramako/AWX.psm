@@ -245,7 +245,7 @@ namespace AWX.Cmdlets
 
             ws.WriteLine("-----");
             var props = GetJobProperties(unifiedJob).ToArray();
-            var maxLength = props.Select(tuple => tuple.Item1.Length).Max();
+            var maxLength = props.Select(tuple => tuple.Key.Length).Max();
             var format = $"{{0,{maxLength}}}: {{1}}";
             foreach (var (key, value) in props)
             {
@@ -297,7 +297,7 @@ namespace AWX.Cmdlets
             ws.WriteLine("</body></html>");
             return fileInfo;
         }
-        private static IEnumerable<(string, object?)> GetJobProperties(IUnifiedJob job)
+        private static IEnumerable<(string Key, object? Value)> GetJobProperties(IUnifiedJob job)
         {
             foreach (var prop in typeof(IUnifiedJob).GetProperties())
             {
