@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "ActivityStream", DefaultParameterSetName = "All")]
     [OutputType(typeof(ActivityStream))]
-    public class FindActivityStreamCommand : FindCmdletBase
+    public class FindActivityStreamCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.OAuth2Application),

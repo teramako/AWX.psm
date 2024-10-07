@@ -40,7 +40,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "CredentialType")]
     [OutputType(typeof(CredentialType))]
-    public class FindCredentialTypeCommand : FindCmdletBase
+    public class FindCredentialTypeCommand : FindCommandBase
     {
         public override ResourceType Type { get; set; }
         public override ulong Id { get; set; }

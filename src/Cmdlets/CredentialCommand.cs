@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
     }
     [Cmdlet(VerbsCommon.Find, "Credential", DefaultParameterSetName = "All")]
     [OutputType(typeof(Credential))]
-    public class FindCredentialCommand : FindCmdletBase
+    public class FindCredentialCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),

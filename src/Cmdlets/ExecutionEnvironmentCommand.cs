@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "ExecutionEnvironment", DefaultParameterSetName = "All")]
     [OutputType(typeof(ExecutionEnvironment))]
-    public class FindExecutionEnvironmentCommand : FindCmdletBase
+    public class FindExecutionEnvironmentCommand : FindCommandBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization))]

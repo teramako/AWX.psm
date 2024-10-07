@@ -41,7 +41,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "SystemJobTemplate")]
     [OutputType(typeof(SystemJobTemplate))]
-    public class FindSystemJobTemplateCommand : FindCmdletBase
+    public class FindSystemJobTemplateCommand : FindCommandBase
     {
         public override ResourceType Type { get; set; }
         public override ulong Id { get; set; }

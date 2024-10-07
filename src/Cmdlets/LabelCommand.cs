@@ -38,7 +38,7 @@ namespace AWX.Cmdlets
     }
     [Cmdlet(VerbsCommon.Find, "Label", DefaultParameterSetName = "All")]
     [OutputType(typeof(Label))]
-    public class FindLabelCommand : FindCmdletBase
+    public class FindLabelCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Inventory),

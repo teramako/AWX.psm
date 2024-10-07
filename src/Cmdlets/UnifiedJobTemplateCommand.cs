@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Find, "UnifiedJobTemplate")]
     [OutputType(typeof(IUnifiedJobTemplate))]
-    public class FindUnifiedJobTemplateCommand : FindCmdletBase
+    public class FindUnifiedJobTemplateCommand : FindCommandBase
     {
         public override ResourceType Type { get; set; }
         public override ulong Id { get; set; }

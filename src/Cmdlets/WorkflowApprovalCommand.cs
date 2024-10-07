@@ -32,7 +32,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "WorkflowApprovalRequest", DefaultParameterSetName = "All")]
     [OutputType(typeof(WorkflowApproval))]
-    public class FindWorkflowApprovalRequestCommand : FindCmdletBase
+    public class FindWorkflowApprovalRequestCommand : FindCommandBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true, DontShow = true)]
         [ValidateSet(nameof(ResourceType.WorkflowApprovalTemplate))]

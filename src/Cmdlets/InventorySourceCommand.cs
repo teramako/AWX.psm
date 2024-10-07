@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "InventorySource", DefaultParameterSetName = "All")]
     [OutputType(typeof(InventorySource))]
-    public class FindInventorySourceCommand : FindCmdletBase
+    public class FindInventorySourceCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Project),

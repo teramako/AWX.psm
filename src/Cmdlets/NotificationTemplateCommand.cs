@@ -40,7 +40,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "NotificationTemplate", DefaultParameterSetName = "All")]
     [OutputType(typeof(NotificationTemplate))]
-    public class FindNotificationTemplateCommand : FindCmdletBase
+    public class FindNotificationTemplateCommand : FindCommandBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization))]
@@ -67,7 +67,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "NotificationTemplateForApproval")]
     [OutputType(typeof(NotificationTemplate))]
-    public class FindNotificationTemplateForApprovalCommand : FindCmdletBase
+    public class FindNotificationTemplateForApprovalCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
@@ -100,7 +100,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "NotificationTemplateForError")]
     [OutputType(typeof(NotificationTemplate))]
-    public class FindNotificationTemplateForErrorCommand : FindCmdletBase
+    public class FindNotificationTemplateForErrorCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
@@ -141,7 +141,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "NotificationTemplateForStarted")]
     [OutputType(typeof(NotificationTemplate))]
-    public class FindNotificationTemplateForStartedCommand : FindCmdletBase
+    public class FindNotificationTemplateForStartedCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
@@ -182,7 +182,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "NotificationTemplateForSuccess")]
     [OutputType(typeof(NotificationTemplate))]
-    public class FindNotificationTemplateForSuccessCommand : FindCmdletBase
+    public class FindNotificationTemplateForSuccessCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),

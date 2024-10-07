@@ -32,7 +32,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "Job", DefaultParameterSetName = "All")]
     [OutputType(typeof(JobTemplateJob))]
-    public class FindJobTemplateJobCommand : FindCmdletBase
+    public class FindJobTemplateJobCommand : FindCommandBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.JobTemplate))]

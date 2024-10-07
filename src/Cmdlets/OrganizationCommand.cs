@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "Organization", DefaultParameterSetName = "All")]
     [OutputType(typeof(Organization))]
-    public class FindOrganizationCommand : FindCmdletBase
+    public class FindOrganizationCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.User))]

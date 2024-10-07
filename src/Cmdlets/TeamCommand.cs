@@ -38,7 +38,7 @@ namespace AWX.Cmdlets
     }
     [Cmdlet(VerbsCommon.Find, "Team", DefaultParameterSetName = "All")]
     [OutputType(typeof(Team))]
-    public class FindTeamCommand : FindCmdletBase
+    public class FindTeamCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),

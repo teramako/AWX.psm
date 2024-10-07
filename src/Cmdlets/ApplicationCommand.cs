@@ -38,7 +38,7 @@ namespace AWX.Cmdlets
     }
     [Cmdlet(VerbsCommon.Find, "Application", DefaultParameterSetName = "All")]
     [OutputType(typeof(Application))]
-    public class FindApplicationCommand : FindCmdletBase
+    public class FindApplicationCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization), nameof(ResourceType.User))]

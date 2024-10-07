@@ -55,7 +55,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "User", DefaultParameterSetName = "All")]
     [OutputType(typeof(User))]
-    public class FindUserCommand : FindCmdletBase
+    public class FindUserCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization),
@@ -106,7 +106,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "AccessList")]
     [OutputType(typeof(User))]
-    public class FindAccessListCommand : FindCmdletBase
+    public class FindAccessListCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.InstanceGroup),

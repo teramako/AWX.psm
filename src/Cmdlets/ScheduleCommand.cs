@@ -38,7 +38,7 @@ namespace AWX.Cmdlets
     }
     [Cmdlet(VerbsCommon.Find, "Schedule", DefaultParameterSetName = "All")]
     [OutputType(typeof(Schedule))]
-    public class FindScheduleCommand : FindCmdletBase
+    public class FindScheduleCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Project),

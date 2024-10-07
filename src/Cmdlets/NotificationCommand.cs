@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "Notification", DefaultParameterSetName = "All")]
     [OutputType(typeof(Notification))]
-    public class FindNotificationCommand : FindCmdletBase
+    public class FindNotificationCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.NotificationTemplate),

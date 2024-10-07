@@ -42,7 +42,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "JobTemplate", DefaultParameterSetName = "All")]
     [OutputType(typeof(JobTemplate))]
-    public class FindJobTemplateCommand : FindCmdletBase
+    public class FindJobTemplateCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         public override ulong Id { get; set; }

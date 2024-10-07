@@ -41,7 +41,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "WorkflowJobTemplate", DefaultParameterSetName = "All")]
     [OutputType(typeof(WorkflowJobTemplate))]
-    public class FindWorkflowJobTemplateCommand : FindCmdletBase
+    public class FindWorkflowJobTemplateCommand : FindCommandBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Organization))]

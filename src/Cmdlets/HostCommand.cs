@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "Host", DefaultParameterSetName = "All")]
     [OutputType(typeof(Host))]
-    public class FindHostCommand : FindCmdletBase
+    public class FindHostCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Inventory),

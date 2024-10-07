@@ -33,7 +33,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "AdHocCommandJob", DefaultParameterSetName = "All")]
     [OutputType(typeof(AdHocCommand))]
-    public class FindAdHocCommandJobCommand : FindCmdletBase
+    public class FindAdHocCommandJobCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Inventory),

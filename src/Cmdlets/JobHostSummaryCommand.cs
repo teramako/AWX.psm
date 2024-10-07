@@ -31,7 +31,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "JobHostSummary")]
     [OutputType(typeof(JobHostSummary))]
-    public class FindJobHostSummaryCommand : FindCmdletBase
+    public class FindJobHostSummaryCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, Position = 0)]
         [ValidateSet(nameof(ResourceType.Job),

@@ -31,7 +31,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "InventoryUpdateJob", DefaultParameterSetName = "All")]
     [OutputType(typeof(InventoryUpdateJob))]
-    public class FindInventoryUpdateJobCommand : FindCmdletBase
+    public class FindInventoryUpdateJobCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.ProjectUpdate),

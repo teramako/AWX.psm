@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Find, "JobEvent")]
     [OutputType(typeof(IJobEventBase))]
-    public class FindJobEventCommand : FindCmdletBase
+    public class FindJobEventCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, Position = 0)]
         [ValidateSet(nameof(ResourceType.Job),

@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "WorkflowJobNode", DefaultParameterSetName = "All")]
     [OutputType(typeof(WorkflowJobNode))]
-    public class FindWorkflowJobNodeCommand : FindCmdletBase
+    public class FindWorkflowJobNodeCommand : FindCommandBase
     {
         [Parameter(ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.WorkflowJob))]
@@ -70,7 +70,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "WorkflowJobNodeFor")]
     [OutputType(typeof(WorkflowJobNode))]
-    public class FindWorkflowJobNodeForCommand : FindCmdletBase
+    public class FindWorkflowJobNodeForCommand : FindCommandBase
     {
         [Parameter(ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.WorkflowJobNode))]

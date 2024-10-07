@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "Token", DefaultParameterSetName = "All")]
     [OutputType(typeof(OAuth2AccessToken))]
-    public class FindTokenCommand : FindCmdletBase
+    public class FindTokenCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.OAuth2Application),

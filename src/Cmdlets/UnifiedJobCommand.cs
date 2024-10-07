@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Find, "UnifiedJob", DefaultParameterSetName = "All")]
     [OutputType(typeof(IUnifiedJob))]
-    public class FindUnifiedJobCommand : FindCmdletBase
+    public class FindUnifiedJobCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.JobTemplate),

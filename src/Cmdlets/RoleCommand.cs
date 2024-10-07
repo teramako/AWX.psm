@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "Role", DefaultParameterSetName = "All")]
     [OutputType(typeof(Role))]
-    public class FindRoleCommand : FindCmdletBase
+    public class FindRoleCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.User),
@@ -72,7 +72,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "ObjectRole", DefaultParameterSetName = "All")]
     [OutputType(typeof(Role))]
-    public class FindObjectRoleCommand : FindCmdletBase
+    public class FindObjectRoleCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.InstanceGroup),

@@ -39,7 +39,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Find, "InstanceGroup", DefaultParameterSetName = "All")]
     [OutputType(typeof(InstanceGroup))]
-    public class FindInstanceGroupCommand : FindCmdletBase
+    public class FindInstanceGroupCommand : FindCommandBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "AssociatedWith", ValueFromPipelineByPropertyName = true)]
         [ValidateSet(nameof(ResourceType.Instance),
