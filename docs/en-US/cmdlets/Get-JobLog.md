@@ -14,13 +14,12 @@ Retrieve job logs.
 
 ### StdOut (Default)
 ```
-Get-JobLog -Id <UInt64> [-Type <ResourceType>] [-Format <JobLogFormat>] [-Dark] [<CommonParameters>]
+Get-JobLog [-Job] <IResource> [-Format <JobLogFormat>] [-Dark] [<CommonParameters>]
 ```
 
 ### Download
 ```
-Get-JobLog -Id <UInt64> [-Type <ResourceType>] -Download <DirectoryInfo> [-Format <JobLogFormat>] [-Dark]
- [<CommonParameters>]
+Get-JobLog [-Job] <IResource> -Download <DirectoryInfo> [-Format <JobLogFormat>] [-Dark] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -53,7 +52,7 @@ Implements following Rest API:
 
 ### Example 1
 ```powershell
-PS C:\> Get-JobLog -Type Job -Id 10
+PS C:\> Get-JobLog @{ type = "job"; id = 10 }
 ==> [10] Job
 
 PLAY [Hello World Sample] ******************************************************
@@ -74,7 +73,7 @@ Show the log for Job of ID 10 as text format.
 
 ### Example 2
 ```powershell
-PS C:\> Get-JobLog -Type Job -Id 10 -Format html -Download .
+PS C:\> Get-JobLog @{ type = job; id = 10 } -Format html -Download .
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
@@ -161,34 +160,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Id
-Database ID for UnifiedJob.
+### -Job
+UnifiedJob object.
+
+"UnifiedJob" referes to following jobs:  
+- `Job`             : JobTempalte's job  
+- `ProjectUpdate`   : Project's update job  
+- `InventoryUpdate` : InventorySource's update job  
+- `AdHocCommand`    : AdHocCommand's job  
+- `WorkflowJob`     : WorkflowJobTemplate's job  
+- `SystemJob`       : SystemJobTemplate's job
 
 ```yaml
-Type: UInt64
+Type: IResource
 Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Type
-Resource type name of the target UnifiedJob.
-
-```yaml
-Type: ResourceType
-Parameter Sets: (All)
-Aliases:
-Accepted values: Job, ProjectUpdate, InventoryUpdate, SystemJob, WorkflowJob, AdHocCommand
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
