@@ -590,7 +590,7 @@ namespace AWX.Resources
         [ResourceIdPath(Method = Method.DELETE, Description = "Delete a Credential Input Source")]
         CredentialInputSource,
         [ResourcePath("execution_environments", typeof(ResultSet<ExecutionEnvironment>), Description = "List Execution Environments")]
-        [ResourcePath("execution_environments", typeof(ExecutionEnvironment), Method = Method.GET, Description = "Create an Execution Environment")]
+        [ResourcePath("execution_environments", typeof(ExecutionEnvironment), Method = Method.POST, Description = "Create an Execution Environment")]
         [ResourceIdPath(typeof(ExecutionEnvironment), Method = Method.GET, Description = "Retrieve an Execution Environment")]
         [ResourceIdPath(typeof(ExecutionEnvironment), Method = Method.PUT, Description = "Update an Execution Environment")]
         [ResourceIdPath(typeof(ExecutionEnvironment), Method = Method.PATCH, Description = "Update an Execution Environment")]
