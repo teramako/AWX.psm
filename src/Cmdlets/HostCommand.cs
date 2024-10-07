@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Host")]
     [OutputType(typeof(Host))]
-    public class GetHostCommand : GetCmdletBase
+    public class GetHostCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {
@@ -81,7 +81,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "HostFactsCache")]
     [OutputType(typeof(Dictionary<string, object?>))]
-    public class GetHostFactsCacheCommand : GetCmdletBase
+    public class GetHostFactsCacheCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

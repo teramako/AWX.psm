@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "HostMetric")]
     [OutputType(typeof(HostMetric))]
-    public class GetHostMetricCommand : GetCmdletBase
+    public class GetHostMetricCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

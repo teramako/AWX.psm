@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Instance")]
     [OutputType(typeof(Instance))]
-    public class GetInstanceCommand : GetCmdletBase
+    public class GetInstanceCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Application")]
     [OutputType(typeof(Application))]
-    public class GetApplicationCommand : GetCmdletBase
+    public class GetApplicationCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

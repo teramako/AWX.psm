@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "SystemJob")]
     [OutputType(typeof(SystemJob.Detail))]
-    public class GetSystemJobCommand : GetCmdletBase
+    public class GetSystemJobCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Project")]
     [OutputType(typeof(Project))]
-    public class GetProjectCommand : GetCmdletBase
+    public class GetProjectCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {
@@ -74,7 +74,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "Playbook")]
     [OutputType(typeof(string))]
-    public class GetPlaybookCommand : GetCmdletBase
+    public class GetPlaybookCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {
@@ -95,7 +95,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "InventoryFile")]
     [OutputType(typeof(string))]
-    public class GetInventoryFileCommand : GetCmdletBase
+    public class GetInventoryFileCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

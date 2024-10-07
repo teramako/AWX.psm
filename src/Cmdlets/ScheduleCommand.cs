@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Schedule")]
     [OutputType(typeof(Schedule))]
-    public class GetScheduleCommand : GetCmdletBase
+    public class GetScheduleCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

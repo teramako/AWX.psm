@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "WorkflowJobTemplateNode")]
     [OutputType(typeof(WorkflowJobTemplateNode))]
-    public class GetWorkflowJobTemplateNodeCommand : GetCmdletBase
+    public class GetWorkflowJobTemplateNodeCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

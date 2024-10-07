@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Role")]
     [OutputType(typeof(Role))]
-    public class GetRoleCommand : GetCmdletBase
+    public class GetRoleCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

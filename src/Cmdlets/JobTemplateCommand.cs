@@ -8,7 +8,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "JobTemplate")]
     [OutputType(typeof(JobTemplate))]
-    public class GetJobTemplate : GetCmdletBase
+    public class GetJobTemplate : GetCommandBase
     {
         protected override void ProcessRecord()
         {

@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "CredentialType")]
     [OutputType(typeof(CredentialType))]
-    public class GetCredentialTypeCommand : GetCmdletBase
+    public class GetCredentialTypeCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

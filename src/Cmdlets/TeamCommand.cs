@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Team")]
     [OutputType(typeof(Team))]
-    public class GetTeamCommand : GetCmdletBase
+    public class GetTeamCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

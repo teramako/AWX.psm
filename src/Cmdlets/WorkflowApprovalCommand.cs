@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "WorkflowApprovalRequest")]
     [OutputType(typeof(WorkflowApproval.Detail))]
-    public class GetWorkflowApprovalRequestCommand : GetCmdletBase
+    public class GetWorkflowApprovalRequestCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

@@ -21,7 +21,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "User")]
     [OutputType(typeof(User))]
-    public class GetUserCommand : GetCmdletBase
+    public class GetUserCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

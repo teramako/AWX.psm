@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ActivityStream")]
     [OutputType(typeof(ActivityStream))]
-    public class GetActivityStreamCommand : GetCmdletBase
+    public class GetActivityStreamCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "InventoryUpdateJob")]
     [OutputType(typeof(InventoryUpdateJob))]
-    public class GetInventoryUpdateJobCommand : GetCmdletBase
+    public class GetInventoryUpdateJobCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

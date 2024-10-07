@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ExecutionEnvironment")]
     [OutputType(typeof(ExecutionEnvironment))]
-    public class GetExecutionEnvironmentCommand : GetCmdletBase
+    public class GetExecutionEnvironmentCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

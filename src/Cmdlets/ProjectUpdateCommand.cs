@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ProjectUpdateJob")]
     [OutputType(typeof(ProjectUpdateJob.Detail))]
-    public class GetProjectUpdateJobCommand : GetCmdletBase
+    public class GetProjectUpdateJobCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

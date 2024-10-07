@@ -7,7 +7,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "AdHocCommandJob")]
     [OutputType(typeof(AdHocCommand.Detail))]
-    public class GetAdHocCommandJobCommand : GetCmdletBase
+    public class GetAdHocCommandJobCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

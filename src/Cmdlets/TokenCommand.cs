@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Token")]
     [OutputType(typeof(OAuth2AccessToken))]
-    public class GetTokenCommand : GetCmdletBase
+    public class GetTokenCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

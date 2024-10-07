@@ -5,7 +5,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Label")]
     [OutputType(typeof(Label))]
-    public class GetLabelCommand : GetCmdletBase
+    public class GetLabelCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {

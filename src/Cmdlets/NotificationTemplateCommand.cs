@@ -6,7 +6,7 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "NotificationTemplate")]
     [OutputType(typeof(NotificationTemplate))]
-    public class GetNotificationTemplateCommand : GetCmdletBase
+    public class GetNotificationTemplateCommand : GetCommandBase
     {
         protected override void ProcessRecord()
         {
