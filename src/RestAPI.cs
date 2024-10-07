@@ -29,7 +29,12 @@ namespace AWX
             {
                 if (_client != null) return _client;
                 var config = ApiConfig.Instance;
-                _client = new HttpClient()
+                var handler = new HttpClientHandler()
+                {
+                    AllowAutoRedirect = false,
+                    UseCookies = false
+                };
+                _client = new HttpClient(handler)
                 {
                     BaseAddress = config.Origin,
                     DefaultRequestVersion = HttpVersion.Version11,
@@ -232,6 +237,15 @@ namespace AWX
                     break;
             }
             using HttpResponseMessage response = await Client.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.Found)
+            {
+                var location = response.Headers.Location;
+                if (location == null)
+                {
+                    throw new RestAPIException("Not found Location", response);
+                }
+                return await GetAsync<T>(location.ToString(), type);
+            }
             return await HandleResponse<T>(response);
         }
         /// <summary>
