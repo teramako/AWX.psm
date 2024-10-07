@@ -44,7 +44,7 @@ namespace AWX.Cmdlets
 
         private readonly NameValueCollection Query = HttpUtility.ParseQueryString(string.Empty);
         /// <summary>
-        /// 同一ジョブを重複して取得しないための HashSet
+        /// HashSet to avoid duplicate retrieval of the same job
         /// </summary>
         private readonly HashSet<ulong> _jobIdSet = [];
         private readonly List<Job> _jobs = [];
@@ -55,9 +55,9 @@ namespace AWX.Cmdlets
             public ResourceType Type { get; set; } = type;
         }
         /// <summary>
-        /// WorkflowJob の <paramref name="id"/> から実行された(<c>do_not_run=false</c>) WorkflowJobNode を取得し
-        /// Job の Id と Type を得る。
-        /// Job が WorkflowJob の場合は、再帰的に取得する。
+        /// Get the executed (<c>do_not_run=false</c>) WorkflowJobNode from the WorkflowJob's <paramref name="id"/> and
+        /// Get the Id and Type of the Job.
+        /// If the Job is a WorkflowJob, get it recursively.
         /// </summary>
         /// <param name="id"></param>
         private void GetJobsFromWorkflowJob(ulong id)
