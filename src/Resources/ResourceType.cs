@@ -617,9 +617,9 @@ namespace AWX.Resources
         [ResourceIdPath(typeof(WorkflowApproval.Detail), Method = Method.GET, Description = "Retrieve a Workflow Approval")]
         [ResourceIdPath(Method = Method.DELETE, Description = "Delete a Workflow Approval")]
         [ResourceSubPath("approve", typeof(Dictionary<string, string>), Description = "Retrieve a Workflow Approval")]
-        [ResourceSubPath("approve", Method = Method.POST, Description = "Retrieve a Workflow Approval")]
+        [ResourceSubPath("approve", Method = Method.POST, Description = "Approve the Workflow Approval")]
         [ResourceSubPath("deny", typeof(Dictionary<string, string>), Description = "Retrieve a Workflow Approval")]
-        [ResourceSubPath("deny", Method = Method.POST, Description = "Retrieve a Workflow Approval")]
+        [ResourceSubPath("deny", Method = Method.POST, Description = "Deny the Workflow Approval")]
         WorkflowApproval,
     }
 
