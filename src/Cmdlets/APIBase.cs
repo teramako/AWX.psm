@@ -42,7 +42,7 @@ public abstract class APICmdletBase : Cmdlet
     /// <param name="pathAndQuery"></param>
     /// <param name="acceptType"></param>
     /// <returns>Return the result if success, otherwise null</returns>
-    protected virtual TValue? GetResource<TValue>(string pathAndQuery, AcceptType acceptType = AcceptType.Json)
+    protected TValue? GetResource<TValue>(string pathAndQuery, AcceptType acceptType = AcceptType.Json)
         where TValue : class
     {
         WriteVerboseRequest(pathAndQuery, Method.GET);
@@ -72,9 +72,9 @@ public abstract class APICmdletBase : Cmdlet
         }
         return null;
     }
-    protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string path,
-                                                                          NameValueCollection? query = null,
-                                                                          bool getAll = false)
+    protected IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string path,
+                                                                  NameValueCollection? query = null,
+                                                                  bool getAll = false)
         where TValue : class
     {
         var pathAndQuery = path + (query == null ? "" : $"?{query}");
@@ -91,7 +91,7 @@ public abstract class APICmdletBase : Cmdlet
     /// <param name="pathAndQuery"></param>
     /// <param name="getAll"></param>
     /// <returns>Returns successed responses</returns>
-    protected virtual IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string pathAndQuery, bool getAll = false)
+    protected IEnumerable<ResultSet<TValue>> GetResultSet<TValue>(string pathAndQuery, bool getAll = false)
         where TValue : class
     {
         string nextPathAndQuery = pathAndQuery;
@@ -138,7 +138,7 @@ public abstract class APICmdletBase : Cmdlet
     /// <param name="sendData"></param>
     /// <returns>Return the result if success, otherwise null</returns>
     /// <exception cref="RestAPIException"/>
-    protected virtual RestAPIPostResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
+    protected RestAPIPostResult<TValue> CreateResource<TValue>(string pathAndQuery, object? sendData = null)
         where TValue : class
     {
         WriteVerboseRequest(pathAndQuery, Method.POST);
@@ -175,7 +175,7 @@ public abstract class APICmdletBase : Cmdlet
     /// <param name="pathAndQuery"></param>
     /// <param name="sendData"></param>
     /// <returns>Return the result if success, otherwise null</returns>
-    protected virtual TValue UpdateResource<TValue>(string pathAndQuery, object sendData)
+    protected TValue UpdateResource<TValue>(string pathAndQuery, object sendData)
         where TValue : class
     {
         WriteVerboseRequest(pathAndQuery, Method.PUT);
@@ -212,7 +212,7 @@ public abstract class APICmdletBase : Cmdlet
     /// <param name="pathAndQuery"></param>
     /// <param name="sendData"></param>
     /// <returns>Return the result if success, otherwise null</returns>
-    protected virtual TValue PatchResource<TValue>(string pathAndQuery, object sendData)
+    protected TValue PatchResource<TValue>(string pathAndQuery, object sendData)
         where TValue : class
     {
         WriteVerboseRequest(pathAndQuery, Method.PATCH);
@@ -247,7 +247,7 @@ public abstract class APICmdletBase : Cmdlet
     /// </summary>
     /// <param name="pathAndQuery"></param>
     /// <returns>Return the result if success, otherwise null</returns>
-    protected virtual IRestAPIResponse DeleteResource(string pathAndQuery)
+    protected IRestAPIResponse DeleteResource(string pathAndQuery)
     {
         WriteVerboseRequest(pathAndQuery, Method.DELETE);
         try
@@ -281,7 +281,7 @@ public abstract class APICmdletBase : Cmdlet
     /// </summary>
     /// <param name="pathAndQuery"></param>
     /// <returns>Return the result if success, otherwise null</returns>
-    protected virtual ApiHelp? GetApiHelp(string pathAndQuery)
+    protected ApiHelp? GetApiHelp(string pathAndQuery)
     {
         WriteVerboseRequest(pathAndQuery, Method.OPTIONS);
         try
@@ -299,13 +299,13 @@ public abstract class APICmdletBase : Cmdlet
         }
         return null;
     }
-    protected virtual void WriteVerboseRequest(string pathAndQuery, Method method)
+    protected void WriteVerboseRequest(string pathAndQuery, Method method)
     {
         var uri = ApiConfig.Instance.Origin;
         WriteVerbose($"> Host: {uri.Host}:{uri.Port}");
         WriteVerbose($"> {method} {pathAndQuery}");
     }
-    protected virtual void WriteVerboseResponse(IRestAPIResponse response)
+    protected void WriteVerboseResponse(IRestAPIResponse response)
     {
         WriteDebugHeaders(response.RequestHeaders, '>');
         WriteVerbose($"HTTP/{response.HttpVersion} {response.StatusCode:d} {response.ReasonPhrase}");
