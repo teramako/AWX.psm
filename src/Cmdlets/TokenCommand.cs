@@ -165,11 +165,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "Token", SupportsShouldProcess = true)]
     [OutputType(typeof(OAuth2AccessToken))]
-    public class UpdateTokenCommand : APICmdletBase
+    public class UpdateTokenCommand : UpdateCommandBase<OAuth2AccessToken>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.OAuth2AccessToken])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         [AllowEmptyString]
@@ -179,26 +179,22 @@ namespace AWX.Cmdlets
         [ValidateSet("read", "write")]
         public string? Scope { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
-            var sendData = new Dictionary<string, object>();
+            var sendData = new Dictionary<string, object?>();
             if (Description != null)
                 sendData.Add("description", Description);
             if (Scope != null)
                 sendData.Add("scope", Scope);
 
-            if (sendData.Count == 0)
-                return;
+            return sendData;
+        }
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Token [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<OAuth2AccessToken>($"{OAuth2AccessToken.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

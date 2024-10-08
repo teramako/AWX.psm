@@ -249,11 +249,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "User", SupportsShouldProcess = true)]
     [OutputType(typeof(User))]
-    public class UpdateUserCommand : APICmdletBase
+    public class UpdateUserCommand : UpdateCommandBase<User>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.User])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string UserName { get; set; } = string.Empty;
@@ -279,9 +279,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public SecureString? Password { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
-            var sendData = new Dictionary<string, object>();
+            var sendData = new Dictionary<string, object?>();
             string dataDescription = string.Empty;
             if (!string.IsNullOrEmpty(UserName))
                 sendData.Add("username", UserName);
@@ -307,20 +307,14 @@ namespace AWX.Cmdlets
                 }
             }
 
-            if (sendData.Count == 0)
-                return; // do nothing
+            return sendData;
+        }
 
-            if (string.IsNullOrEmpty(dataDescription))
-                dataDescription = Json.Stringify(sendData, pretty: true);
-
-            if (ShouldProcess($"User [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var updatedUser = PatchResource<User>($"{User.PATH}{Id}/", sendData);
-                    WriteObject(updatedUser, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

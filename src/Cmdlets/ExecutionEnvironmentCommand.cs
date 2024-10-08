@@ -106,11 +106,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "ExecutionEnvironment", SupportsShouldProcess = true)]
     [OutputType(typeof(ExecutionEnvironment))]
-    public class UpdateExecutionEnvironmentCommand : APICmdletBase
+    public class UpdateExecutionEnvironmentCommand : UpdateCommandBase<ExecutionEnvironment>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.ExecutionEnvironment])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -135,7 +135,7 @@ namespace AWX.Cmdlets
         [ValidateSet("", "always", "missing", "never")]
         public string? Pull { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
@@ -151,18 +151,14 @@ namespace AWX.Cmdlets
             if (Pull != null)
                 sendData.Add("pull", Pull);
 
-            if (sendData.Count == 0)
-                return;
+            return sendData;
+        }
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"ExecutionEnvironment [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<ExecutionEnvironment>($"{ExecutionEnvironment.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

@@ -127,11 +127,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "CredentialType", SupportsShouldProcess = true)]
     [OutputType(typeof(CredentialType))]
-    public class UpdateCredentialTypeCommand : APICmdletBase
+    public class UpdateCredentialTypeCommand : UpdateCommandBase<CredentialType>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.CredentialType])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -150,9 +150,9 @@ namespace AWX.Cmdlets
         [Parameter()]
         public IDictionary? Injectors { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
-            var sendData = new Dictionary<string, object>();
+            var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
                 sendData.Add("name", Name);
             if (Description != null)
@@ -164,18 +164,14 @@ namespace AWX.Cmdlets
             if (Injectors != null)
                 sendData.Add("injectors", Injectors);
 
-            if (sendData.Count == 0)
-                return;
+            return sendData;
+        }
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"CredentialType [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<CredentialType>($"{CredentialType.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

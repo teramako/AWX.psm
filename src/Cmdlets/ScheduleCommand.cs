@@ -202,11 +202,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "Schedule", SupportsShouldProcess = true)]
     [OutputType(typeof(Schedule))]
-    public class UpdateScheduleCommand : APICmdletBase
+    public class UpdateScheduleCommand : UpdateCommandBase<Schedule>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Schedule])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -271,7 +271,7 @@ namespace AWX.Cmdlets
         [Parameter()]
         public int? Timeout { get; set; }
 
-        protected IDictionary<string, object?> CreateSendData()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var dict = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
@@ -314,16 +314,9 @@ namespace AWX.Cmdlets
 
         protected override void ProcessRecord()
         {
-            var sendData = CreateSendData();
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Schedule [{Id}]", $"Update {dataDescription}"))
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<Schedule>($"{Schedule.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

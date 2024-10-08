@@ -126,11 +126,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "Team", SupportsShouldProcess = true)]
     [OutputType(typeof(Team))]
-    public class UpdateTeamCommand : APICmdletBase
+    public class UpdateTeamCommand : UpdateCommandBase<Team>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Team])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string Name { get; set; } = string.Empty;
@@ -143,9 +143,9 @@ namespace AWX.Cmdlets
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
         public ulong Organization { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
-            var sendData = new Dictionary<string, object>();
+            var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
                 sendData.Add("name", Name);
             if (Description != null)
@@ -153,18 +153,14 @@ namespace AWX.Cmdlets
             if (Organization > 0)
                 sendData.Add("organization", Organization);
 
-            if (sendData.Count == 0)
-                return;
+            return sendData;
+        }
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Team [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<Team>($"{Team.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

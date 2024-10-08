@@ -331,11 +331,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "WorkflowJobTemplateNode", SupportsShouldProcess = true)]
     [OutputType(typeof(WorkflowJobTemplateNode))]
-    public class UpdateWorkflowJobTemplateNodeCommand : APICmdletBase
+    public class UpdateWorkflowJobTemplateNodeCommand : UpdateCommandBase<WorkflowJobTemplateNode>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.WorkflowJobTemplateNode])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         [Alias("Template")]
@@ -405,7 +405,7 @@ namespace AWX.Cmdlets
         [Parameter()]
         public string? Identifier { get; set; }
 
-        private Dictionary<string, object?> CreateSendData()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var sendData = new Dictionary<string, object?>();
             if (UnifiedJobTemplate != null)
@@ -445,20 +445,9 @@ namespace AWX.Cmdlets
 
         protected override void ProcessRecord()
         {
-            var path = $"{WorkflowJobTemplateNode.PATH}{Id}/";
-            var sendData = CreateSendData();
-            if (sendData.Count == 0)
-                return;
-
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"WorkflowJobTemplateNode [{Id}]", $"Update {dataDescription}"))
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<WorkflowJobTemplateNode>($"{WorkflowJobTemplateNode.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

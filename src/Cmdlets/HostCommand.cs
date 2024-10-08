@@ -135,11 +135,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "Host", SupportsShouldProcess = true)]
     [OutputType(typeof(Host))]
-    public class UpdateHostCommand : APICmdletBase
+    public class UpdateHostCommand : UpdateCommandBase<Host>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string Name { get; set; } = string.Empty;
@@ -161,9 +161,9 @@ namespace AWX.Cmdlets
         [ExtraVarsArgumentTransformation]
         public string? Variables { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
-            var sendData = new Dictionary<string, object>();
+            var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
                 sendData.Add("name", Name);
             if (Description != null)
@@ -175,18 +175,14 @@ namespace AWX.Cmdlets
             if (Variables != null)
                 sendData.Add("variables", Variables);
 
-            if (sendData.Count == 0)
-                return; // do nothing
+            return sendData;
+        }
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Host [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var updatedHost = PatchResource<Host>($"{Host.PATH}{Id}/", sendData);
-                    WriteObject(updatedHost, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

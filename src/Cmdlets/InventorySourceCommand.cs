@@ -198,11 +198,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "InventorySource", SupportsShouldProcess = true)]
     [OutputType(typeof(InventorySource))]
-    public class UpdateInventorySourceCommand : APICmdletBase
+    public class UpdateInventorySourceCommand : UpdateCommandBase<InventorySource>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.InventorySource])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; } = string.Empty;
@@ -274,7 +274,7 @@ namespace AWX.Cmdlets
         [Parameter()]
         public int? UpdateCacheTimeout { get; set; }
 
-        private Dictionary<string, object?> CreateSendData()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
@@ -318,19 +318,9 @@ namespace AWX.Cmdlets
 
         protected override void ProcessRecord()
         {
-            var sendData = CreateSendData();
-            if (sendData.Count == 0)
-                return;
-
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"InventorySource [{Id}]", $"Update {dataDescription}"))
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<InventorySource>($"{InventorySource.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

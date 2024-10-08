@@ -1245,11 +1245,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "JobTemplate", SupportsShouldProcess = true)]
     [OutputType(typeof(JobTemplate))]
-    public class UpdateJobTemplateCommand : APICmdletBase
+    public class UpdateJobTemplateCommand : UpdateCommandBase<JobTemplate>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.JobTemplate])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -1383,7 +1383,7 @@ namespace AWX.Cmdlets
         [Parameter()]
         public bool? PreventInstanceGroupFallback { get; set; }
 
-        protected IDictionary<string, object?> CreateSendData()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var dict = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
@@ -1474,19 +1474,9 @@ namespace AWX.Cmdlets
 
         protected override void ProcessRecord()
         {
-            var sendData = CreateSendData();
-            if (sendData.Count == 0)
-                return;
-
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"JobTemplate [{Id}]", $"Update {dataDescription}"))
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<JobTemplate>($"{JobTemplate.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

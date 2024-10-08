@@ -287,11 +287,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "Credentail", SupportsShouldProcess = true)]
     [OutputType(typeof(Credential))]
-    public class UpdateCredentialCommand : APICmdletBase
+    public class UpdateCredentialCommand : UpdateCommandBase<Credential>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -311,9 +311,9 @@ namespace AWX.Cmdlets
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
         public ulong? Organization { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
-            var sendData = new Dictionary<string, object>();
+            var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
                 sendData.Add("name", Name);
             if (Description != null)
@@ -325,20 +325,15 @@ namespace AWX.Cmdlets
             if (Organization != null)
                 sendData.Add("organization", Organization);
 
-            if (sendData.Count == 0)
-                return;
-
+            return sendData;
+        }
+        protected override void ProcessRecord()
+        {
             // FIXME: Validation of Inputs value from CredentialType data
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Credential [{Id}]", $"Update {dataDescription}"))
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<Credential>($"{Credential.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

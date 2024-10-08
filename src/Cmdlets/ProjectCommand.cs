@@ -276,11 +276,11 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsData.Update, "Project", SupportsShouldProcess = true)]
     [OutputType(typeof(Project))]
-    public class UpdateProjectCommand : APICmdletBase
+    public class UpdateProjectCommand : UpdateCommandBase<Project>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Project])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -348,7 +348,7 @@ namespace AWX.Cmdlets
         [ValidateRange(0, int.MaxValue)]
         public int? Timeout { get; set; }
 
-        private Dictionary<string, object?> CreateSendData()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
@@ -404,20 +404,9 @@ namespace AWX.Cmdlets
 
         protected override void ProcessRecord()
         {
-            var sendData = CreateSendData();
-
-            if (sendData.Count == 0)
-                return;
-
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Project [{Id}]", $"Update {dataDescription}"))
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var after = PatchResource<Project>($"{Project.PATH}{Id}/", sendData);
-                    WriteObject(after, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }

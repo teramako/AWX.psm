@@ -108,11 +108,11 @@ namespace AWX.Cmdlets
     
     [Cmdlet(VerbsData.Update, "Organization", SupportsShouldProcess = true)]
     [OutputType(typeof(Organization))]
-    public class UpdateOrganizationCommand : APICmdletBase
+    public class UpdateOrganizationCommand : UpdateCommandBase<Organization>
     {
         [Parameter(Mandatory = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Organization])]
-        public ulong Id { get; set; }
+        public override ulong Id { get; set; }
 
         [Parameter()]
         public string? Name { get; set; }
@@ -129,7 +129,7 @@ namespace AWX.Cmdlets
         [AllowNull]
         public ulong? DefaultEnvironment { get; set; }
 
-        protected override void ProcessRecord()
+        protected override Dictionary<string, object?> CreateSendData()
         {
             var sendData = new Dictionary<string, object?>();
             if (!string.IsNullOrEmpty(Name))
@@ -141,18 +141,14 @@ namespace AWX.Cmdlets
             if (DefaultEnvironment != null)
                 sendData.Add("default_environment", DefaultEnvironment == 0 ? null : DefaultEnvironment);
 
-            if (sendData.Count == 0)
-                return; // do nothing
+            return sendData;
+        }
 
-            var dataDescription = Json.Stringify(sendData, pretty: true);
-            if (ShouldProcess($"Organization [{Id}]", $"Update {dataDescription}"))
+        protected override void ProcessRecord()
+        {
+            if (TryPatch(Id, out var result))
             {
-                try
-                {
-                    var updatedOrg = PatchResource<Organization>($"{Organization.PATH}{Id}/", sendData);
-                    WriteObject(updatedOrg, false);
-                }
-                catch (RestAPIException) { }
+                WriteObject(result, false);
             }
         }
     }
