@@ -11,9 +11,6 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
-### [Add-Group](Add-Group.md)
-Associate the Group to a Group.
-
 ### [Add-Host](Add-Host.md)
 Associate a Host to a Group.
 
@@ -416,6 +413,9 @@ Create a WorkflowJobTemplateNode.
 ### [Register-Credential](Register-Credential.md)
 Register a Credential.
 
+### [Register-Group](Register-Group.md)
+Register a Group to another Group.
+
 ### [Register-Label](Register-Label.md)
 Register a Label to other resource.
 
@@ -532,6 +532,9 @@ Switch to anothor config.
 
 ### [Unregister-Credential](Unregister-Credential.md)
 Remove a Credential.
+
+### [Unregister-Group](Unregister-Group.md)
+Unregister a Group from parent Group.
 
 ### [Unregister-Label](Unregister-Label.md)
 Unregister a Label from other resource.

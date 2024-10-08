@@ -5,52 +5,36 @@ online version:
 schema: 2.0.0
 ---
 
-# Update-Group
+# Register-Group
 
 ## SYNOPSIS
-Update a Group.
+Register a Group to another Group.
 
 ## SYNTAX
 
 ```
-Update-Group [-Id] <UInt64> [-Name <String>] [-Description <String>] [-Variables <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Register-Group [-Id] <UInt64> [-To] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Update a Group.
+Register a Group to another Group.
 
 Implements following Rest API:  
-- `/api/v2/groups/{id}/` (PATCH)
+- `/api/v2/groups/{id}/children/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Update-Host -Id 3 -Variables @{ ansible_user = "new_user" }
+PS C:\> Register-Group -Id 3 -ToGroup 1
 ```
 
-Update variable for the Group of ID 3.
+Associate the Group of ID 3 to the Group of ID 1.
 
 ## PARAMETERS
 
-### -Description
-Optional description of the group.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Id
-Group ID.
+Group ID to be a child.
 
 ```yaml
 Type: UInt64
@@ -64,34 +48,20 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Name
-Name of the group.
+### -To
+Group ID to be the parent.
+
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-To (Get-Group -Id 10)`, `-To @{ type="group"; id = 10 }`
 
 ```yaml
-Type: String
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Variables
-Specify in JSON or YAML format.
-You can also specify an object of type `IDictionary` as a parameter value.
-
-Example: `-Variables @{ ansible_connection = "ssh"; ansible_user = "ssh_user" }`
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -134,12 +104,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-Group Id.
+Group Id to be a child.
 
 ## OUTPUTS
 
-### AWX.Resources.Group
-Updated Group object.
+### System.Boolean
+Success or Failure
 
 ## NOTES
 
@@ -151,7 +121,7 @@ Updated Group object.
 
 [New-Group](New-Group.md)
 
-[Register-Group](Register-Group.md)
+[Update-Group](Update-Group.md)
 
 [Unregister-Group](Unregister-Group.md)
 

@@ -5,19 +5,19 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-Group
+# Unregister-Group
 
 ## SYNOPSIS
-Associate the Group to a Group.
+Unregister a Group from parent Group.
 
 ## SYNTAX
 
 ```
-Add-Group [-Id] <UInt64> [-ToGroup] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Group [-Id] <UInt64> [-From] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Associate the Group to a Group.
+Unregister a Group from the parent Group.
 
 Implements following Rest API:  
 - `/api/v2/groups/{id}/children/` (POST)
@@ -26,30 +26,19 @@ Implements following Rest API:
 
 ### Example 1
 ```powershell
-PS C:\> Add-Host -Id 3 -ToGroup 1
+PS C:\> Unregister-Group -Id 3 -From 1
 ```
 
-Associate the Group of ID 3 to the Group of ID 1.
+Disassociate the Group of ID 3 from the parent Group ID 1.
 
 ## PARAMETERS
 
-### -Id
-Group ID to be a child.
+### -From
+Parent Group ID.
 
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -ToGroup
-Group ID to be the parent.
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-From (Get-Group -Id 10)`, `-From @{ type="group"; id = 10 }`
 
 ```yaml
 Type: UInt64
@@ -60,6 +49,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Group Id.
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -100,11 +104,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-Group Id to be a child.
+Group Id.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
@@ -115,6 +121,6 @@ Group Id to be a child.
 
 [New-Group](New-Group.md)
 
-[Update-Group](Update-Group.md)
+[Register-Group](Register-Group.md)
 
-[Remove-Group](Remove-Group.md)
+[Update-Group](Update-Group.md)
