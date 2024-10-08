@@ -285,7 +285,7 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsData.Update, "Credentail", SupportsShouldProcess = true)]
+    [Cmdlet(VerbsData.Update, "Credential", SupportsShouldProcess = true)]
     [OutputType(typeof(Credential))]
     public class UpdateCredentialCommand : UpdateCommandBase<Credential>
     {

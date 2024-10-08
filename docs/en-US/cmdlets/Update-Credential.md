@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Update-Credentail
+# Update-Credential
 
 ## SYNOPSIS
 Update a Credential.
@@ -13,7 +13,7 @@ Update a Credential.
 ## SYNTAX
 
 ```
-Update-Credentail [-Id] <UInt64> [-Name <String>] [-Description <String>] [-CredentialType <UInt64>]
+Update-Credential [-Id] <UInt64> [-Name <String>] [-Description <String>] [-CredentialType <UInt64>]
  [-Inputs <IDictionary>] [-Organization <UInt64>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
@@ -27,7 +27,7 @@ Implements following Rest API:
 
 ### Example 1
 ```powershell
-PS C:\> Update-Credentail -Id 2 -Description "Updated Description"
+PS C:\> Update-Credential -Id 2 -Description "Updated Description"
 ```
 
 ## PARAMETERS

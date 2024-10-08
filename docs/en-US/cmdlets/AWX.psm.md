@@ -539,7 +539,7 @@ Unlink WorkflowJobTemplateNode from the parent.
 ### [Update-Application](Update-Application.md)
 Update an Application.
 
-### [Update-Credentail](Update-Credentail.md)
+### [Update-Credential](Update-Credential.md)
 Update a Credential.
 
 ### [Update-CredentialType](Update-CredentialType.md)
