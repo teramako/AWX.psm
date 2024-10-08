@@ -77,7 +77,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.New, "Token", SupportsShouldProcess = true, DefaultParameterSetName = "Application")]
     [OutputType(typeof(OAuth2AccessToken))]
-    public class AddTokenCommand : APICmdletBase
+    public class NewTokenCommand : APICmdletBase
     {
         [Parameter(Mandatory = true, ParameterSetName = "User", Position = 0)]
         public SwitchParameter ForMe { get; set; }

@@ -88,7 +88,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.New, "Project", DefaultParameterSetName = "Manual", SupportsShouldProcess = true)]
     [OutputType(typeof(Project))]
-    public class AddProjectCommand : APICmdletBase
+    public class NewProjectCommand : APICmdletBase
     {
         [Parameter(ParameterSetName = "Manual", Mandatory = true)]
         public SwitchParameter Local { get; set; }
