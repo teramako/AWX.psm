@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ExecutionEnvironment")]
     [OutputType(typeof(ExecutionEnvironment))]
-    public class GetExecutionEnvironmentCommand : GetCommandBase
+    public class GetExecutionEnvironmentCommand : GetCommandBase<ExecutionEnvironment>
     {
+        protected override string ApiPath => ExecutionEnvironment.PATH;
+        protected override ResourceType AcceptType => ResourceType.ExecutionEnvironment;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.ExecutionEnvironment)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<ExecutionEnvironment>($"{ExecutionEnvironment.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<ExecutionEnvironment>(ExecutionEnvironment.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

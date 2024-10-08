@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Inventory")]
     [OutputType(typeof(Inventory))]
-    public class GetInventoryCommand : GetCommandBase
+    public class GetInventoryCommand : GetCommandBase<Inventory>
     {
+        protected override string ApiPath => Inventory.PATH;
+        protected override ResourceType AcceptType => ResourceType.Inventory;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Inventory)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Inventory>($"{Inventory.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Inventory>(Inventory.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

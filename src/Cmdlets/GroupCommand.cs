@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Group")]
     [OutputType(typeof(Group))]
-    public class GetGroupCommand : GetCommandBase
+    public class GetGroupCommand : GetCommandBase<Group>
     {
+        protected override string ApiPath => Group.PATH;
+        protected override ResourceType AcceptType => ResourceType.Group;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Group)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Group>($"{Group.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Group>(Group.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

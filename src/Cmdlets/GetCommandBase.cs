@@ -5,7 +5,7 @@ using AWX.Resources;
 
 namespace AWX.Cmdlets;
 
-public abstract class GetCommandBase : APICmdletBase
+public abstract class GetCommandBase<TResource> : APICmdletBase where TResource: class
 {
     [Parameter(Mandatory = true,
                Position = 0,
@@ -20,4 +20,75 @@ public abstract class GetCommandBase : APICmdletBase
 
     protected readonly HashSet<ulong> IdSet = [];
     protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
+
+    protected abstract string ApiPath { get; }
+    protected abstract ResourceType AcceptType { get; }
+    /// <summary>
+    /// Gather resource IDs to retrieve
+    /// Primarily called from within the <see cref="Cmdlet.ProcessRecord"/> method
+    /// </summary>
+    protected void GatherResourceId()
+    {
+        if (Type != null && Type != AcceptType)
+        {
+            return;
+        }
+        foreach (var id in Id)
+        {
+            IdSet.Add(id);
+        }
+    }
+
+    /// <summary>
+    /// Retrieve and output the resource for the gathered ID.
+    /// Primarily called from within the <see cref="Cmdlet.EndProcessing"/> method
+    /// </summary>
+    protected IEnumerable<TResource> GetResultSet()
+    {
+        if (IdSet.Count == 1)
+        {
+            var res = GetResource<TResource>($"{ApiPath}{IdSet.First()}/");
+            if (res == null)
+                yield break;
+            yield return res;
+        }
+        else
+        {
+            Query.Add("id__in", string.Join(',', IdSet));
+            Query.Add("page_size", $"{IdSet.Count}");
+            foreach (var resultSet in GetResultSet<TResource>(ApiPath, Query, true))
+            {
+                foreach (var res in resultSet.Results)
+                {
+                    yield return res;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Get and output resources individually.
+    /// Primarily called from within the <see cref="Cmdlet.ProcessRecord"/> method
+    /// </summary>
+    /// <param name="subPath">sub path</param>
+    protected IEnumerable<TResource> GetResource(string subPath = "")
+    {
+        if (Type != null && Type != AcceptType)
+        {
+            yield break;
+        }
+        foreach (var id in Id)
+        {
+            if (!IdSet.Add(id))
+            {
+                // skip already processed
+                continue;
+            }
+            var res = GetResource<TResource>($"{ApiPath}{id}/{subPath}");
+            if (res != null)
+            {
+                yield return res;
+            }
+        }
+    }
 }

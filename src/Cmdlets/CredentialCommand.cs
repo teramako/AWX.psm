@@ -6,37 +6,21 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Credential")]
     [OutputType(typeof(Credential))]
-    public class GetCredentialCommand : GetCommandBase
+    public class GetCredentialCommand : GetCommandBase<Credential>
     {
+        protected override string ApiPath => Credential.PATH;
+        protected override ResourceType AcceptType => ResourceType.Credential;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Credential)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Credential>($"{Credential.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Credential>(Credential.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
+
     [Cmdlet(VerbsCommon.Find, "Credential", DefaultParameterSetName = "All")]
     [OutputType(typeof(Credential))]
     public class FindCredentialCommand : FindCommandBase

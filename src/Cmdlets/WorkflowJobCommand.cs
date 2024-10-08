@@ -5,27 +5,14 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "WorkflowJob")]
     [OutputType(typeof(WorkflowJob.Detail))]
-    public class GetWorkflowJobCommand : GetCommandBase
+    public class GetWorkflowJobCommand : GetCommandBase<WorkflowJob.Detail>
     {
+        protected override string ApiPath => WorkflowJob.PATH;
+        protected override ResourceType AcceptType => ResourceType.WorkflowJob;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.WorkflowJob)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var res = GetResource<WorkflowJob.Detail>($"{WorkflowJob.PATH}{id}/");
-                if (res != null)
-                {
-                    WriteObject(res);
-                }
-            }
+            WriteObject(GetResource(), true);
         }
     }
 

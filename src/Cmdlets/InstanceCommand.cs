@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Instance")]
     [OutputType(typeof(Instance))]
-    public class GetInstanceCommand : GetCommandBase
+    public class GetInstanceCommand : GetCommandBase<Instance>
     {
+        protected override string ApiPath => Instance.PATH;
+        protected override ResourceType AcceptType => ResourceType.Instance;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Instance)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Instance>($"{Instance.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Instance>(Instance.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

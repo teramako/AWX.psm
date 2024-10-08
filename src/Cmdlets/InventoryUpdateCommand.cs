@@ -4,28 +4,15 @@ using System.Management.Automation;
 namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "InventoryUpdateJob")]
-    [OutputType(typeof(InventoryUpdateJob))]
-    public class GetInventoryUpdateJobCommand : GetCommandBase
+    [OutputType(typeof(InventoryUpdateJob.Detail))]
+    public class GetInventoryUpdateJobCommand : GetCommandBase<InventoryUpdateJob.Detail>
     {
+        protected override string ApiPath => InventoryUpdateJob.PATH;
+        protected override ResourceType AcceptType => ResourceType.InventoryUpdate;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.InventoryUpdate)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var res = GetResource<InventoryUpdateJob.Detail>($"{InventoryUpdateJob.PATH}{id}/");
-                if (res != null)
-                {
-                    WriteObject(res);
-                }
-            }
+            WriteObject(GetResource(), true);
         }
     }
 

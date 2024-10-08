@@ -5,27 +5,14 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "JobHostSummary")]
     [OutputType(typeof(JobHostSummary))]
-    public class GetJobHostSummaryCommand : GetCommandBase
+    public class GetJobHostSummaryCommand : GetCommandBase<JobHostSummary>
     {
+        protected override string ApiPath => JobHostSummary.PATH;
+        protected override ResourceType AcceptType => ResourceType.JobHostSummary;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.JobHostSummary)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var res = GetResource<JobHostSummary>($"{JobHostSummary.PATH}{id}/");
-                if (res != null)
-                {
-                    WriteObject(res);
-                }
-            }
+            WriteObject(GetResource(), true);
         }
     }
 

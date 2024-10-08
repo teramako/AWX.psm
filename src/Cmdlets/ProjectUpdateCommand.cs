@@ -5,27 +5,14 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ProjectUpdateJob")]
     [OutputType(typeof(ProjectUpdateJob.Detail))]
-    public class GetProjectUpdateJobCommand : GetCommandBase
+    public class GetProjectUpdateJobCommand : GetCommandBase<ProjectUpdateJob.Detail>
     {
+        protected override string ApiPath => ProjectUpdateJob.PATH;
+        protected override ResourceType AcceptType => ResourceType.ProjectUpdate;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.ProjectUpdate)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var res = GetResource<ProjectUpdateJob.Detail>($"{ProjectUpdateJob.PATH}{id}/");
-                if (res != null)
-                {
-                    WriteObject(res);
-                }
-            }
+            WriteObject(GetResource(), true);
         }
     }
 

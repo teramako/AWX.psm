@@ -5,27 +5,14 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "WorkflowApprovalTemplate")]
     [OutputType(typeof(WorkflowApprovalTemplate))]
-    public class GetWorkflowApprovalTemplate : GetCommandBase
+    public class GetWorkflowApprovalTemplate : GetCommandBase<WorkflowApprovalTemplate>
     {
+        protected override string ApiPath => WorkflowApprovalTemplate.PATH;
+        protected override ResourceType AcceptType => ResourceType.WorkflowApprovalTemplate;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.WorkflowApprovalTemplate)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var res = GetResource<WorkflowApprovalTemplate>($"{WorkflowApprovalTemplate.PATH}{id}/");
-                if (res != null)
-                {
-                    WriteObject(res);
-                }
-            }
+            WriteObject(GetResource(), true);
         }
     }
 }

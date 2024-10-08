@@ -8,35 +8,19 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "JobTemplate")]
     [OutputType(typeof(JobTemplate))]
-    public class GetJobTemplate : GetCommandBase
+    public class GetJobTemplate : GetCommandBase<JobTemplate>
     {
+        protected override string ApiPath => JobTemplate.PATH;
+
+        protected override ResourceType AcceptType => ResourceType.JobTemplate;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.JobTemplate)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var result = GetResource<JobTemplate>($"{JobTemplate.PATH}{IdSet.First()}/");
-                WriteObject(result);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<JobTemplate>(JobTemplate.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

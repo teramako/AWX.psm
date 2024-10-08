@@ -7,27 +7,14 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "AdHocCommandJob")]
     [OutputType(typeof(AdHocCommand.Detail))]
-    public class GetAdHocCommandJobCommand : GetCommandBase
+    public class GetAdHocCommandJobCommand : GetCommandBase<AdHocCommand.Detail>
     {
+        protected override string ApiPath => AdHocCommand.PATH;
+        protected override ResourceType AcceptType => ResourceType.AdHocCommand;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.AdHocCommand)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var res = GetResource<AdHocCommand.Detail>($"{AdHocCommand.PATH}{id}/");
-                if (res != null)
-                {
-                    WriteObject(res);
-                }
-            }
+            WriteObject(GetResource(), true);
         }
     }
 

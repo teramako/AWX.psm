@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Host")]
     [OutputType(typeof(Host))]
-    public class GetHostCommand : GetCommandBase
+    public class GetHostCommand : GetCommandBase<Host>
     {
+        protected override string ApiPath => Host.PATH;
+        protected override ResourceType AcceptType => ResourceType.Host;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Host)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Host>($"{Host.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Host>(Host.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 
@@ -81,27 +64,14 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "HostFactsCache")]
     [OutputType(typeof(Dictionary<string, object?>))]
-    public class GetHostFactsCacheCommand : GetCommandBase
+    public class GetHostFactsCacheCommand : GetCommandBase<Dictionary<string, object?>>
     {
+        protected override string ApiPath => Host.PATH;
+        protected override ResourceType AcceptType => ResourceType.Host;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Host)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (!IdSet.Add(id))
-                {
-                    // skip already processed
-                    continue;
-                }
-                var facts = GetResource<Dictionary<string, object?>>($"{Host.PATH}{id}/ansible_facts/");
-                if (facts == null)
-                    return;
-
-                WriteObject(facts, false);
-            }
+            WriteObject(GetResource("ansible_facts/"), true);
         }
     }
 

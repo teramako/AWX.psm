@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Application")]
     [OutputType(typeof(Application))]
-    public class GetApplicationCommand : GetCommandBase
+    public class GetApplicationCommand : GetCommandBase<Application>
     {
+        protected override string ApiPath => Application.PATH;
+        protected override ResourceType AcceptType => ResourceType.OAuth2Application;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.OAuth2Application)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Application>($"{Application.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Application>(Application.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
     [Cmdlet(VerbsCommon.Find, "Application", DefaultParameterSetName = "All")]

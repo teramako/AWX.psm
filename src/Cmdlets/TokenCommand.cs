@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Token")]
     [OutputType(typeof(OAuth2AccessToken))]
-    public class GetTokenCommand : GetCommandBase
+    public class GetTokenCommand : GetCommandBase<OAuth2AccessToken>
     {
+        protected override string ApiPath => OAuth2AccessToken.PATH;
+        protected override ResourceType AcceptType => ResourceType.OAuth2AccessToken;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.OAuth2AccessToken)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var result = GetResource<OAuth2AccessToken>($"{OAuth2AccessToken.PATH}{IdSet.First()}/");
-                WriteObject(result);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<OAuth2AccessToken>(OAuth2AccessToken.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

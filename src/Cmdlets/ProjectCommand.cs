@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Project")]
     [OutputType(typeof(Project))]
-    public class GetProjectCommand : GetCommandBase
+    public class GetProjectCommand : GetCommandBase<Project>
     {
+        protected override string ApiPath => Project.PATH;
+        protected override ResourceType AcceptType => ResourceType.Project;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Project)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Project>($"{Project.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Project>(Project.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 
@@ -74,42 +57,32 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.Get, "Playbook")]
     [OutputType(typeof(string))]
-    public class GetPlaybookCommand : GetCommandBase
+    public class GetPlaybookCommand : GetCommandBase<string[]>
     {
+        protected override string ApiPath => Project.PATH;
+        protected override ResourceType AcceptType => ResourceType.Project;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Project)
+            foreach (var playbooks in GetResource("playbooks/"))
             {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (IdSet.Add(id))
-                {
-                    var playbooks = GetResource<string[]>($"{Project.PATH}{id}/playbooks/");
-                    WriteObject(playbooks, true);
-                }
+                WriteObject(playbooks, true);
             }
         }
     }
 
     [Cmdlet(VerbsCommon.Get, "InventoryFile")]
     [OutputType(typeof(string))]
-    public class GetInventoryFileCommand : GetCommandBase
+    public class GetInventoryFileCommand : GetCommandBase<string[]>
     {
+        protected override string ApiPath => Project.PATH;
+        protected override ResourceType AcceptType => ResourceType.Project;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Project)
+            foreach (var inventoryFiles in GetResource("inventories/"))
             {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                if (IdSet.Add(id))
-                {
-                    var inventoryFiles = GetResource<string[]>($"{Project.PATH}{id}/inventories/");
-                    WriteObject(inventoryFiles, true);
-                }
+                WriteObject(inventoryFiles, true);
             }
         }
     }

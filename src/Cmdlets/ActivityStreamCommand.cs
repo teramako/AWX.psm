@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "ActivityStream")]
     [OutputType(typeof(ActivityStream))]
-    public class GetActivityStreamCommand : GetCommandBase
+    public class GetActivityStreamCommand : GetCommandBase<ActivityStream>
     {
+        protected override string ApiPath => ActivityStream.PATH;
+        protected override ResourceType AcceptType => ResourceType.ActivityStream;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.ActivityStream)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<ActivityStream>($"{ActivityStream.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<ActivityStream>(ActivityStream.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Role")]
     [OutputType(typeof(Role))]
-    public class GetRoleCommand : GetCommandBase
+    public class GetRoleCommand : GetCommandBase<Role>
     {
+        protected override string ApiPath => Role.PATH;
+        protected override ResourceType AcceptType => ResourceType.Role;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Role)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Role>($"{Role.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Role>(Role.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

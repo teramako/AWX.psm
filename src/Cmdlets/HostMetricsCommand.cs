@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "HostMetric")]
     [OutputType(typeof(HostMetric))]
-    public class GetHostMetricCommand : GetCommandBase
+    public class GetHostMetricCommand : GetCommandBase<HostMetric>
     {
+        protected override string ApiPath => HostMetric.PATH;
+        protected override ResourceType AcceptType => ResourceType.HostMetrics;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.HostMetrics)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<HostMetric>($"{HostMetric.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<HostMetric>(HostMetric.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 

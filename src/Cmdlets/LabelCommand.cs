@@ -5,37 +5,21 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Label")]
     [OutputType(typeof(Label))]
-    public class GetLabelCommand : GetCommandBase
+    public class GetLabelCommand : GetCommandBase<Label>
     {
+        protected override string ApiPath => Label.PATH;
+        protected override ResourceType AcceptType => ResourceType.Label;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Label)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Label>($"{Label.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Label>(Label.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
+
     [Cmdlet(VerbsCommon.Find, "Label", DefaultParameterSetName = "All")]
     [OutputType(typeof(Label))]
     public class FindLabelCommand : FindCommandBase

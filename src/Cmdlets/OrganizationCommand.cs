@@ -5,35 +5,18 @@ namespace AWX.Cmdlets
 {
     [Cmdlet(VerbsCommon.Get, "Organization")]
     [OutputType(typeof(Organization))]
-    public class GetOrganizationCommand : GetCommandBase
+    public class GetOrganizationCommand : GetCommandBase<Organization>
     {
+        protected override string ApiPath => Organization.PATH;
+        protected override ResourceType AcceptType => ResourceType.Organization;
+
         protected override void ProcessRecord()
         {
-            if (Type != null && Type != ResourceType.Organization)
-            {
-                return;
-            }
-            foreach (var id in Id)
-            {
-                IdSet.Add(id);
-            }
+            GatherResourceId();
         }
         protected override void EndProcessing()
         {
-            if (IdSet.Count == 1)
-            {
-                var res = GetResource<Organization>($"{Organization.PATH}{IdSet.First()}/");
-                WriteObject(res);
-            }
-            else
-            {
-                Query.Add("id__in", string.Join(',', IdSet));
-                Query.Add("page_size", $"{IdSet.Count}");
-                foreach (var resultSet in GetResultSet<Organization>(Organization.PATH, Query, true))
-                {
-                    WriteObject(resultSet.Results, true);
-                }
-            }
+            WriteObject(GetResultSet(), true);
         }
     }
 
