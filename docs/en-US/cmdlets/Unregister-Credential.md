@@ -5,19 +5,19 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-Credential
+# Unregister-Credential
 
 ## SYNOPSIS
-Register a Credential.
+Remove a Credential.
 
 ## SYNTAX
 
 ```
-Add-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Credential [-Id] <UInt64> [-From] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Register a Credential to the specified resource.
+Unregister a Credential from the specified resource.
 
 Implements following Rest API:  
 - `/api/v2/organizations/{id}/galaxy_credentials/` (POST)  
@@ -30,31 +30,16 @@ Implements following Rest API:
 
 ### Example 1
 ```powershell
-PS C:\> Add-Credential -Id 3 -To @{Type="JobTemplate"; Id=10}
+PS C:\> Unregister-Credential -Id 2
 ```
 
 ## PARAMETERS
 
-### -Id
-Credential ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -To
-Target resource to be added to.
+### -From
+Target resource to be unregistered from.
 
 Following resource is available:  
-- `Organization` (galaxy-token only)  
+- `Organization`  
 - `InventorySource`  
 - `JobTemplate`  
 - `Schedule`  
@@ -69,6 +54,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Credential ID to be unregistered.
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -109,9 +109,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+Credential ID.
+
 ## OUTPUTS
 
-### System.Object
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
@@ -123,5 +127,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [New-Credential](New-Credential.md)
 
 [Update-Credential](Update-Credential.md)
+
+[Register-Credential](Register-Credential.md)
 
 [Remove-Credential](Remove-Credential.md)

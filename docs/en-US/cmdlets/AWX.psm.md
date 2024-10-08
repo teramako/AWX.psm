@@ -11,9 +11,6 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
-### [Add-Credential](Add-Credential.md)
-Register a Credential.
-
 ### [Add-Group](Add-Group.md)
 Associate the Group to a Group.
 
@@ -416,6 +413,9 @@ Create a WorkflowJobTemplate.
 ### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
 Create a WorkflowJobTemplateNode.
 
+### [Register-Credential](Register-Credential.md)
+Register a Credential.
+
 ### [Register-Label](Register-Label.md)
 Register a Label to other resource.
 
@@ -529,6 +529,9 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Unregister-Credential](Unregister-Credential.md)
+Remove a Credential.
 
 ### [Unregister-Label](Unregister-Label.md)
 Unregister a Label from other resource.
