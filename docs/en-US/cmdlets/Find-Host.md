@@ -253,8 +253,10 @@ Database ID for the ResourceType
 
 [New-Host](New-Host.md)
 
-[Add-Host](Add-Host.md)
-
 [Update-Host](Update-Host.md)
+
+[Register-Host](Register-Host.md)
+
+[Unregister-Host](Unregister-Host.md)
 
 [Remove-Host](Remove-Host.md)

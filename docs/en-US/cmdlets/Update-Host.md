@@ -181,6 +181,8 @@ Updated Host object.
 
 [New-Host](New-Host.md)
 
-[Add-Host](Add-Host.md)
+[Register-Host](Register-Host.md)
+
+[Unregister-Host](Unregister-Host.md)
 
 [Remove-Host](Remove-Host.md)

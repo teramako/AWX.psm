@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-Host
+# Unregister-Host
 
 ## SYNOPSIS
 Remove a Host
@@ -13,36 +13,40 @@ Remove a Host
 ## SYNTAX
 
 ```
-Remove-Host [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Host [-Id] <UInt64> [-From] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a Host.
+Remove a Host or disassociate from the group.
 
 Implements following Rest API:  
-- `/api/v2/hosts/{id}/` (DELETE)
+- `/api/v2/groups/{id}/hosts/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-Host -Id 3
+PS C:\> Unregister-Host -Id 3 -From 1
 ```
 
-Delete completly the Host of ID 3.
+Disassociate the Host of ID 3 from the Group ID 1.
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
+### -From
+Parent Group ID.
+
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-From (Get-Group -Id 10)`, `-From @{ type="group"; id = 10 }`
 
 ```yaml
-Type: SwitchParameter
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -104,7 +108,9 @@ Host Id.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
@@ -119,4 +125,4 @@ Host Id.
 
 [Register-Host](Register-Host.md)
 
-[Unregister-Host](Unregister-Host.md)
+[Remove-Host](Remove-Host.md)

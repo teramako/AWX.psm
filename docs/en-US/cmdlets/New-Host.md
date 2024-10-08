@@ -177,8 +177,10 @@ New created Host object.
 
 [Find-Host](Find-Host.md)
 
-[Add-Host](Add-Host.md)
-
 [Update-Host](Update-Host.md)
+
+[Register-Host](Register-Host.md)
+
+[Unregister-Host](Unregister-Host.md)
 
 [Remove-Host](Remove-Host.md)

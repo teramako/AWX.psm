@@ -11,9 +11,6 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
-### [Add-Host](Add-Host.md)
-Associate a Host to a Group.
-
 ### [Add-User](Add-User.md)
 Associate a Uesr to.
 
@@ -416,6 +413,9 @@ Register a Credential.
 ### [Register-Group](Register-Group.md)
 Register a Group to another Group.
 
+### [Register-Host](Register-Host.md)
+Register a Host to a Group.
+
 ### [Register-Label](Register-Label.md)
 Register a Label to other resource.
 
@@ -535,6 +535,9 @@ Remove a Credential.
 
 ### [Unregister-Group](Unregister-Group.md)
 Unregister a Group from parent Group.
+
+### [Unregister-Host](Unregister-Host.md)
+Remove a Host
 
 ### [Unregister-Label](Unregister-Label.md)
 Unregister a Label from other resource.
