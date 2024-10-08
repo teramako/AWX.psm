@@ -48,7 +48,7 @@ namespace AWX.Cmdlets
 
     [Cmdlet(VerbsCommon.New, "ExecutionEnvironment", SupportsShouldProcess = true)]
     [OutputType(typeof(ExecutionEnvironment))]
-    public class AddExecutionEnvironmentCommand : APICmdletBase
+    public class NewExecutionEnvironmentCommand : APICmdletBase
     {
         [Parameter(Mandatory = true)]
         public string Name { get; set; } = string.Empty;
