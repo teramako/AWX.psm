@@ -8,7 +8,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(NotificationTemplate))]
     public class GetNotificationTemplateCommand : GetCommandBase<NotificationTemplate>
     {
-        protected override string ApiPath => NotificationTemplate.PATH;
         protected override ResourceType AcceptType => ResourceType.NotificationTemplate;
 
         protected override void ProcessRecord()

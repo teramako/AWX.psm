@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Schedule))]
     public class GetScheduleCommand : GetCommandBase<Schedule>
     {
-        protected override string ApiPath => Schedule.PATH;
         protected override ResourceType AcceptType => ResourceType.Schedule;
 
         protected override void ProcessRecord()

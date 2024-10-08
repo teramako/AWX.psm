@@ -35,6 +35,23 @@ public abstract class APICmdletBase : Cmdlet
         WriteInformation(msg, infoTags.ToArray());
     }
     /// <summary>
+    /// Get <c>PATH</c> field value in the Resource class
+    /// </summary>
+    /// <returns>API Path</returns>
+    /// <exception cref="NullReferenceException">throw if <c>PATH</c> is not foudn or the value is null</exception>
+    protected string GetApiPath(Type t)
+    {
+        if (t.IsNested && t.ReflectedType != null)
+        {
+            t = t.ReflectedType;
+        }
+        var pathField = t.GetField("PATH", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
+            ?? throw new NullReferenceException($"Type {t.FullName} has no 'PATH' field.");
+        var apiPath = pathField.GetValue(t) as string
+            ?? throw new NullReferenceException($"Type {t.FullName}'s PATH is not string ?");
+        return apiPath;
+    }
+    /// <summary>
     /// Send a request to retrieve a resource.
     /// (HTTP method: <c>GET</c>)
     /// </summary>

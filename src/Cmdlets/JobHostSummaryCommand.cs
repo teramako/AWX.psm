@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(JobHostSummary))]
     public class GetJobHostSummaryCommand : GetCommandBase<JobHostSummary>
     {
-        protected override string ApiPath => JobHostSummary.PATH;
         protected override ResourceType AcceptType => ResourceType.JobHostSummary;
 
         protected override void ProcessRecord()

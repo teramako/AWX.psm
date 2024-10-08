@@ -23,7 +23,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(User))]
     public class GetUserCommand : GetCommandBase<User>
     {
-        protected override string ApiPath => User.PATH;
         protected override ResourceType AcceptType => ResourceType.User;
 
         protected override void ProcessRecord()

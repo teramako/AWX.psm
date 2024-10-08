@@ -9,7 +9,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(AdHocCommand.Detail))]
     public class GetAdHocCommandJobCommand : GetCommandBase<AdHocCommand.Detail>
     {
-        protected override string ApiPath => AdHocCommand.PATH;
         protected override ResourceType AcceptType => ResourceType.AdHocCommand;
 
         protected override void ProcessRecord()

@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Organization))]
     public class GetOrganizationCommand : GetCommandBase<Organization>
     {
-        protected override string ApiPath => Organization.PATH;
         protected override ResourceType AcceptType => ResourceType.Organization;
 
         protected override void ProcessRecord()

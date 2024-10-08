@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Project))]
     public class GetProjectCommand : GetCommandBase<Project>
     {
-        protected override string ApiPath => Project.PATH;
         protected override ResourceType AcceptType => ResourceType.Project;
 
         protected override void ProcessRecord()

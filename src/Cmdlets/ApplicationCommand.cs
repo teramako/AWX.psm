@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Application))]
     public class GetApplicationCommand : GetCommandBase<Application>
     {
-        protected override string ApiPath => Application.PATH;
         protected override ResourceType AcceptType => ResourceType.OAuth2Application;
 
         protected override void ProcessRecord()

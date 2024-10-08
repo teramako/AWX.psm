@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(ExecutionEnvironment))]
     public class GetExecutionEnvironmentCommand : GetCommandBase<ExecutionEnvironment>
     {
-        protected override string ApiPath => ExecutionEnvironment.PATH;
         protected override ResourceType AcceptType => ResourceType.ExecutionEnvironment;
 
         protected override void ProcessRecord()

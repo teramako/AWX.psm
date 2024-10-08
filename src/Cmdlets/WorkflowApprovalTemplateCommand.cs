@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(WorkflowApprovalTemplate))]
     public class GetWorkflowApprovalTemplate : GetCommandBase<WorkflowApprovalTemplate>
     {
-        protected override string ApiPath => WorkflowApprovalTemplate.PATH;
         protected override ResourceType AcceptType => ResourceType.WorkflowApprovalTemplate;
 
         protected override void ProcessRecord()

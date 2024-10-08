@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(InventoryUpdateJob.Detail))]
     public class GetInventoryUpdateJobCommand : GetCommandBase<InventoryUpdateJob.Detail>
     {
-        protected override string ApiPath => InventoryUpdateJob.PATH;
         protected override ResourceType AcceptType => ResourceType.InventoryUpdate;
 
         protected override void ProcessRecord()

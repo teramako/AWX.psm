@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(SystemJob.Detail))]
     public class GetSystemJobCommand : GetCommandBase<SystemJob.Detail>
     {
-        protected override string ApiPath => SystemJob.PATH;
         protected override ResourceType AcceptType => ResourceType.SystemJob;
 
         protected override void ProcessRecord()

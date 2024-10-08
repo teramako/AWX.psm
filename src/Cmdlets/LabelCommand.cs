@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Label))]
     public class GetLabelCommand : GetCommandBase<Label>
     {
-        protected override string ApiPath => Label.PATH;
         protected override ResourceType AcceptType => ResourceType.Label;
 
         protected override void ProcessRecord()

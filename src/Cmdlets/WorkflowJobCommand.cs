@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(WorkflowJob.Detail))]
     public class GetWorkflowJobCommand : GetCommandBase<WorkflowJob.Detail>
     {
-        protected override string ApiPath => WorkflowJob.PATH;
         protected override ResourceType AcceptType => ResourceType.WorkflowJob;
 
         protected override void ProcessRecord()

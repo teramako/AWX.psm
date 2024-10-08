@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(OAuth2AccessToken))]
     public class GetTokenCommand : GetCommandBase<OAuth2AccessToken>
     {
-        protected override string ApiPath => OAuth2AccessToken.PATH;
         protected override ResourceType AcceptType => ResourceType.OAuth2AccessToken;
 
         protected override void ProcessRecord()

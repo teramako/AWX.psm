@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Role))]
     public class GetRoleCommand : GetCommandBase<Role>
     {
-        protected override string ApiPath => Role.PATH;
         protected override ResourceType AcceptType => ResourceType.Role;
 
         protected override void ProcessRecord()

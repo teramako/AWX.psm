@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(InstanceGroup))]
     public class GetInstanceGroupCommand : GetCommandBase<InstanceGroup>
     {
-        protected override string ApiPath => InstanceGroup.PATH;
         protected override ResourceType AcceptType => ResourceType.InstanceGroup;
 
         protected override void ProcessRecord()

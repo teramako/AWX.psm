@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(ProjectUpdateJob.Detail))]
     public class GetProjectUpdateJobCommand : GetCommandBase<ProjectUpdateJob.Detail>
     {
-        protected override string ApiPath => ProjectUpdateJob.PATH;
         protected override ResourceType AcceptType => ResourceType.ProjectUpdate;
 
         protected override void ProcessRecord()

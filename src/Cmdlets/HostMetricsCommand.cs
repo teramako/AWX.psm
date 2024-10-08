@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(HostMetric))]
     public class GetHostMetricCommand : GetCommandBase<HostMetric>
     {
-        protected override string ApiPath => HostMetric.PATH;
         protected override ResourceType AcceptType => ResourceType.HostMetrics;
 
         protected override void ProcessRecord()

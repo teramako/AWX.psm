@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Team))]
     public class GetTeamCommand : GetCommandBase<Team>
     {
-        protected override string ApiPath => Team.PATH;
         protected override ResourceType AcceptType => ResourceType.Team;
 
         protected override void ProcessRecord()

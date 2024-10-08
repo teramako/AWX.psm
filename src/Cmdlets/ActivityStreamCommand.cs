@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(ActivityStream))]
     public class GetActivityStreamCommand : GetCommandBase<ActivityStream>
     {
-        protected override string ApiPath => ActivityStream.PATH;
         protected override ResourceType AcceptType => ResourceType.ActivityStream;
 
         protected override void ProcessRecord()

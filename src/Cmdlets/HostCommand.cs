@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Host))]
     public class GetHostCommand : GetCommandBase<Host>
     {
-        protected override string ApiPath => Host.PATH;
         protected override ResourceType AcceptType => ResourceType.Host;
 
         protected override void ProcessRecord()

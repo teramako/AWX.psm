@@ -21,7 +21,23 @@ public abstract class GetCommandBase<TResource> : APICmdletBase where TResource:
     protected readonly HashSet<ulong> IdSet = [];
     protected readonly NameValueCollection Query = HttpUtility.ParseQueryString("");
 
-    protected abstract string ApiPath { get; }
+    private string? _apiPath = null;
+    protected virtual string ApiPath
+    {
+        get
+        {
+            if (_apiPath != null)
+                return _apiPath;
+
+            _apiPath = GetApiPath(typeof(TResource));
+            return _apiPath;
+        }
+        set
+        {
+            _apiPath = value;
+        }
+    }
+
     protected abstract ResourceType AcceptType { get; }
     /// <summary>
     /// Gather resource IDs to retrieve

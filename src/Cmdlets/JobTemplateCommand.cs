@@ -10,8 +10,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(JobTemplate))]
     public class GetJobTemplate : GetCommandBase<JobTemplate>
     {
-        protected override string ApiPath => JobTemplate.PATH;
-
         protected override ResourceType AcceptType => ResourceType.JobTemplate;
 
         protected override void ProcessRecord()

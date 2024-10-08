@@ -8,7 +8,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(Credential))]
     public class GetCredentialCommand : GetCommandBase<Credential>
     {
-        protected override string ApiPath => Credential.PATH;
         protected override ResourceType AcceptType => ResourceType.Credential;
 
         protected override void ProcessRecord()

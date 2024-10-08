@@ -7,7 +7,6 @@ namespace AWX.Cmdlets
     [OutputType(typeof(InventorySource))]
     public class GetInventorySourceCommand : GetCommandBase<InventorySource>
     {
-        protected override string ApiPath => InventorySource.PATH;
         protected override ResourceType AcceptType => ResourceType.InventorySource;
 
         protected override void ProcessRecord()
