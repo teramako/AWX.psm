@@ -5,19 +5,19 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-Label
+# Unregister-Label
 
 ## SYNOPSIS
-Add a Label.
+Unregister a Label from other resource.
 
 ## SYNTAX
 
 ```
-Add-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Label [-Id] <UInt64> [-From] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Add or associate a Label to the target resource.
+Unregister a Label from the target resource.
 
 Implements following Rest API:  
 - `/api/v2/inventories/{id}/labels/` (POST)  
@@ -30,37 +30,15 @@ Implements following Rest API:
 
 ### Example 1
 ```powershell
-PS C:\> Add-Label -To (Get-Inventory -Id 2) -Id 1
+PS C:\> Unregister-Label -From (Get-Inventory -Id 2) -Id 1
 ```
 
-Associate the Label of ID 1 to the Inventory of ID 2.
+Disassociate the Label of ID 1 from the Inventory of Id 2.
 
 ## PARAMETERS
 
-### -Id
-Label ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -To
-Target resource to be associated.
-
-Following resource is available:  
-- `Inventory`  
-- `JobTemplate`  
-- `Schedule`  
-- `WorkflowJobTemplate`  
-- `WorkflowJobTemplateNode`
+### -From
+Target resource to be unregistered from.
 
 ```yaml
 Type: IResource
@@ -71,6 +49,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Label ID to be unregistered.
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -90,7 +83,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -114,7 +108,9 @@ Label ID.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
@@ -125,6 +121,6 @@ Label ID.
 
 [New-Label](New-Label.md)
 
-[Remove-Label](Remove-Label.md)
+[Register-Label](Register-Label.md)
 
 [Update-Label](Update-Label.md)

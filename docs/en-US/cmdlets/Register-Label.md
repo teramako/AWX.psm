@@ -5,19 +5,19 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-Label
+# Register-Label
 
 ## SYNOPSIS
-Remove a Label.
+Register a Label to other resource.
 
 ## SYNTAX
 
 ```
-Remove-Label [-From] <IResource> [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a Label from the target resource.
+Register a Label to the target resource.
 
 Implements following Rest API:  
 - `/api/v2/inventories/{id}/labels/` (POST)  
@@ -30,30 +30,30 @@ Implements following Rest API:
 
 ### Example 1
 ```powershell
-PS C:\> Add-Label -From (Get-Inventory -Id 2) -Id 1
+PS C:\> Register-Label -To (Get-Inventory -Id 2) -Id 1
 ```
 
-Disassociate the Label of ID 1 from the Inventory of Id 2.
+Associate the Label of ID 1 to the Inventory of ID 2.
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
+### -Id
+Label ID to be registered.
 
 ```yaml
-Type: SwitchParameter
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -From
-Target resource to be disassosicated from.
+### -To
+The resource to which registered.
 
 Following resource is available:  
 - `Inventory`  
@@ -68,24 +68,9 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Id
-Label ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: True
 Position: 1
 Default value: None
-Accept pipeline input: True (ByValue)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -105,7 +90,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -129,7 +115,9 @@ Label ID.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
@@ -140,6 +128,6 @@ Label ID.
 
 [New-Label](New-Label.md)
 
-[Add-Label](Add-Label.md)
+[Unregister-Label](Unregister-Label.md)
 
 [Update-Label](Update-Label.md)

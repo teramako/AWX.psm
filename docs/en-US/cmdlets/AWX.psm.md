@@ -20,9 +20,6 @@ Associate the Group to a Group.
 ### [Add-Host](Add-Host.md)
 Associate a Host to a Group.
 
-### [Add-Label](Add-Label.md)
-Add a Label.
-
 ### [Add-User](Add-User.md)
 Associate a Uesr to.
 
@@ -419,6 +416,9 @@ Create a WorkflowJobTemplate.
 ### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
 Create a WorkflowJobTemplateNode.
 
+### [Register-Label](Register-Label.md)
+Register a Label to other resource.
+
 ### [Register-SurveySpec](Register-SurveySpec.md)
 Register SurveySpecs.
 
@@ -460,9 +460,6 @@ Remove a JobTemplate job.
 
 ### [Remove-JobTemplate](Remove-JobTemplate.md)
 Remove a JobTemplate.
-
-### [Remove-Label](Remove-Label.md)
-Remove a Label.
 
 ### [Remove-NotificationTemplate](Remove-NotificationTemplate.md)
 Remove a NotificationTemplate.
@@ -532,6 +529,9 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Unregister-Label](Unregister-Label.md)
+Unregister a Label from other resource.
 
 ### [Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
 Unlink WorkflowJobTemplateNode from the parent.
