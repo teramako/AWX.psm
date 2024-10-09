@@ -5,60 +5,40 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-Credential
+# Unregister-Label
 
 ## SYNOPSIS
-Register a Credential.
+Unregister a Label from other resource.
 
 ## SYNTAX
 
 ```
-Add-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Label [-Id] <UInt64> [-From] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Register a Credential to the specified resource.
+Unregister a Label from the target resource.
 
 Implements following Rest API:  
-- `/api/v2/organizations/{id}/galaxy_credentials/` (POST)  
-- `/api/v2/inventory_sources/{id}/credentials/` (POST)  
-- `/api/v2/job_templates/{id}/credentials/` (POST)  
-- `/api/v2/schedules/{id}/credentials/` (POST)  
-- `/api/v2/workflow_job_template_nodes/{id}/credentials/` (POST)
+- `/api/v2/inventories/{id}/labels/` (POST)  
+- `/api/v2/job_templates/{id}/labels/` (POST)  
+- `/api/v2/schedules/{id}/labels/` (POST)  
+- `/api/v2/workflow_job_templates/{id}/labels/` (POST)  
+- `/api/v2/workflow_job_template_nodes/{id}/labels/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-Credential -Id 3 -To @{Type="JobTemplate"; Id=10}
+PS C:\> Unregister-Label -From (Get-Inventory -Id 2) -Id 1
 ```
+
+Disassociate the Label of ID 1 from the Inventory of Id 2.
 
 ## PARAMETERS
 
-### -Id
-Credential ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -To
-Target resource to be added to.
-
-Following resource is available:  
-- `Organization` (galaxy-token only)  
-- `InventorySource`  
-- `JobTemplate`  
-- `Schedule`  
-- `WorkflowJobTemplateNode`
+### -From
+Target resource to be unregistered from.
 
 ```yaml
 Type: IResource
@@ -69,6 +49,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Label ID to be unregistered.
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -109,19 +104,23 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
+Label ID.
+
 ## OUTPUTS
 
-### System.Object
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-Credential](Get-Credential.md)
+[Get-Label](Get-Label.md)
 
-[Find-Credential](Find-Credential.md)
+[Find-Label](Find-Label.md)
 
-[New-Credential](New-Credential.md)
+[New-Label](New-Label.md)
 
-[Update-Credential](Update-Credential.md)
+[Register-Label](Register-Label.md)
 
-[Remove-Credential](Remove-Credential.md)
+[Update-Label](Update-Label.md)

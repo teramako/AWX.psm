@@ -160,6 +160,8 @@ New created Credential object.
 
 [Update-Credential](Update-Credential.md)
 
-[Add-Credential](Add-Credential.md)
+[Register-Credential](Register-Credential.md)
+
+[Unregister-Credential](Unregister-Credential.md)
 
 [Remove-Credential](Remove-Credential.md)

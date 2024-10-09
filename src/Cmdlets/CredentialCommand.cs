@@ -160,8 +160,9 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Add, "Credential", SupportsShouldProcess = true)]
-    public class AddCredentialCommand : APICmdletBase
+    [Cmdlet(VerbsLifecycle.Register, "Credential", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class RegisterCredentialCommand : RegistrationCommandBase<Credential>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
@@ -187,22 +188,38 @@ namespace AWX.Cmdlets
                 ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{To.Id}/credentials/",
                 _ => throw new ArgumentException($"Invalid resource type: {To.Type}")
             };
-            if (ShouldProcess($"Credential [{Id}]", $"Add to {To.Type} [{To.Id}]"))
+            WriteObject(Register(path, Id, To));
+        }
+    }
+    [Cmdlet(VerbsLifecycle.Unregister, "Credential", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class UnregisterCredentialCommand : RegistrationCommandBase<Credential>
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Credential])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.InventorySource,
+                ResourceType.JobTemplate,
+                ResourceType.Schedule,
+                ResourceType.WorkflowJobTemplateNode
+        ])]
+        public IResource From { get; set; } = new Resource(0 ,0);
+
+        protected override void ProcessRecord()
+        {
+            var path = From.Type switch
             {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  Id },
-                };
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"Credential {Id} is added to {To.Type} [{To.Id}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
+                ResourceType.Organization => $"{Organization.PATH}{From.Id}/galaxy_credentials/",
+                ResourceType.InventorySource => $"{InventorySource.PATH}{From.Id}/credentials/",
+                ResourceType.JobTemplate => $"{JobTemplate.PATH}{From.Id}/credentials/",
+                ResourceType.Schedule => $"{Schedule.PATH}{From.Id}/credentials/",
+                ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{From.Id}/credentials/",
+                _ => throw new ArgumentException($"Invalid resource type: {From.Type}")
+            };
+            WriteObject(Unregister(path, Id, From));
         }
     }
 
@@ -214,73 +231,21 @@ namespace AWX.Cmdlets
         public ulong Id { get; set; }
 
         [Parameter()]
-        [ResourceTransformation(AcceptableTypes = [
-                ResourceType.Organization,
-                ResourceType.InventorySource,
-                ResourceType.JobTemplate,
-                ResourceType.Schedule,
-                ResourceType.WorkflowJobTemplateNode
-        ])]
-        public IResource? From { get; set; }
-
-        [Parameter()]
         public SwitchParameter Force { get; set; }
 
-        private void Disassociate(ulong credentialId, IResource from)
-        {
-            var path = from.Type switch
-            {
-                ResourceType.Organization => $"{Organization.PATH}{from.Id}/galaxy_credentials/",
-                ResourceType.InventorySource => $"{InventorySource.PATH}{from.Id}/credentials/",
-                ResourceType.JobTemplate => $"{JobTemplate.PATH}{from.Id}/credentials/",
-                ResourceType.Schedule => $"{Schedule.PATH}{from.Id}/credentials/",
-                ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{from.Id}/credentials/",
-                _ => throw new ArgumentException($"Invalid Resource Type: {from.Type}")
-            };
-
-            if (Force || ShouldProcess($"Credential [{credentialId}]", $"Disassociate from {from.Type} [{from.Id}]"))
-            {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  credentialId },
-                    { "disassociate", true }
-                };
-
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"Credential {credentialId} is disassociated from {from.Type} [{from.Id}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-        }
-        private void Delete(ulong id)
-        {
-            if (Force || ShouldProcess($"Credential [{id}]", "Delete completely"))
-            {
-                try
-                {
-                    var apiResult = DeleteResource($"{Credential.PATH}{id}/");
-                    if (apiResult?.IsSuccessStatusCode ?? false)
-                    {
-                        WriteVerbose($"Credential {id} is deleted.");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-        }
         protected override void ProcessRecord()
         {
-            if (From != null) // disassociate
+            if (Force || ShouldProcess($"Credential [{Id}]", "Delete completely"))
             {
-                Disassociate(Id, From);
-            }
-            else
-            {
-                Delete(Id);
+                try
+                {
+                    var apiResult = DeleteResource($"{Credential.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Credential {Id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
             }
         }
     }

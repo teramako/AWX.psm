@@ -5,65 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Update-Credential
+# Register-Credential
 
 ## SYNOPSIS
-Update a Credential.
+Register a Credential.
 
 ## SYNTAX
 
 ```
-Update-Credential [-Id] <UInt64> [-Name <String>] [-Description <String>] [-CredentialType <UInt64>]
- [-Inputs <IDictionary>] [-Organization <UInt64>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-Credential [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Update a Credential. 
+Register a Credential to the specified resource.
 
 Implements following Rest API:  
-- `/api/v2/credentials/{id}/` (PATCH)
+- `/api/v2/organizations/{id}/galaxy_credentials/` (POST)  
+- `/api/v2/inventory_sources/{id}/credentials/` (POST)  
+- `/api/v2/job_templates/{id}/credentials/` (POST)  
+- `/api/v2/schedules/{id}/credentials/` (POST)  
+- `/api/v2/workflow_job_template_nodes/{id}/credentials/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Update-Credential -Id 2 -Description "Updated Description"
+PS C:\> Register-Credential -Id 3 -To @{Type="JobTemplate"; Id=10}
 ```
 
 ## PARAMETERS
 
-### -CredentialType
-CredentialType ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Description
-Optional description of the Credential.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Id
-Credential ID to be updated.
+Credential ID.
 
 ```yaml
 Type: UInt64
@@ -77,45 +50,23 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Inputs
+### -To
+Target resource to be added to.
+
+Following resource is available:  
+- `Organization` (galaxy-token only)  
+- `InventorySource`  
+- `JobTemplate`  
+- `Schedule`  
+- `WorkflowJobTemplateNode`
 
 ```yaml
-Type: IDictionary
+Type: IResource
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Name
-Name of the Credential.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Organization
-Organization ID.
-
-```yaml
-Type: UInt64
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -162,8 +113,8 @@ Credential ID.
 
 ## OUTPUTS
 
-### AWX.Resources.Credential
-Updated Credential object.
+### System.Boolean
+Success or Failure
 
 ## NOTES
 
@@ -175,7 +126,7 @@ Updated Credential object.
 
 [New-Credential](New-Credential.md)
 
-[Register-Credential](Register-Credential.md)
+[Update-Credential](Update-Credential.md)
 
 [Unregister-Credential](Unregister-Credential.md)
 

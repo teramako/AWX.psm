@@ -134,6 +134,6 @@ Updated Label object.
 
 [New-Label](New-Label.md)
 
-[Add-Label](Add-Label.md)
+[Register-Label](Register-Label.md)
 
-[Remove-Label](Remove-Label.md)
+[Unregister-Label](Unregister-Label.md)

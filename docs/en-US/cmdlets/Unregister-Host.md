@@ -5,51 +5,55 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-User
+# Unregister-Host
 
 ## SYNOPSIS
-Remove a User
+Remove a Host
 
 ## SYNTAX
 
 ```
-Remove-User [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Host [-Id] <UInt64> [-From] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a User.
+Remove a Host or disassociate from the group.
 
 Implements following Rest API:  
-- `/api/v2/users/{id}/` (DELETE)
+- `/api/v2/groups/{id}/hosts/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-User -Id 2
+PS C:\> Unregister-Host -Id 3 -From 1
 ```
 
-Remove the User of ID 2 completely.
+Disassociate the Host of ID 3 from the Group ID 1.
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
+### -From
+Parent Group ID.
+
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-From (Get-Group -Id 10)`, `-From @{ type="group"; id = 10 }`
 
 ```yaml
-Type: SwitchParameter
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-User ID to be removed or disassosicated.
+Host Id.
 
 ```yaml
 Type: UInt64
@@ -100,23 +104,25 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-User ID.
+Host Id.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-User](Get-User.md)
+[Get-Host](Get-Host.md)
 
-[Find-User](Find-User.md)
+[Find-Host](Find-Host.md)
 
-[New-User](New-User.md)
+[New-Host](New-Host.md)
 
-[Update-User](Update-User.md)
+[Update-Host](Update-Host.md)
 
-[Register-User](Register-User.md)
+[Register-Host](Register-Host.md)
 
-[Unregister-User](Unregister-User.md)
+[Remove-Host](Remove-Host.md)

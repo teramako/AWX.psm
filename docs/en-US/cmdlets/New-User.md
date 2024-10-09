@@ -239,8 +239,10 @@ New created User object.
 
 [Find-User](Find-User.md)
 
-[Add-User](Add-User.md)
-
 [Update-User](Update-User.md)
+
+[Register-User](Register-User.md)
+
+[Unregister-User](Unregister-User.md)
 
 [Remove-User](Remove-User.md)

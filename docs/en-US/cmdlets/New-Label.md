@@ -114,8 +114,8 @@ New created Label object.
 
 [Find-Label](Find-Label.md)
 
-[Add-Label](Add-Label.md)
+[Register-Label](Register-Label.md)
 
-[Remove-Label](Remove-Label.md)
+[Unregister-Label](Unregister-Label.md)
 
 [Update-Label](Update-Label.md)

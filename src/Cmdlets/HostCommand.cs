@@ -187,8 +187,9 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Add, "Host", SupportsShouldProcess = true)]
-    public class AddHostCommand : APICmdletBase
+    [Cmdlet(VerbsLifecycle.Register, "Host", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class RegisterHostCommand : RegistrationCommandBase<Host>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
@@ -196,28 +197,33 @@ namespace AWX.Cmdlets
 
         [Parameter(Mandatory = true, Position = 1)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
-        public ulong ToGroup { get; set; }
+        public ulong To { get; set; }
 
         protected override void ProcessRecord()
         {
-            var path = $"{Group.PATH}{ToGroup}/hosts/";
+            var parentGroup = new Resource(ResourceType.Group, To);
+            var path = $"{Group.PATH}{parentGroup.Id}/hosts/";
+            WriteObject(Register(path, Id, parentGroup));
+        }
+    }
 
-            if (ShouldProcess($"Host [{Id}]", $"Associate to group [{ToGroup}]"))
-            {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  Id },
-                };
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"Host {Id} is associated to group [{ToGroup}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
+    [Cmdlet(VerbsLifecycle.Unregister, "Host", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class UnregisterHostCommand : RegistrationCommandBase<Host>
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Host])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
+        public ulong From { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            var parentGroup = new Resource(ResourceType.Group, From);
+            var path = $"{Group.PATH}{parentGroup.Id}/hosts/";
+            WriteObject(Unregister(path, Id, parentGroup));
         }
     }
 
@@ -229,59 +235,21 @@ namespace AWX.Cmdlets
         public ulong Id { get; set; }
 
         [Parameter()]
-        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Group])]
-        public ulong FromGroup { get; set; }
-
-        [Parameter()]
         public SwitchParameter Force { get; set; }
 
-        private void Disassociate(ulong hostId, ulong groupId)
-        {
-            var path = $"{Group.PATH}{groupId}/hosts/";
-
-            if (Force || ShouldProcess($"Host [{hostId}]", $"Disassociate from group [{groupId}]"))
-            {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  hostId },
-                    { "disassociate", true }
-                };
-
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"Host {hostId} is disassociated from group [{groupId}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-        }
-        private void Delete(ulong id)
-        {
-            if (Force || ShouldProcess($"Host [{id}]", "Delete completely"))
-            {
-                try
-                {
-                    var apiResult = DeleteResource($"{Host.PATH}{id}/");
-                    if (apiResult?.IsSuccessStatusCode ?? false)
-                    {
-                        WriteVerbose($"Host {id} is deleted.");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-        }
         protected override void ProcessRecord()
         {
-            if (FromGroup > 0) // disassociate
+            if (Force || ShouldProcess($"Host [{Id}]", "Delete completely"))
             {
-                Disassociate(Id, FromGroup);
-            }
-            else
-            {
-                Delete(Id);
+                try
+                {
+                    var apiResult = DeleteResource($"{Host.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"Host {Id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
             }
         }
     }

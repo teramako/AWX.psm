@@ -5,40 +5,55 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-Label
+# Unregister-Group
 
 ## SYNOPSIS
-Add a Label.
+Unregister a Group from parent Group.
 
 ## SYNTAX
 
 ```
-Add-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Group [-Id] <UInt64> [-From] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Add or associate a Label to the target resource.
+Unregister a Group from the parent Group.
 
 Implements following Rest API:  
-- `/api/v2/inventories/{id}/labels/` (POST)  
-- `/api/v2/job_templates/{id}/labels/` (POST)  
-- `/api/v2/schedules/{id}/labels/` (POST)  
-- `/api/v2/workflow_job_templates/{id}/labels/` (POST)  
-- `/api/v2/workflow_job_template_nodes/{id}/labels/` (POST)
+- `/api/v2/groups/{id}/children/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-Label -To (Get-Inventory -Id 2) -Id 1
+PS C:\> Unregister-Group -Id 3 -From 1
 ```
 
-Associate the Label of ID 1 to the Inventory of ID 2.
+Disassociate the Group of ID 3 from the parent Group ID 1.
 
 ## PARAMETERS
 
+### -From
+Parent Group ID.
+
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-From (Get-Group -Id 10)`, `-From @{ type="group"; id = 10 }`
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Id
-Label ID.
+Group Id.
 
 ```yaml
 Type: UInt64
@@ -49,28 +64,6 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -To
-Target resource to be associated.
-
-Following resource is available:  
-- `Inventory`  
-- `JobTemplate`  
-- `Schedule`  
-- `WorkflowJobTemplate`  
-- `WorkflowJobTemplateNode`
-
-```yaml
-Type: IResource
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -90,7 +83,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -110,21 +104,23 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-Label ID.
+Group Id.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-Label](Get-Label.md)
+[Get-Group](Get-Group.md)
 
-[Find-Label](Find-Label.md)
+[Find-Group](Find-Group.md)
 
-[New-Label](New-Label.md)
+[New-Group](New-Group.md)
 
-[Remove-Label](Remove-Label.md)
+[Register-Group](Register-Group.md)
 
-[Update-Label](Update-Label.md)
+[Update-Group](Update-Group.md)

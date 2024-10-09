@@ -5,51 +5,36 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-User
+# Register-Group
 
 ## SYNOPSIS
-Remove a User
+Register a Group to another Group.
 
 ## SYNTAX
 
 ```
-Remove-User [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-Group [-Id] <UInt64> [-To] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a User.
+Register a Group to another Group.
 
 Implements following Rest API:  
-- `/api/v2/users/{id}/` (DELETE)
+- `/api/v2/groups/{id}/children/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-User -Id 2
+PS C:\> Register-Group -Id 3 -ToGroup 1
 ```
 
-Remove the User of ID 2 completely.
+Associate the Group of ID 3 to the Group of ID 1.
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Id
-User ID to be removed or disassosicated.
+Group ID to be a child.
 
 ```yaml
 Type: UInt64
@@ -60,6 +45,25 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -To
+Group ID to be the parent.
+
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-To (Get-Group -Id 10)`, `-To @{ type="group"; id = 10 }`
+
+```yaml
+Type: UInt64
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -100,23 +104,25 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-User ID.
+Group Id to be a child.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-User](Get-User.md)
+[Get-Group](Get-Group.md)
 
-[Find-User](Find-User.md)
+[Find-Group](Find-Group.md)
 
-[New-User](New-User.md)
+[New-Group](New-Group.md)
 
-[Update-User](Update-User.md)
+[Update-Group](Update-Group.md)
 
-[Register-User](Register-User.md)
+[Unregister-Group](Unregister-Group.md)
 
-[Unregister-User](Unregister-User.md)
+[Remove-Group](Remove-Group.md)

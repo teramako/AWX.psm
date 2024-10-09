@@ -5,36 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-Group
+# Register-User
 
 ## SYNOPSIS
-Associate the Group to a Group.
+Register a Uesr to other resource.
 
 ## SYNTAX
 
 ```
-Add-Group [-Id] <UInt64> [-ToGroup] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-User [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Associate the Group to a Group.
+Register a User to the specified resource (`Organization`, `Team`, or `Role`).
 
 Implements following Rest API:  
-- `/api/v2/groups/{id}/children/` (POST)
+- `/api/v2/organizations/{id}/users/` (POST)  
+- `/api/v2/teams/{id}/users/` (POST)  
+- `/api/v2/roles/{id}/users/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-Host -Id 3 -ToGroup 1
+PS C:\> Register-User -Id 2 -To (Get-Organization -Id 1)
 ```
 
-Associate the Group of ID 3 to the Group of ID 1.
+Associate the User of ID 2 to the Organization of ID 1.
 
 ## PARAMETERS
 
 ### -Id
-Group ID to be a child.
+User ID to be registered.
 
 ```yaml
 Type: UInt64
@@ -48,11 +50,16 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -ToGroup
-Group ID to be the parent.
+### -To
+The resource to which registered.
+
+Following resource is available:  
+- `Organization`  
+- `Team`  
+- `Role`
 
 ```yaml
-Type: UInt64
+Type: IResource
 Parameter Sets: (All)
 Aliases:
 
@@ -100,21 +107,25 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-Group Id to be a child.
+User ID.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-Group](Get-Group.md)
+[Get-User](Get-User.md)
 
-[Find-Group](Find-Group.md)
+[Find-User](Find-User.md)
 
-[New-Group](New-Group.md)
+[New-User](New-User.md)
 
-[Update-Group](Update-Group.md)
+[Update-User](Update-User.md)
 
-[Remove-Group](Remove-Group.md)
+[Unregister-User](Unregister-User.md)
+
+[Remove-User](Remove-User.md)

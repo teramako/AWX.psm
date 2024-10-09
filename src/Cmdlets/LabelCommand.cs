@@ -96,8 +96,9 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Add, "Label", SupportsShouldProcess = true)]
-    public class AddLabelCommand : APICmdletBase
+    [Cmdlet(VerbsLifecycle.Register, "Label", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class RegisterLabelCommand : RegistrationCommandBase<Label>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
@@ -124,30 +125,19 @@ namespace AWX.Cmdlets
                 ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{To.Id}/labels/",
                 _ => throw new ArgumentException($"Invalid resource type: {To.Type}")
             };
-
-            if (ShouldProcess($"Label {Id}", $"Add to {To.Type} [{To.Id}]"))
-            {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id", Id },
-                };
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"Label [{Id}] is associated to {To.Type} [{To.Id}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
+            WriteObject(Register(path, Id, To));
         }
     }
 
-    [Cmdlet(VerbsCommon.Remove, "Label", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
-    public class RemoveLabelCommand : APICmdletBase
+    [Cmdlet(VerbsLifecycle.Unregister, "Label", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class UnregisterLabelCommand : RegistrationCommandBase<Label>
     {
-        [Parameter(Mandatory = true, Position = 0)]
+        [Parameter(Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
         [ResourceTransformation(AcceptableTypes = [
                 ResourceType.Inventory,
                 ResourceType.JobTemplate,
@@ -155,19 +145,10 @@ namespace AWX.Cmdlets
                 ResourceType.WorkflowJobTemplate,
                 ResourceType.WorkflowJobTemplateNode
         ])]
-        public IResource? From { get; set; }
-
-        [Parameter(Mandatory = true, Position = 1, ValueFromPipeline = true)]
-        [ResourceIdTransformation(AcceptableTypes = [ResourceType.Label])]
-        public ulong Id { get; set; }
-
-        [Parameter()]
-        public SwitchParameter Force { get; set; }
+        public IResource From { get; set; } = new Resource(0, 0);
 
         protected override void ProcessRecord()
         {
-            if (From == null) return;
-
             var path = From.Type switch
             {
                 ResourceType.Inventory => $"{Inventory.PATH}{From.Id}/labels/",
@@ -177,25 +158,7 @@ namespace AWX.Cmdlets
                 ResourceType.WorkflowJobTemplateNode => $"{WorkflowJobTemplateNode.PATH}{From.Id}/labels/",
                 _ => throw new ArgumentException($"Invalid resource type: {From.Type}")
             };
-
-            if (Force || ShouldProcess($"Label {Id}", $"Disassociate from {From.Type} [{From.Id}]"))
-            {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  Id },
-                    { "disassociate", true }
-                };
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"Label {Id} is disassociate from {From.Type} [{From.Id}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-
+            WriteObject(Unregister(path, Id, From));
         }
     }
 

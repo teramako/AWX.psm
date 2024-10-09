@@ -280,8 +280,10 @@ Database ID for the ResourceType
 
 [New-Group](New-Group.md)
 
-[Add-Group](Add-Group.md)
-
 [Update-Group](Update-Group.md)
+
+[Register-Group](Register-Group.md)
+
+[Unregister-Group](Unregister-Group.md)
 
 [Remove-Group](Remove-Group.md)

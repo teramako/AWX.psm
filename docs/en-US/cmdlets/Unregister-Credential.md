@@ -5,61 +5,44 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-Label
+# Unregister-Credential
 
 ## SYNOPSIS
-Remove a Label.
+Remove a Credential.
 
 ## SYNTAX
 
 ```
-Remove-Label [-From] <IResource> [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+Unregister-Credential [-Id] <UInt64> [-From] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a Label from the target resource.
+Unregister a Credential from the specified resource.
 
 Implements following Rest API:  
-- `/api/v2/inventories/{id}/labels/` (POST)  
-- `/api/v2/job_templates/{id}/labels/` (POST)  
-- `/api/v2/schedules/{id}/labels/` (POST)  
-- `/api/v2/workflow_job_templates/{id}/labels/` (POST)  
-- `/api/v2/workflow_job_template_nodes/{id}/labels/` (POST)
+- `/api/v2/organizations/{id}/galaxy_credentials/` (POST)  
+- `/api/v2/inventory_sources/{id}/credentials/` (POST)  
+- `/api/v2/job_templates/{id}/credentials/` (POST)  
+- `/api/v2/schedules/{id}/credentials/` (POST)  
+- `/api/v2/workflow_job_template_nodes/{id}/credentials/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-Label -From (Get-Inventory -Id 2) -Id 1
+PS C:\> Unregister-Credential -Id 2
 ```
-
-Disassociate the Label of ID 1 from the Inventory of Id 2.
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -From
-Target resource to be disassosicated from.
+Target resource to be unregistered from.
 
 Following resource is available:  
-- `Inventory`  
+- `Organization`  
+- `InventorySource`  
 - `JobTemplate`  
 - `Schedule`  
-- `WorkflowJobTemplate`  
 - `WorkflowJobTemplateNode`
 
 ```yaml
@@ -68,14 +51,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-Label ID.
+Credential ID to be unregistered.
 
 ```yaml
 Type: UInt64
@@ -83,7 +66,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 1
+Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
@@ -105,7 +88,8 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
@@ -125,21 +109,25 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-Label ID.
+Credential ID.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-Label](Get-Label.md)
+[Get-Credential](Get-Credential.md)
 
-[Find-Label](Find-Label.md)
+[Find-Credential](Find-Credential.md)
 
-[New-Label](New-Label.md)
+[New-Credential](New-Credential.md)
 
-[Add-Label](Add-Label.md)
+[Update-Credential](Update-Credential.md)
 
-[Update-Label](Update-Label.md)
+[Register-Credential](Register-Credential.md)
+
+[Remove-Credential](Remove-Credential.md)

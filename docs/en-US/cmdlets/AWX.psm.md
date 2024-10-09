@@ -11,21 +11,6 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
-### [Add-Credential](Add-Credential.md)
-Register a Credential.
-
-### [Add-Group](Add-Group.md)
-Associate the Group to a Group.
-
-### [Add-Host](Add-Host.md)
-Associate a Host to a Group.
-
-### [Add-Label](Add-Label.md)
-Add a Label.
-
-### [Add-User](Add-User.md)
-Associate a Uesr to.
-
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 
@@ -419,8 +404,23 @@ Create a WorkflowJobTemplate.
 ### [New-WorkflowJobTemplateNode](New-WorkflowJobTemplateNode.md)
 Create a WorkflowJobTemplateNode.
 
+### [Register-Credential](Register-Credential.md)
+Register a Credential.
+
+### [Register-Group](Register-Group.md)
+Register a Group to another Group.
+
+### [Register-Host](Register-Host.md)
+Register a Host to a Group.
+
+### [Register-Label](Register-Label.md)
+Register a Label to other resource.
+
 ### [Register-SurveySpec](Register-SurveySpec.md)
 Register SurveySpecs.
+
+### [Register-User](Register-User.md)
+Register a Uesr to other resource.
 
 ### [Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
 Link WorkflowJobTemplateNode to the parent.
@@ -460,9 +460,6 @@ Remove a JobTemplate job.
 
 ### [Remove-JobTemplate](Remove-JobTemplate.md)
 Remove a JobTemplate.
-
-### [Remove-Label](Remove-Label.md)
-Remove a Label.
 
 ### [Remove-NotificationTemplate](Remove-NotificationTemplate.md)
 Remove a NotificationTemplate.
@@ -532,6 +529,21 @@ Stop (cancel) a running job.
 
 ### [Switch-ApiConfig](Switch-ApiConfig.md)
 Switch to anothor config.
+
+### [Unregister-Credential](Unregister-Credential.md)
+Remove a Credential.
+
+### [Unregister-Group](Unregister-Group.md)
+Unregister a Group from parent Group.
+
+### [Unregister-Host](Unregister-Host.md)
+Remove a Host
+
+### [Unregister-Label](Unregister-Label.md)
+Unregister a Label from other resource.
+
+### [Unregister-User](Unregister-User.md)
+Unregister a User from other resource.
 
 ### [Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
 Unlink WorkflowJobTemplateNode from the parent.

@@ -319,8 +319,9 @@ namespace AWX.Cmdlets
         }
     }
 
-    [Cmdlet(VerbsCommon.Add, "User", SupportsShouldProcess = true)]
-    public class AddUserCommand : APICmdletBase
+    [Cmdlet(VerbsLifecycle.Register, "User", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class RegisterUserCommand : RegistrationCommandBase<User>
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         [ResourceIdTransformation(AcceptableTypes = [ResourceType.User])]
@@ -343,22 +344,36 @@ namespace AWX.Cmdlets
                 ResourceType.Role => $"{Role.PATH}{To.Id}/users/",
                 _ => throw new ArgumentException($"Invalid resource type: {To.Type}")
             };
-            if (ShouldProcess($"User [{Id}]", $"Associate to {To.Type} [{To.Id}]"))
+            WriteObject(Register(path, Id, To));
+        }
+    }
+
+    [Cmdlet(VerbsLifecycle.Unregister, "User", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class UnregisterUserCommand : RegistrationCommandBase<User>
+    {
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+        [ResourceIdTransformation(AcceptableTypes = [ResourceType.User])]
+        public ulong Id { get; set; }
+
+        [Parameter(Mandatory = true, Position = 1)]
+        [ResourceTransformation(AcceptableTypes = [
+                ResourceType.Organization,
+                ResourceType.Team,
+                ResourceType.Role
+        ])]
+        public IResource From { get; set; } = new Resource(0, 0);
+
+        protected override void ProcessRecord()
+        {
+            var path = From.Type switch
             {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  Id },
-                };
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"User {Id} is associated to {To.Type} [{To.Id}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
+                ResourceType.Organization => $"{Organization.PATH}{From.Id}/users/",
+                ResourceType.Team => $"{Team.PATH}{From.Id}/users/",
+                ResourceType.Role => $"{Role.PATH}{From.Id}/users/",
+                _ => throw new ArgumentException($"Invalid resource type: {From.Type}")
+            };
+            WriteObject(Unregister(path, Id, From));
         }
     }
 
@@ -370,71 +385,21 @@ namespace AWX.Cmdlets
         public ulong Id { get; set; }
 
         [Parameter()]
-        [ResourceTransformation(AcceptableTypes = [
-                ResourceType.Organization,
-                ResourceType.Team,
-                ResourceType.Role
-        ])]
-        public IResource? From { get; set; }
-
-        [Parameter()]
         public SwitchParameter Force { get; set; }
-
-        private void Disassociate(ulong id, IResource from)
-        {
-            var path = from.Type switch
-            {
-                ResourceType.Organization => $"{Organization.PATH}{from.Id}/users/",
-                ResourceType.Team => $"{Team.PATH}{from.Id}/users/",
-                ResourceType.Role => $"{Role.PATH}{from.Id}/users/",
-                _ => throw new ArgumentException($"Invalid resource type: {from.Type}")
-            };
-
-            if (Force || ShouldProcess($"User [{id}]", $"Disassociate from {from.Type} [{from.Id}]"))
-            {
-                var sendData = new Dictionary<string, object>()
-                {
-                    { "id",  id },
-                    { "disassociate", true }
-                };
-
-                try
-                {
-                    var apiResult = CreateResource<string>(path, sendData);
-                    if (apiResult.Response.IsSuccessStatusCode)
-                    {
-                        WriteVerbose($"User {id} is disassociated from {from.Type} [{from.Id}].");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-        }
-
-        private void Delete(ulong id)
-        {
-            if (Force || ShouldProcess($"User [{id}]", "Delete completely"))
-            {
-                try
-                {
-                    var apiResult = DeleteResource($"{User.PATH}{id}/");
-                    if (apiResult?.IsSuccessStatusCode ?? false)
-                    {
-                        WriteVerbose($"User {id} is deleted.");
-                    }
-                }
-                catch (RestAPIException) { }
-            }
-        }
 
         protected override void ProcessRecord()
         {
-            if (From != null) // disassociate
+            if (Force || ShouldProcess($"User [{Id}]", "Delete completely"))
             {
-                Disassociate(Id, From);
-            }
-            else
-            {
-                Delete(Id);
+                try
+                {
+                    var apiResult = DeleteResource($"{User.PATH}{Id}/");
+                    if (apiResult?.IsSuccessStatusCode ?? false)
+                    {
+                        WriteVerbose($"User {Id} is deleted.");
+                    }
+                }
+                catch (RestAPIException) { }
             }
         }
     }

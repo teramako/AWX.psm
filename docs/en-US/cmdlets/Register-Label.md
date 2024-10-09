@@ -5,51 +5,40 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-User
+# Register-Label
 
 ## SYNOPSIS
-Remove a User
+Register a Label to other resource.
 
 ## SYNTAX
 
 ```
-Remove-User [-Id] <UInt64> [-Force] [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-Label [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a User.
+Register a Label to the target resource.
 
 Implements following Rest API:  
-- `/api/v2/users/{id}/` (DELETE)
+- `/api/v2/inventories/{id}/labels/` (POST)  
+- `/api/v2/job_templates/{id}/labels/` (POST)  
+- `/api/v2/schedules/{id}/labels/` (POST)  
+- `/api/v2/workflow_job_templates/{id}/labels/` (POST)  
+- `/api/v2/workflow_job_template_nodes/{id}/labels/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-User -Id 2
+PS C:\> Register-Label -To (Get-Inventory -Id 2) -Id 1
 ```
 
-Remove the User of ID 2 completely.
+Associate the Label of ID 1 to the Inventory of ID 2.
 
 ## PARAMETERS
 
-### -Force
-Don't confirm. (Ignore `-Confirm` and `-WhatIf`)
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Id
-User ID to be removed or disassosicated.
+Label ID to be registered.
 
 ```yaml
 Type: UInt64
@@ -60,6 +49,28 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -To
+The resource to which registered.
+
+Following resource is available:  
+- `Inventory`  
+- `JobTemplate`  
+- `Schedule`  
+- `WorkflowJobTemplate`  
+- `WorkflowJobTemplateNode`
+
+```yaml
+Type: IResource
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -100,23 +111,23 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-User ID.
+Label ID.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-User](Get-User.md)
+[Get-Label](Get-Label.md)
 
-[Find-User](Find-User.md)
+[Find-Label](Find-Label.md)
 
-[New-User](New-User.md)
+[New-Label](New-Label.md)
 
-[Update-User](Update-User.md)
+[Unregister-Label](Unregister-Label.md)
 
-[Register-User](Register-User.md)
-
-[Unregister-User](Unregister-User.md)
+[Update-Label](Update-Label.md)

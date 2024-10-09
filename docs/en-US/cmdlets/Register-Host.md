@@ -5,38 +5,36 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-User
+# Register-Host
 
 ## SYNOPSIS
-Associate a Uesr to.
+Register a Host to a Group.
 
 ## SYNTAX
 
 ```
-Add-User [-Id] <UInt64> [-To] <IResource> [-WhatIf] [-Confirm] [<CommonParameters>]
+Register-Host [-Id] <UInt64> [-To] <UInt64> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Associate a User to the target resource.
+Register a User to a Group.
 
 Implements following Rest API:  
-- `/api/v2/organizations/{id}/users/` (POST)  
-- `/api/v2/teams/{id}/users/` (POST)  
-- `/api/v2/roles/{id}/users/` (POST)
+- `/api/v2/groups/{id}/hosts/` (POST)
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-User -Id 2 -To (Get-Organization -Id 1)
+PS C:\> Register-Host -Id 3 -To 1
 ```
 
-Associate the User of ID 2 to the Organization of ID 1.
+Associate the Host of ID 3 to the Group of ID 1.
 
 ## PARAMETERS
 
 ### -Id
-User ID to be assocated.
+Host Id.
 
 ```yaml
 Type: UInt64
@@ -51,15 +49,14 @@ Accept wildcard characters: False
 ```
 
 ### -To
-Target resource to be associated to.
+Parent Group Id.
 
-Following resource is available:  
-- `Organization`  
-- `Team`  
-- `Role`  
+> [!NOTE]  
+> Can specify `IResource` object.  
+> For example: `-To (Get-Group -Id 10)`, `-To @{ type="group"; id = 10 }`
 
 ```yaml
-Type: IResource
+Type: UInt64
 Parameter Sets: (All)
 Aliases:
 
@@ -107,21 +104,25 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.UInt64
-User ID.
+Host Id.
 
 ## OUTPUTS
 
-### None
+### System.Boolean
+Success or Failure
+
 ## NOTES
 
 ## RELATED LINKS
 
-[Get-User](Get-User.md)
+[Get-Host](Get-Host.md)
 
-[Find-User](Find-User.md)
+[Find-Host](Find-Host.md)
 
-[New-User](New-User.md)
+[New-Host](New-Host.md)
 
-[Update-User](Update-User.md)
+[Update-Host](Update-Host.md)
 
-[Remove-User](Remove-User.md)
+[Unregister-Host](Unregister-Host.md)
+
+[Remove-Host](Remove-Host.md)
