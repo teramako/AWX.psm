@@ -11,9 +11,6 @@ Locale: en-US
 PowerShell module to operate AWX/AnsibleTower using Rest API.
 
 ## AWX.psm Cmdlets
-### [Add-User](Add-User.md)
-Associate a Uesr to.
-
 ### [Approve-WorkflowApprovalRequest](Approve-WorkflowApprovalRequest.md)
 Approve requests for WorkflowApproval.
 
@@ -422,6 +419,9 @@ Register a Label to other resource.
 ### [Register-SurveySpec](Register-SurveySpec.md)
 Register SurveySpecs.
 
+### [Register-User](Register-User.md)
+Register a Uesr to other resource.
+
 ### [Register-WorkflowJobTemplateNode](Register-WorkflowJobTemplateNode.md)
 Link WorkflowJobTemplateNode to the parent.
 
@@ -541,6 +541,9 @@ Remove a Host
 
 ### [Unregister-Label](Unregister-Label.md)
 Unregister a Label from other resource.
+
+### [Unregister-User](Unregister-User.md)
+Unregister a User from other resource.
 
 ### [Unregister-WorkflowJobTemplateNode](Unregister-WorkflowJobTemplateNode.md)
 Unlink WorkflowJobTemplateNode from the parent.
